@@ -96,9 +96,8 @@ NFU-3里sigmoid函数使用插值算法，同时使用一块RAM存储16段系数
 
 由于<strong>DianNao</strong>里存储结构和计算单元的限制，对原始的计算必须采用切片(tiling)才能适配到加速器上，下面分别展示了卷积层，池化层和分类层采用切片之后的伪代码。 卷积层伪代码，包括对空间局部性的优化：
 
-`for (int yy = 0; yy ¡ Nyin; yy += Ty) {
-
 ```cpp
+for (int yy = 0; yy ¡ Nyin; yy += Ty) {
     for (int xx = 0; xx ¡ Nxin; xx += Tx) {
         for (int nnn = 0; nnn ¡ Nn; nnn += Tnn) {
             // — Original code — (excluding nn, ii loops)
@@ -109,9 +108,8 @@ NFU-3里sigmoid函数使用插值算法，同时使用一块RAM存储16段系数
 
 池化层伪代码，包括对空间局部性的优化：
 
-`for (int yy = 0; yy ¡ Nyin; yy += Ty) {
-
 ```cpp
+for (int yy = 0; yy ¡ Nyin; yy += Ty) {
     for (int xx = 0; xx ¡ Nxin; xx += Tx) {
         for (int iii = 0; iii ¡ Ni; iii += Tii) {
             // — Original code — (excluding ii loop)
@@ -122,9 +120,8 @@ NFU-3里sigmoid函数使用插值算法，同时使用一块RAM存储16段系数
 
 分类层伪代码，包括对空间局部性的优化：
 
-`for (int nnn = 0; nnn ¡ Nn; nnn += Tnn) { // tiling for output neurons;
-
 ```cpp
+for (int nnn = 0; nnn ¡ Nn; nnn += Tnn) { // tiling for output neurons;
     for (int iii = 0; iii ¡ Ni; iii += Tii) { // tiling for input neurons;
         for (int nn = nnn; nn ¡ nnn + Tnn; nn += Tn) {
             for (int n = nn; n ¡ nn + Tn; n++)
@@ -391,9 +388,8 @@ MLU支持机器学习里常见的几种计算原语，包括点乘(LR, SVM, 和D
 -  除了向量计算指令外，寒武纪还提供向量大于（VGT）、向量相等指令（VE）、向量和/或/非指令（VAND/VOR/VNOT）、标量比较和标量逻辑指令来处理分支条件，即计算上述条件分支（CB）指令的条件。  
 为了说明<strong>Cambricon</strong>指令集的用法，下面使用<strong>Cambricon</strong> 指令实现了三个简单但具有代表性的神经网络组件，即 MLP 前馈层、池化层和玻尔兹曼机 （BM） 层。为了简洁起见，省略了所有三个层的标量加载/存储指令，只列出了池化层的单个池化窗口（具有多个输入和输出特征图）的程序片段。
 
-`// $0: input size, $1: output size, $2: matrix size
-
 ```text
+// $0: input size, $1: output size, $2: matrix size
 // $3: input address, $4: weight address
 // $5: bias address, $6: output address
 // $7-$10: temp variable address

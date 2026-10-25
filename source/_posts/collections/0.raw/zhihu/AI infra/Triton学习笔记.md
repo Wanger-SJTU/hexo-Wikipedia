@@ -66,7 +66,7 @@ source_url: https://zhuanlan.zhihu.com/p/672086654
 
 ![](https://pic3.zhimg.com/v2-ac4059550ec8d91e259c2210c828566a_r.jpg)                                             不同计算组织和层次结构的Memory范围
 
-`A100`是面向`CTA`编程，`H100`是面向`CGA`编程，下一个章节会介绍。
+A100`是面向`CTA`编程，`H100`是面向`CGA`编程，下一个章节会介绍。
 
 **`SM`间任务切换**
 
@@ -96,7 +96,7 @@ wiki上这样解释, [link ](https://link.zhihu.com/?target=https%3A//zh.wikiped
 <strong>Introduce</strong>
 
 <strong>efficiency and performance</strong>
-`CUDA`好比单反相机，里面有各种专业模型和功能，用户可以更细粒度的功能，`Triton`更像是智能手机，它封装了单反相机的功能，操作简单，但存在效果比专业单反差的问题。
+CUDA`好比单反相机，里面有各种专业模型和功能，用户可以更细粒度的功能，`Triton`更像是智能手机，它封装了单反相机的功能，操作简单，但存在效果比专业单反差的问题。
 
 ![](https://pic3.zhimg.com/v2-4bcbb26226fbef48f4353a7dde1b3eac_r.jpg)**`CUDA`** 
 
@@ -251,7 +251,7 @@ wiki上这样解释, [link ](https://link.zhihu.com/?target=https%3A//zh.wikiped
 - <strong>目前pytorch2.0里引入了triton，但是并没有开启dot类op比如gemm/conv类，在其他内存密集型算子融合这部分上triton性能提升明显，什么时候考虑引入dot类呢</strong>可能`Pytorch`有自己的考虑，用`Triton`开发的矩阵乘，达不到`Cutlass`或者`Cublas`性能，还不如直接调用第三方库方便
 - <strong>非英伟达的GPU用triton有什么劣势？</strong>其实要看投入和支持的力度
 - <strong>跟cutlass的实现算法比较，有什么差异呢？</strong>其实大家实现`Kernel`本身,思路都是相似的， 只不过`Triton`相比`Cutlass`，它更容易能够把一些kernel给`fuse`起来， 比如：dot后面再加一些其它的operation, 开发者可以把这些算子写到`triton`的一个`function`里面, 这样就然fuse在一起的。Cutlass的性能做得比较极致，用AI编译器生成的话，性能可能能够达到80~85%性能，如果再想往上提性能的话，AI编译器实际上不太容易去做到一些细节上的事情。 
-`Triton`本身它的定位还是更多的在编程语言上给大家提供灵活性， 因为毕竟用`Cutlass`没有办法接一个自定义的`Dot`或者其它`memory bond`操作。 `Cutlass`的融合是比较难做的。既然对于fuse算子开发效率高，跟编译器自动生成的算子串在一起，pipeline会不会被打断
+Triton`本身它的定位还是更多的在编程语言上给大家提供灵活性， 因为毕竟用`Cutlass`没有办法接一个自定义的`Dot`或者其它`memory bond`操作。 `Cutlass`的融合是比较难做的。既然对于fuse算子开发效率高，跟编译器自动生成的算子串在一起，pipeline会不会被打断
 
 - <strong>在Hopper架构上， Triton、AutoTune带来的性能提升比例是怎样， 如何选取到好的AutoTune的策略?</strong>`Triton`的`autotune` 实际上它做的比较简陋，它大量的都在一个`thread block`内部。在`thread block`上面的那个`autotune` 就没有做到一个比较高端做法，比如引入一些AI模型去做。根据硬件的分层设计，对每部分的加速单元可以做一个CostModel, 那加入CostModel后势必会延长搜索时间、搜索算法、
 以及对硬件资源有一定的要求。

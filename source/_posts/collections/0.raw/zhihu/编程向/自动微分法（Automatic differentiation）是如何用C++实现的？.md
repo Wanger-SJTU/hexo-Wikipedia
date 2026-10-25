@@ -62,9 +62,8 @@ main 函数中对应图二表中第二列，2D 旋转的计算。ADV 里重载�
 
 main 函数中 x, y, z 的序号都与图二中对应。
 
-`#include 
-
 ```cpp
+#include 
 #include 
 #include 
 namespace SAD  // Simple Automatic Differentiation
@@ -156,7 +155,6 @@ int main()
 }
 ```
 
-`
 
 运行结果：
 

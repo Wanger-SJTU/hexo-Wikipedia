@@ -73,7 +73,7 @@ LLM推理加速topic以下几部分组成
 
 ## 1.2 基于kv-cache的生成解码
 
-`kv-cache`：<strong>用空间换时间</strong>。为了避免每次生成token时重新计算`key`、`value`向量。利用预先计算好的`key`值和`value`值，可以节省大量计算时间，但是会占用一定的存储空间。
+kv-cache`：**用空间换时间**。为了避免每次生成token时重新计算`key`、`value`向量。利用预先计算好的`key`值和`value`值，可以节省大量计算时间，但是会占用一定的存储空间。
 
 ### 1.2.1 原理
 
@@ -105,7 +105,7 @@ LLM推理加速topic以下几部分组成
 
 每一层的`cache key`的shape大小为：\[bs,seq\_len,hidden\_size\]
 
-`kv cache`占用的显存大小（字节）：
+kv cache`占用的显存大小（字节）：
 
 `2*bs*seq_len*hidden_size*layer_num*k_bits`   
 \= `2*bs*seq_len*head_dim*head_num*layer_num*k_bits`
@@ -114,13 +114,13 @@ LLM推理加速topic以下几部分组成
 
 ![](https://proxy-prod.omnivore-image-cache.app/715x607,sUzpqELywGKzNDU2-IZytfrS1xUxrltltZKZhYnR4JlA/https://pic3.zhimg.com/v2-39224ca38049091258b81e242d31eefe_b.jpg)
 
-`PagedAttention`论文显示，现有的推理系统，26GB的模型，`kv cache`显存占用约30%+
+PagedAttention`论文显示，现有的推理系统，26GB的模型，`kv cache`显存占用约30%+
 
 ![](https://proxy-prod.omnivore-image-cache.app/519x486,s0WfuPXPzwl0HQ7KaiyL1HiLgLpwwUx-p_QNk1ZUcE-4/https://pic4.zhimg.com/v2-7f015996fb42ae10a09fe746a7c7f353_b.jpg)
 
 ## 1.3 代码实现
 
-`kv cache`使用：`GenerationConfig`类中的参数`use_cache`设置为True，默认True
+kv cache`使用：`GenerationConfig`类中的参数`use_cache`设置为True，默认True
 
 `kv cache`实现：通过`DynamicCache`进行更新使用，源码位于`src/transformers/cache_utils.py` 
 

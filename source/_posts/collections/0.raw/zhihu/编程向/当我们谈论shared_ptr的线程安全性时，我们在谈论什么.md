@@ -35,20 +35,18 @@ shared_ptr 可能的线程安全隐患大概有如下几种，一是引用计数
 
 岔开个话题，前段时间我面试过几个校招生，每当我问道是否了解shared_ptr的时候，对方总能巴拉巴拉说出一大堆东西。会讲到引用计数、weak_ptr解决循环引用、自定义删除器的用法等等等等。感觉这些知识都是很八股的东西。我会立马打断去问一句：引用计数具体是怎么实现的？怎么做到多个shared_ptr之间的计数能共享，同步更新的呢？比如：
 
-`shared_ptrA> sp1 = make_sharedA>();
+shared_ptrA> sp1 = make_sharedA>();
 ...
 shared_ptrA> sp2 = sp1;
 ...
 shared_ptrA> sp3 = sp1;
-`
 
 当sp3出现的时候，sp2怎么感知到计数又加1了的呢？这时候很多学生都会卡住，犯了难。有的同学确实没有了解过的，就盲猜了一个，答道：用static变量存储的引用计数。
 
 答案当然是否定的，因为如果是static变量的话，那么：
 
-`shared_ptrA> sp1 = make_sharedA>();
+shared_ptrA> sp1 = make_sharedA>();
 shared_ptrA> sp2 = make_sharedA>();
-`
 
 这两个不相干的sp1和sp2，只要模板参数T是同一个类型，就会共享同一个计数…
 
@@ -70,17 +68,18 @@ shared_ptr中除了有一个指针，指向所管理数据的地址。还有一�
 
 比如std::thread的回调函数，是一个lambda表达式，其中引用捕获了一个shared_ptr对象
 
-`    std::thread td([&sp1] () {....});
-`
+```cpp
+    std::thread td([&sp1] () {....});
+```
+
 
 又或者通过回调函数的参数传入的shared_ptr对象，参数类型是指针或引用类型:
 
 指针：
 
-`void fn(shared_ptrA>* sp) {
+```cpp
+void fn(shared_ptrA>* sp) {
     ...
-
-```text
 }
 ```
 
@@ -90,14 +89,12 @@ shared_ptr中除了有一个指针，指向所管理数据的地址。还有一�
     std::thread td(fn, &sp1);
 ```
 
-`
 
 引用：
 
-`void fn(shared_ptrA>& sp) {
+```cpp
+void fn(shared_ptrA>& sp) {
     ...
-
-```text
 }
 ```
 
@@ -107,16 +104,14 @@ shared_ptr中除了有一个指针，指向所管理数据的地址。还有一�
     std::thread td(fn, std::ref(sp1));
 ```
 
-`
 
 这时候确实是不是线程安全的。
 
 当你在多线程回调中修改shared_ptr指向的时候。
 
-`void fn(shared_ptrA>& sp) {
+```cpp
+void fn(shared_ptrA>& sp) {
     ...
-
-```text
     if (..) {
         sp = other_sp;
     } else if (...) {
@@ -125,7 +120,6 @@ shared_ptr中除了有一个指针，指向所管理数据的地址。还有一�
 }
 ```
 
-`
 
 shared_ptr内数据指针要修改指向，sp原先指向的引用计数的值要减去1，other_sp指向的引用计数值要加1。然而这几步操作加起来并不是一个原子操作，如果多少线程都在修改sp的指向的时候，那么有可能会出问题。比如在导致计数在操作减一的时候，其内部的指向，已经被其他线程修改过了。引用计数的异常会导致某个管理的对象被提前析构，后续在使用到该数据的时候触发core dump。
 
@@ -135,15 +129,16 @@ shared_ptr内数据指针要修改指向，sp原先指向的引用计数的值�
 
 这里指的是管理的数据是同一份，而shared_ptr不是同一个对象。比如多线程回调的lambda的是按值捕获的对象。
 
-`    std::thread td([sp1] () {....});
-`
+```cpp
+    std::thread td([sp1] () {....});
+```
+
 
  或者参数传递的shared_ptr是值传递，而非引用：
 
-`void fn(shared_ptrA> sp) {
+```cpp
+void fn(shared_ptrA> sp) {
     ...
-
-```text
 }
 ```
 
@@ -153,16 +148,14 @@ shared_ptr内数据指针要修改指向，sp原先指向的引用计数的值�
     std::thread td(fn, sp1);
 ```
 
-`
 
 这时候每个线程内看到的sp，他们所管理的是同一份数据，用的是同一个引用计数。但是各自是不同的对象，当发生多线程中修改sp指向的操作的时候，是不会出现非预期的异常行为的。
 
 也就是说，如下操作是安全的：
 
-`void fn(shared_ptrA> sp) {
+```cpp
+void fn(shared_ptrA> sp) {
     ...
-
-```text
     if (..) {
         sp = other_sp;
     } else if (...) {
@@ -171,7 +164,6 @@ shared_ptr内数据指针要修改指向，sp原先指向的引用计数的值�
 }
 ```
 
-`
 
 ### 所管理数据的线程安全性
 

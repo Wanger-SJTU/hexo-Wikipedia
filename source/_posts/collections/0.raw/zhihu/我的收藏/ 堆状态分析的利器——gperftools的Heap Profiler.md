@@ -17,9 +17,9 @@ source_url: https://zhuanlan.zhihu.com/p/681986521
 
 ﻿在《内存泄漏分析的利器——gperftools的Heap Checker》一文中，我们介绍了如何使用gperftools分析内存泄漏。本文将介绍其另一个强大的工具——Heap Profiler去分析堆的变化过程。 我们使用类似于《堆状态分析的利器——valgraind的DHAT》中的测试代码作为例子。为了让Heap Profiler产生多份快照文件，我将申请的内存放大了很多
 
-`#include 
-
 ```cpp
+#include 
+
 void* create(unsigned int size) {
     return malloc(size);
 }
@@ -53,7 +53,6 @@ int main(void) {
 }
 ```
 
-`
 
 第19行每次申请1G的空间，且在整个程序周期中，都不会释放。 第22行每次申请1G的空间，每个空间都将在第29行释放掉。 第25行调用的create_destory方法，每次申请1M的空间，每次申请完就释放掉。 为了方便起见，我们还是要链接tcmalloc库，并开启调试信息
 
@@ -65,7 +64,7 @@ int main(void) {
 
 会得到输出结果。
 
-`Starting tracking the heap
+Starting tracking the heap
 Dumping heap profile to /tmp/profile.0001.heap (1024 MB allocated cumulatively, 1024 MB currently in use)
 Dumping heap profile to /tmp/profile.0002.heap (2048 MB allocated cumulatively, 2048 MB currently in use)
 Dumping heap profile to /tmp/profile.0003.heap (3073 MB allocated cumulatively, 3072 MB currently in use)
@@ -82,7 +81,7 @@ Dumping heap profile to /tmp/profile.0009.heap (Exiting, 4096 MB in use)`
 
 此时我们使用的文本输出方式（--text）。
 
-`Using local file heap_profiler.
+Using local file heap_profiler.
 Using local file /tmp/profile.0001.heap.
 Total: 1024.0 MB
   1024.0 100.0% 100.0%   1024.0 100.0% create
@@ -96,7 +95,7 @@ Total: 1024.0 MB
 
 其结果显示main函数和create函数各申请了1G的空间（第4\~5行第1列），各占总未释放内存（2G）的50%（第4\~5行第2列）。main函数中调用了create方法（第4~5行第3,4,5列显示出main中直接调用了create，因为main函数中直接和间接申请了2G的空间，其中1G是直接申请的）
 
-`Using local file heap_profiler.
+Using local file heap_profiler.
 Using local file /tmp/profile.0002.heap.
 Total: 2048.0 MB
   1024.0  50.0%  50.0%   1024.0  50.0% create

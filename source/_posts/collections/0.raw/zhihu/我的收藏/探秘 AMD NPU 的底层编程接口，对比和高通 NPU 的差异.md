@@ -38,7 +38,7 @@ AMD NPU 是所有民用 NPU 里最开放的。相比 Intel NPU 那种只能给�
 
 #### 芯片在哪里
 
-`$ lspci -nn | grep IPU
+$ lspci -nn | grep IPU
 c4:00.1 Signal processing controller [1180]: AMD IPU Device [1022:1502]
 
 $ ls -la /dev/accel/accel0
@@ -62,7 +62,7 @@ AMD 把这块 NPU 叫做 <strong>XDNA</strong>，但它的真名是 <strong>AI E
 
 Phoenix NPU 的 `6x5` 拓扑实际上是 6 行 × 5 列（含一个隐藏的第 0 列），可用的是 4 列：
 
-`Col 1    Col 2    Col 3    Col 4
+Col 1    Col 2    Col 3    Col 4
         ┌────────┬────────┬────────┬────────┐
 Row 5   │Compute │Compute │Compute │Compute │  ← 计算 tile
 Row 4   │Compute │Compute │Compute │Compute │  ← 计算 tile
@@ -92,7 +92,7 @@ Row 0   │  Shim  │  Shim  │  Shim  │  Shim  │  ← 接口 tile
 
 处理器架构是 <strong>VLIW（Very Long Instruction Word）</strong>，每条指令最宽 128 bit，可以编码最多 6 个并行操作：
 
-`128-bit 指令字:
+128-bit 指令字:
 ┌──────────┬──────────┬──────────┬──────────┬──────────┬──────────┐
 │  标量控制 │ 地址生成  │ 加载/存储 │ 标量运算  │ 数据移动  │ 向量运算  │
 │  (nopb)  │  (nopa)  │  (nops)  │  (nopx)  │  (nopm)  │  (nopv)  │
@@ -122,7 +122,7 @@ AIE2 的指令是变长的：
 
 长度格式说明2 字节短指令nop, 简单标量操作4-6 字节中长指令1-2 个并行操作8-12 字节长指令2-3 个并行操作16 字节满 VLIW最多 6 个并行操作一个真实的 16 字节满 VLIW 指令：
 
-`c0 03 00 88 03 00 18 12 82 cd 0c 02 00 00 00 00
+c0 03 00 88 03 00 18 12 82 cd 0c 02 00 00 00 00
 # 反汇编为:
 nopb; nopa; vst.srs.s32.s64 bml3, s0, [p2, #0x0]; add r1, r1, #0x10; nopm; nopv
 #  ↑     ↑    ↑                                    ↑                   ↑     ↑
@@ -138,7 +138,7 @@ nopb; nopa; vst.srs.s32.s64 bml3, s0, [p2, #0x0]; add r1, r1, #0x10; nopm; nopv
 
 源码：
 
-`extern "C" {
+extern "C" {
 
 ```cpp
 void add_one_scalar(int32_t *in, int32_t *out, int32_t N) {
@@ -148,7 +148,7 @@ void add_one_scalar(int32_t *in, int32_t *out, int32_t N) {
 
 最普通的 C 代码。编译后加载到计算 tile 的 16 KB 程序存储器中执行。反汇编出的核心循环：
 
-`; === 零开销硬件循环 ===
+; === 零开销硬件循环 ===
 add.nc  lc, r0, #0x0         ; lc(loop count) = N
 movxm   ls, #0x200            ; ls(loop start) = 循环体起始地址
 movxm   le, #0x270            ; le(loop end) = 循环体结束地址
@@ -172,7 +172,7 @@ lshl    r2, r1, r0            ; r2 = i
 
 源码：
 
-`#include 
+#include 
 
 extern "C" {
 
@@ -190,7 +190,7 @@ void add_one_vector(int32_t *in, int32_t *out, int32_t N) {
 
 和实验 1 做同样的事（每个元素 +1），但用向量指令一次处理 16 个 int32。反汇编：
 
-`; === 准备：广播标量 1 到 512-bit 向量寄存器 ===
+; === 准备：广播标量 1 到 512-bit 向量寄存器 ===
 vbcst.32  x0, r2              ; x0[0:15] = broadcast(1)
 
 ```text
@@ -230,7 +230,7 @@ add  r1, r1, #0x10            ; i += 16`
 
 源码：
 
-`#include 
+#include 
 
 extern "C" {
 
@@ -249,7 +249,7 @@ void mul_vector(int32_t *in, int32_t *out, int32_t *factor, int32_t N) {
 
 这里用了 `aie::mul` 返回 `acc64` 累加器——直接调用硬件 MAC 单元。反汇编出来比前两个复杂得多：
 
-`; === 准备 ===
+; === 准备 ===
 lda     r4, [p2, #0]           ; r4 = *factor (标量加载)
 vbcst.32  x4, r4               ; x4[0:15] = broadcast(factor)
 
@@ -281,7 +281,7 @@ vst.srs.s32.s64  bml3, s0, [p2, #0x0]   ; acc64 → int32 + 存储 (低半)`
 因为 MAC 单元的物理数据通路无法在一拍内完成 16 个 int32×int32 乘法。编译器把它拆成了 4 步，交替处理偶数位和奇数位元素。`vshuffle` 负责把数据重排成 MAC 单元期望的格式。这是编译器对硬件微架构的深度理解——用户写 `aie::mul`，编译器知道该拆成几步、怎么排数据。
 
 - <strong>VLIW 并行执行</strong>：
-`vshuffle  x10, x6, x0, r3   ; 向量重排单元
+vshuffle  x10, x6, x0, r3   ; 向量重排单元
    vmac   cm1, cm0, x8, x2, r2  ; MAC 单元`
 
 这两条在同一个 128-bit VLIW 指令字中，使用不同的功能单元，在同一个周期执行。
@@ -307,7 +307,7 @@ NPU 上的数据搬运全部由 DMA 硬件完成，和计算完全解耦。这�
 
 #### 三级存储层次
 
-`Host DDR (GB 级)
+Host DDR (GB 级)
     ↕  Shim Tile DMA
 Memory Tile SRAM (512 KB/tile, 共 2560 KB)
     ↕  Memory Tile DMA (6 个引擎/tile)
@@ -317,12 +317,12 @@ Compute Tile SRAM (64 KB/tile)`
 
 在 IRON 框架中，数据搬运通过 ObjectFIFO 抽象：
 
-`of_in = ObjectFifo(tile_ty, name="in")    # Host → Compute Tile
+of_in = ObjectFifo(tile_ty, name="in")    # Host → Compute Tile
 of_out = ObjectFifo(tile_ty, name="out")   # Compute Tile → Host`
 
 编译后，这变成 DMA buffer 描述符配置和硬件锁。在 LLVM IR 中可以看到：
 
-`call void @llvm.aie2.acquire(i32 49, i32 -1)   ; 等 DMA 填好输入 buffer
+call void @llvm.aie2.acquire(i32 49, i32 -1)   ; 等 DMA 填好输入 buffer
 call void @llvm.aie2.acquire(i32 50, i32 -1)   ; 等输出 buffer 可用
 call void @add_one_scalar(...)                   ; 计算
 call void @llvm.aie2.release(i32 48, i32 1)     ; 通知 DMA: 输入已读完
@@ -330,19 +330,19 @@ call void @llvm.aie2.release(i32 51, i32 1)     ; 通知 DMA: 输出已写好`
 
 对应的机器码：
 
-`acq  #0x31, r16    ; acquire lock #49, value = -1 (等待)
+acq  #0x31, r16    ; acquire lock #49, value = -1 (等待)
 acq  #0x32, r16    ; acquire lock #50, value = -1 (等待)
 jl   #add_one_scalar  ; 调用内核
 rel  #0x30, r17    ; release lock #48, value = 1  (通知)
 rel  #0x33, r17    ; release lock #51, value = 1  (通知)`
 
-`acq`（acquire）和 `rel`（release）是 tile 与 DMA 之间<strong>唯一的同步原语</strong>。没有中断，没有轮询，没有信号量——就是硬件锁。当锁不满足条件时，核心<strong>阻塞</strong>在 `acq` 指令上，硬件停止取指，直到 DMA 改变锁状态。
+acq`（acquire）和 `rel`（release）是 tile 与 DMA 之间**唯一的同步原语**。没有中断，没有轮询，没有信号量——就是硬件锁。当锁不满足条件时，核心**阻塞**在 `acq` 指令上，硬件停止取指，直到 DMA 改变锁状态。
 
 #### 双缓冲
 
 IRON 自动生成双缓冲：两组 buffer（`buff_0` 和 `buff_1`），两对锁。当计算 tile 处理 `buff_0` 时，DMA 可以同时填充 `buff_1`。从 LLVM IR 可以看到循环被展开成：
 
-`acquire(49, -1); acquire(50, -1)
+acquire(49, -1); acquire(50, -1)
 call @add_one_scalar(@in_cons_buff_0, @out_buff_0, 256)  ; 处理 buffer 0
 release(48, 1);  release(51, 1)
 
@@ -356,7 +356,7 @@ DMA 在后台搬运数据，计算核心只需要等锁。这种计算/通信重
 
 一个 NPU 程序的编译过程涉及多个阶段，最终产出两个二进制文件：
 
-`Python (IRON)
+Python (IRON)
     ↓  iron.jit / aiecc
 MLIR (aie dialect)           ← 中间表示：tile 拓扑 + 数据流
     ↓  mlir-aie compiler
@@ -370,10 +370,10 @@ XCLBIN                       ← 最终二进制（ELF + DMA 配置 + 路由表�
 
 IRON 的 Python API 描述了数据流和计算任务，`resolve_program()` 将其编译为 MLIR：
 
-`module {
-  aie.device(npu1) {
+module {
 
 ```text
+  aie.device(npu1) {
     %tile_0_2 = aie.tile(0, 2)
     %shim_0_0 = aie.tile(0, 0)
     aie.objectfifo @in(%shim_0_0, {%tile_0_2}, 2 : i32) : !aie.objectfifo>
@@ -403,7 +403,7 @@ IRON 的 Python API 描述了数据流和计算任务，`resolve_program()` 将�
 
 #### 阶段 2: MLIR → LLVM IR
 
-`aie.objectfifo.acquire` / `release` 被 lowering 为 `@llvm.aie2.acquire` / `@llvm.aie2.release` intrinsic。双缓冲逻辑被展开。外部内核函数保持为 `declare`，等链接时合并。
+aie.objectfifo.acquire` / `release` 被 lowering 为 `@llvm.aie2.acquire` / `@llvm.aie2.release` intrinsic。双缓冲逻辑被展开。外部内核函数保持为 `declare`，等链接时合并。
 
 #### 阶段 3: LLVM IR + 内核 .o → ELF
 
@@ -421,9 +421,9 @@ Peano 编译器（`clang --target=aie2-none-unknown-elf`）把 C++ 内核编译�
 
 #### 内核驱动：/dev/accel/accel0
 
-`amdxdna` 内核驱动从 Linux 6.14 开始进入主线。用户空间通过 DRM ioctl 与 NPU 交互：
+amdxdna` 内核驱动从 Linux 6.14 开始进入主线。用户空间通过 DRM ioctl 与 NPU 交互：
 
-`enum amdxdna_drm_ioctl_id {
+enum amdxdna_drm_ioctl_id {
     DRM_AMDXDNA_CREATE_HWCTX,    // 创建硬件上下文（分配 tile 分区）
     DRM_AMDXDNA_DESTROY_HWCTX,   // 销毁硬件上下文
     DRM_AMDXDNA_CREATE_BO,       // 创建 Buffer Object（NPU 可见内存）
@@ -446,20 +446,23 @@ XRT（Xilinx Runtime）封装了这些 ioctl，提供 C++ API。但理论上，�
 
 DMA 配置不是直接写寄存器，而是打包成 ctrlcode——一系列事务操作码：
 
-`typedef enum {
+```text
+typedef enum {
     XAIE_IO_WRITE,              // 写单个寄存器
     XAIE_IO_BLOCKWRITE,         // 批量写寄存器（配置 DMA 描述符）
     XAIE_IO_MASKWRITE,          // 带掩码写（修改寄存器的特定位）
     XAIE_IO_MASKPOLL,           // 轮询等待寄存器值
     XAIE_CONFIG_SHIMDMA_BD,     // 配置 Shim DMA 描述符
     XAIE_IO_CUSTOM_OP_DDR_PATCH, // DDR 地址补丁（运行时绑定）
+```
+
 } XAie_TxnOpcode;`
 
 这些操作码被 NPU 内部的 ERT（Embedded Runtime）微控制器解释执行。ERT 是 NPU 芯片内的一个小 ARM 核，负责管理 tile 启停、DMA 配置和同步。
 
 #### 工具链全景
 
-`┌──────────────────────────────┐
+┌──────────────────────────────┐
 
 ```text
                    │       用户应用 (Python)        │
@@ -521,7 +524,7 @@ DMA 配置不是直接写寄存器，而是打包成 ctrlcode——一系列事�
 
 XDNA1（Phoenix）——4 列：
 
-`Col 0    Col 1    Col 2    Col 3
+Col 0    Col 1    Col 2    Col 3
         ┌────────┬────────┬────────┬────────┐
 Row 5   │Compute │Compute │Compute │Compute │
 Row 4   │Compute │Compute │Compute │Compute │
@@ -535,7 +538,7 @@ Row 0   │  Shim  │  Shim  │  Shim  │  Shim  │
 
 XDNA2（Strix Point）——8 列：
 
-`Col 0  Col 1  Col 2  Col 3  Col 4  Col 5  Col 6  Col 7
+Col 0  Col 1  Col 2  Col 3  Col 4  Col 5  Col 6  Col 7
         ┌──────┬──────┬──────┬──────┬──────┬──────┬──────┬──────┐
 Row 5   │  C   │  C   │  C   │  C   │  C   │  C   │  C   │  C   │
 Row 4   │  C   │  C   │  C   │  C   │  C   │  C   │  C   │  C   │
@@ -555,14 +558,14 @@ XDNA2 的计算 tile 从 AIE2 升级到 <strong>AIE2P</strong>（AI Engine 2 Plu
 
 这是 XDNA2 最重要的新特性。传统量化中，每个元素独立存储完整的数值表示。BFP16 换了一种方式：
 
-`传统 FP16:  每个元素 16 bit（1 sign + 5 exp + 10 mantissa）
+传统 FP16:  每个元素 16 bit（1 sign + 5 exp + 10 mantissa）
 BFP16:      32 个元素共享 1 个 8-bit 指数 + 每个元素 8-bit 尾数`
 
 32 个元素共享一个指数，每个元素只需 8 bit 尾数。存储密度接近 INT8，但精度接近 FP16。关键优势：<strong>不需要重新训练模型</strong>——直接把 FP16 权重转成 BFP16 格式，精度损失极小，吞吐量却和 INT8 一样。
 
 在指令级别，这体现为新的 MAC 配置：
 
-`AIE2:   I512.I512.ACC1024.mac          ; INT8 × INT8 → ACC
+AIE2:   I512.I512.ACC1024.mac          ; INT8 × INT8 → ACC
 AIE2P:  BFP576.BFP576.ACC2048.mac.conf ; BFP16 × BFP16 → ACC（新！）`
 
 AIE2P 的 MAC 单元原生理解 BFP 格式——硬件自动处理共享指数的对齐和累加。
@@ -577,7 +580,7 @@ AIE2P 支持 OCP 标准的 Microscaling 格式族：
 
 AIE2 上做 `tanh`、`exp`、`1/x` 需要查表 + 多项式逼近，消耗多个周期。AIE2P 加了专用硬件：
 
-`AIE2:  tanh(x) → 查表 + 插值（几十个周期）
+AIE2:  tanh(x) → 查表 + 插值（几十个周期）
 AIE2P: tanh(x) → 单条 aievec.tanh 指令 → 硬件单元直接计算`
 
 同样适用于 `exp2`（指数）和 `inv`（倒数）。这对 Transformer 的 softmax 和 LayerNorm 特别有意义——这些操作在 LLM 推理中占显著比例。
@@ -586,7 +589,7 @@ AIE2P: tanh(x) → 单条 aievec.tanh 指令 → 硬件单元直接计算`
 
 XDNA1 的 NPU 基本上是一整块给一个任务用。XDNA2 支持最多 <strong>8 个并发隔离空间流（spatial streams）</strong>。8 列可以动态划分，比如：
 
-`┌──Col 0-1──┬──Col 2-5──┬──Col 6-7──┐
+┌──Col 0-1──┬──Col 2-5──┬──Col 6-7──┐
 │ 视频通话   │ LLM 推理   │ 背景降噪  │   3 个任务同时跑
 │ (2 列)    │ (4 列)     │ (2 列)    │
 └───────────┴───────────┴───────────┘`
@@ -606,7 +609,7 @@ Strix PointStrix HaloKrackan Point品牌Ryzen AI 300Ryzen AI MAXRyzen AI 300（�
 
 XDNA2 的编程模型和 XDNA1 完全一致——同样的 IRON Python API，同样的 ObjectFIFO 数据流，同样的 Peano 编译器。区别仅在于：
 
-`# XDNA1
+# XDNA1
 from aie.iron.device import NPU1Col1
 dev = NPU1Col1()
 
@@ -616,7 +619,7 @@ dev = NPU2()`
 
 编译时目标从 `aie2` 变成 `aie2p`：
 
-`# XDNA1
+# XDNA1
 clang++ --target=aie2-none-unknown-elf -c kernel.cc -o kernel.o
 
 # XDNA2
@@ -642,7 +645,7 @@ AMD 的编程模型是<strong>空间 + 数据流</strong>：你要想好数据�
 
 Qualcomm 的编程模型是<strong>传统 DSP + 显式 scratchpad</strong>：
 
-`// Hexagon: 标准 C + intrinsic，跟写 CPU SIMD 差不多
+// Hexagon: 标准 C + intrinsic，跟写 CPU SIMD 差不多
 HVX_VectorPair wp = Q6_Wh_vunpack_Vb(v_i8);        // int8 → int16 (HVX)
 HVX_Vector v_f16 = Q6_Vhf_equals_Vh(Q6_V_lo_W(wp)); // int16 → f16 (HVX)
 hexkl_micro_hmx_mm_f16(vtcm, act_off, wt_off);       // 矩阵乘 (HMX)
@@ -666,7 +669,7 @@ AMD XDNA (AIE2)Qualcomm Hexagon (v75)L1 (每 tile/核)64 KB scratchpad共享 L1 
 
 两者都需要显式管理数据搬运，但方式不同：
 
-`// Hexagon: UDMA 异步搬运 DDR → VTCM
+// Hexagon: UDMA 异步搬运 DDR → VTCM
 Q6_dmstart_A((void *)&desc);              // 启动 DMA（立即返回）
 hvx_compute(compute_buf, size);            // HVX 同时计算（重叠！）
 Q6_R_dmwait();                             // 等 DMA 完成
@@ -679,7 +682,7 @@ of_in.release(1)           # rel 指令：通知 DMA 可以搬下一块`
 
 HMX 的使用方式很特别——<strong>必须用内联汇编</strong>，因为 activation 和 weight 加载必须在同一个 VLIW packet 中：
 
-`// Hexagon HMX: 内联汇编是唯一途径
+// Hexagon HMX: 内联汇编是唯一途径
 asm volatile("mxclracc.hf" ::: "memory");                       // 清零累加器
 asm volatile(
 
@@ -708,7 +711,7 @@ aie::store_v(out, acc.to_vector());            // 存储（带饱和）`
 
 HMX 要求数据按 <strong>AH（Activation-Hexagon）</strong> 和 <strong>WH（Weight-Hexagon）</strong> 格式排列——这是专为 32×32 MAC 阵列设计的 tile 内部重排。每次矩阵乘前都要做布局转换：
 
-`// Hexagon: 必须转换为 HMX 专用布局
+// Hexagon: 必须转换为 HMX 专用布局
 hexkl_micro_hmx_rm_to_ah_f16(vtcm, dst, src);   // row-major → AH
 hexkl_micro_hmx_rm_to_wh_f16(vtcm, dst, wt, ...); // row-major → WH
 hexkl_micro_hmx_mm_f16(vtcm, act_off, wt_off);     // 只接受 AH/WH 数据`
@@ -719,7 +722,7 @@ AMD AIE 没有这个问题——数据按正常的线性顺序排列在 L1 scrat
 
 Hexagon 上一个 Transformer 层的执行模式（来自 hexagon-tutorial 实测）：
 
-`┌──────────────── 一次 FastRPC / dspqueue 调用 ────────────────┐
+┌──────────────── 一次 FastRPC / dspqueue 调用 ────────────────┐
 │                                                                │
 │  RMSNorm    Q/K/V 投影    RoPE     Attention    FFN           │
 │  (HVX)     (HMX)         (HVX)    (HMX+HVX)   (HMX)         │

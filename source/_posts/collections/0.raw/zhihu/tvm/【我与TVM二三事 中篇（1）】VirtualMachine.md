@@ -125,11 +125,11 @@ IRModule VMCompiler::OptimizeModule(IRModule mod, const TargetsMap  targets_arg,
   …
   Array Pass  pass_seqs;
   Array runtime::String  entry_functions{"main"};
+
+```text
   pass_seqs.push_back(transform::RemoveUnusedFunctions(entry_functions));
   pass_seqs.push_back(transform::ToBasicBlockNormalForm());
   …
-
-```text
   return seq(mod);
 }
 ```
@@ -163,7 +163,7 @@ Step2.1.1.2 InlinePrimitives
 Pass InlinePrimitives() {
   runtime::TypedPackedFunc IRModule(IRModule, PassContext)  pass_func =
 
-```js
+```cpp
       [=](IRModule m, PassContext pc) { return relay::vm::PrimitiveInliner(m).Inline(); };
   auto inline_pass = CreateModulePass(pass_func, 1, "Inline", {});
   // Eliminate dead code for each function after inlining.
@@ -183,12 +183,8 @@ struct PrimitiveInliner : ExprMutator {
     ExpandANormalForm(let_node, pre_visit, post_visit);
     return memo_[GetRef Expr (let_node)];
   }
-```
 
-  
   Expr VisitExpr_(const CallNode* call) {
-
-```cpp
     Expr op = call- op;
     ...
     while ((var_node = op.as VarNode ())) {
@@ -244,11 +240,11 @@ Step2.1.1.3 MemoryOpt
 
 transform::Sequential MemoryOpt(tvm::Target host_target, TargetsMap targets) {
   Array Pass  pass_seqs;
+
+```text
   pass_seqs.push_back(transform::ManifestAlloc(host_target, targets));
   pass_seqs.push_back(transform::FoldConstant());
   ...
-
-```text
   return transform::Sequential(pass_seqs);
 }
 ```
@@ -294,9 +290,9 @@ AnalysisResultMap ContextAnalysis(const IRModule  mod, const Device  default_dev
   auto entry = mod- GetGlobalVar("main");
   auto ca = analysis::ContextAnalyzer(mod, entry, default_device);
   auto expr = mod- Lookup(entry);
-  ca.VisitExpr(expr);
 
 ```cpp
+  ca.VisitExpr(expr);
   return ca.Results();
 }
 
@@ -390,13 +386,9 @@ class DialectRewriter : public ExprMutator {
       }
     } ...
   }
-```
 
-  
   Var MakeStaticAllocation(LetList* scope, const TensorType  type, Device dev, String name_hint) {
     ...
-
-```text
     Var var("storage_" + name_hint, Type(nullptr));
     Expr value = AllocStorage(size, alignment, dev, type- dtype);
     auto sto = scope- Push(var, value);
@@ -850,9 +842,9 @@ void VirtualMachine::PushFrame(Index arg_count, Index ret_pc, const VMFunction  
 
 
 inline void VirtualMachine::WriteRegister(Index r, const ObjectRef  val) {
-  frames_.back().register_file[r] = val;
 
 ```text
+  frames_.back().register_file[r] = val;
 }
 ```
 

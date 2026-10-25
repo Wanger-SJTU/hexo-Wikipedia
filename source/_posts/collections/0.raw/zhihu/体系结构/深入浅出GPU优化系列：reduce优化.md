@@ -52,7 +52,7 @@ $首先需要对reduce算法进行介绍。reduce算法本质上就是计算x=x0
 
 Baseline算法比较简单，分为三个步骤。第一个步骤是将数据load至shared memory中，第二个步骤是在shared memory中对数据进行reduce操作，第三个步骤是将最后的结果写回global memory中。代码如下：
 
-`__global__ void reduce0(float *d_in,float *d_out){
+__global__ void reduce0(float *d_in,float *d_out){
 
 ```cpp
     __shared__ float sdata[THREAD_PER_BLOCK];
@@ -98,7 +98,7 @@ Baseline算法比较简单，分为三个步骤。第一个步骤是将数据loa
 
 解决的方式也比较明了，就是尽可能地让所有线程走到同一个分支里面。**代码示意如下：
 
-`__global__ void reduce1(float *d_in,float *d_out){
+__global__ void reduce1(float *d_in,float *d_out){
 
 ```cpp
     __shared__ float sdata[THREAD_PER_BLOCK];
@@ -132,7 +132,7 @@ reduce1的最大问题是<strong>bank冲突</strong>。我们把目光聚焦在�
 
 在reduce中，解决bank冲突的方式就是把for循环逆着来。原来stride从0到256，现在stride从128到0。其伪代码如下：
 
-`__global__ void reduce2(float *d_in,float *d_out){
+__global__ void reduce2(float *d_in,float *d_out){
 
 ```cpp
     __shared__ float sdata[THREAD_PER_BLOCK];
@@ -171,7 +171,7 @@ reduce1的最大问题是<strong>bank冲突</strong>。我们把目光聚焦在�
 
 对于HPC从业者而言，我们希望变成GPU的资本家，去尽可能地压榨GPU。但是呢，在这里，每一次迭代有一半的线程不干活。而且，128-255号线程最过分，它娘的，没有任何贡献，啥也不干。想来想去，能不能让它们干点活呢。想来想去，那这样吧，让它好歹做一次加法。除了去global memory中取数外，再做一次加法。当然为了实现这个，block数就得改一改了。Block数量减少，Num_per_block增加一倍。也就是说原来一个block只需要管256个数就行，现在得管512个数了。代码如下：
 
-`__global__ void reduce3(float *d_in,float *d_out){
+__global__ void reduce3(float *d_in,float *d_out){
 
 ```cpp
     __shared__ float sdata[THREAD_PER_BLOCK];
@@ -206,7 +206,7 @@ reduce1的最大问题是<strong>bank冲突</strong>。我们把目光聚焦在�
 
 由于一个warp中的32个线程其实是在一个SIMD单元上，这32个线程每次都是执行同一条指令，这天然地保持了同步状态，因而当s=32时，即只有一个SIMD单元在工作时，完全可以将__syncthreads()这条同步代码去掉。所以我们将最后一维进行展开以减少同步。伪代码如下：
 
-`__device__ void warpReduce(volatile float* cache,int tid){
+__device__ void warpReduce(volatile float* cache,int tid){
 
 ```text
     cache[tid]+=cache[tid+32];
@@ -256,7 +256,7 @@ __global__ void reduce4(float *d_in,float *d_out){
 
 我们将整个for循环进行展开，非常暴力，代码如下：
 
-`template 
+template 
 __device__ void warpReduce(volatile float* cache,int tid){
 
 ```text
@@ -308,7 +308,7 @@ __global__ void reduce5(float *d_in,float *d_out){
 
 如果一个线程被分配更多的work时，可能会更好地覆盖延时。这一点比较好理解。如果线程有更多的work时，对于编译器而言，就可能有更多的机会对相关指令进行重排，从而去覆盖访存时的巨大延时。虽然这句话并没有很好地说明在某种程度上而言，block少一些会更好。但是，有一点不可否认,<strong>block需要进行合理地设置</strong>。唠唠叨叨说了很多，现在把代码贴一下：
 
-`template 
+template 
 __global__ void reduce6(float *d_in,float *d_out){
 
 ```cpp
@@ -343,7 +343,7 @@ Shuffle指令是一组针对warp的指令。Shuffle指令最重要的特性就�
 
 伪代码如下：
 
-`template 
+template 
 __device__ __forceinline__ float warpReduceSum(float sum){
 
 ```text

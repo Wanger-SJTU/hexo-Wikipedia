@@ -45,14 +45,13 @@ $b=log(&#x03C0;&#x03B8;(yl|x))&#x2212;log(&#x03C0;ref(yl|x))" role="presentation
 
 <strong>代码：</strong>
 
-`    def dpo_loss(
+```python
+    def dpo_loss(
         self,
         policy_chosen_logps: torch.FloatTensor,
         policy_rejected_logps: torch.FloatTensor,
         reference_chosen_logps: torch.FloatTensor,
         reference_rejected_logps: torch.FloatTensor,
-
-```text
         reference_free: bool = False,
     ) -> Tuple[torch.FloatTensor, torch.FloatTensor, torch.FloatTensor]:
         """Compute the DPO loss for a batch of policy and reference model log probabilities.
@@ -100,7 +99,7 @@ $b=log(&#x03C0;&#x03B8;(yl|x))&#x2212;log(&#x03C0;ref(yl|x))" role="presentation
 
 <strong>向量形状转化流转换：</strong>
 
-`policy_model = llama13b
+policy_model = llama13b
 ref_model = deepcopy(llama13b).eval()
 
 model:

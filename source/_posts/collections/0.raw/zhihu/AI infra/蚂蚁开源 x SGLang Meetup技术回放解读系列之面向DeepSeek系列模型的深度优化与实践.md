@@ -258,7 +258,7 @@ def _handle_attention_backend(attn, forward_batch, backend_name):
 ```
 
 
-`forward_mha.py` 里把三种路径说得很清楚：
+forward_mha.py` 里把三种路径说得很清楚：
 
 # 1. forward_normal: AttnForwardMethod.MHA
 #    use multi-head attention with empty kv cache
@@ -511,7 +511,7 @@ class DownGemmOverlapArgs:
 ```
 
 
-`compute_overlap_args` 会把 SM 分成通信和计算两部分，Hopper 上默认通信用 3 个 SM，剩下给 DeepGEMM：
+compute_overlap_args` 会把 SM 分成通信和计算两部分，Hopper 上默认通信用 3 个 SM，剩下给 DeepGEMM：
 
 if envs.SGLANG_DEEPEP_LL_COMBINE_SEND_NUM_SMS.is_set():
 
@@ -715,9 +715,8 @@ if best_gain > 0 and best_swap:
 
 目前公开代码里能对上的基础路径是 SGLang 的 DeepEP low-latency dispatcher，也就是 Decode 侧 `--moe-a2a-backend deepep --deepep-mode low_latency_overlap` 这条路。核心调用还在 `token_dispatcher/deepep.py`：
 
-DeepEPBuffer.set_dispatch_mode_as_low_latency()
-
 ```text
+DeepEPBuffer.set_dispatch_mode_as_low_latency()
 return DeepEPBuffer.get_deepep_buffer(
     self.group,
     self.hidden_size,
@@ -810,13 +809,13 @@ _diagnose = ds.Diagnose(group=group, enable_async=True)
 _diagnose.start_async_diagnose()
 
 dispatch_wait_recv_cost_stats = _diagnose.get_stats_ll_stats_tensor()[0]
+
+```text
 _buffer.low_latency_dispatch(
     hidden_states,
     topk_idx,
     num_max_dispatch_tokens_per_rank,
     num_experts,
-
-```text
     dispatch_wait_recv_cost_stats=dispatch_wait_recv_cost_stats,
     use_fp8=True,
 )
@@ -824,13 +823,13 @@ _buffer.low_latency_dispatch(
 
 
 combine_wait_recv_cost_stats = _diagnose.get_stats_ll_stats_tensor()[1]
+
+```text
 _buffer.low_latency_combine(
     hidden_states,
     topk_idx,
     topk_weights,
     handle,
-
-```text
     combine_wait_recv_cost_stats=combine_wait_recv_cost_stats,
 )
 ```

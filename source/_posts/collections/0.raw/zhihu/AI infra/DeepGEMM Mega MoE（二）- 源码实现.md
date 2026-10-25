@@ -94,7 +94,7 @@ def transform_weights_for_mega_moe(
 
 另外前面有说到，Mega MoE使用了buffer描述内存区域，shape为[num_ranks, num_max_tokens_per_rank]，这个shape中每一个元素通过data_layout解释，data_layout就是ptr + 长度。
 
-```text
+```cpp
 struct Buffer {
     Data data_layout;
     uint32_t num_ranks;
@@ -349,14 +349,10 @@ const auto smem_send_buffers = layout::Buffer(
 
 uint32_t pull_mbarrier_phase = 0;
 
-```text
+```cpp
 const auto pull_buffer = smem_send_buffers.get_rank_buffer(warp_idx).get_data_buffer(0);
 const auto pull_mbarrier = dispatch_barriers[warp_idx];
-```
-
 scheduler.fetch_expert_recv_count();
-
-```cpp
 int current_expert_idx = -1;
 ```
 
@@ -651,9 +647,8 @@ CUTLASS_DEVICE cute::tuple<BlockPhase, uint32_t, uint32_t, uint32_t> get_next_bl
 TMA warp
 一共有两个TMA warp，一个对A TMA，一个对B TMA，我们以A为例。
 
-scheduler.for_each_block([&](const sched::BlockPhase& block_phase,
-
 ```text
+scheduler.for_each_block([&](const sched::BlockPhase& block_phase,
                              const uint32_t& local_expert_idx,
                              const uint32_t& num_k_blocks,
                              const uint32_t& m_block_idx, const uint32_t& n_block_idx) {
@@ -883,9 +878,9 @@ cute::UMMA::SmemDescriptor make_sf_desc(void* smem_ptr) {
 然后创建sf的smem desc，没有使用swizzle，由于K方向只有16B，所以K方向只有一个atom，LBO设置为0，SBO为8x16B。 然后通过make_umma_desc创建smem_a和smem_b的初始desc。
 
 uint32_t current_iter_idx = 0;
-scheduler.for_each_block() {
 
 ```cpp
+scheduler.for_each_block() {
 		mma::sm100::update_instr_desc_with_umma_n(instr_desc, scheduler.template get_valid_m<true>());
 	  const auto accum_stage_idx = current_iter_idx % kNumEpilogueStages;
 	  const auto accum_phase = (current_iter_idx ++ / kNumEpilogueStages) & 1;
@@ -996,7 +991,7 @@ void umma_arrive_multicast_2x1SM(uint64_t const* smem_ptr, uint16_t cta_mask) {
 
 auto empty_barrier_arrive = [&](const bool& do_tmem_full_arrive) {
 
-```text
+```cpp
     auto umma_arrive = [](const uint64_t* barrier) {
         constexpr uint16_t kCTAMask = (1 << 2) - 1;
         cutlass::arch::umma_arrive_multicast_2x1SM(barrier, kCTAMask);
@@ -1008,11 +1003,7 @@ auto empty_barrier_arrive = [&](const bool& do_tmem_full_arrive) {
         umma_arrive(reinterpret_cast<uint64_t*>(tmem_full_barriers[accum_stage_idx]));
     __syncwarp();
 };
-```
-
 scheduler.for_each_block() {
-
-```cpp
   	for (uint32_t k_block_idx = 0; k_block_idx < num_k_blocks; advance_pipeline(k_block_idx)) {
      		// do mma
      		empty_barrier_arrive(k_block_idx == num_k_blocks - 1);
@@ -1034,9 +1025,9 @@ constexpr uint32_t ATOM_M = 8;
 constexpr uint32_t kNumBankGroupBytes = 16u;
 constexpr uint32_t kNumAtomsPerStore = STORE_BLOCK_M / ATOM_M;
 uint32_t current_iter_idx = 0;
-scheduler.for_each_block([&](...) {
 
 ```text
+scheduler.for_each_block([&](...) {
     tmem_full_barriers[accum_stage_idx]->wait(accum_phase);
     ptx::tcgen05_after_thread_sync();
     const uint32_t valid_m = ptx::exchange(scheduler.template get_valid_m<false>(), 0);
@@ -1059,9 +1050,8 @@ constexpr uint32_t SMEM_CD_L1_SIZE =
 
 SMEM_CD_L1用于存储swiglu的结果。因为L1的输出中按照8对up和gate做了interleave，所以做完swiglu之后在N方向维度成为一半，即64，stage为2。
 
-scheduler.for_each_block([&](...) {
-
 ```cpp
+scheduler.for_each_block([&](...) {
   if (block_phase == sched::BlockPhase::Linear1) {
 	  for (uint32_t s = 0; s < WG_BLOCK_M / STORE_BLOCK_M; ++ s) {
         float2 swiglu_values[kNumAtomsPerStore * 2];
@@ -1124,9 +1114,8 @@ SM100_TMEM_LOAD_16dp256b1x用了最宽的指令16x256b，一个warp有32 lane，
 
 最内层循环为遍历tmem_up和tmem_down，对于tmem_up，将gate对应的两个值打包为float2，同理对up，对应计算swiglu得到float2类型的swiglu_values。以warp0的第一个ATOM为例，swiglu_values[0]对应tmem_up的输出，swiglu_values[1]对应tmem_down的输出。 注意计算完swiglu_values之后tmem_up由16行变成了8行，同理tmem_down。
 
-scheduler.for_each_block([&](...) {
-
 ```cpp
+scheduler.for_each_block([&](...) {
   if (block_phase == sched::BlockPhase::Linear1) {
 	  for (uint32_t s = 0; s < WG_BLOCK_M / STORE_BLOCK_M; ++ s) {
         for (uint32_t i = 0; i < kNumAtomsPerStore; ++ i) {
@@ -1168,9 +1157,8 @@ CUTLASS_DEVICE T warp_reduce(T value, Op op) {
 
 然后同步一下warpgroup，由于刚刚只算了一列中16个数的max，量化是按照32个数算的，因此相邻warp还要再求一次max。
 
-scheduler.for_each_block([&](...) {
-
 ```cpp
+scheduler.for_each_block([&](...) {
   if (block_phase == sched::BlockPhase::Linear1) {
 	  for (uint32_t s = 0; s < WG_BLOCK_M / STORE_BLOCK_M; ++ s) {
         ptx::sync_aligned(128, kEpilogueWGBarrierStartIdx + epilogue_wg_idx);
@@ -1192,9 +1180,8 @@ scheduler.for_each_block([&](...) {
 
 首先同步一下整个warp group，然后读取相邻warp的max，得到32个值对应的max，然后将fp32转成fp8存入到fp8x4_values，分别对应图中的r[0 - 3]。
 
-scheduler.for_each_block([&](...) {
-
 ```cpp
+scheduler.for_each_block([&](...) {
   if (block_phase == sched::BlockPhase::Linear1) {
 	  for (uint32_t s = 0; s < WG_BLOCK_M / STORE_BLOCK_M; ++ s) {
         ptx::sync_aligned(128, kEpilogueWGBarrierStartIdx + epilogue_wg_idx);
@@ -1232,9 +1219,8 @@ struct SM100_U8x4_STSM_T {
 
 然后开始写sf，这个过程和dispatch的过程很像，这里不再赘述。
 
-scheduler.for_each_block([&](...) {
-
 ```cpp
+scheduler.for_each_block([&](...) {
   if (block_phase == sched::BlockPhase::Linear1) {
 	  for (uint32_t s = 0; s < WG_BLOCK_M / STORE_BLOCK_M; ++ s) {
         ptx::sync_aligned(128, kEpilogueWGBarrierStartIdx + epilogue_wg_idx);
@@ -1321,9 +1307,8 @@ kSwizzleCDMode为128，即128B的swizzle，转置写回SMEM的过程后，图11�
 
 ![](https://pic4.zhimg.com/v2-71de32157dfd5870e040926268fef8a1_r.jpg)图 14完成一个STORE_BLOCK_M之后开始通过nvlink写回src rank。
 
-scheduler.for_each_block([&](...) {
-
 ```cpp
+scheduler.for_each_block([&](...) {
   if (block_phase == sched::BlockPhase::Linear2) {
 		for (uint32_t s = 0; s < WG_BLOCK_M / STORE_BLOCK_M; ++ s) {
         for (uint32_t i = 0; i < STORE_BLOCK_M / ATOM_M; ++ i) {

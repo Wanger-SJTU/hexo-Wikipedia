@@ -107,9 +107,8 @@ $\begin{bmatrix} \text{cos}m\theta,-\text{sin}m\theta \\ \text{sin}m\theta,\text
 
 在实际的代码中，语义向量是 [batch_size, seq_length, head_num, head_dim] 四维的，我们只关注最后一维即可。
 
-`def rotate_half(x):
-
-```text
+```python
+def rotate_half(x):
     x1 = x[..., : x.shape[-1] // 2] # 实部, 对应x_2i-1
     x2 = x[..., x.shape[-1] // 2 :] # 虚部, 对应x_2i
     return torch.cat((-x2, x1), dim=-1)`
@@ -118,9 +117,8 @@ $\begin{bmatrix} \text{cos}m\theta,-\text{sin}m\theta \\ \text{sin}m\theta,\text
 
 首先，使用 rotate_half() 进行语义向量复数化。将前半部分划为实部，后办部分划为虚部。这里的负号，对应和角公式中的负号。计算旋角 m\theta 的过程此处省略。
 
-`def apply_rotary_pos_emb(q, k, cos, sin, position_ids=None, unsqueeze_dim=1):
-
-```text
+```python
+def apply_rotary_pos_emb(q, k, cos, sin, position_ids=None, unsqueeze_dim=1):
     cos = cos.unsqueeze(unsqueeze_dim)
     sin = sin.unsqueeze(unsqueeze_dim)
     q_embed = (q * cos) + (rotate_half(q) * sin)

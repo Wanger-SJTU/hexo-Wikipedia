@@ -55,7 +55,7 @@ TickFlow 提供官方 Python SDK**，支持 A 股、ETF、美股、港股、国�
 <strong>完整文档</strong>：https://docs.tickflow.org
 #### 安装
 
-`# 安装完整版（支持 DataFrame 与进度条）
+# 安装完整版（支持 DataFrame 与进度条）
 pip install "tickflow[all]" --upgrade
 
 # 安装基础版
@@ -66,7 +66,7 @@ pip install tickflow`
 
 #### 免费服务（无需注册）
 
-`from tickflow import TickFlow
+from tickflow import TickFlow
 
 tf = TickFlow.free()  # 免费服务
 
@@ -92,13 +92,13 @@ print(instruments)`
 - 配置认证**
 <strong>方式一：直接传入</strong>
 
-`from tickflow import TickFlow
+from tickflow import TickFlow
 
 tf = TickFlow(api_key="your-api-key")`
 
 <strong>方式二：环境变量（Windows / Linux / Mac）</strong>
 
-`# Linux / Mac
+# Linux / Mac
 export TICKFLOW_API_KEY="your-api-key"
 
 # Windows CMD
@@ -108,7 +108,7 @@ from tickflow import TickFlow
 tf = TickFlow()  # 自动读取环境变量`
 
 - <strong>发起第一个请求</strong>
-`quotes = tf.quotes.get(symbols=["600000.SH", "000001.SZ"])
+quotes = tf.quotes.get(symbols=["600000.SH", "000001.SZ"])
 for q in quotes:
 
 ```python
@@ -136,7 +136,7 @@ for q in quotes:
 
 #### K 线
 
-`# 单标的获取日K线
+# 单标的获取日K线
 klines = tf.klines.get("600000.SH", period="1d", count=10000, as_dataframe=True)
 print(klines.tail(5))
 
@@ -147,7 +147,7 @@ print(list(dfs.keys()))`
 
 #### 日内分时 K 线
 
-`# 单标的 1 分钟 K 线
+# 单标的 1 分钟 K 线
 df = tf.klines.intraday("600000.SH", period="1m", as_dataframe=True)
 print(df.tail())
 
@@ -157,7 +157,7 @@ print(dfs["600000.SH"].tail())`
 
 #### 实时行情
 
-`# 按标的查询
+# 按标的查询
 quotes = tf.quotes.get(symbols=["600000.SH", "000001.SZ"], as_dataframe=True)
 
 # 按标的池查询
@@ -166,8 +166,11 @@ quotes_etf = tf.quotes.get(universes=["CN_ETF"], as_dataframe=True)`
 
 #### 异步使用
 
-`import asyncio
+```python
+import asyncio
 from tickflow import AsyncTickFlow
+```
+
 
 async def main():
 
@@ -178,10 +181,10 @@ async def main():
 
         tasks = [tf.klines.get(s, as_dataframe=True) for s in ["600000.SH", "000001.SZ"]]
         results = await asyncio.gather(*tasks)
-```
-
 
 asyncio.run(main())`
+```
+
 
 #### 结语
 

@@ -111,10 +111,10 @@ ARMv8中：
 基本上内核中关于页表的操作都会围绕着上图进行操作，似乎脱离了代码有点不太合适，那么就来一波fucking source code解析吧，主要讲讲各类page table相关的API。
 
 > 代码路径：
-`arch/arm64/include/asm/pgtable-types.h`：定义`pgd_t, pud_t, pmd_t, pte_t`等类型；
-`arch/arm64/include/asm/pgtable-prot.h`：针对页表中entry中的权限内容设置；
-`arch/arm64/include/asm/pgtable-hwdef.h`：主要包括虚拟地址中PGD/PMD/PUD等的划分，这个与虚拟地址的有效位及分页大小有关，此外还包括硬件页表的定义， TCR寄存器中的设置等；
-`arch/arm64/include/asm/pgtable.h`：页表设置相关；
+arch/arm64/include/asm/pgtable-types.h`：定义`pgd_t, pud_t, pmd_t, pte_t`等类型；
+arch/arm64/include/asm/pgtable-prot.h`：针对页表中entry中的权限内容设置；
+arch/arm64/include/asm/pgtable-hwdef.h`：主要包括虚拟地址中PGD/PMD/PUD等的划分，这个与虚拟地址的有效位及分页大小有关，此外还包括硬件页表的定义， TCR寄存器中的设置等；
+arch/arm64/include/asm/pgtable.h`：页表设置相关；
 
 在这些代码中可以看到，
 
@@ -127,9 +127,8 @@ ARMv8中：
 
 > 页表处理
 
-`/*描述各级页表中的页表项*/
-
 ```text
+/*描述各级页表中的页表项*/
 typedef struct { pteval_t pte; } pte_t;
 typedef struct { pmdval_t pmd; } pmd_t;
 typedef struct { pudval_t pud; } pud_t;
@@ -172,7 +171,7 @@ typedef struct { pgdval_t pgd; } pgd_t;
 是时候来个实例分析了，看看页表的创建过程，代码路径：`arch/arm64/kernel/head.S`。**内核启动过程中，在真正的物理内存尚未添加进系统，以及页表还未初始化之前，为了保证系统能正常运行，需要建立两个临时全局页表：`idmap_pg_dir`和`swapper_pg_dir`：
 其中两个全局页表的定义在`arch/arm64/kernel/vmlinux.lds.S`中，放置在`BSS段`之后：
 
-`. = ALIGN(PAGE_SIZE);
+. = ALIGN(PAGE_SIZE);
 
 ```text
     idmap_pg_dir = .;
@@ -198,9 +197,9 @@ Linux内核编译后，kernel image是需要进行映射的，包括`text，data
 在`head.S`中，创建页表相关的有三个宏：
 
 - `create_pgd_entry`
-`/*
 
 ```text
+/*
  * Macro to populate the PGD (and possibily PUD) for the corresponding
  * block entry in the next level (tbl) for the given virtual address.
 ```
@@ -230,9 +229,9 @@ Linux内核编译后，kernel image是需要进行映射的，包括`text，data
 上述函数主要是调用`create_table_entry`，由于`SWAPPER_PGTABLES`配置为3，因此相当于创建了`pgd和pmd`两级页表，此处需要注意一点，`create_table_entry`函数执行后，`tbl`参数会自动加上`PAGE_SIZE`，也就是说`pgd和pmd`两级页表是物理连续的。
 
 - `create_block_map`
-`/*
 
 ```text
+/*
  * Macro to populate block entries in the page table for the start..end
  * virtual range (inclusive).
 ```
@@ -262,8 +261,12 @@ Linux内核编译后，kernel image是需要进行映射的，包括`text，data
 上述函数主要是往`block`中填充`pte entry`，真正创建虚拟地址到物理地址的映射，映射区域：`start ~ end`。
 
 - `create_table_entry`
-`/*
+
+```sql
+/*
  * Macro to create a table entry to the next page.
+```
+
  *
 
 ```text

@@ -86,7 +86,7 @@ $W_{\text{new}} = S \times i_{\text{best}}, \quad H_{\text{new}} = S \times j_{\
 
 动态分辨率切图的implementation一般在dataset中：
 
-`# internvl_chat/internvl/train/internvl_chat_finetune.py -> LazySupervisedDataset
+# internvl_chat/internvl/train/internvl_chat_finetune.py -> LazySupervisedDataset
 # i.e. multi_modal_multi_image_get_item: 多图处理，部分核心代码
 
 ```python
@@ -173,7 +173,6 @@ def dynamic_preprocess(image, min_num=1, max_num=6, image_size=448, use_thumbnai
     return processed_images
 ```
 
-`
 
 #### 3.2 Single Model Training Pipeline
 
@@ -219,9 +218,9 @@ def dynamic_preprocess(image, min_num=1, max_num=6, image_size=448, use_thumbnai
 文章介绍了几个可以提高benchmark得分和用户体验的小tricks。
 
 - <strong>数据增强 - Random JPEG Compression</strong>：随机将图片进行压缩。quality level在75%到100%之间。
-`def simulate_jpeg_degradation(quality):
 
 ```python
+def simulate_jpeg_degradation(quality):
     def jpeg_degrade(img):
         with io.BytesIO() as output:
             img.convert('RGB').save(output, format='JPEG', quality=quality)
@@ -235,7 +234,6 @@ def dynamic_preprocess(image, min_num=1, max_num=6, image_size=448, use_thumbnai
 # Define the JPEG compression quality range, pre-create all JPEG compression functions
 qualities = list(range(75, 101))
 jpeg_degrade_functions = {quality: simulate_jpeg_degradation(quality) for quality in qualities}
-`
 
 2. <strong>Loss Reweighting</strong>
 
@@ -262,7 +260,7 @@ $$\mathcal{L}=\frac{w_i}{\sum_j w_j} \cdot \mathcal{L}_i, \quad w_i= \begin{case
 $$- square averaging：将每个token i 的权重设置为 w_i= \frac{1}{x^{0.5}} 。$$
 <strong>可能因为我在国外呆了5年的中文表述不太好，所以将相关代码贴出来以供理解 (详细代码可看github)：</strong>
 
-`# internvl_chat/internvl/train/internvl_chat_finetune.py
+# internvl_chat/internvl/train/internvl_chat_finetune.py
 
 ```python
 def len2weight(x, loss_reduction):
@@ -280,7 +278,7 @@ def len2weight(x, loss_reduction):
 
 **
 
-`# internvl_chat/internvl/train/internvl_chat_finetune.py -> main
+# internvl_chat/internvl/train/internvl_chat_finetune.py -> main
 if data_args.use_packed_ds:
 
 ```text
@@ -295,7 +293,7 @@ if data_args.use_packed_ds:
 ```
 
 
-`# internvl_chat/internvl/train/dataset_packed.py -> packed_collate_fn
+# internvl_chat/internvl/train/dataset_packed.py -> packed_collate_fn
 for feat_idx, feat in enumerate(features):
 
 ```text
@@ -309,7 +307,7 @@ for feat_idx, feat in enumerate(features):
 ```
 
 
-`# internvl_chat/internvl/train/dataset_packed.py -> get_cu_seqlens_and_indexes
+# internvl_chat/internvl/train/dataset_packed.py -> get_cu_seqlens_and_indexes
 
 ```python
 def get_cu_seqlens_and_indexes(
@@ -354,9 +352,8 @@ def get_cu_seqlens_and_indexes(
     return cu_seqlens, indexes, loss_weight
 ```
 
-`
 
-`# internvl_chat/internvl/model/internvl_chat/modeling_internvl_chat.py -> forward
+# internvl_chat/internvl/model/internvl_chat/modeling_internvl_chat.py -> forward
 if labels is not None and loss_weight is not None:
 
 ```text
@@ -403,7 +400,7 @@ if labels is not None and loss_weight is not None:
 
 数据拼接方案，通过将多个样本拼接成长序列来减少填充，从而最大化模型输入序列容量的利用率。一般而言，我们通常考虑max token per sequence即可，因为视觉信息通过ViT+MLP已经转化成了visual token。但是，internVL的训练代码对其进行了更细的限定：同时限定<strong>语言学信息：max linguistic token per sequence</strong>以及<strong>视觉信息：max tiles per sequence</strong>。在implementation层面，是先判断是否满足<strong>max tiles per sequence</strong>再判断是否满足<strong>max linguistic token per sequence</strong>。
 
-`# internvl_chat/internvl/train/dataset_packed.py ->PackedDataset.find_buffer
+# internvl_chat/internvl/train/dataset_packed.py ->PackedDataset.find_buffer
 
 ```python
 def find_buffer(self, buffer_list, new_sample):

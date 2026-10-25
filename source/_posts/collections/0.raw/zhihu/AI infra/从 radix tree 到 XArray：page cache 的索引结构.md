@@ -60,7 +60,7 @@ mapping->i_pages 是文件 page cache 的稀疏索引树。
       dirty、writeback、towrite 等状态的快速过滤索引。
 这里先把 `key`、`value`、`查询条件` 说得更精确一点。
 
-`mapping->i_pages` 不是全系统唯一的一棵树，而是某个 `address_space` 自己的 page cache 索引。对普通文件来说，这个 `address_space` 通常挂在 inode 下面。
+mapping->i_pages` 不是全系统唯一的一棵树，而是某个 `address_space` 自己的 page cache 索引。对普通文件来说，这个 `address_space` 通常挂在 inode 下面。
 
 所以查询不是：
 
@@ -334,7 +334,7 @@ cat
         └─ a
             ├─ t -> cat
             └─ r -> car
-`cat` 和 `car` 共享前缀 `ca`，所以前两层路径是一样的。
+cat` 和 `car` 共享前缀 `ca`，所以前两层路径是一样的。
 
 radix tree 也是这个思路，只是 key 不一定是字符串。对整数 key 来说，可以把它看成一串数字或一串 bit：
 
@@ -731,7 +731,7 @@ index 5   -> page A
    index 47  -> page C
 为了图容易看，仍然假设这棵 radix tree 每层只看 2 bit，每个节点 4 个 slot。真实老内核常见配置是每层 6 bit、64 个 slot，但结构意思一样。
 
-`index 5 / 42 / 47` 的路径前面已经算过：
+index 5 / 42 / 47` 的路径前面已经算过：
 
 index 5:
       path 0 -> 1 -> 1
@@ -1107,7 +1107,10 @@ XArray<String> xa
    xa[9000000] = &#34;C&#34;
 它看起来像数组：
 
+```text
 xa.get(1000) -> &#34;B&#34;
+```
+
 但它不会真的分配：
 
 Object[] array = new Object[9000001]
@@ -1701,7 +1704,7 @@ folio dirty flag:
 它们不是重复劳动，而是面向不同查询问题的索引和账本。
 
 十三、和 `writeback_index` 的关系
-`address_space` 里还有一个字段：
+address_space` 里还有一个字段：
 
 writeback_index
 它不是 XArray 的内部字段，而是 writeback 用的扫描起点。

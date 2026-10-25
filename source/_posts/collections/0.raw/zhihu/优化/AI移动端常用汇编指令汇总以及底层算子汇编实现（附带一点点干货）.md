@@ -51,9 +51,8 @@ source_url: https://zhuanlan.zhihu.com/p/64025085
 
 同时伴生的问题就是代码维护难度增大，代码逻辑一般coder（没错说的就是我了~）不易读懂，我截取一段，咱们大家来感受感受：
 
-`/*
-
 ```text
+/*
  * Copyright (c) Facebook, Inc. and its affiliates.
  * All rights reserved.
 ```
@@ -117,7 +116,6 @@ END_FUNCTION q8gemm_ukernel_4x8__aarch32_neon
 #ifdef __ELF__
 .section ".note.GNU-stack","",%progbits
 #endif
-`
 
  看到没，有前处理后处理入栈出栈操作的呀，一个不小心可是很容易出错的哟~
 
@@ -230,7 +228,10 @@ NEON寄存器用V来表示（后缀为8B/16B/4H/8H/2S/4S/2D）；
 
 先定义变量,表明_bias0就是一个向量格式了；
 
-` const float* bias = _bias;
+```text
+ const float* bias = _bias;
+```
+
  float32x4_t _bias0 = bias ? vld1q_f32(bias+g*4) : vdupq_n_f32(0.f);`
 
 然后在占位符那里表明我这个_bias0需要用一个浮点寄存器缓存起来；
@@ -243,12 +244,12 @@ NEON寄存器用V来表示（后缀为8B/16B/4H/8H/2S/4S/2D）；
 
 因为q0是按照s16的方式导进来，因此，d0相当于有4个int16，因此能索引到d[3]
 
-`  "vld1.s16 {q0, q1}, [%2]!       \n" // input int16x4_t
+  "vld1.s16 {q0, q1}, [%2]!       \n" // input int16x4_t
   "vmull.s16   q10,  %P6, d0[3]   \n" // `
 
 首先定义的是int16x4，就是D寄存器，因此在访问的时候就是直接%P14了m，用P指明是D寄存器；
 
-`int16x4_t _k4 = vld1_s16(k0 + 16);
+int16x4_t _k4 = vld1_s16(k0 + 16);
  "vmlal.s16   q13, %P14, d3[3]   \n" //_k4 ==> %14`
 
 <strong>V8：</strong>
@@ -259,7 +260,7 @@ NEON寄存器用V来表示（后缀为8B/16B/4H/8H/2S/4S/2D）；
 
 v8的int16操作：以int16 的方式加载一个D寄存器的_k0出来，然后v0.8h表示加载8个int16，然后v0.h[7]跟%6以4h的方式相乘，最后拓展输出到V4寄存器，以4s的格式，也就是4个32位；
 
-`  int16x4_t _k0 = vld1_s16(k0     );
+  int16x4_t _k0 = vld1_s16(k0     );
   "ld1    {v0.8h, v1.8h}, [%2], #32     \n" // input int16x4_t
   "smull   v4.4s, %6.4h, v0.h[7]        \n" 
   "w"(_k0),    // %6 `
@@ -280,7 +281,7 @@ v8的int16操作：以int16 的方式加载一个D寄存器的_k0出来，然后
 
 其具体形式如下：
 
-`__asm__ __volatile__ ( "instruction 1\n\t"   
+__asm__ __volatile__ ( "instruction 1\n\t"   
            "instruction  \n"  
            ......  
            "last instruction  \n"  
@@ -289,7 +290,6 @@ v8的int16操作：以int16 的方式加载一个D寄存器的_k0出来，然后
            );
 ```
 
-`
 
 因为汇编代码部分是必需的，所以即使一行汇编代码也没有，也需要传入空字符串（""），否则会报错。
 
@@ -301,7 +301,7 @@ v8的int16操作：以int16 的方式加载一个D寄存器的_k0出来，然后
 
 可以再前面的汇编代码模板中直接应用定义的输出操作数和输入操作数，其用法是使用百分号（“%”）后面接一个数字，0表示定义的第一个操作数，1表示定义的第二个操作数，依次类推。
 
-`__asm__ __violate__ ("movl %1,%0"
+__asm__ __violate__ ("movl %1,%0"
 
 ```text
              : "=r" (result)
@@ -335,7 +335,7 @@ GCC中定义了三个修改符，分别是：
 
 如果想让一个C变量既作为输入操作数，也作为输出操作数的话，可以使用“+”限定符，并且这个操作数只需要在输出操作数列表中列出就行了。例如：
 
-`__asm__("mov %0, %0, ror #1"
+__asm__("mov %0, %0, ror #1"
 
 ```text
         : "+r"(y)
@@ -345,7 +345,7 @@ GCC中定义了三个修改符，分别是：
 
 但是GCC的老版本不一定支持“+”修改符，如果也想达到前面的这种输入和输出操作数是一个的目的，可以用一种变通的做法，并且这种变通的做法GCC的新版本也是支持的。其实，在限定符中，也可以使用数字，其作用是指代前面定义的操作数，0代表第一个，1代表第二个，以此类推。例如：
 
-`__asm__("mov %0, %0, ror #1"
+__asm__("mov %0, %0, ror #1"
 : "=r" (y)
 : "0" (y)
 );`
@@ -354,7 +354,7 @@ GCC中定义了三个修改符，分别是：
 
 前面的例子是明确要求输出操作数和输入操作数使用同一个寄存器，但有时候刚好相反，输出操作数使用的寄存器一定不能和输入操作数使用的寄存器一样。但是，由于编译器的优化，是完全有可能出现同一个寄存器既用作输入操作数也用作输出操作数的情况的。这时，可以在输出操作数中使用“&”修改符，明确告诉编译器，代表输出操作数的寄存器一定不能使用输入操作数已经使用过的寄存器。下面举个例子：
 
-`__asm__ __volatile__("ldr %0, [%1]\n\t"
+__asm__ __volatile__("ldr %0, [%1]\n\t"
 "str %2, [%1, #4]"  
 : "=&r" (rdv)  
 : "r" (&table), "r" (wdv)  
@@ -394,7 +394,7 @@ GCC中定义了三个修改符，分别是：
 
 我们首先实现一版纯C++的：
 
-`::std::vectorfloat> datas_float0(1024*1024*10);
+::std::vectorfloat> datas_float0(1024*1024*10);
 ::std::vectorfloat> datas_float1(1024*1024*10);
 ::std::vectorfloat> weights(1024*1024*10);
 ::std::vectorfloat> bias(1024*1024*10);
@@ -429,9 +429,9 @@ int outch = outMat.shape.c;
 
 
 PowerPerf::EventMonitor cruiser0;
-cruiser0.GET_RawEvent_TICK(setRawEvent);
 
 ```cpp
+cruiser0.GET_RawEvent_TICK(setRawEvent);
 for(int ii = 0; ii  outch / 4; ++ii){
  int i = ii * 4;
 ```
@@ -442,20 +442,17 @@ for(int ii = 0; ii  outch / 4; ++ii){
  PowerPerf::Mat outMat2 = outMat.channel(i + 2);
  PowerPerf::Mat outMat3 = outMat.channel(i + 3);
 
-```text
+```cpp
  const float bias0 = ptr_b[i];
  const float bias1 = ptr_b[i + 1];
  const float bias2 = ptr_b[i + 2];
  const float bias3 = ptr_b[i + 3];
-```
-
 
  outMat0.fill(bias0);
  outMat1.fill(bias1);
  outMat2.fill(bias2);
  outMat3.fill(bias3);
 
-```cpp
  for (int j = 0; j + 3  inch; j+=4){
 
  float* out0 = outMat0;
@@ -499,10 +496,9 @@ for(int ii = 0; ii  outch / 4; ++ii){
  }
     }
 }
+cruiser0.GET_RawEvent_TOCK(setRawEvent);
 ```
 
-cruiser0.GET_RawEvent_TOCK(setRawEvent);
-`
 
 直接获取性能数据如下：
 

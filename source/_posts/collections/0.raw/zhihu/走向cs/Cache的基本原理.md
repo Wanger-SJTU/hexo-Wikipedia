@@ -17,9 +17,9 @@ source_url: https://zhuanlan.zhihu.com/p/102293437
 
 对于没有接触过底层技术的朋友来说，或许从未听说过cache。毕竟cache的存在对程序员来说是透明的。在接触cache之前，先为你准备段code分析。
 
-`int arr[10][128];
-
 ```cpp
+int arr[10][128];
+
 for (i = 0; i  10; i++)
         for (j = 0; j  128; j++)
                 arr[i][j] = 1;`
@@ -28,9 +28,9 @@ for (i = 0; i  10; i++)
 
 如果你曾经学习过C/C++语言，这段code自然不会陌生。如此简单的将`arr`数组所有元素置1。 你有没有想过这段code还有下面的一种写法。
 
-`int arr[10][128];
-
 ```cpp
+int arr[10][128];
+
 for (i = 0; i  128; i++)
         for (j = 0; j  10; j++)
                 arr[j][i] = 1;`

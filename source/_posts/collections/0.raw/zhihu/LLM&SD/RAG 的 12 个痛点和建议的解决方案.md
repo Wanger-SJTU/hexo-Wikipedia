@@ -68,7 +68,7 @@ Clean your data  <strong>清理数据</strong>
 
 chunk_size和similarity_top_k都是用于管理RAG模型中数据检索过程的效率和有效性的参数。调整这些参数可能会影响计算效率和检索信息质量之间的权衡。我们在上一篇文章《使用LlamaIndex自动进行超参数调整》中探讨了chunk_size和similarity_top_k的超参数调整细节。请参阅下面的示例代码片段。**Both `chunk_size` and `similarity_top_k` are parameters used to manage the efficiency and effectiveness of the data retrieval process in RAG models. Adjusting these parameters can impact the trade-off between computational efficiency and the quality of retrieved information. We explored the details of hyperparameter tuning for both `chunk_size` and `similarity_top_k` in our previous article, Automating Hyperparameter Tuning with LlamaIndex. See the sample code snippet below.
 
-`param_tuner = ParamTuner(
+param_tuner = ParamTuner(
 
 ```text
     param_fn=objective_function_semantic_similarity,
@@ -85,7 +85,7 @@ The function`objective_function_semantic_similarity`is defined as follows, with`
 
 函数objective_function_semantic_eximality定义如下，param_dict包含参数chunk_size和top_k及其相应的建议值：
 
-`# contains the parameters that need to be tuned
+# contains the parameters that need to be tuned
 param_dict = {"chunk_size": [256, 512, 1024], "top_k": [1, 2, 5]}
 
 # contains parameters remaining fixed across all runs of the tuning process
@@ -152,8 +152,12 @@ Reranking retrieval results before sending them to the LLM has significantly imp
 
 - Inaccurate retrieval by directly retrieving the top 2 nodes without a reranker.在没有重新排序的情况下直接检索前2个节点，检索不准确。
 - Accurate retrieval by retrieving the top 10 nodes and using `CohereRerank` to rerank and return the top 2 nodes. 通过检索前10个节点并使用CohereRerank重新排列并返回前2个节点进行精确检索。
-`import os
+
+```python
+import os
 from llama_index.postprocessor.cohere_rerank import CohereRerank
+```
+
 
 api_key = os.environ["COHERE_API_KEY"]
 cohere_rerank = CohereRerank(api_key=api_key, top_n=2) # return top 2 nodes from reranker
@@ -210,7 +214,7 @@ See below a sample code snippet on creating a finetune engine, run the finetunin
 
 请参阅以下关于创建微调引擎、运行微调并获得微调模型的示例代码片段：
 
-`finetune_engine = SentenceTransformersFinetuneEngine(
+finetune_engine = SentenceTransformersFinetuneEngine(
     train_dataset,
 
 ```text
@@ -218,10 +222,10 @@ See below a sample code snippet on creating a finetune engine, run the finetunin
     model_output_path="test_model",
     val_dataset=val_dataset,
 )
-```
-
 
 finetune_engine.finetune()
+```
+
 
 embed_model = finetune_engine.get_finetuned_model()`
 
@@ -255,9 +259,8 @@ LongLLMLingua研究项目/论文中介绍了长上下文环境中的即时压缩
 
 有关更多详细信息，请查看LongLLMLingua上的完整笔记本。
 
-`from llama_index.query_engine import RetrieverQueryEngine
-
 ```python
+from llama_index.query_engine import RetrieverQueryEngine
 from llama_index.response_synthesizers import CompactAndRefine
 from llama_index.postprocessor import LongLLMLinguaPostprocessor
 from llama_index.schema import QueryBundle
@@ -307,7 +310,7 @@ See below a sample code snippet on how to define `LongContextReorder` as your `n
 
 请参阅下面的示例代码片段，了解如何在查询引擎构建过程中将LongContextReorder定义为node_postprocessor。有关更多详细信息，请参阅LlamaIndex在LongContextReorder上的完整笔记本。
 
-`from llama_index.postprocessor import LongContextReorder
+from llama_index.postprocessor import LongContextReorder
 
 reorder = LongContextReorder()
 
@@ -346,9 +349,8 @@ LlamaIndex supports integrations with output parsing modules offered by other fr
 
 See below a sample code snippet of LangChain’s output parsing modules that you can use within LlamaIndex. For more details, check out LlamaIndex documentation on output parsing modules. 请参阅下面的LangChain输出解析模块的示例代码片段，您可以在LlamaIndex中使用这些模块。有关更多详细信息，请查看关于输出解析模块的LlamaIndex文档。
 
-`from llama_index import VectorStoreIndex, SimpleDirectoryReader
-
 ```python
+from llama_index import VectorStoreIndex, SimpleDirectoryReader
 from llama_index.output_parsers import LangchainOutputParser
 from llama_index.llms import OpenAI
 from langchain.output_parsers import StructuredOutputParser, ResponseSchema
@@ -408,9 +410,8 @@ A Pydantic program serves as a versatile framework that converts an input string
 - <strong>Prepackaged Pydantic Programs</strong>: These are designed to transform input text into predefined structured objects. 预打包Pydantic程序：这些程序旨在将输入文本转换为预定义的结构化对象。
 See below a sample code snippet from the OpenAI pydantic program. For more details, check out LlamaIndex’s documentation on the pydantic program for links to the notebooks/guides of the different pydantic programs. 请参阅下面的OpenAI pydantic程序的示例代码片段。有关更多详细信息，请查看LlamaIndex关于pydantic程序的文档，以获取不同pydanic程序的笔记本/指南的链接。
 
-`from pydantic import BaseModel
-
 ```python
+from pydantic import BaseModel
 from typing import List
 
 from llama_index.program import OpenAIPydanticProgram
@@ -486,7 +487,7 @@ Comparison questions especially do poorly in naïve RAG approaches. A good way t
 - <strong>ReAct Agent Tool Selection</strong>: Based on the original query, determine which tool to use and formulate the specific query to run on that tool. ReAct Agent工具选择：根据原始查询，确定要使用的工具，并制定要在该工具上运行的特定查询。
 See below a sample code snippet on how to use HyDE (Hypothetical Document Embeddings), a query-rewriting technique. Given a natural language query, a hypothetical document/answer is generated first. This hypothetical document is then used for embedding lookup rather than the raw query. 请参阅下面关于如何使用HyDE（假设文档嵌入）（一种查询重写技术）的示例代码片段。给定一个自然语言查询，首先生成一个假设文档/答案。然后，这个假设文档被用于嵌入查找，而不是原始查询。
 
-`# load documents, build index
+# load documents, build index
 documents = SimpleDirectoryReader("../paul_graham_essay/data").load_data()
 index = VectorStoreIndex(documents)
 
@@ -519,7 +520,7 @@ RAG管道中的数据摄取可扩展性问题指的是当系统难以有效管�
 
 LlamaIndex offers ingestion pipeline parallel processing, a feature that enables up to 15x faster document processing in LlamaIndex. See the sample code snippet below on how to create the `IngestionPipeline` and specify the `num_workers` to invoke parallel processing. Check out LlamaIndex’s [full notebook](https://link.zhihu.com/?target=https%3A//archive.is/o/bNbZo/https%3A//github.com/run-llama/llama_index/blob/main/docs/examples/ingestion/parallel_execution_ingestion_pipeline.ipynb%3F__s%3Ddb5ef5gllwa79ba7a4r2%26utm_source%3Ddrip%26utm_medium%3Demail%26utm_campaign%3DLlamaIndex%2Bnews%2C%2B2024-01-16) for more details. LlamaIndex提供摄取管道并行处理，这一功能使LlamaIndex中的文档处理速度提高了15倍。请参阅下面的示例代码片段，了解如何创建IngestionPipeline并指定要调用并行处理的num_workers。查看LlamaIndex的完整笔记本了解更多详细信息。
 
-`# load data
+# load data
 documents = SimpleDirectoryReader(input_dir="./data/source_files").load_data()
 
 # create the pipeline with transformations
@@ -546,7 +547,7 @@ LlamaIndex offers two solutions. LlamaIndex提供两种解决方案。
 
 ### Chain-of-table Pack 桌上包链
 
-`ChainOfTablePack` is a LlamaPack based on the innovative “chain-of-table” [paper](https://link.zhihu.com/?target=https%3A//archive.is/o/bNbZo/https%3A//arxiv.org/abs/2401.04398) by Wang et al. “Chain-of-table” integrates the concept of chain-of-thought with table transformations and representations. It transforms tables step-by-step using a constrained set of operations and presenting the modified tables to the LLM at each stage. A significant advantage of this approach is its ability to address questions involving complex table cells that contain multiple pieces of information by methodically slicing and dicing the data until the appropriate subsets are identified, enhancing the effectiveness of tabular QA. ChainOfTablePack是基于王等人创新的“表链”论文的一个LlamaPack。“表链》将思想链的概念与表的转换和表示相结合。它使用一组受约束的操作逐步转换表，并在每个阶段将修改后的表呈现给LLM。这种方法的一个显著优点是，它能够通过系统地对数据进行切片和划片，直到识别出合适的子集，来解决涉及包含多条信息的复杂表单元的问题，从而增强表格QA的有效性。
+ChainOfTablePack` is a LlamaPack based on the innovative “chain-of-table” [paper](https://link.zhihu.com/?target=https%3A//archive.is/o/bNbZo/https%3A//arxiv.org/abs/2401.04398) by Wang et al. “Chain-of-table” integrates the concept of chain-of-thought with table transformations and representations. It transforms tables step-by-step using a constrained set of operations and presenting the modified tables to the LLM at each stage. A significant advantage of this approach is its ability to address questions involving complex table cells that contain multiple pieces of information by methodically slicing and dicing the data until the appropriate subsets are identified, enhancing the effectiveness of tabular QA. ChainOfTablePack是基于王等人创新的“表链”论文的一个LlamaPack。“表链》将思想链的概念与表的转换和表示相结合。它使用一组受约束的操作逐步转换表，并在每个阶段将修改后的表呈现给LLM。这种方法的一个显著优点是，它能够通过系统地对数据进行切片和划片，直到识别出合适的子集，来解决涉及包含多条信息的复杂表单元的问题，从而增强表格QA的有效性。
 
 Check out LlamaIndex’s [full notebook](https://link.zhihu.com/?target=https%3A//archive.is/o/bNbZo/https%3A//github.com/run-llama/llama-hub/blob/main/llama_hub/llama_packs/tables/chain_of_table/chain_of_table.ipynb) for details on how to use `ChainOfTablePack` to query your structured data. 查看LlamaIndex的完整笔记本，了解如何使用ChainOfTablePack查询结构化数据的详细信息。
 
@@ -558,7 +559,7 @@ LLMs can reason over tabular data in two main ways: LLM可以通过两种主要�
 - Symbolic reasoning via program synthesis (e.g., Python, SQL, etc.) 通过程序合成进行符号推理（例如Python、SQL等）
 Based on the paper [Rethinking Tabular Data Understanding with Large Language Models](https://link.zhihu.com/?target=https%3A//archive.is/o/bNbZo/https%3A//arxiv.org/pdf/2312.16702v1.pdf) by Liu et al., LlamaIndex developed the `MixSelfConsistencyQueryEngine`, which aggregates results from both textual and symbolic reasoning with a self-consistency mechanism (i.e., majority voting) and achieves SoTA performance. See a sample code snippet below. Check out LlamaIndex’s [full notebook](https://link.zhihu.com/?target=https%3A//archive.is/o/bNbZo/https%3A//github.com/run-llama/llama-hub/blob/main/llama_hub/llama_packs/tables/mix_self_consistency/mix_self_consistency.ipynb) for more details. 在刘等人的论文《用大语言模型重新思考表格数据理解》的基础上，LlamaIndex开发了MixSelfConsistencyQueryEngine，该引擎利用自一致性机制（即多数投票）聚合文本和符号推理的结果，并实现了SoTA性能。请参阅下面的示例代码片段。查看LlamaIndex的完整笔记本了解更多详细信息。
 
-`download_llama_pack(
+download_llama_pack(
     "MixSelfConsistencyPack",
     "./mix_self_consistency_pack",
 
@@ -580,7 +581,6 @@ query_engine = MixSelfConsistencyQueryEngine(
 )
 ```
 
-`
 
 ### Pain Point 10: Data Extraction from Complex PDFs 痛点10：从复杂PDF中提取数据
 
@@ -592,7 +592,7 @@ LlamaIndex offers a solution in `EmbeddedTablesUnstructuredRetrieverPack`, a Lla
 
 Notice this pack takes an HTML document as input. If you have a PDF document, you can use [pdf2htmlEX](https://link.zhihu.com/?target=https%3A//archive.is/o/bNbZo/https%3A//github.com/pdf2htmlEX/pdf2htmlEX) to convert the PDF to HTML without losing text or format. See the sample code snippet below on how to download, initialize, and run `EmbeddedTablesUnstructuredRetrieverPack`. 请注意，此包将HTML文档作为输入。如果您有PDF文档，您可以使用pdf2htmlEX将PDF转换为HTML，而不会丢失文本或格式。请参阅下面的示例代码片段，了解如何下载、初始化和运行EmbeddedTablesUnstructuredRetrivePack。
 
-`# download and install dependencies
+# download and install dependencies
 EmbeddedTablesUnstructuredRetrieverPack = download_llama_pack(
     "EmbeddedTablesUnstructuredRetrieverPack", "./embedded_tables_unstructured_pack",
 )
@@ -625,8 +625,11 @@ You can create a router to hand pick your preferred models in the Neutrino dashb
 
 LlamaIndex has integrated Neutrino support through its `Neutrino` class in the `llms` module. See the code snippet below. Check out more details on the Neutrino AI page. LlamaIndex通过llms模块中的Neutrino类集成了对Neutrino的支持。请参阅下面的代码片段。查看Neutrino AI页面上的更多详细信息。
 
-`from llama_index.llms import Neutrino
+```python
+from llama_index.llms import Neutrino
 from llama_index.llms import ChatMessage
+```
+
 
 llm = Neutrino(
 
@@ -652,8 +655,11 @@ OpenRouter is a unified API to access any LLM. It finds the lowest price for any
 
 LlamaIndex has integrated OpenRouter support through its `OpenRouter` class in the `llms` module. See the code snippet below. Check out more details on the OpenRouter page. LlamaIndex通过llms模块中的OpenRouter类集成了对OpenRouter的支持。请参阅下面的代码片段。查看OpenRouter页面上的更多详细信息。
 
-`from llama_index.llms import OpenRouter
+```python
+from llama_index.llms import OpenRouter
 from llama_index.llms import ChatMessage
+```
+
 
 llm = OpenRouter(
 
@@ -680,7 +686,7 @@ Based on the 7-B Llama 2, Llama Guard was designed to classify content for LLMs 
 
 LlamaIndex offers `LlamaGuardModeratorPack`, enabling developers to call Llama Guard to moderate LLM inputs/outputs by a one liner after downloading and initializing the pack. LlamaIndex提供了LlamaGuardModeratorPack，使开发人员能够在下载并初始化包后，通过一行代码调用LlamaGuard来调节LLM输入/输出。
 
-`# download and install dependencies
+# download and install dependencies
 LlamaGuardModeratorPack = download_llama_pack(
 
 ```text
@@ -701,10 +707,9 @@ final_response = moderate_and_query(query_engine, query)`
 
 The implementation for the helper function `moderate_and_query`:
 
-`def moderate_and_query(query_engine, query):
-    # Moderate the user input
-
 ```python
+def moderate_and_query(query_engine, query):
+    # Moderate the user input
     moderator_response_for_input = llamaguard_pack.run(query)
     print(f'moderator response for input: {moderator_response_for_input}')
 ```
@@ -737,7 +742,6 @@ The implementation for the helper function `moderate_and_query`:
     return response
 ```
 
-`
 
 The sample output below shows that the query is unsafe and violated category 8 in the custom taxonomy.
 

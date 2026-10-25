@@ -14,7 +14,7 @@ categories:
 # DESIGN.md
 
 這份檔案是設計文件的入口。內容要保持簡短，並把更詳細的內容導向
-`docs/design-docs/` 下面的具體檔案。
+docs/design-docs/` 下面的具體檔案。
 
 ## 目的
 

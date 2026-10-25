@@ -67,7 +67,7 @@ source_url: https://zhuanlan.zhihu.com/p/682016587
 
 输入:
 
-`sentence = 'Life is short, eat dessert first'
+sentence = 'Life is short, eat dessert first'
 ​
 dc = {s:i for i,s 
 
@@ -86,7 +86,7 @@ print(dc)`
 
 输入：
 
-`import torch
+import torch
 ​
 sentence_int = torch.tensor(
 
@@ -109,7 +109,7 @@ print(sentence_int)`
 
 输入：
 
-`vocab_size = 50_000
+vocab_size = 50_000
 ​
 torch.manual_seed(123)
 embed = torch.nn.Embedding(vocab_size, 3)
@@ -124,13 +124,17 @@ print(embedded_sentence.shape)`
 
 输出：
 
-`tensor([[ 0.3374, -0.1778, -0.3035],
+tensor([[ 0.3374, -0.1778, -0.3035],
         [ 0.1794,  1.8951,  0.4954],
         [ 0.2692, -0.0770, -1.0205],
         [-0.2196, -0.3792,  0.7671],
         [-0.5880,  0.3486,  0.6603],
+
+```text
         [-1.1925,  0.6984, -1.4097]])
 torch.Size([6, 3])`
+```
+
 
 ### 3 定义权重矩阵**
 
@@ -162,7 +166,7 @@ torch.Size([6, 3])`
 
 输入：
 
-`torch.manual_seed(123)
+torch.manual_seed(123)
 ​
 d = embedded_sentence.shape[1]
 ​
@@ -190,7 +194,7 @@ W_value = torch.nn.Parameter(torch.rand(d, d_v))`
 
 输入：
 
-`x_2 = embedded_sentence[1]
+x_2 = embedded_sentence[1]
 query_2 = x_2 @ W_query
 key_2 = x_2 @ W_key
 value_2 = x_2 @ W_value
@@ -205,15 +209,18 @@ print(value_2.shape)`
 
 输出：
 
-`torch.Size([2])
+```text
+torch.Size([2])
 torch.Size([2])
 torch.Size([4])`
+```
+
 
 然后，我们可以将这个过程泛化到计算所有输入的剩余键和值元素，因为在下一步计算未归一化的注意力权重时，我们会需要它们：
 
 输入：
 
-`keys = embedded_sentence @ W_key
+keys = embedded_sentence @ W_key
 values = embedded_sentence @ W_value
 ​
 
@@ -225,7 +232,7 @@ print("values.shape:", values.shape)`
 
 输出：
 
-`keys.shape: torch.Size([6, 2])
+keys.shape: torch.Size([6, 2])
 values.shape: torch.Size([6, 4])`
 
 现在我们已经计算得到了所有必要的键和值，可以继续下一步，计算未归一化的注意力权重ω（omega），如下图所示：
@@ -238,7 +245,7 @@ values.shape: torch.Size([6, 4])`
 
 输入：
 
-`omega_24 = query_2.dot(keys[4])
+omega_24 = query_2.dot(keys[4])
 print(omega_24)`
 
 （请注意，ω是希腊字母“omega”的符号，因此上面的代码变量也使用了相同的名称。）
@@ -251,7 +258,7 @@ print(omega_24)`
 
 输入：
 
-`omega_2 = query_2 @ keys.T
+omega_2 = query_2 @ keys.T
 print(omega_2)`
 
 输出：
@@ -272,7 +279,7 @@ print(omega_2)`
 
 输入：
 
-`import torch.nn.functional as F
+import torch.nn.functional as F
 ​
 attention_weights_2 = F.softmax(omega_2 / d_k**0.5, dim=0)
 print(attention_weights_2)`
@@ -289,7 +296,7 @@ print(attention_weights_2)`
 
 输入：
 
-`context_vector_2 = attention_weights_2 @ values
+context_vector_2 = attention_weights_2 @ values
 ​
 
 ```python
@@ -300,7 +307,7 @@ print(context_vector_2)`
 
 输出：
 
-`​torch.Size([4])
+​torch.Size([4])
 tensor([0.5313, 1.3607, 0.7891, 1.3110])`
 
 请注意，此输出向量的维度*(dv=4)*比原始输入向量的维度*(d=3)*高，因为我们之前指定了*dv>d*；然而，这里指定的嵌入大小*dv*是任意的。
@@ -313,7 +320,7 @@ tensor([0.5313, 1.3607, 0.7891, 1.3110])`
 
 输入：
 
-`import torch.nn as nn
+import torch.nn as nn
 ​
 class SelfAttention(nn.Module):
 ​
@@ -349,7 +356,7 @@ class SelfAttention(nn.Module):
 
 输入：
 
-`torch.manual_seed(123)
+torch.manual_seed(123)
 ​
 # reduce d_out_v from 4 to 1, because we have 4 heads
 d_in, d_out_kq, d_out_v = 3, 2, 4
@@ -359,7 +366,7 @@ print(sa(embedded_sentence))`
 
 输出：
 
-`tensor([[-0.1564,  0.1028, -0.0763, -0.0764],
+tensor([[-0.1564,  0.1028, -0.0763, -0.0764],
         [ 0.5313,  1.3607,  0.7891,  1.3110],
         [-0.3542, -0.1234, -0.2627, -0.3706],
         [ 0.0071,  0.3345,  0.0969,  0.1998],
@@ -392,7 +399,7 @@ print(sa(embedded_sentence))`
 
 为了在代码中说明这一点，我们可以为之前的SelfAttention类编写一个MultiHeadAttentionWrapper类：
 
-`class MultiHeadAttentionWrapper(nn.Module):
+class MultiHeadAttentionWrapper(nn.Module):
 ​
 ​    def __init__(self, d_in, d_out_kq, d_out_v, num_heads):
 
@@ -427,7 +434,7 @@ print(sa(embedded_sentence))`
 
 输入：
 
-`torch.manual_seed(123)
+torch.manual_seed(123)
 ​
 ​d_in, d_out_kq, d_out_v = 3, 2, 1
 ​
@@ -436,7 +443,7 @@ print(sa(embedded_sentence))`
 
 输出：
 
-`tensor([[-0.0185],
+tensor([[-0.0185],
         [ 0.4003],
         [-0.1103],
         [ 0.0668],
@@ -447,7 +454,7 @@ print(sa(embedded_sentence))`
 
 输入：
 
-`torch.manual_seed(123)
+torch.manual_seed(123)
 ​
 block_size = embedded_sentence.shape[1]
 mha = MultiHeadAttentionWrapper(
@@ -469,7 +476,7 @@ print("context_vecs.shape:", context_vecs.shape)`
 
 输出：
 
-`tensor([[-0.0185,  0.0170,  0.1999, -0.0860],
+tensor([[-0.0185,  0.0170,  0.1999, -0.0860],
         [ 0.4003,  1.7137,  1.3981,  1.0497],
         [-0.1103, -0.1609,  0.0079, -0.2416],
         [ 0.0668,  0.3534,  0.2322,  0.1008],
@@ -519,7 +526,7 @@ context_vecs.shape: torch.Size([6, 4])`
 
 输入：
 
-`class CrossAttention(nn.Module):
+class CrossAttention(nn.Module):
 ​
 
 ```python
@@ -559,7 +566,7 @@ CrossAttention类与之前的SelfAttention类的区别如下：
 
 输入：
 
-`torch.manual_seed(123)
+torch.manual_seed(123)
 ​
 d_in, d_out_kq, d_out_v = 3, 2, 4
 ​
@@ -577,14 +584,14 @@ print("Second input shape:", second_input.shape)`
 
 输出：
 
-`First input shape: torch.Size([6, 3])
+First input shape: torch.Size([6, 3])
 Second input shape: torch.Size([8, 3])`
 
 注意：计算交叉注意力时，第一个和第二个输入词元（行）的数量不必相同：
 
 输入：
 
-`context_vectors = crossattn(first_input, second_input)
+context_vectors = crossattn(first_input, second_input)
 ​
 
 ```python
@@ -595,7 +602,7 @@ print("Output shape:", context_vectors.shape)`
 
 输出：
 
-`tensor([[0.4231, 0.8665, 0.6503, 1.0042],
+tensor([[0.4231, 0.8665, 0.6503, 1.0042],
         [0.4874, 0.9718, 0.7359, 1.1353],
         [0.4054, 0.8359, 0.6258, 0.9667],
         [0.4357, 0.8886, 0.6678, 1.0311],
@@ -629,7 +636,7 @@ Output shape: torch.Size([6, 4])`
 
 输入：
 
-`torch.manual_seed(123)
+torch.manual_seed(123)
 ​
 d_in, d_out_kq, d_out_v = 3, 2, 4
 ​
@@ -656,14 +663,18 @@ print(attn_scores.shape)`
 
 输出：
 
-`tensor([[ 0.0613, -0.3491,  0.1443, -0.0437, -0.1303,  0.1076],
+tensor([[ 0.0613, -0.3491,  0.1443, -0.0437, -0.1303,  0.1076],
         [-0.6004,  3.4707, -1.5023,  0.4991,  1.2903, -1.3374],
         [ 0.2432, -1.3934,  0.5869, -0.1851, -0.5191,  0.4730],
         [-0.0794,  0.4487, -0.1807,  0.0518,  0.1677, -0.1197],
         [-0.1510,  0.8626, -0.3597,  0.1112,  0.3216, -0.2787],
         [ 0.4344, -2.5037,  1.0740, -0.3509, -0.9315,  0.9265]],
+
+```text
        grad_fn=)
 torch.Size([6, 6])`
+```
+
 
 与之前的自注意力部分类似，上面输出的是一个6×6的张量，其中包含了这些相对应的未归一化注意力权重（也称为注意力分数），用于6个输入词元。
 
@@ -671,12 +682,12 @@ torch.Size([6, 6])`
 
 输入：
 
-`attn_weights = torch.softmax(attn_scores / d_out_kq**0.5, dim=1)
+attn_weights = torch.softmax(attn_scores / d_out_kq**0.5, dim=1)
 print(attn_weights)`
 
 输出：
 
-`tensor([[0.1772, 0.1326, 0.1879, 0.1645, 0.1547, 0.1831],
+tensor([[0.1772, 0.1326, 0.1879, 0.1645, 0.1547, 0.1831],
         [0.0386, 0.6870, 0.0204, 0.0840, 0.1470, 0.0229],
         [0.1965, 0.0618, 0.2506, 0.1452, 0.1146, 0.2312],
         [0.1505, 0.2187, 0.1401, 0.1651, 0.1793, 0.1463],
@@ -704,13 +715,13 @@ print(attn_weights)`
 
 输入：
 
-`block_size = attn_scores.shape[0]
+block_size = attn_scores.shape[0]
 mask_simple = torch.tril(torch.ones(block_size, block_size))
 print(mask_simple)`
 
 输出：
 
-`tensor([[1., 0., 0., 0., 0., 0.],
+tensor([[1., 0., 0., 0., 0., 0.],
         [1., 1., 0., 0., 0., 0.],
         [1., 1., 1., 0., 0., 0.],
         [1., 1., 1., 1., 0., 0.],
@@ -721,12 +732,12 @@ print(mask_simple)`
 
 输入：
 
-`masked_simple = attn_weights*mask_simple
+masked_simple = attn_weights*mask_simple
 print(masked_simple)`
 
 输出：
 
-`tensor([[0.1772, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
+tensor([[0.1772, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
         [0.0386, 0.6870, 0.0000, 0.0000, 0.0000, 0.0000],
         [0.1965, 0.0618, 0.2506, 0.0000, 0.0000, 0.0000],
         [0.1505, 0.2187, 0.1401, 0.1651, 0.0000, 0.0000],
@@ -738,13 +749,13 @@ print(masked_simple)`
 
 输入：
 
-`row_sums = masked_simple.sum(dim=1, keepdim=True)
+row_sums = masked_simple.sum(dim=1, keepdim=True)
 ​masked_simple_norm = masked_simple / row_sums
 print(masked_simple_norm)`
 
 输出：
 
-`tensor([[1.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
+tensor([[1.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
         [0.0532, 0.9468, 0.0000, 0.0000, 0.0000, 0.0000],
         [0.3862, 0.1214, 0.4924, 0.0000, 0.0000, 0.0000],
         [0.2232, 0.3242, 0.2078, 0.2449, 0.0000, 0.0000],
@@ -774,7 +785,7 @@ print(masked_simple_norm)`
 
 输入：
 
-`mask = torch.triu(torch.ones(block_size, block_size), diagonal=1)
+mask = torch.triu(torch.ones(block_size, block_size), diagonal=1)
 masked = attn_scores.masked_fill(mask.bool(), -torch.inf)
 print(masked)`
 
@@ -784,7 +795,7 @@ print(masked)`
 
 输出：
 
-`tensor([[ 0.0613,    -inf,    -inf,    -inf,    -inf,    -inf],
+tensor([[ 0.0613,    -inf,    -inf,    -inf,    -inf,    -inf],
         [-0.6004,  3.4707,    -inf,    -inf,    -inf,    -inf],
         [ 0.2432, -1.3934,  0.5869,    -inf,    -inf,    -inf],
         [-0.0794,  0.4487, -0.1807,  0.0518,    -inf,    -inf],
@@ -796,12 +807,12 @@ print(masked)`
 
 输入：
 
-`attn_weights = torch.softmax(masked / d_out_kq**0.5, dim=1)
+attn_weights = torch.softmax(masked / d_out_kq**0.5, dim=1)
 print(attn_weights)`
 
 输出：
 
-`tensor([[1.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
+tensor([[1.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
         [0.0532, 0.9468, 0.0000, 0.0000, 0.0000, 0.0000],
         [0.3862, 0.1214, 0.4924, 0.0000, 0.0000, 0.0000],
         [0.2232, 0.3242, 0.2078, 0.2449, 0.0000, 0.0000],

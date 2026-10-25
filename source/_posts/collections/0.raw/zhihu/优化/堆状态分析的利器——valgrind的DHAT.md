@@ -17,9 +17,9 @@ source_url: https://zhuanlan.zhihu.com/p/682037394
 
 ﻿在《堆问题分析的利器——valgrind的massif》一文中，我们介绍了如何使用massif查看和分析堆分配/释放的问题。但是除了申请和释放，堆空间还有其他问题，比如堆空间的使用率、使用周期等。通过分析这些问题，我们可以对程序代码进行优化以提高性能。本文介绍的工具DHAT——dynamic heap analysis tool就是分析这些问题的利器。 不同于massif是在程序结束时产生报告，DHAT是在程序运行时实时输出信息的。 我们继续以《堆问题分析的利器——valgrind的massif》文中末尾的代码为例。
 
-`#include 
-
 ```cpp
+#include 
+
 void* create(unsigned int size) {
     return malloc(size);
 }
@@ -53,7 +53,6 @@ int main(void) {
 }
 ```
 
-`
 
 第19行通过create方法申请了10K堆空间，一共申请了4次。整个代码周期它们都没释放，所以存在着内存泄漏。 第22行通过malloc方法申请了10K堆空间，一共申请了4次。在第29行，通过free方法释放了这些空间，没有造成内存泄漏。 第25行通过create_destory方法申请并使用了100K的空间，所以也没有内存泄漏。 我们使用下面指令分析编译后的结果。
 
@@ -61,7 +60,7 @@ int main(void) {
 
 得出的结果如下
 
-`==9121== ======== ORDERED BY decreasing "max-bytes-live": top 10 allocators ========
+==9121== ======== ORDERED BY decreasing "max-bytes-live": top 10 allocators ========
 ==9121== 
 ==9121== -------------------- 1 of 10 --------------------
 ==9121== max-live:    102,400 in 1 blocks
@@ -100,7 +99,7 @@ int main(void) {
 
 ​现象如下
 
-`==10111== -------------------- 1 of 10 --------------------
+==10111== -------------------- 1 of 10 --------------------
 ==10111== max-live:    1,024 in 1 blocks
 ==10111== tot-alloc:   4,096 in 4 blocks (avg size 1024.00)
 ==10111== deaths:      4, at avg age 170 (0.12% of prog lifetime)
@@ -110,9 +109,8 @@ int main(void) {
 
 这段信息显示：一共申请的4个堆空间生命周期只占比0.12%——非常低。被申请的空间只被写入，从来没被读取过。堆空间的使用率（当前只有写操作）也不高，只有1.06次写入（）。我们看下代码
 
-`#include 
-
 ```cpp
+#include 
 #include 
 
 int main(void) {
@@ -128,13 +126,11 @@ int main(void) {
 }
 ```
 
-`
 
 第8行申请的堆，在第9行被使用后，立即被第10行释放掉。频繁申请和释放堆会造成内存碎片等问题，所以一般我们都是希望堆的使用率是是比较高的。发现和定位问题后，我们可以做如下改动。
 
-`#include 
-
 ```cpp
+#include 
 #include 
 
 int main(void) {
@@ -150,11 +146,10 @@ int main(void) {
 }
 ```
 
-`
 
 得到如下分析结果
 
-`==10119== max-live:    1,024 in 1 blocks
+==10119== max-live:    1,024 in 1 blocks
 ==10119== tot-alloc:   1,024 in 1 blocks (avg size 1024.00)
 ==10119== deaths:      1, at avg age 602 (0.43% of prog lifetime)
 ==10119== acc-ratios:  0.00 rd, 4.25 wr  (0 b-read, 4,352 b-written)
@@ -167,9 +162,8 @@ int main(void) {
 
 上面例子也没必要使用堆，我们可以把其变成栈上空间，这样执行效率更高。
 
-`#include 
-
 ```cpp
+#include 
 #include 
 
 int main(void) {
@@ -184,13 +178,12 @@ int main(void) {
 }
 ```
 
-`
 
 ### 是否有没有使用的堆
 
 没有使用的堆是指：堆空间被申请出来，但是没有对其进行过读写操作。我们看个现象
 
-`==10309== -------------------- 1 of 10 --------------------
+==10309== -------------------- 1 of 10 --------------------
 ==10309== max-live:    1,024 in 1 blocks
 ==10309== tot-alloc:   1,024 in 1 blocks (avg size 1024.00)
 ==10309== deaths:      1, at avg age 664 (0.47% of prog lifetime)
@@ -207,9 +200,8 @@ int main(void) {
 
 第5行显示这个堆被写入过，第12行显示这个堆从来没有被读写过。这样我们就需要怀疑test.c的第8行申请的空间是否必要。看下代码，可以发现这个堆的确没必要申请。
 
-`#include 
-
 ```cpp
+#include 
 #include 
 
 int main(void) {
@@ -227,13 +219,12 @@ int main(void) {
 }
 ```
 
-`
 
 ### 申请的大小是否合理
 
 有时候，我们并不是那么节约。比如一个只需要1K的空间，我们可能申请了10K。但是这个单纯的靠梳理代码可能比较难以发现。我们看个分析结果
 
-`==10571== -------------------- 1 of 10 --------------------
+==10571== -------------------- 1 of 10 --------------------
 ==10571== max-live:    1,024 in 1 blocks
 ==10571== tot-alloc:   1,024 in 1 blocks (avg size 1024.00)
 ==10571== deaths:      1, at avg age 134 (0.09% of prog lifetime)
@@ -250,9 +241,8 @@ int main(void) {
 
 从第9行开始，显示的是该堆每个字节被访问的次数。我们看到只有前8个字节被访问了1次。但是剩余的其他字节都没有被访问过。于是我们看下代码
 
-`#include 
-
 ```cpp
+#include 
 #include 
 
 int main(void) {
@@ -268,13 +258,12 @@ int main(void) {
 }
 ```
 
-`
 
 可以看到，第8到10行的确只操作了前8个字节。所以我们没必要申请1K的空间。﻿在《堆问题分析的利器——valgrind的massif》一文中，我们介绍了如何使用massif查看和分析堆分配/释放的问题。但是除了申请和释放，堆空间还有其他问题，比如堆空间的使用率、使用周期等。通过分析这些问题，我们可以对程序代码进行优化以提高性能。本文介绍的工具DHAT——dynamic heap analysis tool就是分析这些问题的利器。 不同于massif是在程序结束时产生报告，DHAT是在程序运行时实时输出信息的。 我们继续以《堆问题分析的利器——valgrind的massif》文中末尾的代码为例。
 
-`#include 
-
 ```cpp
+#include 
+
 void* create(unsigned int size) {
     return malloc(size);
 }
@@ -308,7 +297,6 @@ int main(void) {
 }
 ```
 
-`
 
 第19行通过create方法申请了10K堆空间，一共申请了4次。整个代码周期它们都没释放，所以存在着内存泄漏。 第22行通过malloc方法申请了10K堆空间，一共申请了4次。在第29行，通过free方法释放了这些空间，没有造成内存泄漏。 第25行通过create_destory方法申请并使用了100K的空间，所以也没有内存泄漏。 我们使用下面指令分析编译后的结果。
 
@@ -316,7 +304,7 @@ int main(void) {
 
 得出的结果如下
 
-`==9121== ======== ORDERED BY decreasing "max-bytes-live": top 10 allocators ========
+==9121== ======== ORDERED BY decreasing "max-bytes-live": top 10 allocators ========
 ==9121== 
 ==9121== -------------------- 1 of 10 --------------------
 ==9121== max-live:    102,400 in 1 blocks
@@ -355,7 +343,7 @@ int main(void) {
 
 ​现象如下
 
-`==10111== -------------------- 1 of 10 --------------------
+==10111== -------------------- 1 of 10 --------------------
 ==10111== max-live:    1,024 in 1 blocks
 ==10111== tot-alloc:   4,096 in 4 blocks (avg size 1024.00)
 ==10111== deaths:      4, at avg age 170 (0.12% of prog lifetime)
@@ -365,9 +353,8 @@ int main(void) {
 
 这段信息显示：一共申请的4个堆空间生命周期只占比0.12%——非常低。被申请的空间只被写入，从来没被读取过。堆空间的使用率（当前只有写操作）也不高，只有1.06次写入（）。我们看下代码
 
-`#include 
-
 ```cpp
+#include 
 #include 
 
 int main(void) {
@@ -383,13 +370,11 @@ int main(void) {
 }
 ```
 
-`
 
 第8行申请的堆，在第9行被使用后，立即被第10行释放掉。频繁申请和释放堆会造成内存碎片等问题，所以一般我们都是希望堆的使用率是是比较高的。发现和定位问题后，我们可以做如下改动。
 
-`#include 
-
 ```cpp
+#include 
 #include 
 
 int main(void) {
@@ -405,11 +390,10 @@ int main(void) {
 }
 ```
 
-`
 
 得到如下分析结果
 
-`==10119== max-live:    1,024 in 1 blocks
+==10119== max-live:    1,024 in 1 blocks
 ==10119== tot-alloc:   1,024 in 1 blocks (avg size 1024.00)
 ==10119== deaths:      1, at avg age 602 (0.43% of prog lifetime)
 ==10119== acc-ratios:  0.00 rd, 4.25 wr  (0 b-read, 4,352 b-written)
@@ -422,9 +406,8 @@ int main(void) {
 
 上面例子也没必要使用堆，我们可以把其变成栈上空间，这样执行效率更高。
 
-`#include 
-
 ```cpp
+#include 
 #include 
 
 int main(void) {
@@ -439,13 +422,12 @@ int main(void) {
 }
 ```
 
-`
 
 ### 是否有没有使用的堆
 
 没有使用的堆是指：堆空间被申请出来，但是没有对其进行过读写操作。我们看个现象
 
-`==10309== -------------------- 1 of 10 --------------------
+==10309== -------------------- 1 of 10 --------------------
 ==10309== max-live:    1,024 in 1 blocks
 ==10309== tot-alloc:   1,024 in 1 blocks (avg size 1024.00)
 ==10309== deaths:      1, at avg age 664 (0.47% of prog lifetime)
@@ -462,9 +444,8 @@ int main(void) {
 
 第5行显示这个堆被写入过，第12行显示这个堆从来没有被读写过。这样我们就需要怀疑test.c的第8行申请的空间是否必要。看下代码，可以发现这个堆的确没必要申请。
 
-`#include 
-
 ```cpp
+#include 
 #include 
 
 int main(void) {
@@ -482,13 +463,12 @@ int main(void) {
 }
 ```
 
-`
 
 ### 申请的大小是否合理
 
 有时候，我们并不是那么节约。比如一个只需要1K的空间，我们可能申请了10K。但是这个单纯的靠梳理代码可能比较难以发现。我们看个分析结果
 
-`==10571== -------------------- 1 of 10 --------------------
+==10571== -------------------- 1 of 10 --------------------
 ==10571== max-live:    1,024 in 1 blocks
 ==10571== tot-alloc:   1,024 in 1 blocks (avg size 1024.00)
 ==10571== deaths:      1, at avg age 134 (0.09% of prog lifetime)
@@ -505,9 +485,8 @@ int main(void) {
 
 从第9行开始，显示的是该堆每个字节被访问的次数。我们看到只有前8个字节被访问了1次。但是剩余的其他字节都没有被访问过。于是我们看下代码
 
-`#include 
-
 ```cpp
+#include 
 #include 
 
 int main(void) {
@@ -523,6 +502,5 @@ int main(void) {
 }
 ```
 
-`
 
 可以看到，第8到10行的确只操作了前8个字节。所以我们没必要申请1K的空间。

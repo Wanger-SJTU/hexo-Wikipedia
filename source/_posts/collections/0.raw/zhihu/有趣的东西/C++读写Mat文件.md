@@ -59,8 +59,7 @@ libeng.lib
 
 为工程添加一个cpp文件，在文件开头输入
 
-`#include 
-`
+#include 
 
 若工程配置正常，则此时应该不报错，右键点击mat.h，还能打开该文件： 
 
@@ -72,9 +71,9 @@ libeng.lib
 
 下面是一个简单的mat文件写入程序：
 
-`#define _USE_MATH_DEFINES
-
 ```cpp
+#define _USE_MATH_DEFINES
+
 #include 
 #include 
 #include 
@@ -111,13 +110,11 @@ int main()
 }
 ```
 
-`
 
 在Matlab中load刚才保存的mat文件，并画图：
 
-`load('E:\VSProjects\MatFileReadWrite\MatFileReadWrite\test_mat_file.mat')
+load('E:\VSProjects\MatFileReadWrite\MatFileReadWrite\test_mat_file.mat')
 plot(time, wave)
-`
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%89%E8%B6%A3%E7%9A%84%E4%B8%9C%E8%A5%BF/asset/img_d5ba40e81fc0.png)
 
@@ -129,7 +126,7 @@ plot(time, wave)
 
 我写入mat文件的变量比较多，大概有300多个单列的向量，这些向量的长度相同，都有三十多万行，整个mat文件大概有不到500M。在写入变量的时候，我用循环遍历指针组：
 
-`......
+......
 mxArray ** ppMxArr = (mxArray *)malloc(sizeof(mxArray *)*300);
 
 ```cpp
@@ -151,7 +148,6 @@ for (int i=0; i300; i++)
 ```
 
 ......
-`
 
 写入这么大的文件需要很长的时间，于是我打开mat文件存放的路径，想看看文件大小的变化。这时候我发现一个很奇怪的现象：
 

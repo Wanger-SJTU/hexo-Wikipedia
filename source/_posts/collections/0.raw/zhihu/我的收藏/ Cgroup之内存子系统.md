@@ -47,7 +47,7 @@ Memory 子系统的特性：
 
 Memory 子系统包含的文件如下：
 
-`cgroup.clone_children
+cgroup.clone_children
 cgroup.event_control
 cgroup.procs
 memory.failcnt
@@ -78,7 +78,6 @@ memory.usage_in_bytes
 memory.use_hierarchy
 notify_on_release
 tasks
-`
 
 #### 用户态内存资源限制和统计
 
@@ -94,7 +93,7 @@ tasks
 
 - memory.numa_stat：每个 numa 节点的内存使用量，单位 bytes，以下是一个样例：
 
-`> cat memory.numa_stat
+> cat memory.numa_stat
 total=5940 N0=5944 N1=220
 file=1947 N0=1980 N1=220
 anon=66 N0=1 N1=0
@@ -103,7 +102,6 @@ hierarchical_total=5940 N0=5944 N1=220
 hierarchical_file=1947 N0=1980 N1=220
 hierarchical_anon=66 N0=1 N1=0
 hierarchical_unevictable=3927 N0=3963 N1=0
-`
 
 anno：匿名页和 swap 缓存的大小；
 
@@ -117,7 +115,7 @@ total：anno + file + unevictable 的值。
 
 - memory.stat：统计 cgroup 的内存使用信息。
 
-`> cat memory.stat
+> cat memory.stat
 cache 0
 rss 0
 rss_huge 0
@@ -155,7 +153,6 @@ total_active_anon 0
 total_inactive_file 0
 total_active_file 0
 total_unevictable 0
-`
 
 cache：缓存页，包括 tmpfs（shim），单位 bytes。
 
@@ -245,12 +242,11 @@ total_xxx：当前 cgroup 层级（包括所有子 cgroup）的值。例如：to
 
 - memory.oom_control：是否启用 OOM-killer，如果不启用（oom_kill_disable 的值为 1），当触发 OOM 时，进程会 hang 住（进程处于 D 状态），等待有足够的内存资源后继续运行。如果启用，触发 OOM 之后会直接终止进程以释放内存。默认启用（oom_kill_disable 的值为 0）。以下是 memory.oom_control 的示例：
 
-`> cat memory.oom_control
+> cat memory.oom_control
 oom_kill_disable 0
 under_oom 0
 oom_kill 0
 
-`
 
 oom_kill_disable：是否禁用 OOM-killer，直接写 memory.oom_control 文件会更新该值。
 
@@ -291,33 +287,29 @@ cgroup.event_control 在启用 CONFIG_PREEMPT_RT 的系统（内核支持完全�
 
 我们以 memory 为例，使用`memhog`工具模拟使用内存资源。可以通过以下命令安装`memhog`：
 
-`sudo apt install numactl
+sudo apt install numactl
 
-`
 
 使用 memhog 使用 100 MB 内存资源：
 
-`memhog 100M
+memhog 100M
 
-`
 
 使用以下脚本，每 2 秒使用 100 MB 内存资源：
 
-`while true; do memhog 100M; sleep 2; done
+while true; do memhog 100M; sleep 2; done
 
-`
 
 使用`cgroup-tools`工具管理 cgroup，安装方式：
 
-`sudo apt install cgroup-tools
+sudo apt install cgroup-tools
 
-`
 
 Demo 的步骤如下：
 
 - 使用`cgroup-tools`创建新的 cgroup
 
-`❯ cgcreate -g memory:memhog-limiter
+❯ cgcreate -g memory:memhog-limiter
 ❯ pwd
 /sys/fs/cgroup/memory/memhog-limiter
 ❯ ls
@@ -333,21 +325,19 @@ memory.kmem.slabinfo            memory.memsw.usage_in_bytes         memory.water
 memory.kmem.tcp.failcnt         memory.move_charge_at_immigrate     notify_on_release
 memory.kmem.tcp.lim
 
-`
 
 - 设置 cgroup 的最大可用内存资源阈值
 
-`❯ cgset -r memory.limit_in_bytes=50M memhog-limiter
+❯ cgset -r memory.limit_in_bytes=50M memhog-limiter
 ❯ cat memory.limit_in_bytes
 52428800
 
-`
 
 该命令将`memhog-limiter`的`memory.limit_in_bytes`设置为`50M`，和直接修改`memory.limit_in_bytes`文件内容的效果一样。
 
 - 使用`memhog`模拟内存分配，并将使用内存的进程加入 cgroup
 
-`tee memhogtest.sh  EOF
+tee memhogtest.sh  EOF
 echo "PID: \$\$"
 while true; do memhog 100M; sleep 2; done
 EOF
@@ -360,11 +350,10 @@ cgexec -g memory:memhog-limiter ./memhogtest.sh
 # 查看 dmesg 消息
 dmesg
 
-`
 
 可以看到，系统触发了 OOM-killer：
 
-`[615794.049343] memhog invoked oom-killer: gfp_mask=0xcc0(GFP_KERNEL), order=0, oom_score_adj=0
+[615794.049343] memhog invoked oom-killer: gfp_mask=0xcc0(GFP_KERNEL), order=0, oom_score_adj=0
 [615794.052039] CPU: 1 PID: 3530984 Comm: memhog Kdump: loaded Tainted: G           OE     5.4.143.bsk.8-amd64 #5.4.143.bsk.8
 [615794.055448] Hardware name: OpenStack Nova, BIOS
 [615794.057145] Call Trace:
@@ -432,20 +421,18 @@ dmesg
 [615794.168572] Memory cgroup out of memory: Killed process 3530984 (memhog) total-vm:104736kB, anon-rss:50704kB, file-rss:1456kB, shmem-rss:0kB, UID:0 pgtables:148kB oom_score_adj:0
 [615794.180304] oom_reaper: reaped process 3530984 (memhog), now anon-rss:0kB, file-rss:0kB, shmem-rss:0kB
 
-`
 
 通过`memory.failcnt`文件可以看到触发 OOM 的次数：
 
-`❯ cat memory.failcnt
+❯ cat memory.failcnt
 1128
 
-`
 
 ### cgroup V2
 
 在 cgroup v2 中，需要通过父 cgroup 的 `cgroup.subtree_control`开启 memory controller，为当前 cgroup 开启 memory controller 之后，会新增 memory 相关的文件（`memory.pressure`在没开启 memory controller 的情况下也存在）：
 
-`❯ cat cgroup.controllers
+❯ cat cgroup.controllers
 memory
 ❯ ls memory.*
 memory.current
@@ -464,7 +451,6 @@ memory.stat
 memory.swap.current
 memory.swap.events
 memory.swap.max
-`
 
 对于 cgroup 子系统中的数据，单位都是 bytes，如果写入的值没有按 PAGE_SIZE 对齐，则会增加到最近 PAGE_SIZE 对齐的值。
 
@@ -496,7 +482,7 @@ high，low，max，min 的关系：
 
 - memory.stat：只读，存在非 root cgroup 中。包含不同类型内存的详细信息，以及内存管理系统的状态和事件信息。单位都是 bytes。如果某个条目没有 node 级别的统计，使用 npn（non-per-node）标记，不会出现在`memory.numa_stat`文件中。
 
-`❯ cat memory.stat
+❯ cat memory.stat
 anon 0
 file 0
 kernel_stack 0
@@ -538,7 +524,6 @@ pglazyfreed 0
 thp_fault_alloc 0
 thp_collapse_alloc 0
 
-`
 
 anon：在匿名映射中使用的内存，如 brk()、sbrk() 和 mmap(MAP_ANONYMOUS)。
 
@@ -612,7 +597,7 @@ thp_collapse_alloc（npn）：为允许折叠现有页面范围而分配的透�
 
 - memory.numa_stat：只读，存在非 root cgroup 中。包含不同类型内存的详细信息，以及每个 node 的其它内存管理信息。
 
-`❯ cat memory.numa_stat
+❯ cat memory.numa_stat
 anon N0=0
 file N0=0
 kernel_stack N0=0
@@ -636,7 +621,6 @@ workingset_restore_anon N0=0
 workingset_restore_file N0=0
 workingset_nodereclaim N0=0
 
-`
 
 #### 交换空间大小限制和统计
 
@@ -644,11 +628,10 @@ workingset_nodereclaim N0=0
 
 - memory.swap.events：swap 相关限制触发的事件数量。
 
-`> cat memory.swap.events
+> cat memory.swap.events
 max 0
 fail 0
 
-`
 
 max：当前 cgroup 的 swap 使用量即将超过`memory.swap.max`而导致 swap 分配失败的次数。
 
@@ -670,22 +653,20 @@ cgroup v2 没有专门提供关于内核内存资源限制和统计的接口文�
 
 - memory.reclaim：存在于所有 cgroup 中，用于触发目标 cgroup 的内存回收。文件接收的值是需要回收的内存数量。例如：
 
-`echo "1G" > memory.reclaim
+echo "1G" > memory.reclaim
 
-`
 
 Kernel 实际回收的内存数量可能不等于期望值，如果少于指定的值，将返回`-EAGAIN`。
 
 - memory.events：只读文件，存在非 root cgroup 中，统计内存限制相关事件的触发次数。包括当前 cgroup 和所有子 cgroup 触发事件的总和，当前 cgroup 的事件触发情况在`memory.events.local`文件。
 
-`❯ cat memory.events
+❯ cat memory.events
 low 0
 high 0
 max 0
 oom 0
 oom_kill 0
 
-`
 
 low：内存使用量低于`memory.low`，由于高内存压力而触发了内存回收的次数。通常是 low 设置的值过大导致的情况。
 
@@ -703,10 +684,9 @@ oom_kill：cgroup 中的进程被 OOM-killer 杀死的次数。
 
 使用 cgroup v1 demo 用于定时分配内存的脚本：
 
-`❯ ./memhogtest.sh
+❯ ./memhogtest.sh
 PID: 746644
 
-`
 
 加入 cgroup，同时设置 cgroup 的 memory.max 为 100M：
 
@@ -718,7 +698,7 @@ PID: 746644
 
 Kernel 日志：
 
-`[1367090.223722] memhog invoked oom-killer: gfp_mask=0xcc0(GFP_KERNEL), order=0, oom_score_adj=0
+[1367090.223722] memhog invoked oom-killer: gfp_mask=0xcc0(GFP_KERNEL), order=0, oom_score_adj=0
 [1367090.226156] CPU: 2 PID: 748251 Comm: memhog Kdump: loaded Tainted: G           OE     5.4.210.bsk.4-amd64 #5.4.210.bsk.4
 [1367090.229922] Hardware name: OpenStack Nova, BIOS
 [1367090.232181] Call Trace:
@@ -788,18 +768,16 @@ Kernel 日志：
 [1367090.314790] oom-kill:constraint=CONSTRAINT_MEMCG,nodemask=(null),cpuset=test,mems_allowed=0-1,oom_memcg=/test/child,task_memcg=/test/child,task=memhog,pid=748251,uid=1001
 [1367090.319170] Memory cgroup out of memory: Killed process 748251 (memhog) total-vm:104736kB, anon-rss:101924kB, file-rss:1428kB, shmem-rss:0kB, UID:1001 pgtables:244kB oom_score_adj:0
 
-`
 
 查看 cgroup.events：
 
-`❯ cat memory.events.local
+❯ cat memory.events.local
 low 0
 high 0
 max 177
 oom 21
 oom_kill 21
 
-`
 
 #### 参考资料
 

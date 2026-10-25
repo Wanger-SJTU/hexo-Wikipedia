@@ -65,4 +65,4 @@ Antes de terminar una sesión:
 3. Registra cualquier riesgo o bloqueo sin resolver.
 4. Haz commit con un mensaje descriptivo una vez que el trabajo esté en un estado seguro.
 5. Deja el repositorio lo suficientemente limpio para que la próxima sesión pueda ejecutar
-   `./init.sh` inmediatamente.
+   ./init.sh` inmediatamente.

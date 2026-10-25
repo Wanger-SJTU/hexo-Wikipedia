@@ -54,7 +54,7 @@ LLM 主要的两个接口是初始化方法和 generate 方法，前者用于实
 
 下面是使用 LLM 接口的示例：
 
-`from vllm import LLM, SamplingParams
+from vllm import LLM, SamplingParams
 
 prompts = [
     "Hello, my name is",
@@ -78,7 +78,7 @@ for output in outputs:
 
 运行上面的代码，可以看到下面的输入：
 
-`Prompt: 'Hello, my name is', Generated text: ' Dustin Nelson and I’m going to be your tutor!\n'
+Prompt: 'Hello, my name is', Generated text: ' Dustin Nelson and I’m going to be your tutor!\n'
 Prompt: 'The future of AI is', Generated text: ' bright, but it’s unclear how many of the blue-sky concepts we'`
 
 在简单了解 vLLM 的用法后，我们接下来看一下 vLLM 的整体架构。

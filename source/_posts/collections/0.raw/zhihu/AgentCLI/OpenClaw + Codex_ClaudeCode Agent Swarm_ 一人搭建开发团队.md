@@ -28,9 +28,9 @@ source_url: https://zhuanlan.zhihu.com/p/2010324070751826756
 1 月前：仅 CC/codex | 1 月后：Openclaw 协调 CC/codex&lt;br&gt;>  我的 git 历史看起来就像我刚雇佣了一个开发团队。实际上，我只是从管理 Claude code，转变为管理一个 Openclaw 代理，该代理管理着一支其他 Claude code 和 Codex 代理的舰队。
  
 
-`成功率`：该系统几乎无需任何干预就能一次性完成几乎所有中小型任务。
+成功率`：该系统几乎无需任何干预就能一次性完成几乎所有中小型任务。
 
-`成本`：约 100 美元/月用于 Claude，90 美元/月用于 Codex，但你可以从 20 美元开始。 这是为什么这种方式比直接使用 Codex 或 Claude Code 效果更好的原因：
+成本`：约 100 美元/月用于 Claude，90 美元/月用于 Codex，但你可以从 20 美元开始。 这是为什么这种方式比直接使用 Codex 或 Claude Code 效果更好的原因：
 
 >  Codex 和 Claude Code 对你的业务几乎没有上下文信息。 它们看到的是代码，而不是你业务的完整图景。
  
@@ -76,18 +76,17 @@ OpenClaw 和 Codex 的上下文差异极大：
 
 每个代理都有自己的工作树（隔离分支）和 tmux 会话：
 
-`# Create worktree + spawn agent
+# Create worktree + spawn agent
 git worktree add ../feat-custom-templates -b feat/custom-templates origin/main
 cd ../feat-custom-templates && pnpm install
 
 tmux new-session -d -s "codex-templates" \
   -c "/Users/elvis/Documents/GitHub/medialyst-worktrees/feat-custom-templates" \
   "$HOME/.codex-agent/run-agent.sh templates gpt-5.3-codex high"
-`
 
 该代理在 tmux 会话中运行，并通过脚本实现完整的终端日志记录。 我们启动代理的方式如下：
 
-`# Codex
+# Codex
 codex --model gpt-5.3-codex \
   -c "model_reasoning_effort=high" \
   --dangerously-bypass-approvals-and-sandbox \
@@ -97,22 +96,21 @@ codex --model gpt-5.3-codex \
 claude --model claude-opus-4.5 \
   --dangerously-skip-permissions \
   -p "Your prompt here"
-`
 
 我以前使用 codex exec 或 claude -p，但最近切换到 tmux：
 
 tmux 要远好得多，因为任务中途重定向功能强大。代理跑偏了方向？不要杀死它：
 
-`# Wrong approach:
+# Wrong approach:
 tmux send-keys -t codex-templates "Stop. Focus on the API layer first, not the UI." Enter
 
 # Needs more context:
 tmux send-keys -t codex-templates "The schema is in src/types/template.ts. Use that." Enter
-`
 
 任务在 .clawdbot/active-tasks.json 中被跟踪：
 
-`{
+```text
+{
   "id": "feat-custom-templates",
   "tmuxSession": "codex-templates",
   "agent": "codex",
@@ -123,16 +121,14 @@ tmux send-keys -t codex-templates "The schema is in src/types/template.ts. Use t
   "startedAt": 1740268800000,
   "status": "running",
   "notifyOnComplete": true
-
-```text
 }
 ```
 
-`
 
 完成后，它会更新 PR 编号和检查状态。（更多内容见步骤 5）
 
-`{
+```text
+{
   "status": "done",
   "pr": 341,
   "completedAt": 1740275400000,
@@ -141,14 +137,11 @@ tmux send-keys -t codex-templates "The schema is in src/types/template.ts. Use t
     "ciPassed": true,
     "claudeReviewPassed": true,
     "geminiReviewPassed": true
-
-```text
   },
   "note": "All checks passed. Ready to merge."
 }
 ```
 
-`
 
 #### 步骤3：循环监控
 
@@ -156,8 +149,7 @@ tmux send-keys -t codex-templates "The schema is in src/types/template.ts. Use t
 
 但它不会直接轮询代理——那会非常昂贵。相反，它运行一个脚本，该脚本读取 JSON 注册表并检查：
 
-`.clawdbot/check-agents.sh
-`
+.clawdbot/check-agents.sh
 
 该脚本是完全确定性的，并且极其高效：
 

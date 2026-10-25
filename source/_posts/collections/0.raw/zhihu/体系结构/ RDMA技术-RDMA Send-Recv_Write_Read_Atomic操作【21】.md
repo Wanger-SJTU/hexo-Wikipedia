@@ -147,7 +147,7 @@ RDMA（Remote Direct Memory Access）中，`FETCH_AND_ADD`和`CMP_AND_SWAP`是�
 
 #### 3.3 `FETCH_AND_ADD`
 
-`FETCH_AND_ADD`是一种原子递增操作，它的执行方式如下：
+FETCH_AND_ADD`是一种原子递增操作，它的执行方式如下：
 
 - 操作流程**：从远程内存位置读取一个值，将其增加指定的增量，然后将结果写回同一个位置。
 - <strong>返回值</strong>：在RDMA操作完成后，返回操作前的原始值。
@@ -159,7 +159,7 @@ RDMA（Remote Direct Memory Access）中，`FETCH_AND_ADD`和`CMP_AND_SWAP`是�
 
 #### 3.4 `CMP_AND_SWAP`（Compare and Swap）
 
-`CMP_AND_SWAP`（比较并交换）是一种更复杂的原子操作，执行过程如下：
+CMP_AND_SWAP`（比较并交换）是一种更复杂的原子操作，执行过程如下：
 
 - <strong>操作流程</strong>：从远程内存位置读取一个值，将其与给定的“比较值”进行比较。如果远程内存中的值等于“比较值”，则将该值替换为新值；否则不做任何修改。
 - <strong>返回值</strong>：在RDMA操作完成后，返回操作前的原始值。
@@ -188,7 +188,7 @@ RDMA（Remote Direct Memory Access）中，`FETCH_AND_ADD`和`CMP_AND_SWAP`是�
 - `CMP_AND_SWAP`：如果你有一个分布式锁的实现，多个节点会尝试使用 `CMP_AND_SWAP` 来检查锁变量的当前值并尝试获得锁。如果锁变量的当前值是预期的值（如 0 表示锁空闲），则交换它为 1，表示当前节点成功获得锁。
 在这些操作中，所有的远程节点都需要访问同一个内存区域，且该内存区域必须是通过 `ib_reg_mr` 注册的，以便 RDMA 可以直接访问和修改它。
 
-`FETCH_AND_ADD` 和 `CMP_AND_SWAP` 操作通常是在同一个地址上进行的，这个地址是通过 `ib_reg_mr` 注册的。这确保了远程节点能够访问并操作该内存区域，实现分布式系统中的高效并发控制。
+FETCH_AND_ADD` 和 `CMP_AND_SWAP` 操作通常是在同一个地址上进行的，这个地址是通过 `ib_reg_mr` 注册的。这确保了远程节点能够访问并操作该内存区域，实现分布式系统中的高效并发控制。
 
 **
 
@@ -240,7 +240,7 @@ RDMA（Remote Direct Memory Access）中，`FETCH_AND_ADD`和`CMP_AND_SWAP`是�
 
 #### 4.3 <strong>这两种操作的组合应用</strong>
 
-`FETCH_AND_ADD` 和 `CMP_AND_SWAP` 结合使用，可以实现复杂的分布式同步协议：
+FETCH_AND_ADD` 和 `CMP_AND_SWAP` 结合使用，可以实现复杂的分布式同步协议：
 
 - <strong>一致性协议</strong>：通过 `CMP_AND_SWAP` 和 `FETCH_AND_ADD` 的组合，可以实现一致性协议（如 Paxos 或 Raft）的优化。例如，节点可以利用 `FETCH_AND_ADD` 来累加日志条目的编号，使用 `CMP_AND_SWAP` 来原子地交换日志条目或状态。
 - <strong>协同计算和资源调度</strong>：在一些计算集群或分布式计算环境中，节点之间可以通过这两种操作来调度计算资源，确保任务分配的原子性和一致性。

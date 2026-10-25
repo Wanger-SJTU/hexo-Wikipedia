@@ -110,11 +110,10 @@ cache一致性协议通过管理cache-line的状态来防止不一致或者数�
 
 第二个问题，全局内存有序不能保证。如下例子中，初始变量a,b都为0，假设CPU0执行foo()，CPU1执行bar()，包含a的cache line只存在与CPU1的cache中，包含b的cache line存在于CPU0的cache中。
 
-`void foo(void) {  
+```cpp
+void foo(void) {  
   a = 1;   
   b = 1; 
-
-```cpp
 } 
 void bar(void) {   
   while(b==0) continue;   
@@ -138,9 +137,8 @@ void bar(void) {
 
 硬件不清楚哪些变量是可能相关的，硬件设计者无法提供直接的解决方式。因此他们提供了<strong>memory-barrier</strong>指令给软件开发者，由他们告诉CPU变量的关系。上述程序代码使用memory-barrier更改后如下：
 
-`void foo(void)
-
 ```cpp
+void foo(void)
 {
   a = 1;
   smp_mb();
@@ -197,9 +195,8 @@ void foo(void) {   a = 1;   smp_mb();   b = 1; } void bar(void) {   while(b==0) 
 
 硬件设计者依旧无法直接解决，而memory-barrier可以于invalidate queue交互，当cpu执行memory barrier时，标记当前invalidate queue中的所有条目，强制后续的<strong>load</strong>等待，直到所有标记的条目成功应用到cache中。因此加入一条memory barrier的程序代码如下：
 
-`void foo(void)
-
 ```cpp
+void foo(void)
 {
   a = 1;
   smp_mb();
@@ -223,9 +220,8 @@ cpu1执行完while循环后执行smp_mb()，标记invalidate queue中的条目�
 
 使用读写屏障修改的程序如下：
 
-`void foo(void)
-
 ```cpp
+void foo(void)
 {
   a = 1;
   smp_mb();

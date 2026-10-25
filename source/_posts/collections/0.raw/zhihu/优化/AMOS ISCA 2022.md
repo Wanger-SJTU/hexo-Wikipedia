@@ -29,9 +29,8 @@ AMOS这个工作，其实很早就开始做了，我们设计代码生成工作�
 
 在这个框架里，第一个要解决的问题就是如何从一个比较普通的输入compute里知道哪一部分是可以使用特殊指令的呢，其实这里就是一个匹配问题，比如说给定一个以下的NCHW卷积定义
 
-`def conv2d(N, C, H, W, K, R, S, stride, padding, dilation):
-
-```text
+```python
+def conv2d(N, C, H, W, K, R, S, stride, padding, dilation):
     kH = (R - 1) * dilation + 1
     kW = (S - 1) * dilation + 1
     pH = H + 2 * padding
@@ -81,7 +80,7 @@ A, B, Conv = conv2d(N, C, H, W, K, R, S, stride, padding, dilation)`
 
 有了自动生成映射的能力，下一个要解决的问题就是如何基于某个选定好的映射自动进行tensorize。tensorize有几个必要的操作：构建符合硬件存储层次的流水线，使用定制的数据搬移指令准备给特殊计算单元计算的数据，调用特殊计算单元的指令。这些步骤体现在Tensor Core GPU上就是从global memory把输入数据搬到shared memory，再从shared memory用load_matrix_sync搬到fragment，然后调用mma_sync进行计算，最后再store_matrix_sync到global memory。其它加速器基本都符合这种流程，而且更简单，比如Mali GPU可以不考虑搬移数据的特殊指令。这些流程不完全可以用TVM schedule primitive完成，而是需要结合compute的rewrite。为了解释这一点，我们可以看一下AMOS对上面二维卷积输入生成的CUDA代码
 
-`extern "C" __global__ void default_function_kernel3(float* __restrict__ Conv_vmap_output, float* __restrict__ memcpy_dst) {
+extern "C" __global__ void default_function_kernel3(float* __restrict__ Conv_vmap_output, float* __restrict__ memcpy_dst) {
 
 ```cpp
   for (int n_output_k_output_fused_p_output_fused_q_output_fused_outer_outer_inner = 0; n_output_k_output_fused_p_output_fused_q_output_fused_outer_outer_inner  4; ++n_output_k_output_fused_p_output_fused_q_output_fused_outer_outer_inner) {

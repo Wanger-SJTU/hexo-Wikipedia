@@ -33,4 +33,4 @@ Har bir loyiha papkasi odatda quyidagilarni oʻz ichiga oladi:
 - `solution/`: Namuna yechim (agar qiyin vaziyatga tushib qolsangiz).
 - Sizning orqa foningiz va aniq maqsadlaringiz tushuntirilgan vazifa yoʻriqnomalari.
 
-`starter/` katalogidagi vazifalarni bajarish uchun oʻzingiz afzal koʻrgan AI kod yozish agentidan (masalan, Claude Code, Cursor, Trae) foydalaning.
+starter/` katalogidagi vazifalarni bajarish uchun oʻzingiz afzal koʻrgan AI kod yozish agentidan (masalan, Claude Code, Cursor, Trae) foydalaning.

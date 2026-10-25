@@ -27,7 +27,7 @@ LLM decode forward 为什么只能吐一个 token？主流 LLM 都是 decoder-on
 
 有个直觉是：模型输出每个 token 的“费力程度”其实并不一致。比如它在写 Rust 的时候，换行之后第一个 token 是 “l”（当然 tokenizer 可能没切那么细），接下来大概率是 “e”、”t”，然后是空格：
 
-```text
+```js
 let a = 1;
 let b = 2;
 ```
@@ -153,7 +153,7 @@ $$
 ![](https://www.zhihu.com/equation?tex=M) 的贪心续写真值是 `let` `␣a` `␣=` `␣1` `;`，draft（
 ![](https://www.zhihu.com/equation?tex=%5Cgamma%3D4)）猜了 `let` `␣a` `␣=` `␣2`。
 
-`let ␣a ␣=` 三个全中，到 `␣2` 发现不对，因为模型选择了 1，没有选择 2，于是接受前 3 个，再把 `␣1` 当作额外的奖励（因为已经 forward 出来，是对的选择），所以这一轮吐出 `let ␣a ␣= ␣1`，<strong>4 个 token / 1 次 forward</strong>。
+let ␣a ␣=` 三个全中，到 `␣2` 发现不对，因为模型选择了 1，没有选择 2，于是接受前 3 个，再把 `␣1` 当作额外的奖励（因为已经 forward 出来，是对的选择），所以这一轮吐出 `let ␣a ␣= ␣1`，<strong>4 个 token / 1 次 forward</strong>。
 
 所以，<strong>验证的正确性和 draft 怎么来的完全无关。</strong> 
 ![](https://www.zhihu.com/equation?tex=d_1..d_%5Cgamma) 是小模型贪心、小模型采样、n-gram 抄上文，还是随机 token，都不影响输出正确性，只影响接受率 

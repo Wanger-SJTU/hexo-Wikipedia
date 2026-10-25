@@ -130,7 +130,7 @@ hourglass结构如下图
 
 显然这个结构是嵌套的（总共5层嵌套，第5层嵌套没有`up1`），可以使用递归构造，从上图中可见，`low1`具有下采样率2，而`low3+up2`则具有上采样率2（最近邻插值），所以结构对称，并且经过`low1` ，channel可能会增大，而经过`low3+up2`，channel可能会减小，大概就是这么个过程，如下代码片段（经过简化处理，参考源码）
 
-`dims=[256,256,384,384,384,512]
+dims=[256,256,384,384,384,512]
 for i in range(5):
   curr_dim, next_dim =dims[i],dims[i+1]
   low1 = make_hg_layer(3, curr_dim, next_dim, ...)

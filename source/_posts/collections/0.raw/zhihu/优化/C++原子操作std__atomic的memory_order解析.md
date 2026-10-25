@@ -29,9 +29,8 @@ source_url: https://zhuanlan.zhihu.com/p/609771875
 
 memory_order_relaxed为最宽松规则，只保证在同一线程内同一原子变量操作顺序不变。
 
-`#include 
-
 ```cpp
+#include 
 #include 
 #include 
 std::atomicbool> x,y;
@@ -59,7 +58,6 @@ int main() {
 }
 ```
 
-`
 
 操作5的断言可能会失败！因为其他线程可能看到相反的1和2的执行顺序。
 
@@ -67,9 +65,8 @@ int main() {
 
 memory_order_release和memory_order_acquire配对保证了store之前的指令在其他线程load之时是可见的。
 
-`std::atomicint> data[5];
-
 ```cpp
+std::atomicint> data[5];
 std::atomicbool> sync1(false);
 void thread_1()
 {
@@ -91,7 +88,6 @@ void thread_2()
 }
 ```
 
-`
 
 按任意顺序启动2个线程，所有断言成立。
 
@@ -105,9 +101,8 @@ memory_order_acq_rel实际上是memory_order_release和memory_order_acquire的�
 
 memory_order_consume是较memory_order_acquire更为宽松的语义，适用于原子指针情形，若之前与之配对的store（或其他存储效果的原子方法）为memory_order_release，则保证了store指令之前对所保存的指针所指向的对象的操作是在load操作之前完成的。
 
-`struct X
-
 ```cpp
+struct X
 {
     int i;
     std::string s;
@@ -139,7 +134,6 @@ int main() {
 }
 ```
 
-`
 
 ### memory_order_seq_cst
 

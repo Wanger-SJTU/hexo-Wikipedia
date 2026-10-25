@@ -189,7 +189,7 @@ RL 训练实例的质量对于 agentic RL 至关重要。同时并非所有“�
 
 <strong>Task Description</strong>
 
-`Configure a git server so that I can run on my computer
+Configure a git server so that I can run on my computer
 
 git clone user@server:/git/server
 echo "hello world" > hello.html
@@ -263,10 +263,9 @@ then I see the output "hello world"`
 
 <strong>不可恢复或大规模的错误</strong>（例如环境启动失败、沙箱不可用）：这类样本会被完全 <strong>mask 掉</strong>，并用占位样本替换，以保证能有 batch size大小的数据。
 
-`def handle_rollout_with_mask(rollout, failure_type):
+```python
+def handle_rollout_with_mask(rollout, failure_type):
         """
-
-```text
         rollout: one trajectory (episode-level)
         failure_type: describes what went wrong during rollout
         """
@@ -305,9 +304,8 @@ then I see the output "hello world"`
 
 <strong>偶发且可恢复错误</strong>（例如工具超时、网速延缓等）：这类样本会被 <strong>filter 掉</strong>，并在全局控制比例（例如 ≤50%）下丢弃，避免过度重试。
 
-`class GroupFilterTB:
-
 ```python
+class GroupFilterTB:
         def __init__(self, config: AgenticConfig, env_manager_config: EnvManagerConfig, mode: str):
             self.config = config
             self.env_manager_config = env_manager_config

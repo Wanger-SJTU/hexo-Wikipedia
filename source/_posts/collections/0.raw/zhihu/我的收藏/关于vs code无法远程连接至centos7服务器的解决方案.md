@@ -43,7 +43,7 @@ $#### &#x7B2C;&#x4E00;&#x6B65;&#xFF1A;&#x4E0B;&#x8F7D;&#x5E76;&#x7F16;&#x8BD1; g
 
 然后可以通过crosstool来编译了：
 
-`unset LD_LIBRARY_PATH   #这个环境变量会导致build报错，所以要先删除掉
+unset LD_LIBRARY_PATH   #这个环境变量会导致build报错，所以要先删除掉
 ct-ng build`
 
 编译后 glibc 会安装在：当前目录`x86_64-linux-gnu/x86_64-linux-gnu/sysroot/`下的lib中。
@@ -72,7 +72,7 @@ ct-ng build`
 - <strong>VSCODE_SERVER_PATCHELF_PATH</strong> path to the [patchelf](https://link.zhihu.com/?target=https%3A//github.com/NixOS/patchelf) binary on the remote host
 <strong>这里有第三个坑</strong>，就是patchelf --set-rpath是不会优先去指定的目录找链接库的，所以还是会调用系统的glibc，导致出错。解决方案是加上--force-rpath参数，但是我们是通过环境变量让vscode自己patch的，它patch的时候不会加这个参数，所以我们只能自己写一个脚本来骗过它。创建fake-patchelf文件
 
-`#!/bin/bash
+#!/bin/bash
 # 这个脚本替代 VS Code 的 patchelf，自动加上 --force-rpath
 
 # 检查是否包含 --set-rpath 参数
@@ -100,7 +100,7 @@ fi `
 
 然后在环境变量中指向这个fake-patchelf即可，我这里贴出我的环境变量以供参考：
 
-`export VSCODE_SERVER_PATCHELF_PATH="$HOME/local/fake-patchelf"
+export VSCODE_SERVER_PATCHELF_PATH="$HOME/local/fake-patchelf"
 export VSCODE_SERVER_CUSTOM_GLIBC_PATH="$HOME/local/x86_64-linux-gnu/x86_64-linux-gnu/sysroot/lib"
 export VSCODE_SERVER_CUSTOM_GLIBC_LINKER="$HOME/local/x86_64-linux-gnu/x86_64-linux-gnu/sysroot/lib/ld-linux-x86-64.so.2"`
 

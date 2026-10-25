@@ -196,11 +196,11 @@ while True:
 ```text
         p0 = cv.goodFeaturesToTrack(old_gray, mask=None, **feature_params)
         good_ini=p0.copy()
-```
-
 
 cv.destroyAllWindows()
 cap.release()
+```
+
 
 输出2. 反向检测的光流分析：
 
@@ -313,11 +313,11 @@ while True:
             break
     else:
         break
-```
-
 
 cv.destroyAllWindows()
 cap.release()
+```
+
 
 输出
 
@@ -390,10 +390,10 @@ while(1):
         cv.imwrite('opticalfb.png',frame2)
         cv.imwrite('opticalhsv.png',bgr)
     prvs = next
-```
-
 cap.release()
 cv.destroyAllWindows()
+```
+
 
 原图
 稠密------------------------------------------可爱の分割线------------------------------------------

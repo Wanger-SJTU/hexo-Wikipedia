@@ -20,7 +20,7 @@ source_url: https://zhuanlan.zhihu.com/p/942317791
 首先，[BitBLAS](https://link.zhihu.com/?target=https%3A//github.com/microsoft/BitBLAS)以submodule(位于项目的`3rdparty/tvm`路径下)的形式使用tvm，当然这里的tvm已经是我自己爆改过的，他的实际地址[LeiWang1999/tvm](https://link.zhihu.com/?target=https%3A//github.com/LeiWang1999/tvm)的`bitblas_tl`分支，这个分支的TVM包括但不限于做了以下修改:
 
 - 引入了两三个非常hack的新的Schedule原语，用来更改语法树以获得更好的性能:
-`with_scaling = bool(weight_dequantize_info["with_scaling"])
+with_scaling = bool(weight_dequantize_info["with_scaling"])
 if with_scaling:
 
 ```text
@@ -42,7 +42,6 @@ if with_zeros:
       )
 ```
 
-`
 
 - 改进和添加了TVM的几个Pass，例如针对Hopper架构的PartialSync以及TMA的支持，修复了一些目前TVM上游存在的bug.
 - 增加了自己的Codegen后端，例如针对HIP的`CodegenHIP`,针对`cute`的codegen等。
@@ -56,14 +55,13 @@ if with_zeros:
 
 例如用户写了一个TensorIR的算子表达式，我们可以使用TVM自己的Tunner去对算子进行调优，也可以使用我们自己的第三方的框架进行调优，例如用户获得了一个整个模型的Relax计算图，我们可以使用TVM自己的Pass进行优化，也可以使用用户自己实现的Pass，例如Welder进行优化，大家相互分隔开，互不影响。但是为什么现在这种硬基于tvm开发的方法行不通呢？例如我之前想在MLC-LLM的基础上引入Welder的优化:
 
-`import tvm  # upstream
+import tvm  # upstream
 ​
 relax_mod = relax_transform(relax_mod)
 ​
 import welder
 relax_mod = welder.tune(relax_mod)
 # something bad happened
-`
 
 程序会Segment Fault，最后Trace的时候发现，当welder被import的时候, welder会引入自己的tvm，这个时候会load相关的library, 比如说`cutlass`,覆盖了之前的tvm的library(使用的cutlass commit不一致)，导致了segment fault。
 
@@ -86,13 +84,12 @@ relax_mod = welder.tune(relax_mod)
 
 以下是项目的 CMake 配置文件的核心部分，并且对重要的代码片段进行了解释：
 
-`if (DEFINED TVM_PREBUILD_PATH)
+```text
+if (DEFINED TVM_PREBUILD_PATH)
   message(STATUS "TVM_PREBUILD_PATH: ${TVM_PREBUILD_PATH}")
   # 当指定了 TVM 预构建路径时，直接将其作为共享库引入，而不是从源码构建
   add_library(tvm SHARED IMPORTED)
   set_target_properties(tvm PROPERTIES
-
-```text
     IMPORTED_LOCATION "${TVM_PREBUILD_PATH}/libtvm.so"
     INTERFACE_INCLUDE_DIRECTORIES "${TVM_PREBUILD_PATH}/../include"
   )
@@ -109,26 +106,24 @@ else()
 ```
 
 endif()
-`
 
 这里的配置通过检查 TVM_PREBUILD_PATH 变量，判断是否需要从源码进行编译，还是直接使用预编译好的TVM二进制文件。对于开发者来说，这种方式能够极大地简化扩展模块与核心模块的构建流程，也能避免在不同版本之间切换时出现的编译问题。
 
 例如，当系统已经存在一个编译好了的上游tvm,可能在python已经安装好的包里，可以找到`libtvm.so`, `libtvmruntime.so`等库文件，通过设置TVM_PREBUILD_PATH的方式直接链接到指定的库的位置，而不需要重新编译TVM。
 
-`git clone --recursive https://github.com/LeiWang1999/TVM.CMakeExtend
+git clone --recursive https://github.com/LeiWang1999/TVM.CMakeExtend
 ​
 cd https://github.com/LeiWang1999/TVM.CMakeExtend
 ​
 cmake .. -DTVM_PREBUILD_PATH=/your/path/to/tvm/build  # e.g., /workspace/tvm/build
 ​
 make -j 16  # only build the source under src folder
-`
 
 这样，只有自己的源代码会被编译，不仅节省了编译时间，而且避免了与TVM上游代码的冲突。
 
 其次, 用户也可以指定一个特定的TVM项目的位置进行编译:
 
-`git clone --recursive https://github.com/LeiWang1999/TVM.CMakeExtend
+git clone --recursive https://github.com/LeiWang1999/TVM.CMakeExtend
 ​
 cd https://github.com/LeiWang1999/TVM.CMakeExtend
 ​
@@ -158,7 +153,6 @@ set(
   ${TVM_SOURCE_DIR}/3rdparty/dlpack/include
   ${TVM_SOURCE_DIR}/3rdparty/dmlc-core/include
 )
-`
 
 这一段代码将 TileLang 扩展模块的所有源文件（.cc 文件）添加到对象库 tilelang_objs 中，并设置了与TVM共享的 include 路径。对象库的使用能够让我们在不同的目标中重复利用相同的源文件，而不需要重新编译。
 
@@ -174,20 +168,18 @@ target_link_libraries(tilelang PUBLIC tvm_runtime)`
 
 在[src](https://link.zhihu.com/?target=https%3A//github.com/LeiWang1999/TVM.CMakeExtend/tree/main/src)下面, 我放置了对tvm扩展的例子，包括优化的pass，新的codegen等，在自己写的代码中，我们引入TVM的头文件，编写自己的Pass:
 
-`#include 
-
 ```cpp
+#include 
 #include 
 #include 
 #include 
 #include 
 ```
 
-`
 
 在最后，我们注册一个全局接口，以供python端进行调用:
 
-`tvm::transform::Pass Simplify() {
+tvm::transform::Pass Simplify() {
 
 ```text
     auto pass_func = [=](PrimFunc f, IRModule m, PassContext ctx) {
@@ -201,7 +193,6 @@ target_link_libraries(tilelang PUBLIC tvm_runtime)`
 
 ​
 TVM_REGISTER_GLOBAL("tl.transform.Simplify").set_body_typed(Simplify);
-`
 
 这样在python端就可以通过`tvm.tl.transform.Simplify`来调用这个pass优化tensorir的语法树了。
 
@@ -213,18 +204,19 @@ TVM_REGISTER_GLOBAL("tl.transform.Simplify").set_body_typed(Simplify);
 
 例如，直接`import tvm`:
 
-`from tvm._ffi.registry import list_global_func_names
+```python
+from tvm._ffi.registry import list_global_func_names
 print(list_global_func_names())
+```
+
 '''
 'tir.analysis.find_anchor_block', ... , 'relay._transform.ToBasicBlockNormalForm', 'relay._transform.to_cps', 'relay._transform.ToCPS', 'topi.bitwise_or', 'relay._transform.InferTypeLocal', 'relay.backend.aot.CreateExecutorMetadata', 'relay.build_module._AOTExecutorCodegen', 'relay.build_module._BuildModule', 'tvm_callback_cuda_compile', 'relay.backend.CreateExecutor']
 '''
-`
 
 先load lib再`import tvm`:
 
-`import bitblas
-
 ```python
+import bitblas
 from bitblas import tvm as tvm
 from tvm._ffi.registry import list_global_func_names
 print(list_global_func_names())
@@ -233,11 +225,10 @@ print(list_global_func_names())
 '''
 'tl.transform.Simplify', ..., 'tir.analysis.find_anchor_block', 'tir.analysis.find_anchor_block', ...'relay._transform.InferTypeLocal', 'relay.backend.aot.CreateExecutorMetadata', 'relay.build_module._AOTExecutorCodegen', 'relay.build_module._BuildModule', 'tvm_callback_cuda_compile', 'relay.backend.CreateExecutor']
 '''
-`
 
 这里还有一个细节, 在整个项目的`__init__.py`中，我们还需要设置好环境变量，以便在运行时能够正确地找到tvm python interface的地址。
 
-`# Handle TVM_IMPORT_PYTHON_PATH to import tvm from the specified path
+# Handle TVM_IMPORT_PYTHON_PATH to import tvm from the specified path
 TVM_IMPORT_PYTHON_PATH = os.environ.get("TVM_IMPORT_PYTHON_PATH", None)
 ​
 if TVM_IMPORT_PYTHON_PATH is not None:
@@ -266,7 +257,6 @@ else:
 
 ​
 import tvm as tvm
-`
 
 所以在之前的例子上, 我们使用了`from bitblas import tvm as tvm`来确保我们的tvm的python接口和我们link的lib是一致的，不过这个是为了谨慎，一般而言应该不需要。
 

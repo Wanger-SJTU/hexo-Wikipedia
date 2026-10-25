@@ -57,7 +57,7 @@ Skill 不只是单个 `SKILL.md` 文件。一个 Skill 目录可能包含：
 
 ### 2. Skill 是一种格式
 
-`SKILL.md` 的 frontmatter 必须包含 `name` 和 `description`。`description` 是路由触发器，不是内部文档。它的作用是告诉模型"何时加载这个 Skill"。
+SKILL.md` 的 frontmatter 必须包含 `name` 和 `description`。`description` 是路由触发器，不是内部文档。它的作用是告诉模型"何时加载这个 Skill"。
 
 <strong>常见失败点</strong>：description 不是"这个 Skill 做什么"，而是"何时加载"。应该是"Load when..."而不是"This Skill does"。
 

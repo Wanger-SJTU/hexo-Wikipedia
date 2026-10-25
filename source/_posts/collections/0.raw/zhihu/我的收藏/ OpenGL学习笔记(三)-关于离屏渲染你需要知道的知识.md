@@ -19,7 +19,7 @@ source_url: https://zhuanlan.zhihu.com/p/157649253
 
 在开始之前，先看看如下的代码：
 
-`//1.按钮存在背景图片
+//1.按钮存在背景图片
 UIButton *btn1 = [UIButton buttonWithType:UIButtonTypeCustom
 btn1.frame = CGRectMake(100, 30, 100, 100);
 btn1.layer.cornerRadius = 50;
@@ -164,14 +164,14 @@ img2.image = [UIImage imageNamed:@"image.png"];`
 
 <strong>4.1.方案一:</strong>
 
-`_imageView.clipsToBounds=YES;
+_imageView.clipsToBounds=YES;
 _imageView.layer.cornerRadius=4.0;`
 
 4.2.方案二:
 
 贝塞尔曲线一
 
-`- (UIImage *)roundedCornerImageWithCornerRadius:(CGFloat)cornerRadius {
+- (UIImage *)roundedCornerImageWithCornerRadius:(CGFloat)cornerRadius {
 
 ```text
     CGFloat w = self.frame.size.width;
@@ -198,7 +198,7 @@ _imageView.layer.cornerRadius=4.0;`
 
 贝塞尔曲线二
 
-`- (void)addMaskToBounds:(CGFloat)maskBounds {
+- (void)addMaskToBounds:(CGFloat)maskBounds {
 
 ```text
     CGFloat w = self.frame.size.width;
@@ -226,7 +226,7 @@ _imageView.layer.cornerRadius=4.0;`
 
 图片覆盖遮罩
 
-`@interface RoundImageView : UIView
+@interface RoundImageView : UIView
 @property (nonatomic, strong) UIImageView *maskView;
 @end
 
@@ -262,7 +262,7 @@ iOS上的 YYImage 的圆⻆处理
 
 [](https://link.zhihu.com/?target=https%3A//github.com/ibireme/YYWebImage/blob/093193c67bfa2409af93e618a48e3208d63106a5/YYWebImage/Categories/UIImage%252BYYWebImage.m%23L356)
 
-`- (UIImage *)yy_imageByRoundCornerRadius:(CGFloat)radius
+- (UIImage *)yy_imageByRoundCornerRadius:(CGFloat)radius
 
 ```text
                                  corners:(UIRectCorner)corners

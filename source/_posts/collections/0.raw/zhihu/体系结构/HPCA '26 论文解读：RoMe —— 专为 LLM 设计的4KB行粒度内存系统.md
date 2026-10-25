@@ -129,7 +129,7 @@ RoMe（<strong>Ro</strong>w-granularity-access <strong>Me</strong>mory system）
 
 为了直观理解命令生成器的工作原理，我们可以将其逻辑抽象为如下的硬件描述语言：
 
-`// 概念性伪代码：RoMe 命令生成器 (Command Generator) 状态机抽象
+// 概念性伪代码：RoMe 命令生成器 (Command Generator) 状态机抽象
 module CommandGenerator (
     input wire clk,
     input wire [3:0] opcode,      // RD_row, WR_row, REF 等
@@ -173,7 +173,6 @@ module CommandGenerator (
 ```
 
 endmodule
-`
 
 <strong>代码解析：</strong>如下图所示命令生成器巧妙地插入了 `tRRDS - tCCDS` 的延迟，确保了向两个物理 Bank 发送的读命令能够以 `tCCDS`（如 1ns）的理想间隔完美交错，从而打满数据总线。![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_b02af8b566df.jpg)
 

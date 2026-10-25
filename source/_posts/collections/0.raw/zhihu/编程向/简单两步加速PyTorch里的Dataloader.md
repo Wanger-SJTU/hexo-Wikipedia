@@ -23,8 +23,11 @@ PyTorch中通过Dataloader加载图片，使用十分方便。但当加载图片
 
 具体的使用例子：
 
-`import jpeg4py as jpeg
+```python
+import jpeg4py as jpeg
 import cv2
+```
+
 
 if __name__ == "__main__":
 
@@ -50,9 +53,8 @@ if __name__ == "__main__":
 
 一个使用的例子：
 
-`class data_prefetcher():
-
 ```python
+class data_prefetcher():
     def __init__(self, loader):
         self.loader = iter(loader)
         # self.stream = torch.cuda.Stream()

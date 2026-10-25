@@ -73,21 +73,22 @@ Milvus 是一款高度灵活、可扩展的开源向量数据库，毫秒内即�
 
 - 配置环境。
 
-`pip install openai==1.2.0
-
 ```bash
+pip install openai==1.2.0
 pip install langchain==0.0.333
 pip install pymilvus
 ```
 
 
 export OPENAI_API_KEY=xxxx  # Enter your OpenAI API key here
-`
 
 - 使用向量数据库构建自定义检索器。我们选择 Milvus 作为向量数据库、 LangChain 作为调用框架。
 
-`from langchain.vectorstores import Milvus
+```python
+from langchain.vectorstores import Milvus
 from langchain.embeddings import OpenAIEmbeddings
+```
+
 
 # Prepare retriever
 vector_db = Milvus(
@@ -95,12 +96,14 @@ vector_db = Milvus(
    connection_args = {'host': 'localhost', 'port': '19530'}
    )
 retriever = vector_db.as_retriever(search_kwargs={'k': 5})  # change top_k here
-`
 
 - 将文档导入 Milvus。LangChain 会解析文档、将其切分成片段，并转换为向量。随后这些文档片段和相应的向量会被导入 Milvus 向量数据库。当然，我们也可以自定义每个步骤，进一步提高检索质量。
 
-`from langchain.document_loaders import TextLoader
+```python
+from langchain.document_loaders import TextLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
+```
+
 
 # Parsing and chunking the document.
 filepath = 'path/to/your/file'
@@ -110,14 +113,16 @@ doc_data = TextLoader(filepath).load_and_split(
 
 # Embedding and insert chunks into the vector database.
 vector_db.add_texts([doc.page_content for doc in doc_data])
-`
 
 至此，一个自定义的检索器已经搭建完成，可以支持私有数据下的语义搜索。接下来，我们需要将这个检索器集成到 OpenAI Assistants，从而实现内容生成。
 
 - 使用 OpenAI 的函数调用功能创建一个 Assistant，并提示 Assistant 在回应请求时使用名为 CustomRetriever的函数工具。
 
-`import os
+```python
+import os
 from openai import OpenAI
+```
+
 
 # Setup OpenAI client.
 client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
@@ -146,11 +151,10 @@ my_assistant = client.beta.assistants.create(
 )
 ```
 
-`
 
 - Assistant 采用异步方式调用函数工具。首先开启线程并调用 Assistant，其状态存储在名为Run 的对象中。在运行过程中，如果 Assistant 认为有必要调用CustomRetriever函数，会暂停运行等待异步提交函数调用结果。通过轮询来获取Assistant 发出调用的命令。
 
-`QUERY = 'ENTER YOUR QUESTION HERE'
+QUERY = 'ENTER YOUR QUESTION HERE'
 
 # Create a thread.
 my_thread = client.beta.threads.create(
@@ -177,11 +181,10 @@ while True:
    my_run = client.beta.threads.runs.retrieve(thread_id=thread.id, run_id=my_run.id)
    if my_run.status != 'queued':
        break
-`
 
 - 当查询到 Assistant 正在等待函数调用结果，即可对查询语句进行向量搜索并通过 Run 提交结果至 Assistant，让其继续进行内容生成。
 
-`# Conduct vector search and parse results when OpenAI Run ready for the next action
+# Conduct vector search and parse results when OpenAI Run ready for the next action
 if my_run.status == 'requires_action':
    tool_outputs = []
    for tool_call in my_run.required_action.submit_tool_outputs.tool_calls:
@@ -206,11 +209,10 @@ if my_run.status == 'requires_action':
    )
 ```
 
-`
 
 - 最终，提取并解析与 OpenAI Assistant 的完整对话。
 
-`messages = client.beta.threads.messages.list(thread_id=my_thread.id)
+messages = client.beta.threads.messages.list(thread_id=my_thread.id)
 
 for m in messages:
 
@@ -218,7 +220,6 @@ for m in messages:
    print(f'{m.role}: {m.content[0].text.value}\n')
 ```
 
-`
 
 至此，我们已成功实现用自定义的检索功能来增强 OpenAI Assistant 的回答能力。
 

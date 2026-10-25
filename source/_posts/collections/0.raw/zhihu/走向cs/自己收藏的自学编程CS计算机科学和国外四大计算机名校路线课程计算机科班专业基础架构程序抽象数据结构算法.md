@@ -101,7 +101,7 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 
 <strong>简略版</strong>
 
-`1、程序抽象：伯克利CS61A   
+1、程序抽象：伯克利CS61A   
 ----（偏重：软件）（语言：Python Scheme SQL）（教材《SICP》Python版）
 ----
 2、计算机架构：Nand2tetris从与非门到俄罗斯方块  
@@ -575,7 +575,6 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 })
 ```
 
-`
 
 ### CS书籍对应课程
 

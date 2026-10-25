@@ -50,17 +50,17 @@ source_url: https://zhuanlan.zhihu.com/p/468774258
 
 NDK使用的是git-repo这一工具管理，而不是git，所以首先需要安装git-repo：
 
-`curl https://storage.googleapis.com/git-repo-downloads/repo > /usr/bin/repo
+curl https://storage.googleapis.com/git-repo-downloads/repo > /usr/bin/repo
 chmod a+x /usr/bin/repo`
 
 上面这个地址需要科学上网才能访问，我们可以换成国内的清华源：
 
-`curl https://mirrors.tuna.tsinghua.edu.cn/git/git-repo > /usr/bin/repo
+curl https://mirrors.tuna.tsinghua.edu.cn/git/git-repo > /usr/bin/repo
 chmod a+x /usr/bin/repo`
 
 在$NDK_PATH\toolchains\llvm\prebuilt\windows-x86_64\AndroidVersion.txt中查看NDK使用的LLVM版本，在我使用的NDK中，AndroidVersion.txt 的内容是：
 
-`12.0.8
+12.0.8
 based on r416183c1`
 
 在https://android.googlesource.com/toolchain/llvm_android/中找到对应版本的 llvm-android 源码：
@@ -69,13 +69,13 @@ based on r416183c1`
 
 Google的文档中给出了下载 llvm-android 源代码的方法，但这里默认下载的是最新版本：
 
-`mkdir llvm-toolchain && cd llvm-toolchain
+mkdir llvm-toolchain && cd llvm-toolchain
 repo init -u https://android.googlesource.com/platform/manifest -b llvm-toolchain
 repo sync -c`
 
 我们需要做一些操作来换成我们想要的版本，在$NDK_PATH\toolchains\llvm\prebuilt\windows-x86_64目录下找到一个 manifest_xxxx.xml 文件，我这里是 manifest_7714059.xml。执行完下列指令后：
 
-`mkdir llvm-toolchain && cd llvm-toolchain
+mkdir llvm-toolchain && cd llvm-toolchain
 repo init -u`
 
 将 manifest_7714059.xml 复制到.repo/mainifests文件夹中（注意.repo是隐藏文件夹，并且从Windows复制到Linux会有格式转换的问题，这里建议使用VSCode的SSH-Remote插件避免上述问题）：
@@ -84,12 +84,12 @@ repo init -u`
 
 继续执行：
 
-`repo -m manifest_7714059.xml
+repo -m manifest_7714059.xml
 repo sync -c`
 
 这里也要把Google的地址换成清华源，替换规则见 Android 镜像使用帮助，替换后完整的指令如下：
 
-`mkdir llvm-toolchain && cd llvm-toolchain
+mkdir llvm-toolchain && cd llvm-toolchain
 repo init -u
 https://mirrors.tuna.tsinghua.edu.cn/git/AOSP/platform/manifest -b llvm-toolchain
 repo -m manifest_7714059.xml

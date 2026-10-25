@@ -59,7 +59,7 @@ store C matrix针对大矩阵的sgemm计算时。如果k维度足够大，global
 
 SASS代码比较可以从上面看到，512条FFMA和32条LDS指令，最核心的计算指令和访存指令都是一样的。但是GEMM（二）中用编译器产生的汇编码有更多的非计算指令存在。而且如果从上面的链接点进去的话，就会发现，FFMA指令被划到2个代码块中，相对而言，中间会多一个跳转指令。另外一个需要注意的点是scott的代码是针对Maxwell架构，所以将可以用于双发射的指令进行了单独标记。而笔者写的代码是在volta架构上编译运行的，volta架构取消了双发射。但是两个cycle发射一条FFMA指令就可以将所有的fp32 core填满。计算指令和访存指令占据不同的发射端口，计算和访存可以隔一个cycle发射。所以我的猜想是这样的，对于volta架构，t0 cycle的时候发射一条FFMA指令，t1 cycle的时候发射一条LDS指令，而后t2时刻再发射一条FFMA指令。这样的话，FFMA指令隔了2个cycle，中间还发射了一条LDS指令，但fp32的core依旧是被用满的状态。这样的话，即使没有了双发射，理论上也能将fp32 core打满。从volta架构编译出来的控制码中也可以看出一些端倪，如下，FFMA指令stall两个cycle，而LDS指令stall一个cycle。
 
-`[R---:B------:R-:W-:-:S02]         /*0cd0*/                   FFMA R115, R39.reuse, R14, R115 ;
+[R---:B------:R-:W-:-:S02]         /*0cd0*/                   FFMA R115, R39.reuse, R14, R115 ;
 [----:B------:R-:W-:-:S02]         /*0ce0*/                   FFMA R114, R39, R15, R114 ;
 [----:B------:R-:W1:-:S01]         /*0cf0*/                   LDS.U.128 R36, [R40+0x2410] ;
 [R---:B------:R-:W-:-:S02]         /*0d00*/                   FFMA R113, R32.reuse, R12, R113 ;`
@@ -98,12 +98,12 @@ volta reg remapping3.2 指令重排
 
 重排的目的是为了更好地使用reuse标识，这个地方可以看看旷视写的[矩阵乘终极优化指南](https://zhuanlan.zhihu.com/p/410278370)，当然，基本上也就是scott的sgemm介绍内容。读取指令的操作数的时候，有一个寄存器的reuse cache。在指令中使用这个标识就代表这个数被hold住了，下一条指令可以直接使用。这个地方，大家都是这么说的，NV也没有官方的说明，那就这么理解吧。具体示意代码如下：
 
-`FFMA R2, R64.reuse, R73, R2; # R64 进入 Reuse Cache
+FFMA R2, R64.reuse, R73, R2; # R64 进入 Reuse Cache
 FFMA R3, R64.reuse, R72, R3; # R64 从 Reuse Cache 中获取，避免与 R72 冲突`
 
 为了更好地利用这个reuse特性，scott给了一种非常奇怪的指令排列顺序，如下：
 
-` 1,  0,  2,  3,  5,  4,  6,  7, 33, 32, 34, 35, 37, 36, 38, 39, 
+ 1,  0,  2,  3,  5,  4,  6,  7, 33, 32, 34, 35, 37, 36, 38, 39, 
 45, 44, 46, 47, 41, 40, 42, 43, 13, 12, 14, 15,  9,  8, 10, 11,
 17, 16, 18, 19, 21, 20, 22, 23, 49, 48, 50, 51, 53, 52, 54, 55, 
 61, 60, 62, 63, 57, 56, 58, 59, 29, 28, 30, 31, 25, 24, 26, 27`
@@ -120,7 +120,7 @@ FFMA R3, R64.reuse, R72, R3; # R64 从 Reuse Cache 中获取，避免与 R72 冲
 
 这个部分的内容主要是介绍一下怎么解决GEMM（二）所存在的shared memory bank冲突。其实scott的文章已经说了这一点，但是吧，实在是太费解了。首先，再来回顾一下这个思路。我们一个block有256个线程，8个warp，8个warp要去取shared memory中的半行元素，也就是=64个元素。warp0和warp4取得是同样的16个元素。而warp里面，线程0、2、4、6、8、10、12、14是取得同样的4个元素。由于取得是同样的元素，同一个bank触发多播的机制，没有冲突。取多少元素说清楚了，就得说一下shared memory的索引了。scott给出的256线程版本索引是：
 
-`readAs = ((tid128 >> 4) | ((tid >> 1) & 7)) > 3) | (tid & 1)) 
+readAs = ((tid128 >> 4) | ((tid >> 1) & 7)) > 3) | (tid & 1)) 
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_a92962a87d30.jpg)
 
@@ -128,9 +128,8 @@ shared memory详细解析总之，这个索引给我整不会了。作为一个�
 
 我来说一下我的计算方法，以B矩阵对应的shared memory为例，首先，计算warp_id，也就是当前线程属于哪个warp，由tid/32即可得。随后计算lane_id，即当前线程属于这个warp上得哪个线程，由tid%32即可得。随后就是通过warp_id和lane_id来算出，对应128个元素得哪一个元素。先算(warp_id%4)×16，假设是warp2，就是上图左侧的第2个（从0算）warp。前面有2个warp，跳过了2*16=32个元素。然后再看看当前lane_id。0-15在左半边，16-31在右半边。所以lane_id/16，先看是左半边还是右半边。右半边的话，先跳过8个元素。最后再看lane_id的奇偶数，如果奇数的话，就再跳一个四个元素。代码实现如下，这个就是正常人可以看懂的方式了。对A矩阵的映射关系同理。
 
-`//load index of the tile
-
 ```cpp
+//load index of the tile
 const int warp_id = tid / 32;
 const int lane_id = tid % 32;
 const int tile_index_b = (warp_id%4)*16 + (lane_id/16)*8 + (lane_id%2)*4;
@@ -140,9 +139,8 @@ const int tile_index_a = (warp_id/4)*32 + ((lane_id%16)/2)*4;`
 
 然后shared memory取数的代码更改就是下面这样，以B矩阵块为例：
 
-`// 改变前
-
 ```cpp
+// 改变前
 #pragma unroll
 for (int thread_y = 0; thread_y 
 ```
@@ -164,7 +162,7 @@ for (int thread_y = 0; thread_y
 
 后面遇到的<strong>第二个问题</strong>是在做寄存器remapping的时候。我发现NVCC编译出来的代码是这个样子：
 
-`FFMA R125, R52, R44, R72 ;
+FFMA R125, R52, R44, R72 ;
 FFMA R122, R53, R44.reuse, R73 ;
 FFMA R74, R54, R44.reuse, R74 ;
 FFMA R75, R55, R44.reuse, R75 ;`
@@ -173,7 +171,6 @@ FFMA R75, R55, R44.reuse, R75 ;`
 
 当时想了各种方式，调整CUDA C代码来让nvcc编译出我想要的FFMA格式，但是，这个尝试并不能实现。所以接下来，有两个方式，一个是头铁，搞清楚这个100多个寄存器在512条FFMA指令中对应的物理元素，然后做remapping，这个路线中间会遇到可以预想的无数的bug和计算问题。另一个是参考Maxas，把这玩意整合到汇编器上，定义好每个寄存器的对应元素和排列顺序。然后汇编器顺带着处理，如下：
 
-`
 
 ```text
     // Temporary registers to calculate the state registers. Reuse the C output registers.
@@ -220,15 +217,13 @@ FFMA R75, R55, R44.reuse, R75 ;`
 ```
 
 
-`
 
 然而，我只是想简简单单写个sgemm，我并不想把我有限的周末时间全部投进去，毕竟读者也没给我钱。然后想想指令重排，通过reuse标识也能解决一部分reg的bank冲突，那就整这个吧。
 
 接着就是我遇到的<strong>第三个问题</strong>，就是指令重排。我把里面所有存在寄存器bank冲突的指令列了出来。在[comment版本里面](https://link.zhihu.com/?target=https%3A//github.com/Liu-xiandong/How_to_optimize_in_GPU/blob/master/sgemm/asm/sgemm_comment.sm_70.cuasm)。再来看看volta架构中的bank冲突，volta架构的寄存器有2路bank，奇数寄存器号代表bank0，偶数寄存器号代表bank1。如果FFMA指令的三个源寄存器的寄存器号都属于奇数或者偶数，那么就发生了bank冲突。
 
-`//0    FFMA R74, R36, R62.reuse, R74 ;    
-
 ```text
+//0    FFMA R74, R36, R62.reuse, R74 ;    
 //1    FFMA R78, R34, R62.reuse, R78 ;
 //2    FFMA R16, R35, R62, R54 ;`
 ```
@@ -236,9 +231,8 @@ FFMA R75, R55, R44.reuse, R75 ;`
 
 比如上面的代码，0号指令和1号三个源寄存器都是偶数，不考虑reuse标识的话，都有bank冲突，而2号指令就没有bank冲突。调整这3个的位置，变成：
 
-`//2    FFMA R16, R35, R62.reuse, R54 ;   
-
 ```text
+//2    FFMA R16, R35, R62.reuse, R54 ;   
 //1    FFMA R78, R34, R62.reuse, R78 ; 
 ```
 

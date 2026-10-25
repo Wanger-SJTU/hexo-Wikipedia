@@ -82,7 +82,7 @@ A(thread_m_blocks*16,thread_k_blocks*16)*B(thread_k_blocks*16,thread_n_blocks*16
 
 具体的调度实现在：
 
-`__global__ void Marlin(
+__global__ void Marlin(
 
 ```cpp
   const int4* __restrict__ A, // fp16 input matrix of shape mxk 
@@ -106,9 +106,8 @@ CUDA可以通过
 
 同时m*n*k的计算就可以转化成k_tiles * n_tiles * parallel的计算：
 
-` int k_tiles = prob_k / 16 / thread_k_blocks;
-
 ```cpp
+ int k_tiles = prob_k / 16 / thread_k_blocks;
  int n_tiles = prob_n / 16 / thread_n_blocks;
  int iters = ceildiv(k_tiles * n_tiles * parallel, gridDim.x);
   // Ensure that the number of tiles in each stripe is a multiple of the groupsize; this avoids an annoying special case
@@ -128,9 +127,8 @@ CUDA可以通过
 
 在实际处理中，这里会算好每个TILE块的A,C的起始地址偏移，用于后续的内存读取：
 
-`int slice_row = (iters * blockIdx.x) % k_tiles;
-
 ```cpp
+int slice_row = (iters * blockIdx.x) % k_tiles;
 int slice_col_par = (iters * blockIdx.x) / k_tiles;
 
 if (slice_col_par >= n_tiles) {
@@ -156,7 +154,7 @@ if (slice_col_par >= n_tiles) {
 
 实现在：
 
-`  // Asynchronously fetch the next A, B and s tile from global to the next shared memory pipeline location.
+  // Asynchronously fetch the next A, B and s tile from global to the next shared memory pipeline location.
  auto fetch_to_shared = [&] (int pipe, int a_off, bool pred = true) {`
 
 实际上复杂的是内存偏移的计算。
@@ -165,7 +163,10 @@ if (slice_col_par >= n_tiles) {
 
 先看GLOBAL内存。
 
-`int a_gl_stride = prob_k / 8; // stride of the A matrix in global memory
+```cpp
+int a_gl_stride = prob_k / 8; // stride of the A matrix in global memory
+```
+
 constexpr int a_gl_rd_delta_o = 16 * thread_k_blocks / 8;`
 
 这里用INT4表示4*int的数据结构，后面大写的INT4都表示这种数据结构。
@@ -186,16 +187,15 @@ constexpr int a_gl_rd_delta_o = 16 * thread_k_blocks / 8;`
 
 这里还需要注意a_sh_wr_iters这个变量。
 
-` constexpr int a_sh_stage = a_sh_stride * (16 * thread_m_blocks); // overall size of a tile
+ constexpr int a_sh_stage = a_sh_stride * (16 * thread_m_blocks); // overall size of a tile
  constexpr int a_sh_wr_iters = ceildiv(a_sh_stage, a_sh_wr_delta); // number of shared write iterations for a tile`
 
 256个线程调用cp.async.cg.shared.global是无法获取到TILE的A矩阵的。需要a_sh_wr_iters次才能处理完成。
 
 因此实际调用时的代码，会重复a_sh_wr_iters次进行调用。
 
-`for (int i = 0; i  a_sh_wr_iters; i++) {
-
-```text
+```cpp
+for (int i = 0; i  a_sh_wr_iters; i++) {
         cp_async4_pred(
           &sh_a_stage[a_sh_wr_trans[i]],
           &A[a_gl_rd_delta_i * i + a_gl_rd + a_gl_rd_delta_o * a_off],
@@ -211,7 +211,7 @@ constexpr int a_gl_rd_delta_o = 16 * thread_k_blocks / 8;`
 
 代码中用如下结构记录共享内存：
 
-`  extern __shared__ int4 sh[];
+  extern __shared__ int4 sh[];
 
 ```text
   // Shared memory storage for global fetch pipelines. 
@@ -223,7 +223,7 @@ constexpr int a_gl_rd_delta_o = 16 * thread_k_blocks / 8;`
 
 这里需要说明的是：
 
-`constexpr int a_sh_stride = 16 * thread_k_blocks / 8; 
+constexpr int a_sh_stride = 16 * thread_k_blocks / 8; 
 constexpr int a_sh_stage = a_sh_stride * (16 * thread_m_blocks); // overall size of a tile
 constexpr int b_sh_stride = 32 * thread_n_blocks / 4;
 constexpr int b_sh_stage = b_sh_stride * thread_k_blocks;`
@@ -232,9 +232,8 @@ constexpr int b_sh_stage = b_sh_stride * thread_k_blocks;`
 
 A矩阵的BANK CONFLICT：
 
-`for (int i = 0; i  a_sh_wr_iters; i++)
-
-```text
+```cpp
+for (int i = 0; i  a_sh_wr_iters; i++)
     a_sh_wr_trans[i] = transform_a(a_sh_wr_delta * i + a_sh_wr);
 ```
 
@@ -270,7 +269,7 @@ B矩阵的存储是int4(小写)，只是INT4的。
 
 SUBTILE重排对应的是：
 
-` w = w.reshape(
+ w = w.reshape(
             (
  awq_linear.in_features // tile,
  tile,
@@ -294,16 +293,15 @@ SUBTILE重排对应的是：
 
 中间会用到如下的寄存器：
 
-` FragA frag_a[2][thread_m_blocks];
+ FragA frag_a[2][thread_m_blocks];
  I4 frag_b_quant[2];
  FragC frag_c[thread_m_blocks][4][2];
  FragS frag_s[2][4];`
 
 接着看调用链：
 
-`      for (int k = 0; k  b_sh_wr_iters; k++) {
-
-```text
+```cpp
+      for (int k = 0; k  b_sh_wr_iters; k++) {
         fetch_to_registers(k + 1, pipe % stages);
         if (k == b_sh_wr_iters - 2) {
           fetch_to_shared((pipe + stages - 1) % stages, pipe, slice_iters >= stages);
@@ -357,9 +355,8 @@ ldmatrix.sync.aligned.m8n8.x4.shared.b16 指令来实现。
 
 说到这里，虽然有点绕，但还属于好理解的。具体到代码层面，核心需要理解的是下面这两行的寻址逻辑。
 
-`  // Shared read index.
-
 ```cpp
+  // Shared read index.
 int a_sh_rd = a_sh_stride * ((threadIdx.x % 32) % 16) + (threadIdx.x % 32) / 16;
 ```
 
@@ -397,7 +394,10 @@ thread_k_blocks/b_sh_wr_iters = threads/8/thread_n_blocks
 
 外围代码实现：**
 
-` for (int i = 0; i  thread_m_blocks; i++)
+```cpp
+ for (int i = 0; i  thread_m_blocks; i++)
+```
+
  ldsm4(frag_a[k % 2][i], &sh_a_stage[a_sh_rd_trans[k % b_sh_wr_iters][i]]);
  int4* sh_b_stage = sh_b + b_sh_stage * pipe;
  frag_b_quant[k % 2] = *reinterpret_castI4*>(&sh_b_stage[b_sh_rd_delta * (k % b_sh_wr_iters) + b_sh_rd]);`
@@ -414,9 +414,8 @@ B矩阵的读取指令在vllm库中为了支持H100，稍有修改，建议参�
 
 代码实现：
 
-`   for (int j = 0; j  4; j++) {
-
 ```cpp
+   for (int j = 0; j  4; j++) {
       int b_quant = frag_b_quant[k % 2][j];
       int b_quant_shift = b_quant >> 8;
       FragB frag_b0 = dequant(b_quant);
@@ -477,9 +476,8 @@ B矩阵的偏移如上图所示。
 
 在AUTOAWQ得代码中是通过下面代码实现的。
 
-`def _get_perms():
-
-```text
+```python
+def _get_perms():
     perm = []
     for i in range(32):
         perm1 = []
@@ -525,7 +523,7 @@ PERM1.
 
 因此通过：
 
-`interleave = np.array([0, 2, 4, 6, 1, 3, 5, 7])
+interleave = np.array([0, 2, 4, 6, 1, 3, 5, 7])
  perm = perm.reshape((-1, 8))[:, interleave].ravel()`
 
 将8BIT的数据进行混插。
@@ -542,14 +540,13 @@ PERM1.
 
 经过PERM进行重新索引：
 
-` res = res.reshape((-1, _perm.numel()))[:, _perm].reshape(res.shape)
- `
+ res = res.reshape((-1, _perm.numel()))[:, _perm].reshape(res.shape)
 
 第五步：
 
 每8个数据融合成一个INT32:
 
-`for i in range(8):
+for i in range(8):
     q |= res[:, i::8] 
 
 经过上述5步操作，将B矩阵封装成可以使用MMA计算的矩阵。
@@ -620,9 +617,8 @@ SM内部在TILE迭代时，对应块得乘加和都是放在frag_c中的（m,n�
 
 global归约实际上可以理解成是同步顺序处理。
 
-`      if (slice_count > 1) { // only globally reduce if there is more than one block in a slice
-
 ```text
+      if (slice_count > 1) { // only globally reduce if there is more than one block in a slice
         barrier_acquire(&locks[slice_col], slice_idx);
         global_reduce(slice_idx == 0, last);
         barrier_release(&locks[slice_col], last);
@@ -634,7 +630,7 @@ global归约实际上可以理解成是同步顺序处理。
 
 该函数实现：
 
-`__device__ inline void barrier_acquire(int* lock, int count) {
+__device__ inline void barrier_acquire(int* lock, int count) {
 
 ```cpp
   if (threadIdx.x == 0) {

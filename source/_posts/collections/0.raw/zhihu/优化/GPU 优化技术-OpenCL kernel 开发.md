@@ -66,9 +66,9 @@ __kernel是必须要有，函数声明为可由OpenCL设备上的应用程序执
 - 函数形参
 > 内核函数也可以通过值传递和引用传递两种方式传递参数，如果内核参数是结构体，内核函数性能会下降，一般不与推荐使用。
 
-`__global uchar *a、__global uchar *b`等使用了全局内存区域(__global)，对应下图中的Global Memory，这块内存区域空间最大，latency最高是GPU最基础的内存。
+__global uchar *a、__global uchar *b`等使用了全局内存区域(__global)，对应下图中的Global Memory，这块内存区域空间最大，latency最高是GPU最基础的内存。
 
-`__private const int length、int idx`等内部寄存器变量使用私有内存区域(__private)，对应下图存Private Memory，这块内存区域是每个工作组独有的，工作组和工作组之间不可相互访问，同一个工作组中的工作项共享一块内存区域。
+__private const int length、int idx`等内部寄存器变量使用私有内存区域(__private)，对应下图存Private Memory，这块内存区域是每个工作组独有的，工作组和工作组之间不可相互访问，同一个工作组中的工作项共享一块内存区域。
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_34be93d8ab75.jpg)
 
@@ -90,9 +90,8 @@ OpenCL 内存模型
 
 通过读取文件方式，我们需要把.cl文件内容转换为C字符串，然后对字符串的代码进行源码编译。
 
-`std::string ClReadString(const std::string &filename)
-
 ```cpp
+std::string ClReadString(const std::string &filename)
 {
     std::ifstream fs(filename);
     if(!fs.is_open())
@@ -108,8 +107,12 @@ char *cl_str   = (char *)program_source.c_str();
 program        = clCreateProgramWithSource(context, 1, (const char **)&cl_str, NULL, NULL);`
 
 - 字符串保存
-`#define CL_KERNEL(...)  #__VA_ARGS__
+
+```text
+#define CL_KERNEL(...)  #__VA_ARGS__
 static const MI_CHAR *add_cl_kernel_str = CL_KERNEL(
+```
+
 
 __kernel void add(__global uchar *a,
                   __global uchar *b,
@@ -152,7 +155,11 @@ OpenCL C严格遵循C99标准，不支持标准C99头文件、函数指针、递
 
 - 高通Adreno GPU具有专门的硬件ALU来加速半精度计算，半精度ALU的GFLOPs几乎是单精度的两倍。但是16bit半精度支持有限，表示的精度范围有限，在整数值上只能表示[0,2048]范围，因此在和浮点混合使用会出现精度误差问题。
 - 针对半精度类型，需要查询设备是否支持半精度浮点数，如果device_flag结果为0，则说明设备不支持双精度。
-`int device_flag = 1;
+
+```cpp
+int device_flag = 1;
+```
+
 err = clGetDeviceInfo(device,CL_DEVICE_HALF_FP_CONFIG, sizeof(cl_device_fp_config),
 
 ```text
@@ -161,9 +168,9 @@ err = clGetDeviceInfo(device,CL_DEVICE_HALF_FP_CONFIG, sizeof(cl_device_fp_confi
 
 
 - 对于支持半精度浮点运算的设备，为了在内核函数中启用此功能，需要添加如下预处理器指令，另外内核程序编译选项添加"-D FP16"，使能内核程序代码FP_16宏定义。
-`#ifdef FP16
 
 ```text
+#ifdef FP16
 #pragma OpenCL EXTENSION cl_khr_fp16 : enable
 #endif`
 ```
@@ -173,20 +180,21 @@ err = clGetDeviceInfo(device,CL_DEVICE_HALF_FP_CONFIG, sizeof(cl_device_fp_confi
 
 针对可选项类型，高通Adreno GPU不支持双精度浮点数，因此需要查询设备是否支持双精度浮点数，如果device_flag结果为0，则说明设备不支持双精度。
 
-`int device_flag = 1;
+```cpp
+int device_flag = 1;
+```
+
 err = clGetDeviceInfo(device,CL_DEVICE_DOUBLE_FP_CONFIG, sizeof(cl_device_fp_config),
 
 ```text
                       &device_flag, NULL);
 ```
 
-`
 
 对于支持双精度浮点运算的设备，为了在内核函数中启用此功能，需要添加如下预处理器指令，另外内核程序编译选项添加"-D FP64"，使能内核程序代码FP_64宏定义。
 
-`#ifdef FP64
-
 ```text
+#ifdef FP64
 #pragma OpenCL EXTENSION cl_khr_fp64 : enable
 #endif`
 ```
@@ -206,7 +214,7 @@ err = clGetDeviceInfo(device,CL_DEVICE_DOUBLE_FP_CONFIG, sizeof(cl_device_fp_con
 
 **可以由一组标量、矢量或标量和矢量的组合来初始化一个矢量的值。矢量初始化写法：
 
-`float4 v0 = (float4)(1.0f, 2.0f, 3.0f, 4.0f);
+float4 v0 = (float4)(1.0f, 2.0f, 3.0f, 4.0f);
 
 //如果标量值都相等
 float4 v1 = (float4)(1.0f); // 代表四个值都为1.0f
@@ -226,14 +234,14 @@ float4 rgba = (float4)(vrgb, 1.0f);`
 
 实例代码
 
-`//实例代码
+//实例代码
 int8 data = (int8)(1, 2, 3, 4, 5, 6, 7, 8);
 int4 a = data.s1234; // a = (2, 3, 4, 5)
 int4 b = data.s3456; // b = (4, 5, 6, 7)`
 
 需要注意对于数值索引和字母索引，两个不能混用。例如：
 
-`float4 f;
+float4 f;
 float4 A = f.xy34;
 float4 B = f.s01yw;
 //上述两种用法都是错误的，两种不同的索引不能混用`
@@ -242,7 +250,7 @@ hi/lo/even/odd：主要用来访问一半矢量分量，具体访问的分量如
 
 矢量分量v.lov.hiv.oddv.evenfloat2 vv.x,v.s0v.y,v.s1v.y,v.s1v.x,v.s0float3 vv.s01,v.xyv.s23,v.zwv.s13,v.ywv.s02,v.xzfloat4 vv.s01,v.xyv.s23,v.zwv.s13,v.ywv.s02,v.xzfloat8 vv.s0123v.s4567v.s1357v.s0246float16 vv.s01234567v.s89abcdefv.s13579bdfv.s02468ace实例代码
 
-`//实例代码
+//实例代码
 int8 data = (int8)(1, 2, 3, 4, 5, 6, 7, 8);
 int4 a = data.hi; // a = (5, 6, 7, 8)
 int4 b = data.lo; // b = (1, 2, 3, 4)
@@ -273,7 +281,7 @@ int4 d = data.odd; // d = (1, 3, 5, 7)`
 
 具体示例代码如下：
 
-`//标量load/store 代码
+//标量load/store 代码
 __kernel void MatrixCopy(__global uchar *src, 
                          __global uchar *dst, 
 
@@ -324,7 +332,7 @@ __local参数的数据将存储在本地内存中。
 
 __private参数的数据将存储在私有内存中（默认）。
 
-`地址空间修饰符
+地址空间修饰符
 OpenCL的存储器模型分别为：全局存储器、局部存储器、常量存储器和私有存储器，对应的地址空间修饰符为：__global(或global)、__local(或local)、__constant(或constant)和__private(或private)。
 __global参数的数据将被放置在全局内存中。
 __constant参数的数据将存储在全局只读内存中（有效）。
@@ -336,7 +344,7 @@ __private参数的数据将存储在私有内存中（默认）。`
 - kernel修饰符 
 __kernel（kernel）修饰符声明一个函数为内核函数，在OpenCL设备上执行。
 
-`//kernel修饰符
+//kernel修饰符
 __kernel void MatrixMatrixAdd(__global float *mtx_a,
                               __global float *mtx_b,
                               __global float *mtx_c，  
@@ -365,7 +373,7 @@ kernel void MatrixMatrixAdd(global float *mtx_a,
 - 内核可选属性修饰符 
 kernel修饰符可以和属性修饰符__attribute__结合使用，主要有三种组合方式。
 
-`//提示编译器内核正在处理数据类型的大小
+//提示编译器内核正在处理数据类型的大小
 __kernel __attribute__((vec_type_hint(typen)))
 
 //提示编译器当前使用工作组的大小是多少
@@ -378,7 +386,7 @@ __kernel __attribute__((reqd_work_group_size(16, 16, 1)))`
 
 **访问修饰符用于指定图像类型的参数, 内核参数中的图像对象可以声明为只读、只写或者读写。 __read_only(或read_only)和__write_only(或write_only)来修饰图像对象参数。__read_write(或read_write)只能在内核中对又读又写的图像对象参数进行修饰。默认修饰符为read_only。
 
-`__kernel void add(__read_only image2d_t img_a,
+__kernel void add(__read_only image2d_t img_a,
 
 ```text
                   __write_only image2d_t img_d)
@@ -391,16 +399,16 @@ __kernel __attribute__((reqd_work_group_size(16, 16, 1)))`
 3.3.4 属性限定符**
 
 - 指定 enum、struct 和 union 类型的特殊属性
-`__attribute__((aligned(n))) __attribute__((endian(host)))
+__attribute__((aligned(n))) __attribute__((endian(host)))
 __attribute__((aligned)) __attribute__((endian(device)))
 __attribute__((packed)) __attribute__((endian))`
 
 - 指定变量或结构体的特殊属性
-`__attribute__((aligned(alignment)))
+__attribute__((aligned(alignment)))
 __attribute__((nosvm))`
 
 - 指定可以展开循环（for、while 和 do ）
-`__attribute__((OpenCL_unroll_hint(n)))
+__attribute__((OpenCL_unroll_hint(n)))
 __attribute__((OpenCL_unroll_hint))`
 
 #### 3.4 运算符
@@ -411,9 +419,8 @@ OpenCL的运算符分类
 
 运算符类型运算符符号及描述算术运算符加(+)、减(-)、乘(*)、除(/)、取余(%)关系运算符大于(>)、小于(=)、小于等于(位运算符位与(&)、位或(|)、异或(^)、非(~)、右移(>>)、左移(逻辑运算符与(&&)、或(||)条件选择运算符三目选择运算符(?:)一元运算符正负(+\-)、自加(++)、自减(--)、类型长度(sizeof)、非(!)、逗号(,)、(&,*)赋值运算符=、*=、/=、+=、-=、>=、&=、^=、|=算术运算符主要用于内置函数、浮点标量和矢量数据类型。对于算术运算符，如果操作数具有相同的类型，则结果将具有与操作数相同的类型。 如果运算涉及包含整数的向量和包含浮点值的向量，则生成的向量为浮点。 同样不能对浮点值或包含浮点值的向量使用位运算符。
 
-`//操作数为浮点数和整数类型，返回值为浮点类型
-
 ```cpp
+//操作数为浮点数和整数类型，返回值为浮点类型
 float a = 3.1415;
 int b = 2;
 float c = a * b;
@@ -431,7 +438,7 @@ int4 v_sum = v_d * d;// (1, 2, 3, 4) * (3, 3，3，3) = (3, 6, 9, 12)`
 
 运算符的多种使用方式
 
-`__kernel void op_sample(__global int4 *output)
+__kernel void op_sample(__global int4 *output)
 
 ```text
 {
@@ -462,9 +469,8 @@ int4 v_sum = v_d * d;// (1, 2, 3, 4) * (3, 3，3，3) = (3, 6, 9, 12)`
 
 uint get_work_dim()返回内核中使用的维度数size_t get_global_size(uint dimindx)返回dim指定维度上全局工作项数目size_t get_global_id(uint dimindx)返回dim指定维度上全局工作项idsize_t get_global_offset()返回dim指定维度上全局工作项id初始偏移量为了能够明白上述函数的使用方法，我们以遍历一张56x56的灰度图像为例子展开说明：
 
-`//开发者使用外部API设置全局工作项和偏移量
-
 ```text
+//开发者使用外部API设置全局工作项和偏移量
 const size_t global_size[2] = {56, 56};
 const size_t offset[2] = {0, 10};
 ```
@@ -501,9 +507,8 @@ __kernel void image_process(__global uchar *src,
 
 size_t get_num_groups(uint dim)返回dim指定维度上工作组数目size_t get_group_id(uint dim)返回dim指定维度上工作组idsize_t get_local_id(uint dim)返回工作组内dim指定维度上的工作项idsize_t get_local_size(uint dim)返回工作组内dim指定维度上的工作项数目为了能够明白上述函数的使用方法，我们以遍历一张56x56的灰度图像为例子展开说明：
 
-`const int global_offset[2] = {3, 5};
-
 ```cpp
+const int global_offset[2] = {3, 5};
 const int global_size[2] = {6, 4};
 const int local_size[2] = {3, 2};
 ```
@@ -555,7 +560,7 @@ OpenCL 的浮点函数分为五类：算术和舍入、比较、指数和对数�
 
 针对舍入函数：rint 舍入到最接近的偶数， round 返回最接近的整数，如果两个最接近的整数同样接近，则返回距离 0 更远的整数。 针对算术函数的乘加函数：“mad 优势是速度优于准确性，fma 优势是精度更高。 样例示意:
 
-`__kernel void mod_round(__global float *mod_input,
+__kernel void mod_round(__global float *mod_input,
                         __global float *mod_output,
                         __global float4 *round_input,
 
@@ -596,7 +601,7 @@ trunc: -6.0, -3.0, 3.0, 6.0`
 
 OpenCL提供了更多的三角函数，可以帮助我们更好的实现某些算法优化。 样例示意:
 
-`__kernel void sin_cal(__global float4 *angle,
+__kernel void sin_cal(__global float4 *angle,
 
 ```text
                       __global float4 *dst) 
@@ -617,7 +622,7 @@ OpenCL提供了更多的三角函数，可以帮助我们更好的实现某些�
 类型转换主要分为标量类型转换和向量类型转换及饱和四舍五入操作。 
 
 - 标量类型转换：主要是标量到标量的转换和标量到向量的转换操作
-`// 标量到标量转换
+// 标量到标量转换
 T a = (T)b;
 
 // 标量到向量转换
@@ -626,7 +631,7 @@ Tn a = (Tn)(b);`
 - 向量类型转换：主要是标量到标量的转换和标量到向量的转换操作 
 函数原型
 
-`destType convert_destType(srcType)
+destType convert_destType(srcType)
 destType convert_destType(srcType)
 destTypeN convert_destTypeN(srcTypeN)`
 
@@ -644,7 +649,7 @@ destTypeN convert_destTypeN(srcTypeN)`
 
 <strong>默认</strong>：convert默认舍入为rtz
 
-`float4 vin = (float4)(1.3, 2.6, 3.4, 5.6);
+float4 vin = (float4)(1.3, 2.6, 3.4, 5.6);
 uchar4 vot = convert_uchar4_sat_rte(vin);
 // 输出
 1 2 3 6`
@@ -659,7 +664,7 @@ OpenCL 提供了广泛的整数运算，本节将它们分为三类：加减法�
 
 加法计算中经常会出现两个整数相加时发生溢出，或者在减法中因为操作数的不同导致相减发生溢出。样例示意：
 
-`__kernel void inter_arithmetic(__global int *x,
+__kernel void inter_arithmetic(__global int *x,
                                __global int *y,
 
 ```cpp
@@ -688,7 +693,7 @@ sub0    = 2,147,483,647 (0x7FFFFFFF) //饱和`
 
 示例代码
 
-`__kernel void inter_mul(__global uint *dst)
+__kernel void inter_mul(__global uint *dst)
 
 ```cpp
 {
@@ -717,7 +722,7 @@ dst[2] = ;`
 
 示例代码
 
-`__kernel void inter_opera(__global uint *dst)
+__kernel void inter_opera(__global uint *dst)
 
 ```text
 {
@@ -744,7 +749,11 @@ dst[1] = 0x9531;`
 - 示例函数：`allm shuffle(alln x, uintegerm mask);` 
 - 作用：按照 mask 规定的顺序创建一个包含 x 的分量的向量 
 - 伪代码
-`for( i = 0; i 
+
+```cpp
+for( i = 0; i 
+```
+
 
 - 示例结果
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_eeae837c7ea7.jpg)
@@ -757,7 +766,11 @@ dst[1] = 0x9531;`
 shuffle2 示意图
 
 - 示例代码
-`const int mask = (uint4)(1, 2, 0, 1);
+
+```cpp
+const int mask = (uint4)(1, 2, 0, 1);
+```
+
 float4 d4;
 float4 res = shuffle(d4, mask);`
 
@@ -768,9 +781,9 @@ select 函数：**
 - 示例函数：`alln select(alln a, alln b, u/integern mask)` 
 - 作用：根据mask中的最高有效位从 a 和 b 中选择分量输出。 
 - 伪代码
-`//三目条件判断
 
 ```cpp
+//三目条件判断
 for( i = 0; i 
 ```
 
@@ -793,7 +806,7 @@ GPU设备会有内置硬件模块基本单元（EFU），专门用来加速一�
 - 相比常规函数性能更好，精度更低 
 native函数 **
 
-`native_cos, native_divide, native_exp, native_exp2, native_exp10, native_log,
+native_cos, native_divide, native_exp, native_exp2, native_exp10, native_log,
 native_log2, native_log10, native_powr, native_recip, native_rsqrt, native_sin,
 native_sqrt, native_tan`
 
@@ -806,9 +819,8 @@ native_sqrt, native_tan`
 
 以 8 位灰度图像高斯滤波为例编写 CPU C 代码和 OpenCL 的kernel内核代码。CPU的C代码采用行列分离的方式进行计算，边界方式使用反射101的方式。具体代码如下所示。
 
-`int Gaussian3x3Sigma0U8C1(uint8_t *src, int width, int height, int istride,
-
 ```cpp
+int Gaussian3x3Sigma0U8C1(uint8_t *src, int width, int height, int istride,
                           uint8_t *dst, int ostride)
 {
     if ((NULL == src) || (NULL == dst))
@@ -828,7 +840,7 @@ native_sqrt, native_tan`
 
 OpenCL  kernel内核代码采用buffer的方式进行读写操作，每个工作项处理4个元素，利用向量化方式处理可以多个工作项并行运算。如果读采用image2d_t的方式，性能会更好，以后会介绍。
 
-`__kernel void Gauss3x3u8c1Buffer(__global uchar *src, int row, int col,
+__kernel void Gauss3x3u8c1Buffer(__global uchar *src, int row, int col,
 
 ```cpp
                                  int src_pitch, int dst_pitch,

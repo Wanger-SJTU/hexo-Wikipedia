@@ -71,9 +71,8 @@ $HlTest=ReLU(plfl(Hl&#x2212;1Test)+id(Hl&#x2212;1Test))" role="presentation">HlT
 
 最后，废话少说，上代码
 
-`class BottleNeck(nn.Module):
-
 ```python
+class BottleNeck(nn.Module):
     def __init__(self, in_channels, out_channels, stride):
         super(BottleNeck, self).__init__()
         self.conv1 = nn.Sequential(
@@ -140,7 +139,6 @@ $HlTest=ReLU(plfl(Hl&#x2212;1Test)+id(Hl&#x2212;1Test))" role="presentation">HlT
                 m.bias.data.zero_()
 ```
 
-`
 
 代码里我偷了个懒，就是每个block都做了downsample，跟论文的要求是不一样的。
 

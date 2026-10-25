@@ -53,12 +53,11 @@ TSO的保序要求图中的RMW是read-modify-write，常常是atomic操作，在
 
 在TSO的基础上，完全可以更进一步放松保序限制，<strong>因为从功能正确性来看，除了前后存在依赖的访存顺序一定要保证以外，绝大部分的访存操作顺序并不影响最终结果。</strong>这些访存顺序被允许乱序，是可以提升性能的，所以weak model在现当代的处理器中经常见到（PowerPC、ARM、RISCV）
 
-`//x和y是不同地址的变量，且初始值为0 
+//x和y是不同地址的变量，且初始值为0 
 x = 1  //store      
 y = 1    
 r1 = y  //load 
 r2 = x
-`
 
 上述程序执行完之后，最终结果可以是r1 = 1，r2 = 0吗？
 
@@ -70,7 +69,7 @@ TSO中已经需要显式地执行顺序了，那更加宽松的weak类Model也�
 
 - FENCE是更加严格的，保前也要保后，可以理解为一道墙隔开前后的访存指令段，不能逾越；
 - acquire/release则是将FENCE功能拆分，acquire保后，release保前。
-`acquire(x)   
+acquire(x)   
 y = 1       
 z = 2       
 release(x)  

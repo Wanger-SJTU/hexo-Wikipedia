@@ -227,19 +227,19 @@ Armv8-A 是个弱内存序体系结构，其所支持的内存访问，不会强
 
 再举一个因为存在地址依赖（Address Dependencies）而必须按序执行的例子。地址依赖的一个具体场景是，一个 load 或 store 使用前面的一个 load 的结果作为地址。下面是例子：
 
-`LDR X0, [X1] 
+LDR X0, [X1] 
 STR X2, [X0]  ; Result of previous load is the address in this store.`
 
 	下面是另一个例子：
 
-`LDR X0, [X1] 
+LDR X0, [X1] 
 STR X2, [X5, X0] ; Result of previous load is used to calculate the address.`
 
 如果两个内存访问之间存在地址依赖，则处理器会按其 program order 执行。
 
 该规则并不适用于控制依赖（control dependencies），也就是前一个 load 的结果是用来做判断的（译者：而不是用来访问的，比如示例代码中的 CBZ）。比如：
 
-`LDR X0, [X1] 
+LDR X0, [X1] 
 CBZ X0, somewhere_else 
 LDR X2, [X5]      ; The control dependency on X0 does not guarantee ordering.`
 
@@ -279,7 +279,7 @@ DMB 指令接受一个参数，该参数指明所需保序的 explicit 访问所
 
 以下代码展示了在弱内存序模型下可能的乱序。X1 和 X3 地址处的内存初始为 0x0：
 
-`STR #1, [X1] 
+STR #1, [X1] 
 STR #1, [X3]  ; Might be observed before the previous STR.`
 
 该例子中，X3 地址处内存的更新和被观察到，可以发生在 X1 地址之前。现在假设另一个 Observer 以相同顺序读取两个相同的内存地址，下表展示了内存系统可能会返回的观察值组合：
@@ -288,7 +288,7 @@ X1X30x00x00x00x10x10x00x10x1表 1
 
 下面的例子使用 DMB 指令来强制内存保序。X1 和 X3 地址处的内存初始为 0x0：
 
-`STR #1, [X1]       
+STR #1, [X1]       
 DMB 
 STR #1, [X3]  ; Cannot observe this STR without first observing the previous STR.`
 
@@ -317,7 +317,7 @@ DSB 内存屏障用于确保在此 DSB <strong>之前</strong>的内存访问，
 
 下面的代码展示 DSB 所带来的保序效果：
 
-`STR X0, [X1]     ; Must complete before the DSB can retire. 
+STR X0, [X1]     ; Must complete before the DSB can retire. 
 DSB 
 ADD X1, X2, X3   ; Must NOT be executed before the first STR completes.
 STR X4, [X5]     ; Must NOT be executed until the first STR completes.`
@@ -334,7 +334,7 @@ read 的完成解释起来要比 write 的完成要简单一些。这是因为�
 
 下面的例子中，DSB 指令会一直阻塞执行，直到对 Device-nGnRnE 内存的 STR 操作从 end 外设收到对指定内存地址的 write response：
 
-`STR X0, [Device-nGnRnE]  ; Must receive a write response from the end-peripheral  
+STR X0, [Device-nGnRnE]  ; Must receive a write response from the end-peripheral  
 DSB SY`
 
 ### 10. 内存屏障范围的限制
@@ -353,7 +353,7 @@ ArgumentOrdered Accesses(Before-After)Shareability DomainNSHLDLoad-Load, Load-St
 
 考虑下面的例子：
 
-`PE0
+PE0
 
 LDR x0, [X4]  ; Can be observed out-of-order 
 STR #1, [X1]       
@@ -375,12 +375,12 @@ STR #1, [X3]`
 
 AArch64 不会对不同 Observer 所发起的访问进行保序，即使访问间存在地址依赖。举例来说，以下指令序列可能会乱序，即使它们之间存在依赖：
 
-`DC CVAU, X0 ; Operations are executed in any order
+DC CVAU, X0 ; Operations are executed in any order
 IC IVAU, X0 ; despite address dependency.`
 
 如果这些指令被乱序，指令 cache 可能会被填充进数据 cache 中的过期数据。为解决此问题，需要一个内存屏障。例子如下：
 
-`DC CVAU, X0 ; Operations are executed in any order
+DC CVAU, X0 ; Operations are executed in any order
 DSB ISH
 IC IVAU, X0 ; despite address dependency.`
 
@@ -396,7 +396,7 @@ Armv8-A AArch64 提供了一组面向 loads 的带有 Acquire 语义的指令，
 
 Shareability domain 定义了这些指令保序所能影响的 Observers 范围。Load-Acquire 和 Store-Release 所影响的 Shareability domain，就是该指令所访问的地址的 Shareability domain（译者：load-acquire 和 store-release 没法像 DMB、DSB 那样通过参数指定所要影响的 Shareability domain，只能是其访问的地址属于什么 Shareability domain 就是哪个 Shareability domain）。举个例子，如果 PE0 和 PE1 不在同一个 Inner Shareable domain 中，那么下面的代码中，如果 X3 是 Inner Shareable 的，则架构上会允许 PE1 在观察到 X1 地址处内存被更新<strong>之前</strong>观察到 X3 地址处内存被更新：
 
-`PE0
+PE0
 
 STR  #1, [X1]       
 STLR #1, [X3]`
@@ -405,7 +405,7 @@ STLR #1, [X3]`
 
 - 对于 Load-Acquire、Load-AcquirePC 以及 Store-Release 指令，所传入的数据地址必须对齐到所要访问的数据长度，否则访问会触发 Alignment fault。
 - 对于 Load-Acquire Exclusive Pair 以及 Store-Release Exclusive Pair，所传入的数据地址必须对齐到所要 load 的数据长度的两倍。否则访问会触发 Alignment fault。如下面代码所示：
-`LDAXP x0, x1, [0x08]  ; Alignment fault       
+LDAXP x0, x1, [0x08]  ; Alignment fault       
 LDAXP x0, x1  [0x10]`
 
 - Load-Acquire 和 Store-Release 还有各自的独家变体。
@@ -440,7 +440,7 @@ Store-Release STLR 指令的保序规则如下：
 
 下面的示例代码，展示如何通过 STLR 来保序。X1 和 X3 地址处的内存初始为 0x0：
 
-`STR  #1, [X1] 
+STR  #1, [X1] 
 STLR #1, [X3]  ; Cannot observe this STLR without observing the previous STR.`
 
 该示例中，如果 X3 地址处的内存被观察到被更新了，则 X1 必然也被观察到被更新了。现在假设另一个 Observer 以相同顺序读取两个相同的内存地址，下表展示了内存系统可能会返回的观察值组合：
@@ -499,7 +499,7 @@ LORegions 只能被应用于 Non-secure 物理内存访问。一个 LORegion 由
 - 表征 LORegion descriptor 是否合法的 valid bit（LORC_EL1）。
 以下代码展示对 2 个 LORegion 进行编程：
 
-`MOV  x0, #0x2            // LORegion number
+MOV  x0, #0x2            // LORegion number
 MOV  x1, #0x80000000     // LORegion start address 
 MOV  x2, #0xC0000000     // LORegion end address 
 MOV  x3, #0x1            // LORegion enable (valid bit)
@@ -546,7 +546,7 @@ Arm 体系结构下 PE 的上下文包括 caches、TLBs 以及系统寄存器的
 
 假设软件必须先确保对 SVE、Advanced SIMD 以及浮点寄存器的访问不会 trapped（译者：这里 trapped 我不明白是指触发异常还是会导致 VMExit）。举个例子，EL1 下运行时，对 SVE、Advanced SIMD 以及浮点寄存器访问的 trapping，可以通过将 CPACR_EL1.FPEN 编程为 0x3 来禁能，如下面的代码所示：
 
-`MRS     X1, CPACR_EL1
+MRS     X1, CPACR_EL1
 ORR     X1, X1, #(0x3 
 
 如果没有 ISB 指令，则对 trapping 的禁能（是一个上下文变更操作）并不保证能被 FADD 指令观察到（译者：would not be guaranteed to be seen by the FADD instruction，这里原文用的又是 seen，理解为“在 FADDR 指令执行时此上下文变更已生效”）。不加 ISB 的话会导致 FADD 指令触发一个 Synchronous 异常。本场景下，ISB 作为一个上下文同步事件，其用来确保新的上下文（此“新的上下文”也就是对 SVE、Advanced SIMD 以及浮点寄存器 trap 的禁能）可以被 FADD 指令观察到。

@@ -61,9 +61,8 @@ source_url: https://zhuanlan.zhihu.com/p/1989667615744995635
 
 上述分核方案将输出C矩阵切分并分配给每个AICORE进行计算。AICORE以 \tt Ktile 为步长在K方向迭代，通过计算并累加若干个规模为 \tt Mtile \times Ktile \times Ntile 的矩阵乘积，得到最终结果。
 
-`// execute on each AICORE
-
 ```cpp
+// execute on each AICORE
 for (int l = coreIdx; l 
 ```
 
@@ -72,7 +71,10 @@ for (int l = coreIdx; l
 
 在实现中，AICORE为了完成一次规模为 \tt Mtile \times Ktile \times Ntile 的矩阵乘计算，会对 A，B 矩阵以\tt Kfrag为步长，在K方向进一步切分：
 
-`for (int kt = 0; kt 
+```cpp
+for (int kt = 0; kt 
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d56015c987c8.jpg)
 
@@ -102,7 +104,10 @@ for (int l = coreIdx; l
 
 观察仿真波形图可以发现，在使用Double Buffer后，虽然MTE2流水线能掩盖大部分其他流水线，但是MTE2流水线并不连续。经实验发现，Mmad指令会阻塞下一次的MTE2指令发射，因此需要对原有代码进行指令重排来实现指令预发射的动作。
 
-`for (int mt = 0; mt 
+```cpp
+for (int mt = 0; mt 
+```
+
 
 如下图所示，在实现上述优化点后，MTE2流水线连续。
 

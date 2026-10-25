@@ -346,7 +346,7 @@ struct hash {
 
 ```
 
-`static`也就意味着这是个静态函数了，使用上还是和原来一样
+static`也就意味着这是个静态函数了，使用上还是和原来一样
 
 ```cpp
 std::hash<int> h;

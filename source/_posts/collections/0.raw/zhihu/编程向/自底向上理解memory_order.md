@@ -120,7 +120,7 @@ decoding阶段会识别指令类型，读取需要的操作数，但是操作数
 
 每个核按代码顺序依次执行指令，但因为是多核的，整个系统看上去像是两个核在随机交替执行。比如假设有以下两个核在各自执行指令:
 
-`x, y初始值为0
+x, y初始值为0
 
 核1
 S1: x = NEW;
@@ -220,11 +220,15 @@ acquire用于Load操作，release用于Store操作，acq_rel用于RMW操作。C+
 
 相当于说一个线程的Store(a, release)指令和另一个线程的Load(a, acquire)指令建立了同步关系，Load指令之后的指令能看到Store之前的其他store指令的效果。比如
 
-`flag，x 初始为0
+flag，x 初始为0
 
 线程1
 flag = 1;
+
+```text
 a.store(1, release);
+```
+
 
 线程2
 
@@ -250,13 +254,21 @@ C++20对seq_cst进行了一波大更新，严格说明比较复杂，但主要�
 
 下面举个例子
 
-`z1, z2, x, y 初始值都为0
+z1, z2, x, y 初始值都为0
 
 线程1
+
+```text
 x.store(1, seq_cst);
+```
+
 
 线程2
+
+```text
 y.store(1, seq_cst);
+```
+
 
 线程3
 
@@ -284,12 +296,12 @@ if (x.load(seq_cst) == 1) {
 
 为什么store指令需要额外加fence，也就是清空write buffer呢？考虑和上面例子相似但又不太一样的情况
 
-`z1, z2, x, y初始值都为0
+z1, z2, x, y初始值都为0
 
 线程1
-x.store(1, seq_cst);
 
 ```text
+x.store(1, seq_cst);
 if (x.load(seq_cst) == 1 && y.load(seq_cst) == 1) {
     z1 = 1;
 }
@@ -297,9 +309,9 @@ if (x.load(seq_cst) == 1 && y.load(seq_cst) == 1) {
 
 
 线程2
-y.store(1, seq_cst);
 
 ```text
+y.store(1, seq_cst);
 if (y.load(seq_cst) == 1 && x.load(seq_cst) == 1) {
     z2 = 1;
 ```

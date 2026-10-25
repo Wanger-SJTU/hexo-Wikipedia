@@ -64,7 +64,7 @@ img
 - 使用文本组件。
 工程同步完成后，在“<strong>Project</strong>”窗口，点击“<strong>entry > src > main > ets > pages</strong>”，打开“<strong>Index.ets</strong>”文件，可以看到页面由Text组件组成。“<strong>Index.ets</strong>”文件的示例如下：
 
-`// Index.ets   
+// Index.ets   
 @Entry    
 @Component    
 
@@ -93,7 +93,7 @@ struct Index {
 - 添加按钮。
 在默认页面基础上，我们添加一个Button组件，作为按钮响应用户点击，从而实现跳转到另一个页面。“<strong>Index.ets</strong>”文件的示例如下：
 
-`// Index.ets    
+// Index.ets    
 @Entry    
 @Component    
 
@@ -150,14 +150,13 @@ img
  说明
  开发者也可以在右键点击“pages<strong>”文件夹时，选择“</strong>New > Page** **> Empty Page<strong>”，则无需手动配置相关页面路由。</strong> 配置第二个页面的路由。在“Project”窗口，打开“entry > src > main > resources > base > profile”，在main_pages.json文件中的“src”下配置第二个页面的路由“pages/Second”。示例如下：  
 
-`json  {    "src": [      "pages/Index",      "pages/Second"    ]  }
- `
+json  {    "src": [      "pages/Index",      "pages/Second"    ]  }
 
 -  添加文本及按钮。
  
 参照第一个页面，在第二个页面添加Text组件、Button组件等，并设置其样式。“Second.ets**”文件的示例如下：
 
-` // Second.ets    
+ // Second.ets    
 @Entry    
 @Component    
 
@@ -194,7 +193,6 @@ struct Second {
 }  
 ```
 
-`
 
 #### 实现页面间的跳转
 
@@ -205,9 +203,8 @@ struct Second {
 - 第一个页面跳转到第二个页面。
 在第一个页面中，跳转按钮绑定onClick事件，点击按钮时跳转到第二页。“<strong>Index.ets</strong>”文件的示例如下：
 
-`// Index.ets    
-
 ```python
+// Index.ets    
 // 导入页面路由模块    
 import router from '@ohos.router';    
 import { BusinessError } from '@ohos.base';
@@ -263,9 +260,8 @@ struct Index {
 - 第二个页面返回到第一个页面。
 在第二个页面中，返回按钮绑定onClick事件，点击按钮时返回到第一页。“Second.ets**”文件的示例如下：
 
-`  // Second.ets    
-
 ```python
+  // Second.ets    
 // 导入页面路由模块    
 import router from '@ohos.router';    
 import { BusinessError } from '@ohos.base';
@@ -317,7 +313,6 @@ struct Second {
 }  
 ```
 
-`
 
 - 打开Index.ets文件，点击预览器中的
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_00233f8de8a1.jpg)

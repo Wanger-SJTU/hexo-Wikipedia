@@ -21,7 +21,7 @@ source_url: https://zhuanlan.zhihu.com/p/2029894341162992606
 区域编译（Regional Compilation）是 PyTorch 2.x 系列引入的一项编译优化策略，其核心思想是放弃对整个模型进行全局图编译，转而选择性地编译模型中的重复区域（例如 Transformer 块）[1]。通过这种方式，编译器仅需对单个重复单元进行一次图构建与优化，随后在模型整体运行中重用该编译产物，从而显著减小编译图的规模并缩短启动耗时。
 
 1.2 核心痛点：torch.compile 的冷启动问题
-`torch.compile` 作为 PyTorch 2.0 的旗舰特性，通过 TorchDynamo 捕获计算图并利用 TorchInductor 后端生成高效的 Triton 或 C++ 内核，能够显著提升模型的运行时性能。然而，这种全局编译策略在面对大型模型时存在一个显著瓶颈——<strong>冷启动编译时间过长</strong>。
+torch.compile` 作为 PyTorch 2.0 的旗舰特性，通过 TorchDynamo 捕获计算图并利用 TorchInductor 后端生成高效的 Triton 或 C++ 内核，能够显著提升模型的运行时性能。然而，这种全局编译策略在面对大型模型时存在一个显著瓶颈——<strong>冷启动编译时间过长</strong>。
 
 对于包含数十甚至上百个重复层的现代深度学习模型（如大型语言模型 LLM），全模型编译需要遍历并优化每一层的计算图，即使这些层在结构上完全相同。这导致了以下问题：
 
@@ -102,7 +102,7 @@ def compile_and_cache(module, input):
 
 
 2.3 inline_inbuilt_nn_modules 配置的作用机制
-`torch._dynamo.config.inline_inbuilt_nn_modules` 是实现区域编译的关键配置项。其作用机制涉及 TorchDynamo 对 `nn.Module` 的处理方式：
+torch._dynamo.config.inline_inbuilt_nn_modules` 是实现区域编译的关键配置项。其作用机制涉及 TorchDynamo 对 `nn.Module` 的处理方式：
 
 配置值处理方式对区域编译的影响False (旧默认)将内置模块视为不透明对象，每次调用时重新追踪导致相同结构的层被视为不同的图，无法重用True (2.5+ 默认)将内置模块内联到计算图中相同结构的层生成相同的图签名，启用缓存重用在 PyTorch 2.4 版本中，开发者需要手动开启此配置：
 

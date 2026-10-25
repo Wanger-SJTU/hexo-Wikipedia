@@ -50,7 +50,7 @@ Avant de modifier le code :
 - Si vous observez des retours de revue répétés, promouvez-les en une règle mécanique,
   un contrôle ou un linter plutôt que de les réexpliquer dans le chat.
 - Gardez le contenu généré dans `docs/generated/` et les références sources dans
-  `docs/references/`.
+  docs/references/`.
 - Préférez ajouter de petits documents à jour plutôt que de faire grossir ce fichier.
 
 ## Définition de « terminé »

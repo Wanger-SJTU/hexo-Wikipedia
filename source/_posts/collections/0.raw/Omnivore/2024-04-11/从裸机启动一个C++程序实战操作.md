@@ -167,7 +167,6 @@ void load_mem_to_rax(std::ptrdiff_t address) {
 }
 ```
 
-`
 
 由此方法，模拟出所有硬件部件和所有指令集中的指令，那么自然就可以模拟出硬件设备的运行情况。
 
@@ -218,7 +217,7 @@ void load_mem_to_rax(std::ptrdiff_t address) {
 
 ##### 在macOS上配置bochs
 
-`bochs`是一个AMD64模拟器，我们可以在它上面运行AMD64架构、IA-32架构、80286架构甚至是8086架构的程序。但`bochs`本身是跨平台的软件，因此，无论你用的是Intel芯片的Mac还是苹果自研芯片的Mac，都可以安装`bochs`。
+bochs`是一个AMD64模拟器，我们可以在它上面运行AMD64架构、IA-32架构、80286架构甚至是8086架构的程序。但`bochs`本身是跨平台的软件，因此，无论你用的是Intel芯片的Mac还是苹果自研芯片的Mac，都可以安装`bochs`。
 
 虽然我们也可以从`bochs`官网下载源工程然后构建安装，但是环境配置以及各种依赖软件搞起来太麻烦了，所以我们选取一种最简便的方式，使用Home Brew。
 
@@ -229,14 +228,12 @@ Home Brew是Mac上的开源软件管理器，类似于Debian中的apt-get和RedH
 打开终端，执行下列命令：
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`/bin/zsh -c "$(curl -fsSL https://gitee.com/cunkai/HomebrewCN/raw/master/Homebrew.sh)"
-`
 
 会自动下载这个脚本，然后依据提示指定一个镜像源，输入系统密码，然后安装Home Brew。
 
 由于Home Brew所在github的DNS有过一起污染事件，所以如果当你使用时出现类似于下面的这种报错时：
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`Warning: No remote 'origin' in /opt/homebrew/Library/Taps/homebrew/homebrew-cask, skipping update!
-`
 
 这时我们可以执行下面的指令来解决：
 
@@ -247,17 +244,14 @@ git config --global --add safe.directory /opt/homebrew/Library/Taps/homebre
 git config --global --add safe.directory /opt/homebrew/Library/Taps/homebrew/homebrew-services
 ```
 
-`
 
 当安装好Home Brew以后，就可以通过下面的指令来安装`bochs`：
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`brew install bochs
-`
 
 安装完毕之后，我们执行：
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`bochs --help
-`
 
 如果能顺利打印出帮助信息，那么恭喜，`bochs`已经安装成功！
 
@@ -385,7 +379,6 @@ CPU有三个重要的部分：运算器（CU, Calculation Unit）、执行器（
 对于Windows系统来说，直接运行`bochsdbg.exe`就可以了，暂时还不用加载配置文件，对于macOS来说，需要指定一下显示的配置。我们找一个工作路径（以后项目的代码都可以放到这个里面），例如`~/code`，再里面创建一个文件名为`bochsrc`，这是虚拟机的配置文件，然后编辑里面的内容如下：
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`display_library: sdl2
-`
 
 主要是因为，`bochs`的显示输出，默认用的并不是`sdl2`，这在macOS上是显示不出来的，所以我们需要指定到这个库。
 
@@ -394,7 +387,6 @@ CPU有三个重要的部分：运算器（CU, Calculation Unit）、执行器（
 保存完毕以后，在工作路径上通过这个配置文件来运行虚拟机：
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`bochs -qf bochsrc
-`
 
 即可启动虚拟机，命令行会保持在调试状态：
 
@@ -413,7 +405,6 @@ CPU有三个重要的部分：运算器（CU, Calculation Unit）、执行器（
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`boot: floppy # 设置软盘启动
 floppy_bootsig_check: disabled=0 # 打开自检
 floppya: type=1_44, 1_44="a.img", status=inserted, write_protected=0 # 使用1.44MB的3.5英寸软盘，取镜像为a.img，开机默认已插入软驱，不开启写保护
-`
 
 这样再开机的时候，就可以读取软盘镜像了。那么接下来，我们只需要把要执行的指令，写成这个名为`a.img`的软盘镜像里就大功告成了。
 
@@ -430,9 +421,8 @@ HexFiend
 那么，把`6`写入`ax`寄存器的命令是什么？这个可以通过查Intel手册知道，应当是：
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`B8 06 00
-`
 
-`B8`是指令码，表示给`ax`寄存器中存入数据。后面的`06 00`是操作数，因为`ax`是一个十六位寄存器，所以给它应该要放一个16位的操作数。那为什么是`06 00`而不是`00 06`呢？这是因为，8086体系使用小端序，也就是低字节放数的低位。但是在书写数据的时候，我们又习惯从低到高来写，所以就变成了`06 00`，看上去可能有点不适应，但是还是需要大家适应一下\~
+B8`是指令码，表示给`ax`寄存器中存入数据。后面的`06 00`是操作数，因为`ax`是一个十六位寄存器，所以给它应该要放一个16位的操作数。那为什么是`06 00`而不是`00 06`呢？这是因为，8086体系使用小端序，也就是低字节放数的低位。但是在书写数据的时候，我们又习惯从低到高来写，所以就变成了`06 00`，看上去可能有点不适应，但是还是需要大家适应一下\~
 
 那是不是这样就OK了？并不是！虽然BIOS会自动加载数据，但是，BIOS有一个约定，它会检测这段数据的最后两个字节是否是`55 AA`，是才会认为这是一段合法的MBR，才会加载。至于为啥是这俩魔数……emmm……估计没人晓得\~
 
@@ -452,7 +442,6 @@ MBR
 那么另一个问题来了，断点应该打在哪？这取决于，BIOS会把MBR加载到内存的哪一个位置。这里的约定是`0x7c00`的位置（同样，至于为什么是这个地址估计也没人知道了\~总之是作为一种约定），那么我们就要在`0x7c00`的位置打断点，所以执行下面的调试指令：
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`pb 0x7c00
-`
 
 然后再按`c`，这样执行到这一位置的时候就会停下来：
 
@@ -491,7 +480,6 @@ OK，`ax`寄存器真的被改写成`0006`了，说明我们的指令已经成�
 当然有！这就是汇编器，它可以把汇编语言转换成机器码。比如说：
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`mov ax, 0x06
-`
 
 表明给`ax`寄存器中传入`0x06`这个十六进制数，然后交由汇编器将其转换为`B80600`。这样的语言就叫做汇编语言，汇编语言看起来是比机器码要友好得多了吧？
 
@@ -596,14 +584,12 @@ macOS最早默认使用的bash，后来换成了zsh，因为这个切换已经�
 执行下面的命令，编辑zsh的配置文件：
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`vim ~/.zprofile
-`
 
 注意，即便你当前没有`.zprofile`这个文件也没关系，上面的命令执行会以新建文件的方式。
 
 然后再编辑界面按「i」键，进入编辑模式，此时左下角会显示「INSERT」，表示在编辑模式。如果里面已经有一些配置了，无视就好，我们在文件最后加上：
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`PATH=$PATH:/Users/xxx/nasm-2.16.01
-`
 
 注意，由于我是放在`~/`里的，但这里要写全路径，所以你需要看一下全路径是什么，用波浪线有时可能会失效。
 
@@ -612,14 +598,12 @@ macOS最早默认使用的bash，后来换成了zsh，因为这个切换已经�
 由于`.zprofile`会在每次运行终端的时候自动执行，因此我们把命令写在这个文件里就不用每次手动配置了，但由于现在还没生效，所以你还需要执行一句：
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`source ~/.zprofile
-`
 
 或者干脆把终端关了，重新开一下，就生效了。
 
 然后我们在控制台输入
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`nasm -v
-`
 
 如果能够看到版本信息，那么说明`nasm`已经安装配置成功。
 
@@ -723,19 +707,16 @@ mov [0x0000], byte 'H'
 hlt
 times 510-($-$$) db 0
 dw 0xaa55
-`
 
 稍后我们再来解释代码，咱们现来看看效果。
 
 首先，要把汇编代码转换为机器码，输入下面指令，通过`nasm`来进行汇编：
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`nasm mbr.nas -o mbr.bin
-`
 
 得到`mbr.bin`文件，然后将其重命名为`a.img`（可以直接用图形界面操作，也可以执行命令`cp mbr.bin a.img`），再启动`bochs`。（注意，这里复用了前面章节的工程路径，因此需要前面`bochrc`的配置文件，详情可以查看前面章节）
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`bochs -qf bochsrc
-`
 
 然后按`c`命令，即可看到输出结果。如果你也跟我一开始一样，盯着下面的`Booting from Floppy...`没反应，然后认为程序没有生效的话，那请你往最开头来看：
 
@@ -748,12 +729,10 @@ bochs输出
 接下来我们聚焦到这几行汇编语句上，解释一下我们都做了什么。
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`mov ax, 0xb800
-`
 
 这一句，是给`ax`寄存器中赋值`0xb800`，`mov`指令其实更准确应该是「copy」，它会把右边的操作数赋值给左边，移动之后后面的操作数不会消失。后面一句
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`mov ds, ax
-`
 
 则是把`ax`的值赋值给`ds`寄存器，这样`ds`寄存器中也是`0xb800`了。
 
@@ -795,7 +774,6 @@ hlt
 
 times 510-($-$$) db 0
 dw 0xaa55
-`
 
 效果如下（注意，A是闪烁的，但截图显示不出来）：
 
@@ -812,7 +790,6 @@ dw 0xaa55
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`mov ax, 0xb800
 mov ds, ax
 mov [0x0000], byte 'H'
-`
 
 表示的就是，在屏幕的最左上角的位置显示一个字母'H'，由于之前BIOS已经写入部分显存数据了，所以它的颜色会保持不变，当然，我们可以通过类似于`mov [0x0001], byte 0x0f`的语句把它的颜色变成白色。
 
@@ -821,7 +798,6 @@ mov [0x0000], byte 'H'
 后面有一句
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`hlt
-`
 
 这是挂起指令，可以让CPU暂时先不要向下继续执行，直到响应中断（关于中断会在后续章节介绍）。这里写这行语句的目的在于，每次都给bochs打断点有点麻烦，而使用`hlt`指令就可以让CPU悬停再此处，方便我们观察输出，所以就不用打断点了。
 
@@ -831,7 +807,7 @@ mov [0x0000], byte 'H'
 
 mbr.bin
 
-`dw`表示写2个字节，对应的还有`db`写1个字节，`dd`写4个字节，`dw`写8个字节，注意，都是小端序。所以上面的伪指令其实还可以改成`db 0x55 0xaa`，效果是一样的。
+dw`表示写2个字节，对应的还有`db`写1个字节，`dd`写4个字节，`dw`写8个字节，注意，都是小端序。所以上面的伪指令其实还可以改成`db 0x55 0xaa`，效果是一样的。
 
 最后一个问题就是，`0xaa55`是这512字节的最后两个字节，但我们刚才也没写几句指令，这中间的部分咋整？可以补0，但得补多少0呢？这主要取决于，刚才我们写的所有指令占了多少字节。注意，汇编语言中的行号是没有执行层的含义的，因为对于CISC指令集来说，每条指令的长度都可能不一样，所以行数跟指令的字节数没有直接关系。
 
@@ -913,7 +889,6 @@ hlt
 
 times 510-($-$$) db 0
 dw 0xaa55
-`
 
 效果如下：
 
@@ -943,14 +918,12 @@ jmp L2
 mov bx, 2
 L2:
 mov cx, 8
-`
 
 其中的`L1:`和`L2:`就是标签，它也是伪指令，并不会生成对应的机器码，而是会影响汇编器的预处理。标签名可以随便起，只要不跟汇编关键字冲突即可，后面的冒号也可以省略。
 
 上面例程中的近跳指令是：
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`jmp L2
-`
 
 预处理时，汇编器会根据`L2`标签到当前位置（跳转指令的位置）之前的<strong>偏移量</strong>来给近跳指令添加操作数。以上面例程来说，实际的操作数正好是`mov bx, 2`这条指令的长度，也就是3，那么`jmp L2`就相当于`jmp +3`。
 
@@ -961,7 +934,6 @@ mov cx, 8
 所谓「远跳」，其实是给`CS`和`IP`都给一个绝对值，它的操作数是一个绝对的内存地址，而不是偏移量。例如：
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`jmp 0x0820:0x0000
-`
 
 这条指令执行完后，`CS`会赋值为`0x0820`，`IP`会赋值为`0x0000`，接着就会执行`0x08200`位置的指令。
 
@@ -974,7 +946,6 @@ mov bx, 1
 L1:
 mov cx, 2
 jmp 0x0000:L1
-`
 
 上面例程中`jmp 0x0000:L1`就是远跳指令，这时的`L1`就会解析为这个标签相对于文件头的偏移量，实际上也就是`mov ax, 0`和`mov bx, 1`的指令长度和，也就是6。那么这条指令其实应该是`jmp 0x0000:0x0006`。
 
@@ -999,7 +970,6 @@ mov dl, 0 ; dl表示驱动器号，软盘会在0x00~0x7F，硬盘会在0x80~
 int 0x13  ; 执行0x13号中断的2号功能（读盘功能）
 ```
 
-`
 
 对于老式机械硬盘、软盘来说，它们都属于「磁盘」的一种。根据其机械结构分为柱面(Cylinder)、磁头(Head)、扇区(Sector)，一般表示为`CHS`，柱面和磁头从`0`开始，扇区从`1`开始标号。
 
@@ -1055,7 +1025,6 @@ mov [0x0009], byte 0x0f
 hlt
 
 times 1024-($-begin) db 0 ; 补满2个扇区
-`
 
 可以确认一下，此时的`mbr.bin`变成了1536B，当然，它现在叫「MBR」已经不太合适了，它应当是包含了MBR和内核程序的一个总包。暂时我们先忽略这个叫法的问题，稍后再来看如何将MBR和内核程序分离。
 
@@ -1127,7 +1096,6 @@ I/O设备会映射成一个端口号，CPU向对应的端口号发送或读取�
 ata0: enabled=1, ioaddr1=0x1f0, ioaddr2=0x3f0, irq=14 # 主盘端口映射为1f0，从盘映射为3f0，中断号设置为14（虽然这几个参数都可以定制化，但这个参数是业界标准的，不建议更改）
 ata0-master: type=disk, mode=flat, path=a.img, cylinders=1, heads=1, spt=1 # 主盘位置加载一块规格为C1H1S1的硬盘，镜像使用a.img
 boot: disk # 设置为硬盘启动
-`
 
 这里需要注意一下，硬盘的规格我们暂时设置的是1柱面1磁头1扇区，也就是只有512字节的硬盘，那么对于`a.img`来说，超过512B的部分是不会加载进去的。（暂时这样设置一下，后面肯定会改的。）
 
@@ -1153,7 +1121,6 @@ hlt
 
 times 510-($-$$) db 0 ; MBR剩余部分用0填充
 dw 0xaa55
-`
 
 将其编译为`mbr.bin`，确认一下它的大小是512字节：
 
@@ -1183,7 +1150,6 @@ LBA28是一种比较原始的方式，28表示用28位编号，也就是`0x00000
 mov dx, 0x01f2
 mov al, 2 ; 读取连续的几个扇区，每读取一个al就会减1
 out dx, al
-`
 
 然后我们来配置起始扇区号。1号扇区就是MBR，已经加载进来了，所以我们从第2号扇区开始加载。虽然只是一个简单的2号，但其实LBA28模式下扇区号是有28位的，因此我们要拆分成4次，分别写入不同的端口中。`0x01f3`需要传入扇区号的`0~7`位，`0x01f4`需要传入扇区号的`8~15`位，`0x01f5`需要传入扇区号的`16~23`位，`0x01f5`则拆分为3部分，低4位是扇区号的`24~27`位，第4位表示主从盘，高3位表示扇区编号的模式。
 
@@ -1201,7 +1167,6 @@ mov al, 0
 out dx, al
 mov dx, 0x01f6
 mov al, 111_0_0000b ; 低4位是扇区号24~27位，第4位是主从盘（0主1从），高3位表示磁盘模式（111表示LBA模式）
-`
 
 接下来要配置操作命令，我们要做「读盘」操作，对应的命令号是`0x20`，它要写入`0x01f7`端口：
 
@@ -1209,7 +1174,6 @@ mov al, 111_0_0000b ; 低4位是扇区号24~27位，第4位是主从盘（0�
 mov dx, 0x01f7
 mov al, 0x20 ; 0x20命令表示读盘
 out dx, al
-`
 
 一切就绪之后，控制器就会开始读盘了，但这需要一定的时间，所以此时程序要等待驱动器工作完成。`0x01f7`端口如果使用`in`命令，读取到的是硬盘控制器的状态数据，其中第`7`位表示是否忙碌，第`3`位表示是否就绪。那么也就是说，当第`7`位是`0`且第`3`位是`1`的话，说明驱动器已经完成，否则就要持续等待：
 
@@ -1220,14 +1184,12 @@ in al, dx ; 通过该端口读取状态数据
 and al, 1000_1000b ; 保留第7位和第3位
 cmp al, 0000_1000b ; 要检测第7位为0（表示不在忙碌状态）和第3位是否是1（表示已经读取完毕）
 jne wait_finish ; 如果不满足则循环等待
-`
 
 当驱动器就绪后，我们就可以通过`0x01f0`端口来加载数据到内存了。这个端口是个16位端口，因此每次可以读2字节。这里我们用一个循环语句来完成，循环语句的循环次数要写在`cx`中，每次循环时`cx`会自动减1，直到`cx`为0则跳出循环。
 
 所以，如果我们需要加载2个扇区的数据，那么就是`1024`字节的内容，而循环次数就是`512`，所以把这个数配到`cx`中：
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`mov cx, 512 ; 一共要读的字节除以2（表示次数，因为每次会读2字节所以要除以2）
-`
 
 还是按照一开始的规划，我们把屏幕打印的部分放到第二扇区，然后把它加载到`0x08000`的内存位置：
 
@@ -1240,7 +1202,6 @@ in ax, dx ; 16位端口，所以要用16位寄存器
 mov [bx], ax
 add bx, 2 ; 因为ax是16位，所以一次会写2字节
 loop read
-`
 
 最后通过跳转指令跳转过去，查看是否加载成功。下面给出完整代码：
 
@@ -1313,14 +1274,12 @@ mov [0x0009], byte 0x0f
 hlt
 
 times 1024-($-begin) db 0 ; 补满2个扇区
-`
 
 注意，由于我们已经把扇区扩展到了3个，因此`bochsrc`里面 也需要修改一下硬盘的规模：
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`ata0: enabled=1, ioaddr1=0x1f0, ioaddr2=0x3f0, irq=14 # 主盘端口映射为1f0，从盘映射为3f0，中断号设置为14（虽然这几个参数都可以定制化，但这个参数是业界标准的，不建议更改）
 ata0-master: type=disk, mode=flat, path=a.img, cylinders=1, heads=1, spt=3 # 主盘位置加载一块规格为C1H1S3的硬盘，镜像使用a.img
 boot: disk # 设置为硬盘启动
-`
 
 最后通过汇编生成`mbr.bin`，复制为`a.img`，再启动`bochs`就可以看到执行效果：
 

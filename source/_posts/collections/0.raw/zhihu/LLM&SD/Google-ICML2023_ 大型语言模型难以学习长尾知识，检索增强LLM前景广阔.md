@@ -68,7 +68,7 @@ source_url: https://zhuanlan.zhihu.com/p/646876000
 
 我们之所以使用这些 LM，是因为（除了 GPT3 之外）它们是公开提供预训练数据的最大开源模型。我们使用的简单提示由以下形式的模板组成：
 
-`Q: [In-Context Question 1]
+Q: [In-Context Question 1]
 A: [In-Context Answer 1]
 .
 .

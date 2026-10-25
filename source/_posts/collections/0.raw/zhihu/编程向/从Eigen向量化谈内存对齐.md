@@ -33,9 +33,8 @@ Eigen是一个非常常用的矩阵运算库，至少对于SLAM的研究者来�
 
 为了给没接触过向量化编程的同学一些直观的感受，我写了一个简单的示例程序：
 
-`#include 
-
 ```cpp
+#include 
 #include 
 
 int main() {
@@ -63,20 +62,18 @@ int main() {
 // unaligned_vectorization.cpp
 ```
 
-`
 
 这段代码使用AVX中的向量化加法指令，同时计算4对double的和。这4对数保存在`input1`和`input2`中。 `_mm256_load_pd`指令用来加载操作数，`_mm256_add_pd`指令进行向量化运算，最后， `_mm256_store_pd`指令读取运算结果到`result`中。可惜的是，程序运行到第一个`_mm256_load_pd`处就崩溃了。崩溃的原因正是因为输入变量没有内存对齐。我特意打印出了两个输入变量的地址，结果如下
 
-`address of input1: 0x7ffeef431ef0
+address of input1: 0x7ffeef431ef0
 address of input2: 0x7ffeef431f10 `
 
 上一节提到了AVX要求32字节对齐，我们可以把这两个输入变量的地址除以32，看是否能够整除。结果发现`0x7ffeef431ef0`和 `0x7ffeef431f10`都不能整除。当然，其实直接看倒数第二位是否是偶数即可，是偶数就可以被32整除，是奇数则不能被32整除。 
 
 如何让输入变量内存对齐呢？我们知道，对于局部变量来说，它们的内存地址是在编译期确定的，也就是由编译器决定。所以我们只需要告诉编译器，给`input1`和`input2`申请空间时请让首地址32字节对齐，这需要通过预编译指令来实现。不同编译器的预编译指令是不一样的，比如gcc的语法为`__attribute__((aligned(32)))`，MSVC的语法为 `__declspec(align(32))` 。以gcc语法为例，做少量修改，就可以得到正确的代码
 
-`#include 
-
 ```cpp
+#include 
 #include 
 
 int main() {
@@ -107,11 +104,10 @@ int main() {
 // aligned_vectorization.cpp
 ```
 
-`
 
 输出结果为
 
-`address of input1: 0x7ffc5ca2e640
+address of input1: 0x7ffc5ca2e640
 address of input2: 0x7ffc5ca2e660
 2 3 4 5`
 
@@ -123,18 +119,19 @@ address of input2: 0x7ffc5ca2e660
 
 首先，最容易想到的是，把内存对齐的double数组声明成一种自定义数据类型，如下所示
 
-`  using aligned_double4 = __attribute__ ((aligned (32))) double[4];
+```text
+  using aligned_double4 = __attribute__ ((aligned (32))) double[4];
+```
+
 
   aligned_double4 input1 = {1, 1, 1, 1};
   aligned_double4 input2 = {1, 2, 3, 4};
   aligned_double4 result;
-`
 
 这样看起来清爽多了。更进一步，如果4个double是一种经常使用的数据类型的话，我们就可以把它封装为一个`Vector4d`类，这样，用户就完全看不到内存对齐的具体实现了，像下面这样。
 
-`#include 
-
 ```cpp
+#include 
 #include 
 
 class Vector4d {
@@ -191,17 +188,16 @@ int main() {
 // encapsulated_vectorization.cpp
 ```
 
-`
 
 这段代码实现了`Vector4d`类，并把向量化运算放在了`operator+`中，主函数变得非常简单。 
 
 但不要高兴得太早，这个`Vector4d`其实有着严重的漏洞，如果我们动态创建对象，程序仍然会崩溃，比如这段代码
 
-`int main() {
+```cpp
+int main() {
   Vector4d* input1 = new Vector4d{1, 1, 1, 1};
   Vector4d* input2 = new Vector4d{1, 2, 3, 4};
 
-```cpp
   std::cout  "address of input1: "  input1->data  std::endl;
   std::cout  "address of input2: "  input2->data  std::endl;
 ```
@@ -223,11 +219,10 @@ int main() {
 // unaligned_heap_vectorization.cpp
 ```
 
-`
 
 崩溃前的输出为
 
-`address of input1: 0x1ceae70
+address of input1: 0x1ceae70
 address of input2: 0x1ceaea0`
 
 很诡异吧，似乎刚才我们设置的内存对齐都失效了，这两个输入变量的内存首地址又不是32的倍数了。
@@ -238,9 +233,8 @@ address of input2: 0x1ceaea0`
 
 C++提供的`new`关键字是个好东西，它避免了C语言中丑陋的`malloc`操作，但同时也隐藏了实现细节。如果我们翻看C++官方文档，可以发现`new Vector4d`实际上做了两件事情，第一步申请`sizeof(Vector4d)`大小的空间，第二步调用`Vector4d`的构造函数。要想实现内存对齐，我们必须修改第一步申请空间的方式才行。好在第一步其实调用了`operator new`这个函数，我们只需要重写这个函数，就可以实现自定义的内存申请，下面是添加了该函数后的`Vector4d`类。 
 
-`class Vector4d {
-
 ```text
+class Vector4d {
   using aligned_double4 = __attribute__ ((aligned (32))) double[4];
 public:
   Vector4d() {
@@ -277,9 +271,8 @@ public:
 // aligned_heap_vectorization.cpp
 ```
 
-`
 
-`operator new`的实现还是有些技巧的，我们来详细解释一下。 首先，根据C++标准的规定，`operator new`的参数`count`是要开辟的空间的大小。 为了保证一定可以得到`count`大小且32字节对齐的内存空间，我们把实际申请的内存空间扩大到`count + 32`。可以想象，在这`count + 32`字节空间中， 一定存在首地址为32的倍数的连续`count`字节的空间。 所以，第二行代码，我们通过对申请到的原始地址`original`做一些位运算，先找到比`original`小且是32的倍数的地址，然后加上32，就得到了我们想要的对齐后的地址，记作`aligned`。 接下来，第三行代码很关键，它把原始地址的值保存在了`aligned`地址的前一个位置中，之所以要这样做，是因为我们还需要自定义释放内存的函数`operator delete`。毕竟`aligned`地址并非真实申请到的地址，所以在该地址上调用默认的`delete` 是会出错的。可以看到，我们在代码中也定义了一个`operator delete`，传入的参数正是前面`operator new`返回的对齐的地址。这时候，保存在`aligned`前一个位置的原始地址就非常有用了，我们只需要把它取出来，然后用标准的`delete`释放该内存即可。 
+operator new`的实现还是有些技巧的，我们来详细解释一下。 首先，根据C++标准的规定，`operator new`的参数`count`是要开辟的空间的大小。 为了保证一定可以得到`count`大小且32字节对齐的内存空间，我们把实际申请的内存空间扩大到`count + 32`。可以想象，在这`count + 32`字节空间中， 一定存在首地址为32的倍数的连续`count`字节的空间。 所以，第二行代码，我们通过对申请到的原始地址`original`做一些位运算，先找到比`original`小且是32的倍数的地址，然后加上32，就得到了我们想要的对齐后的地址，记作`aligned`。 接下来，第三行代码很关键，它把原始地址的值保存在了`aligned`地址的前一个位置中，之所以要这样做，是因为我们还需要自定义释放内存的函数`operator delete`。毕竟`aligned`地址并非真实申请到的地址，所以在该地址上调用默认的`delete` 是会出错的。可以看到，我们在代码中也定义了一个`operator delete`，传入的参数正是前面`operator new`返回的对齐的地址。这时候，保存在`aligned`前一个位置的原始地址就非常有用了，我们只需要把它取出来，然后用标准的`delete`释放该内存即可。 
 
 为了方便大家理解这段代码，有几个细节需要特地强调一下。`::operator new`中的`::`代表全局命名空间，因此可以调用到标准的`operator new`。第三行需要先把`aligned`强制转换为`void**`类型，这是因为我们希望在`aligned`的前一个位置保存一个`void*`类型的地址，既然保存的元素是地址，那么该位置对应的地址就是地址的地址，也就是`void**`。
 
@@ -291,9 +284,8 @@ public:
 
 如果你以为到这里就圆满结束了，那可是大错特错。还有个天坑没展示给大家，下面的代码中，我的自定义类`Point`包含了一个`Vector4d`的成员，这时候，噩梦又出现了。
 
-`class Point {
-
 ```text
+class Point {
 public:
   Point(Vector4d position) : position(position) {
   }
@@ -338,15 +330,13 @@ int main() {
 // malicious_aligned_heap_vectorization.cpp
 ```
 
-`
 
 输出的地址又不再是32的倍数了，程序戛然而止。我们分析一下为什么会这样。在主函数中，`new Point`动态创建了一个`Point`对象。前面提到过，这个过程分为两步，第一步申请`Point`对象所需的空间，即`sizeof(Point)`大小的空间，第二步调用`Point`的构造函数。我们寄希望于第一步申请到的空间恰好让内部的`position`对象对齐，这是不现实的。因为整个过程中并不会调用`Vector4d`的`operator new`，调用的只有`Point`的`operator new`，而这个函数我们并没有重写。 
 
 可惜的是，此处并没有足够优雅的解决方案，唯一的方案是在`Point`类中也添加自定义`operator new`，这就需要用户的协助，类库的作者已经无能为力了。 不过类库的作者能做的，是尽量让用户更方便地添加`operator new`，比如封装为一个宏定义，用户只需要在`Point`类中添加一句宏即可。最后，完整的代码如下。
 
-`#include 
-
 ```cpp
+#include 
 #include 
 
 #define ALIGNED_OPERATOR_NEW \
@@ -451,7 +441,6 @@ int main() {
 // antimalicious_aligned_heap_vectorization.cpp
 ```
 
-`
 
 这段代码中，宏定义`ALIGNED_OPERATOR_NEW` 包含了`operator new`和`operator delete`，它们对所有需要内存对齐的类都适用。因此，无论是需要内存对齐的类，还是包含了这些类的类，都需要添加这个宏。 
 

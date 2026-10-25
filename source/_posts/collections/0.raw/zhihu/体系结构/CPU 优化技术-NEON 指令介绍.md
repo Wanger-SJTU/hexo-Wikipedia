@@ -118,11 +118,10 @@ N/N2
 W/W2<strong>4）</strong>表示单个通道的数据类型，<strong>8B/16B/4H/8H/2S/4S/2D</strong>，B 表示 8bit，H 表示 16bit，S 表示 32bit，D 表示 64bit。
 
 - <strong>汇编指令例子</strong>
-`SQRSHRN2` 表示对向量进行 Rouding 类型的右移操作，并对结果做饱和计算，最后将结果赋给目的向量的高半部分，并保持低半部分不改变，具体示例如下
-
-`// 指令语句作用：
+SQRSHRN2` 表示对向量进行 Rouding 类型的右移操作，并对结果做饱和计算，最后将结果赋给目的向量的高半部分，并保持低半部分不改变，具体示例如下
 
 ```text
+// 指令语句作用：
 //             将 V2 向量中每个元素按照 Rounding 方式右移动 2 位，然后对结果做饱和操作, 
 //             并将结果保存到V0上半部分，而且保证V0的下半部分保持不变
 // 指令格式说明：
@@ -146,7 +145,6 @@ int round_const = (1  (shift - 1));
 
 V0[2] = SAT((V2[0] + round_const) >> shift)
 V0[3] = SAT((V2[1] + round_const) >> shift)
-`
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_4d5190100f48.jpg)
 
@@ -177,11 +175,10 @@ SQRSHRN2
 
 <strong>汇编指令例子</strong>
 
-`VQDMULL` 表示两向量相乘，结果乘以 2*。*
-
-`// 指令语句作用：
+VQDMULL` 表示两向量相乘，结果乘以 2*。*
 
 ```text
+// 指令语句作用：
 //              64bit 向量 D1 和 D3 中每个元素对应相乘，并将结果乘以 2 
 //              最后的结果做饱和之后赋值给 128bit 向量 Q0
 //             
@@ -207,7 +204,6 @@ for (int i = 0; i  4; i++)
 }
 ```
 
-`
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_38a6c789de10.jpg)
 
@@ -218,11 +214,10 @@ VQDMULL.S16
 
 #### <strong>2.4.1 向量类型格式</strong>
 
-`// 非数组向量格式
+// 非数组向量格式
 type>size>xnumber_of_lanes>_t
 // 数组向量格式
 type>size>xnumber_of_lanes>xlength_of_array>_t
-`
 
 <strong>1）</strong>数据类型，如 `int`/`uint`/`float`/`poly`。
 
@@ -237,70 +232,58 @@ type>size>xnumber_of_lanes>xlength_of_array>_t
 向量类型示意图
 #### <strong>2.4.2 NEON内联函数格式</strong>
 
-`vmod>opname>shape>flags>_type>
-`
+vmod>opname>shape>flags>_type>
 
 <strong>1）</strong>
 
 - <strong>q</strong>：表示饱和计算，例如
-`// a加b的结果做饱和计算
+// a加b的结果做饱和计算
 int8x8_t vqadd_s8(int8x8_t a, int8x8_t b); 
-`
 
 - <strong>h</strong>：表示折半计算，例如
-`// a减b的结果右移一位
+// a减b的结果右移一位
 int8x8_t vhsub_s8(int8x8_t a, int8x8_t b); 
-`
 
 - <strong>d</strong>：表示加倍计算，例如
-`// a乘b的结果扩大一倍, 最后做饱和操作
+// a乘b的结果扩大一倍, 最后做饱和操作
 int32x4_t vqdmull_s16(int16x4_t a, int16x4_t b); 
-`
 
 - <strong>r</strong>：表示舍入计算，例如
-`// 将a与b的和减半,同时做rounding 操作, 每个通道可以表达为: (ai + bi + 1) >> 1
+// 将a与b的和减半,同时做rounding 操作, 每个通道可以表达为: (ai + bi + 1) >> 1
 int8x8_t vrhadd_s8(int8x8_t a, int8x8_t b); 
-`
 
 - <strong>p</strong>：表示pairwise计算。例如
-`// 将a, b向量的相邻数据进行两两和操作
+// 将a, b向量的相邻数据进行两两和操作
 int8x8_t vpadd_s8(int8x8_t a, int8x8_t b);
-`
 
 <strong>2)</strong>表示具体操作，比如 `add`，`sub`。
 
 <strong>3)</strong>
 
 - <strong>l</strong>：表示long，输出向量的元素长度是输入长度的2倍，例如
-`uint16x8_t vaddl_u8(uint8x8_t a, uint8x8_t b);
-`
+uint16x8_t vaddl_u8(uint8x8_t a, uint8x8_t b);
 
 - <strong>n</strong>：表示 narrow，输出向量的元素长度是输入长度的倍，例如
-`uint32x2_t vmovn_u64(uint64x2_t a);
-`
+uint32x2_t vmovn_u64(uint64x2_t a);
 
 - <strong>w</strong>：表示 wide，第一个输入向量和输出向量类型一样，且是第二个输入向量元素长度的2倍，例如
-`uint16x8_t vsubw_u8(uint16x8_t a, uint8x8_t b);
-`
+uint16x8_t vsubw_u8(uint16x8_t a, uint8x8_t b);
 
 - <strong>_high</strong>：AArch64专用，而且和 <strong>l/n</strong> 配合使用。
 
 - 当使用 <strong>l(Long)</strong>时，表示输入向量只有高 64bit 有效；
 - 当使用 <strong>n(Narrow)</strong>时，表示输出只有高 64bit 有效。
 
-`// a 和 b 只有高 64bit 参与运算
+// a 和 b 只有高 64bit 参与运算
 int16x8_t vsubl_high_s8(int8x16_t a, int8x16_t b);
-`
 
 - <strong>_n</strong>：表示有标量参与向量计算，例如
-`// 向量 a 中的每个元素右移 n 位
+// 向量 a 中的每个元素右移 n 位
 int8x8_t vshr_n_s8(int8x8_t a, const int n);
-`
 
 - <strong>_lane</strong>： 指定向量中某个通道参与向量计算，例如
-`// 取向量 v 中下标为 lane 的元素与向量 a 做乘法计算
+// 取向量 v 中下标为 lane 的元素与向量 a 做乘法计算
 int16x4_t vmul_lane_s16(int16x4_t a, int16x4_t v, const int lane);
-`
 
 <strong>4)</strong>
 
@@ -322,24 +305,22 @@ int16x4_t vmul_lane_s16(int16x4_t a, int16x4_t v, const int lane);
 #### <strong>3.2.1 Load/Store</strong>
 
 - 以解交织的方式加载数据
-`// 以解交织方式加载数据到n个向量寄存器, n为1~4
+// 以解交织方式加载数据到n个向量寄存器, n为1~4
 Result_t vld[n]q>_type(Scalar_t *p_addr);
 
 // 以解交织方式加载数据到n个向量寄存器的第N通道, n为1~4
 Result_t vld[n]q>_lane_type(Scalar_t *p_addr, Vector_t M, int N);
-`
 
 - 以交织的方式存储数据
-`// 将n个向量寄存器数据以交织方式存储到内存中, n为1~4
 
 ```cpp
+// 将n个向量寄存器数据以交织方式存储到内存中, n为1~4
 void vst[n]q>_type(Scalar_t* N, Vector_t M);
 
 // 将n个寄存器的N通道数据以交织方式存储到内存中, n为1~4
 void vst[n]q>_lane_type(Scalar_t *p_addr, Vector_t M, int N);
 ```
 
-`
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_b4ccc9526195.jpg)
 
@@ -347,7 +328,7 @@ void vst[n]q>_lane_type(Scalar_t *p_addr, Vector_t M, int N);
 #### <strong>3.2.2 Arithmetic</strong>
 
 - 整数和浮点数的加减运算。
-`// 基本的加减操作
+// 基本的加减操作
 Result_t vaddq>_type(Vector1_t N, Vector2_t M);
 Result_t vsubq>_type(Vector1_t N, Vector2_t M);
 
@@ -378,7 +359,6 @@ Result_t vsubhn_type(Vector1_t N, Vector2_t M);
 // RHN(rounding half Narrow)类型的加减操作
 Result_t vraddhn_type(Vector1_t N, Vector2_t M);
 Result_t vrsubhn_type(Vector1_t N, Vector2_t M);
-`
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_3d9034cf5690.jpg)
 
@@ -386,7 +366,7 @@ vhadd_s32 instrisics指令的操作
 #### <strong>3.2.3 Multiply</strong>
 
 - 整型和浮点型的乘法运算, 参与计算的都是向量
-`// 基本乘法操作
+// 基本乘法操作
 Result_t vmulq>_type(Vector1_t N, Vector2_t M);
 
 // l(Long)类型的乘法操作
@@ -412,10 +392,9 @@ Result_t vqdmulhq>_type(Vector1_t N, Vector2_t M);
 
 // QRDLH(Saturated, Rounding Double, Long, Half)类型的乘法操作
 Result_t vqrdmulhq>_type(Vector1_t N, Vector2_t M);
-`
 
 - 带通道类型的乘法操作
-`// 基本的乘法操作
+// 基本的乘法操作
 Result_t vmull_lane_type(Vector1_t N, Vector2_t M, int n);
 
 // 基本的乘加和乘减操作
@@ -432,14 +411,13 @@ Result_t vqdmlsl_lane_type(Vector1_t N, Vector2_t M, Vector3_t P, int n);
 
 // QDH(Saturated, Double, Half) 类型的操作
 Result_t vqdmulhq>_lane_type(Vector1_t N, Vector2_t M, int n);
-`
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_decfa15f2fe2.jpg)
 
 vmla_lane_s32 intrinsics 指令的操作
 
 - 向量和标量的乘法
-`// 基本的向量和标量的乘法
+// 基本的向量和标量的乘法
 Result_t vmulq>_n_type(Vector_t N, Scalar_t M);
 
 // L(Long) 类型的向量和标量的乘法
@@ -461,12 +439,11 @@ Result_t vmlsl_n_type(Vector1_t N, Vector2_t M, Scalar_t P);
 // QDL(Saturated, Double, long) 类型的乘加和乘减
 Result_t vqdmlal_n_type(Vector1_t N, Vector2_t M, Scalar_t P);
 Result_t vqdmlsl_n_type(Vector1_t N, Vector2_t M, Scalar_t P);
-`
 
 #### <strong>3.2.4 Shift</strong>
 
 - 立即数类型的位移
-`// 基本的立即数左移和右移
+// 基本的立即数左移和右移
 Result_t vshrq>_n_type(Vector_t N, int n);
 Result_t vshlq>_n_type(Vector_t N, int n);
 
@@ -505,10 +482,9 @@ Result_t vqrshrn_n_type(Vector_t N, int n);
 
 // N(Narrow) 类型的左移操作
 Result_t vshll_n_type(Vector_t N, int n);
-`
 
 -  非立即数类型的位移
-`// 左移
+// 左移
 Result_t vshlq_type(Vector1_t N, Vector2_t M);
 
 // Q(Saturated) 类型的左移操作
@@ -516,11 +492,14 @@ Result_t vqshlq>_type(Vector1_t N, Vector2_t M);
 
 // QR(Saturated, rounding) 类型的左移操作
 Result_t vrshlq>_type(Vector1_t N, Vector2_t M);
-`
 
 - 移位并插入
-`// 将向量 M 中各个通道先右移动 n 位, 然后将移动后元素插入到 N 对应的元素中,
+
+```text
+// 将向量 M 中各个通道先右移动 n 位, 然后将移动后元素插入到 N 对应的元素中,
 // 并保持 N 中每个元素的高 n 位保持不变
+```
+
 Result_t vsriq>_n_type(Vector1_t N, Vector2_t M, int n);
 
 ```text
@@ -529,7 +508,6 @@ Result_t vsriq>_n_type(Vector1_t N, Vector2_t M, int n);
 ```
 
 Result_t vsliq>_n_type(Vector1_t N, Vector2_t M, int n);
-`
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_e4119199fe06.jpg)
 
@@ -539,49 +517,44 @@ vsliq_n_u32  intrinsics 指令的操作
 <strong>eq</strong> 表示相等，<strong>ge</strong> 表示大于或等于，<strong>gt</strong>表示大于，<strong>le</strong>表示小于或等于，<strong>lt</strong>表示小于
 
 - 逻辑比较操作，比较结果为true，输出向量的对应通道将被设置为全 1，否则设置为全0 <strong>。</strong>
-`Result_t vceqq>_type(Vector1_t N, Vector2_t M);
+Result_t vceqq>_type(Vector1_t N, Vector2_t M);
 Result_t vcgeq>_type(Vector1_t N, Vector2_t M);
 Result_t vcleq>_type(Vector1_t N, Vector2_t M);
 Result_t vcgtq>_type(Vector1_t N, Vector2_t M);
 Result_t vcltq>_type(Vector1_t N, Vector2_t M);
-`
 
 - 向量的绝对值比较，比较结果为true时，输出向量对应通道将被设置为全1，否则设置为全0<strong>。</strong>
-`Result_t vcageq>_type(Vector1_t N, Vector2_t M);
+Result_t vcageq>_type(Vector1_t N, Vector2_t M);
 Result_t vcaleq>_type(Vector1_t N, Vector2_t M);
 Result_t vcagtq>_type(Vector1_t N, Vector2_t M);
 Result_t vcaltq>_type(Vector1_t N, Vector2_t M);
-`
 
  - 按位与\或\非\异或操作
 
-`Result_t vandq>_type(Vector1_t N, Vector2_t M);
+Result_t vandq>_type(Vector1_t N, Vector2_t M);
 Result_t vorrq>_type(Vector1_t N, Vector2_t M);
 Result_t vmvnq>_type(Vector_t N);
 Result_t veorq>_type(Vector1_t N, Vector2_t M);
-`
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_44dd5f541203.jpg)
 
 vmvn_s32 intrinsics 指令操作
 
 - 元素与操作
-`// 按通道做与操作，为 true 时，将输出向量对应通道设置为全 1，否则设置为全 0
+// 按通道做与操作，为 true 时，将输出向量对应通道设置为全 1，否则设置为全 0
 Result_t vtstq>_type(Vector1_t N, Vector2_t M);
-`
 
 - 其他
-`// M 作为 mask，标识是否对 N 做清零操作。当 M 中某位为 1, 则将 N 中对应位清零
+// M 作为 mask，标识是否对 N 做清零操作。当 M 中某位为 1, 则将 N 中对应位清零
 Result_t vbicq>_type(Vector1_t N, Vector2_t M);
 
 // P 作为 mask，按位 select。当 P 中某位是 1 时，将选择 N 中对应位作为输出，否则选择 M
 Result_t vbslq>_type(Vector1_t N, Vector2_t M, Vector3_t P);
-`
 
 #### <strong>3.2.6 Floating-point</strong>
 
 - 浮点数之间的转化, 以及浮点类型与整数类型之间的转化
-`// 单精度浮点转化为整数类型
+// 单精度浮点转化为整数类型
 Result_t vcvtq>_type_f32(Vector_t N);
 
 // 整数类型转化为单精度浮点
@@ -592,15 +565,12 @@ Result_t vcvt_f16_f32(Vector_t N);
 
 // f32转化为f16
 Result_t vcvt_f32_f16(Vector_t N);
-`
 
 - 浮点类型的乘加操作
-`Result_t vfmaq>_type(Vector1_t N, Vector2_t M, Vector3_t P);
-`
+Result_t vfmaq>_type(Vector1_t N, Vector2_t M, Vector3_t P);
 
 - 浮点类型的乘减操作
-`Result_t vfmsq>_type(Vector1_t N, Vector2_t M, Vector3_t P);
-`
+Result_t vfmsq>_type(Vector1_t N, Vector2_t M, Vector3_t P);
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_1c90fe88a397.jpg)
 
@@ -608,23 +578,20 @@ vfms intrinsics 指令操作
 #### <strong>3.2.7 Permutation</strong>
 
 - 向量提取组合操作
-`Result_t vextq>_type(Vector1_t N, Vector2_t M, int n);
-`
+Result_t vextq>_type(Vector1_t N, Vector2_t M, int n);
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_c63587ddfc8b.jpg)
 
 vextq_u8 intrinsics 指令操作
 
 - 查表操作
-`Result_t vtbl[n]_type(Vector1_t N, Vector2_t M);
+Result_t vtbl[n]_type(Vector1_t N, Vector2_t M);
 Result_t vtbx[n]_type(Vector1_t N, Vector2_t M, Vector3_t P);
-`
 
 - 向量翻转操作
-`Result_t vrev64q>_type(Vector_t N);
+Result_t vrev64q>_type(Vector_t N);
 Result_t vrev32q>_type(Vector_t N);
 Result_t vrev16q>_type(Vector_t N);
-`
 
 **`vrev16_type` 按照 16bit 为块，块内数据按照 8bit 为单位进行翻转。****`vrev32_type` 按照 32bit 为块，块内数据按照 8bit，16bit 为单位进行翻转。****`vrev64_type` 按照 64bit 为块，块内数据按照8bit, 16bit, 32bit为单位进行翻转。**![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_19b4cfd61c92.jpg)
 
@@ -633,19 +600,17 @@ vrev16_s8, vrev32_s8 intrinsics 指令操作
 - 旋转操作
 **旋转指令包含了两种矩阵旋转的指令，`TRN1`, `TRAN2` `Result_t vtrn1q>_type(Vector1_t N, Vector2_t M);
 Result_t vtrn2q>_type(Vector1_t N, Vector2_t M);
-`
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_8973a9c3f118.jpg)
 
 vtrn1q_s32, vtrn2q_s32 intrinsics 指令操作
 
 - 向量交织和解交织操作
-`// 交织操作
+// 交织操作
 Result_t vzipq>_type(Vector1_t N, Vector2_t M);
 
 // 解交织操作
 Result_t vuzpq>_type(Vector1_t N, Vector2_t M);
-`
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_7ac2ed5b0c54.jpg)
 
@@ -653,17 +618,15 @@ vzip_u8 intrinsics 指令操作
 #### 3.2.8 Miscellaneous**
 
 - 将同一个标量填充到每个向量通道
-`Result_t vcreate_type(Scalar_t N);
+Result_t vcreate_type(Scalar_t N);
 Resutl_t vdup_type(Scalar_t N);
 Result_t vdup_n_type(Scalar_t N);
 Result_t vdupq_n_type(Scalar_t N);
 Result_t vmov_n_type(Scalar_t N);
 Result_t vmovq_n_type(Scalar_t N);
-`
 
 - 将向量中某个通道的数据填充到指定的向量中
-`Result_t vdupq>_lane_type(Vector_t N, int n);
-`
+Result_t vdupq>_lane_type(Vector_t N, int n);
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_23c4b23a1998.jpg)
 
@@ -671,21 +634,20 @@ vdup_lane_s32 intrinsics 指令操作
 #### <strong>3.2.9 Data processing</strong>
 
 - max\min操作
-`// 基本的 max, min
+// 基本的 max, min
 Result_t vmaxq>_type(Vector1_t N, Vector2_t M);
 Result_t vminq>_type(Vector1_t N, Vector2_t M);
 
 // pairwise 类型的 max， min
 Result_t vpmax_type(Vector1_t N, Vector2_t M);
 Result_t vpmin_type(Vector1_t N, Vector2_t M);
-`
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_f72a4d49951b.jpg)
 
 vpmin_s16 intrinsics 指令操作
 
 - 差的绝对值操作
-`// 基本的绝对值计算
+// 基本的绝对值计算
 Result_t vabsq>_type(Vector_t N);
 
 // 差的绝对值操作
@@ -699,18 +661,16 @@ Result_t vabaq>_type(Vector1_t N, Vector2_t M, Vector3_t P);
 
 // L(Long)类型, 差的绝对值，并和另一个向量相加, 输出是输入长度的两倍
 Result_t vabal_type(Vector1_t N, Vector2_t M, Vector3_t P);
-`
 
 - 取反操作
-`// 基本的取反操作
+// 基本的取反操作
 Result_t vnegq>_type(Vector_t N);
 
 // Q(Saturated)类型，带饱和的取反操作
 Result_t vqnegq>_type(Vector_t N);
-`
 
 - 按位统计 0 或 1 的个数
-`// 统计每个通道 1 的个数
+// 统计每个通道 1 的个数
 Result_t vcntq>_type(Vector_t N);
 
 // 从符号位开始，统计每个通道中与符号位相同的位的个数，且这些位必须是连续的
@@ -718,10 +678,9 @@ Result_t vclsq>_type(Vector_t N);
 
 // 从符号位开始，统计每个通道连续0的个数
 Result_t vclzq>_type(Vector_t N);
-`
 
 - 倒数和平方根求倒计算
-`// 对每个通道近似求倒
+// 对每个通道近似求倒
 Result_t vrecpeq>_type(Vector_t N);
 
 // 对每个通道使用 newton-raphson 求倒
@@ -732,10 +691,9 @@ Result_t vrsqrteq>_type(Vector_t N);
 
 // 对每个通道使用 newton-raphson 平方根近似求倒
 Result_t vrsqrtsq>_type(Vector1_t N, Vector2_t M);
-`
 
 - 向量赋值
-`// N(Narrow) 类型的赋值，取输入每个通道的高半部分，赋给目的向量
+// N(Narrow) 类型的赋值，取输入每个通道的高半部分，赋给目的向量
 Result_t vmovn_type(Vector_t N);
 
 // L(long) 类型的赋值，使用符号拓展或者 0 拓展的方式，将输入通道的数据赋给输出向量
@@ -746,22 +704,18 @@ Result_t vqmovn_type(Vector_t N);
 
 // QN(Saturated, Narrow) 类型的赋值，饱和的方式赋值，输出是输入宽度的两倍，而且输入为有符号数据，输出无符号
 Result_t vqmovun_type(Vector_t N);
-`
 
 #### <strong>3.2.10 Type conversion</strong>
 
 - 元素类型的重新解释
-`Result_t vreinterpretq>_DSTtype_SRCtype(Vector1_t N);
-`
+Result_t vreinterpretq>_DSTtype_SRCtype(Vector1_t N);
 
 - 两个 64bit 向量组合成一个 128bit 向量
-`Result_t vcombine_type(Vector1_t N, Vector2_t M);
-`
+Result_t vcombine_type(Vector1_t N, Vector2_t M);
 
 - 提取 128bit 向量的高半部分或则低半部分
-`Result_t vget_high_type(Vector_t N);
+Result_t vget_high_type(Vector_t N);
 Result_t vget_low_type(Vector_t N);
-`
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_5e093f915494.jpg)
 
@@ -771,12 +725,11 @@ vget_low_s32 \ vget_high_s32 intrinsics 指令操作**
 
 为了便于 NEON 指令从 ARM 平台移植到 x86 平台使用，Intel 提供了一套转化接口 <strong>NEON2SSE</strong>，用于将 NEON 内联函数转化为 Intel SIMD(SSE) 内联函数。大部分 x86 平台 C/C++编译器均支持 SSE，因此只需下载并包含接口头文件`NEON_2_SSE.h`，即可在x86平台调试 NEON 指令代码。
 
-`#ifdef ARM_PLATFORM
+#ifdef ARM_PLATFORM
 #  include 
 #else
 #  include "NEON_2_SSE.h"
 #endif
-`
 
 <strong>NEON2SSE 提供了 1700 多个 NEON 内联函数的转换接口，运算结果确保与 ARM 平台准确一致。性能方面：</strong>
 
@@ -791,12 +744,11 @@ vget_low_s32 \ vget_high_s32 intrinsics 指令操作**
 
 使用 `vld3q` 以解交织的方式加载 RGB 图像；`vst3q` 以交织的方式存储 RGB 图像。
 
-`// 输入地址为 in_ptr, 输出向量为 vec
+// 输入地址为 in_ptr, 输出向量为 vec
 uint8x16x3_t vec = vld3q(in_ptr);
 
 // 输出地址为 out_ptr, 输入为 uint8x16x3_t 类型的 RGB 向量
 vst3q(out_ptr, vec);
-`
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_905e3b0cd0d6.jpg)
 
@@ -813,9 +765,8 @@ NEON 在常规重排指令外，支持使用`TBL`和`TBX`指令来完成任意�
 - 向量类型的表，最多可以有 4 个寄存器向量值。
 
 **这两条指令使用下标向量到对应表中索引数据，并把找到的数据存放到输出向量中去。
-`TBL`和`TBX`的不同在于：当没有索引值超过范围时，`TBL`返回 0， `TBX`保持原有目的数据不变。`// a表示table, b表示index, c表示结果
+TBL`和`TBX`的不同在于：当没有索引值超过范围时，`TBL`返回 0， `TBX`保持原有目的数据不变。`// a表示table, b表示index, c表示结果
 uint8x8_t c = vtbl2_u8(a, b)
-`
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_f57595167d47.jpg)
 
@@ -829,7 +780,7 @@ NEON 开发中，可以使用`DUP`指令将常数填充到向量中，然后使�
 **例如 7x7 的 boxfilter，处理边界时需要填充 3 个像素的值。
 
 - EXT指令还常常用于滤波向量的重组操作。**
-`// 构造边界填充向量
+// 构造边界填充向量
 uint8_t c_0 =0;
 uint8x8_t v_c0 = v_dup_n_u8(c_0);
 
@@ -838,7 +789,6 @@ uint8x8_t v_1 = vext_u8(v_c0, v_0, 5)
 
 // 使用 vext 构建边界向量，v0 表示从纵坐标为 0 起始的向量
 uint8x8_t v_border = vext_u8(v_1, v_c0, 3)
-`
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_38aa22611bda.jpg)
 
@@ -849,7 +799,7 @@ uint8x8_t v_border = vext_u8(v_1, v_c0, 3)
 
 - 首先使用vabd做差的绝对值计算。
 - 然后使用vdot将上面的结果做累加。
-`// 初始化 v_sum 和 v_c1  
+// 初始化 v_sum 和 v_c1  
 uint32x4_t v_sum = vmovq_n_u32(0);
 uint8x16_t v_c1  = vmovq_n_u8(1);
 
@@ -865,7 +815,6 @@ v_sum = vdotq_u32(v_sum , v_abd_res, v_c1);
 ...
 // 将最后的结果累加
 uint32_t res = vaddvq_u32(v_sum);
-`
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_f4fbe5024544.jpg)
 

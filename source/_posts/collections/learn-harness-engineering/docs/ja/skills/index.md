@@ -66,7 +66,7 @@ Claude Code で使う場合は、`harness-creator/` ディレクトリをプロ�
 
 ### このスキルの作り方
 
-`harness-creator` は <strong>skill-creator</strong> 方法論で開発されています。これは Anthropic 公式のメタスキルで、エージェントスキルの作成、テスト、反復改善に使います。skill-creator は、評価ランナー、採点器、ベンチマークビューアを備えた、ドラフト → テスト → 評価 → 反復の構造化ワークフローを提供します。
+harness-creator` は <strong>skill-creator</strong> 方法論で開発されています。これは Anthropic 公式のメタスキルで、エージェントスキルの作成、テスト、反復改善に使います。skill-creator は、評価ランナー、採点器、ベンチマークビューアを備えた、ドラフト → テスト → 評価 → 反復の構造化ワークフローを提供します。
 
 - <strong>skill-creator ソース</strong>: [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
 - <strong>Claude Code skills docs</strong>: [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)

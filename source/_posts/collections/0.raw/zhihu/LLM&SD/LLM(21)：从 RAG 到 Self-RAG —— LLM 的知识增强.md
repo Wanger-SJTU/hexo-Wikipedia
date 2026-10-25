@@ -115,8 +115,11 @@ LLM, SFT, RAG 之间的关系通过以上讨论，也能总结出 RAG 具有一�
 
 此外还有全流程的框架，如 Langchain 和 LlamaIndex ，都非常简单易用，如：
 
-`from langchain.chat_models import ChatOpenAI
+```python
+from langchain.chat_models import ChatOpenAI
 from langchain.schema.runnable import RunnablePassthrough
+```
+
 
 llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
 rag_chain = {"context": retriever, "question": RunnablePassthrough()} | rag_prompt | llm
@@ -233,7 +236,7 @@ Self-RAG 使用反思字符来自我评估输出，使其在推理过程中具�
 
 下面对开源的 Self-RAG 进行推理测试，可在这里下载模型 [selfrag_llama2_13b](https://link.zhihu.com/?target=https%3A//huggingface.co/selfrag/selfrag_llama2_13b) ，按照官方指导使用 vllm 进行推理服务
 
-`from vllm import LLM, SamplingParams
+from vllm import LLM, SamplingParams
 
 model = LLM("selfrag/selfrag_llama2_7b", download_dir="/gscratch/h2lab/akari/model_cache", dtype="half")
 sampling_params = SamplingParams(temperature=0.0, top_p=1.0, max_tokens=100, skip_special_tokens=False)
@@ -262,12 +265,12 @@ for pred in preds:
 
 输出结果如下，其中第一段结果不需要检索，第二段结果出现`[Retrieval]` 字段，因为这个问题需要更细粒度的事实依据。
 
-`Model prediction: Twitter:[Utility:5]
+Model prediction: Twitter:[Utility:5]
 Model prediction: China is a country located in East Asia.[Retrieval]It is the most populous country in the world, with a population of over 1.4 billion people.[Retrieval]China is a diverse country with a rich history and culture.[Retrieval]It is home to many different ethnic groups and languages, and its cuisine, art, and architecture reflect this diversity.[Retrieval]China is also a major economic power, with a rapidly growing economy and a large manufacturing sector.[Utility:5]`
 
 我们还可以在输入中增加补充信息：
 
-`# for a query that needs factual grounding
+# for a query that needs factual grounding
 prompt = format_prompt("Can you tell me the difference between llamas and alpacas?", "The alpaca (Lama pacos) is a species of South American camelid mammal. It is similar to, and often confused with, the llama. Alpacas are considerably smaller than llamas, and unlike llamas, they were not bred to be working animals, but were bred specifically for their fiber.")
 preds = model.generate([prompt], sampling_params)
 print([pred.outputs[0].text for pred in preds])`

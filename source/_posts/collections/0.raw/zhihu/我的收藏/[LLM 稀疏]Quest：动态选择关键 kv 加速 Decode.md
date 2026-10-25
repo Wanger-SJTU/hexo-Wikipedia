@@ -151,11 +151,10 @@ Quest 不再需要加载整个 KV 缓存，而是仅加载所需数据的一小�
 
 #### pred(精度测试)
 
-`def old_llama_decoder_layer_forward(
+```python
+def old_llama_decoder_layer_forward(
     self,
     hidden_states: torch.Tensor,
-
-```text
     attention_mask: Optional[torch.Tensor] = None,
     position_ids: Optional[torch.LongTensor] = None,
     past_key_value: Optional[Tuple[torch.Tensor]] = None,
@@ -219,13 +218,13 @@ quest_attention
 
 前两层的话，直接走 dense
 
-`if q_len > 1 or self.layer_id 
+if q_len > 1 or self.layer_id 
 
 sparse 的计算逻辑如下：
 
 1. qkv proj
 
-`query_states = (
+query_states = (
 
 ```text
         self.q_proj(hidden_states)
@@ -247,7 +246,7 @@ sparse 的计算逻辑如下：
 
 2. 从 kv cache 获取 kv_seq_len
 
-`# 新缓存格式
+# 新缓存格式
 if isinstance(past_key_value, DynamicCache):
     kv_seq_len = past_key_value.get_seq_length()
 # 旧缓存格式
@@ -263,14 +262,14 @@ else:
 
 3. rope
 
-`cos, sin = self.rotary_emb(value_states, position_ids.to(value_states.device))
+cos, sin = self.rotary_emb(value_states, position_ids.to(value_states.device))
 query_states, key_states = apply_rotary_pos_emb(
     query_states, key_states, cos, sin, position_ids
 )`
 
 4. 更新 kv cache
 
-`# New cache format
+# New cache format
 if isinstance(past_key_value, DynamicCache):
     if use_cache:
         key_states, value_states = past_key_value.update(key_states, value_states, layer_idx=self.layer_idx)
@@ -288,12 +287,12 @@ else:
 
 5. GQA 适配
 
-`key_states = repeat_kv(key_states, self.num_key_value_groups)
+key_states = repeat_kv(key_states, self.num_key_value_groups)
 value_states = repeat_kv(value_states, self.num_key_value_groups)`
 
 6. 计算原始注意力权重
 
-`# query_states ([1, 32, 1, 128])
+# query_states ([1, 32, 1, 128])
 # key_states  ([1, 32, 4008, 128])
 attn_weights = torch.matmul(query_states, key_states.transpose(2, 3)) / math.sqrt(
     self.head_dim  # 128
@@ -302,7 +301,7 @@ attn_weights = torch.matmul(query_states, key_states.transpose(2, 3)) / math.sqr
 
 7. 正负处理
 
-`sign = (query_states > 0) + (~(query_states > 0)) * -1
+sign = (query_states > 0) + (~(query_states > 0)) * -1
 max_key = key_states * sign  # [1, 32, 4008, 128]
 postive_query = query_states * sign   #[1, 32, 1, 4008]`
 
@@ -316,7 +315,7 @@ postive_query = query_states * sign   #[1, 32, 1, 4008]`
 
 9. 计算每个page 的最大值
 
-`chunk_max_key = max_key.reshape(
+chunk_max_key = max_key.reshape(
     max_key.shape[0],
     max_key.shape[1],
     max_key.shape[2] // self.chunk_size,
@@ -327,7 +326,7 @@ postive_query = query_states * sign   #[1, 32, 1, 4008]`
 
 10. 恢复chunk_max_key 的原始 shape
 
-`chunk_max_key = chunk_max_key.unsqueeze(-2).repeat(1, 1, 1, self.chunk_size, 1)
+chunk_max_key = chunk_max_key.unsqueeze(-2).repeat(1, 1, 1, self.chunk_size, 1)
 chunk_max_key = chunk_max_key.reshape(
     chunk_max_key.shape[0], chunk_max_key.shape[1], -1, chunk_max_key.shape[-1]
 )[:, :, :seq_length, :]
@@ -337,7 +336,7 @@ chunk_max_key = chunk_max_key.reshape(
 - 恢复到原始序列形状
 11. 计算query 和 max_key 的权重
 
-`quantized_weight = torch.matmul(
+quantized_weight = torch.matmul(
 
 ```text
     postive_query.float(),    # [1, 32, 1, 128]
@@ -349,7 +348,7 @@ chunk_max_key = chunk_max_key.reshape(
 
 12. 应用 mask (当前没有）
 
-`if attention_mask is not None:
+if attention_mask is not None:
 
 ```text
     attn_weights = attn_weights + attention_mask
@@ -365,7 +364,7 @@ chunk_max_key = chunk_max_key.reshape(
 
 13. 选择 top-k
 
-`token_budget = min(kv_seq_len, self.token_budget)  # 512
+token_budget = min(kv_seq_len, self.token_budget)  # 512
 attn_weights_for_selection = quantized_weight  #(1, 32, 1, 4008)
 
 if token_budget > 0:
@@ -389,14 +388,14 @@ else:
 
 16. 计算 softmax 和 PV 矩阵乘
 
-`attn_weights = nn.functional.softmax(attn_weights, dim=-1, dtype=torch.float32).to(
+attn_weights = nn.functional.softmax(attn_weights, dim=-1, dtype=torch.float32).to(
     query_states.dtype
 )
 attn_output = torch.matmul(attn_weights, value_states)`
 
 17. 计算 o_proj
 
-`attn_output = attn_output.transpose(1, 2)
+attn_output = attn_output.transpose(1, 2)
 attn_output = attn_output.reshape(bsz, q_len, self.hidden_size)
 
 attn_output = self.o_proj(attn_output)`

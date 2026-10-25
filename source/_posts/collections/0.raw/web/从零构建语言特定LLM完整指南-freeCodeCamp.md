@@ -373,7 +373,7 @@ print(f"\nIs mostly Urdu: {is_mostly_urdu(cleaned)}")
 
 `unhappiness` 可能拆分为 `['un', 'happi', 'ness']`
 
-`مکمل` 可能拆分为 `['مکم', 'ل']` 或如果足够常见则保持完整。
+مکمل` 可能拆分为 `['مکم', 'ل']` 或如果足够常见则保持完整。
 
 词汇表更小（我们使用32K个token），且能处理任何单词，甚至新词。常见词保持为单个token。
 
@@ -422,7 +422,7 @@ Result: ار د و   زب ا ن
 
 这是语言覆盖率和模型大小之间的良好平衡。如果增加词汇表大小，嵌入层和输出层都会增大，意味着需要训练更多参数。对于一个学习项目来说，32K保持可控。
 
-`MIN_FREQUENCY`设置为2，意味着一个token必须在语料库中至少出现两次才会被包含。这过滤掉了一次性的噪声token，避免浪费词汇表空间。
+MIN_FREQUENCY`设置为2，意味着一个token必须在语料库中至少出现两次才会被包含。这过滤掉了一次性的噪声token，避免浪费词汇表空间。
 
 <strong>参考：</strong> GPT-2使用50K个token的词汇表，LLaMA使用32K。我们选择32K与生产模型保持一致。
 
@@ -1200,7 +1200,7 @@ optimizer = torch.optim.AdamW(model.parameters(), lr=config.learning_rate, weigh
 
 ```
 
-`AdamW`为每个参数维护两个运行统计量（23M × 2 = 内存中46M个额外值）：
+AdamW`为每个参数维护两个运行统计量（23M × 2 = 内存中46M个额外值）：
 
 <strong>一阶矩（动量）：</strong> 梯度的指数移动平均。平滑嘈杂的更新，使优化器不会锯齿形摆动。
 
@@ -1298,13 +1298,13 @@ optimizer.step()               # θ_new = θ_old - lr × adam_adjusted_gradient 
 
 ```
 
-`zero_grad()`：PyTorch默认累积梯度（适用于微批次间的梯度累积）。我们必须在每次新的反向传播之前手动清除它们。
+zero_grad()`：PyTorch默认累积梯度（适用于微批次间的梯度累积）。我们必须在每次新的反向传播之前手动清除它们。
 
-`loss.backward()`：反向传播通过链式法则反向遍历计算图，为每个参数计算∂loss/∂θ。这是与正向传播并列的计算量最大的步骤。
+loss.backward()`：反向传播通过链式法则反向遍历计算图，为每个参数计算∂loss/∂θ。这是与正向传播并列的计算量最大的步骤。
 
 <strong>梯度裁剪：</strong> 计算所有参数梯度拼接成一个向量的L2范数。如果范数超过1.0，每个梯度乘以`1.0/范数`，保持方向但限制幅度。这防止罕见的批次（不寻常的token分布）导致灾难性的巨大更新，使训练不稳定。
 
-`optimizer.step()`：AdamW使用动量、自适应的逐参数学习率和解耦的权重衰减来应用更新规则。
+optimizer.step()`：AdamW使用动量、自适应的逐参数学习率和解耦的权重衰减来应用更新规则。
 
 <strong>5. 记录：</strong>
 
@@ -1336,7 +1336,7 @@ val_loss /= len(val_loader)    # Average loss per batch
 | 训练↓，验证停滞/↑ | 过拟合：在记忆，不是在学习 |
 | 两者都很高且平坦 | 欠拟合：模型需要更多容量或数据 |
 
-`model.eval()`关闭dropout，以便我们用完整的模型进行评估。`torch.no_grad()`跳过梯度计算，因为我们只是在测量，不是在学习。
+model.eval()`关闭dropout，以便我们用完整的模型进行评估。`torch.no_grad()`跳过梯度计算，因为我们只是在测量，不是在学习。
 
 ## 6. 检查点
 
@@ -1347,7 +1347,7 @@ if val_loss < best_val_loss:
 
 ```
 
-`model.state_dict()`返回一个`OrderedDict`，将参数名映射到张量。`torch.save`使用Python的pickle + zip将其序列化到磁盘。我们只在验证损失改善时保存。
+model.state_dict()`返回一个`OrderedDict`，将参数名映射到张量。`torch.save`使用Python的pickle + zip将其序列化到磁盘。我们只在验证损失改善时保存。
 
 这在精神上是<strong>早停（early stopping）</strong>：我们保留泛化效果最好的检查点，不管后续epoch发生什么。
 
@@ -1425,11 +1425,11 @@ IGNORE_INDEX = -100
 
 ```
 
-`no_padding()`：告诉分词器"不要自动添加填充，我自己处理"。我们需要对token序列有完全的控制。
+no_padding()`：告诉分词器"不要自动添加填充，我自己处理"。我们需要对token序列有完全的控制。
 
 我们获取每个特殊token的整数ID，以便在正确位置手动插入它们。
 
-`IGNORE_INDEX = -100`：PyTorch的`cross_entropy`有一个内置功能：任何设置为-100的标签在损失计算中会被跳过。这就是我们实现损失掩码的方式。
+IGNORE_INDEX = -100`：PyTorch的`cross_entropy`有一个内置功能：任何设置为-100的标签在损失计算中会被跳过。这就是我们实现损失掩码的方式。
 
 ## 第2部分：`format_conversation()`：核心函数
 
@@ -1589,9 +1589,9 @@ sft_loader = DataLoader(sft_dataset, batch_size=4, shuffle=True)
 
 ```
 
-`batch_size=4`：小批次，因为我们只有79个示例。更大的批次意味着每个epoch的梯度更新更少。
+batch_size=4`：小批次，因为我们只有79个示例。更大的批次意味着每个epoch的梯度更新更少。
 
-`shuffle=True`：每个epoch随机化顺序，使模型不会记住固定的示例序列。
+shuffle=True`：每个epoch随机化顺序，使模型不会记住固定的示例序列。
 
 ## 加载预训练模型
 
@@ -1823,15 +1823,15 @@ with torch.no_grad():
 
 ```
 
-`torch.no_grad()`：推理不需要梯度，节省内存和速度
+torch.no_grad()`：推理不需要梯度，节省内存和速度
 
-`temperature=0.7`：略微尖锐的分布，输出连贯但不机械
+temperature=0.7`：略微尖锐的分布，输出连贯但不机械
 
-`top_k=50`：只从top 50个token中采样，避免低概率噪声
+top_k=50`：只从top 50个token中采样，避免低概率噪声
 
-`top_p=0.9`：核采样，动态选择累计概率 ≥ 0.9的最小token集合
+top_p=0.9`：核采样，动态选择累计概率 ≥ 0.9的最小token集合
 
-`eos_token_id`：当产生`<eos>`时停止生成
+eos_token_id`：当产生`<eos>`时停止生成
 
 <strong>3. 提取和解码：</strong>
 
@@ -1855,7 +1855,7 @@ return tokenizer.decode(generated_ids)
 
 ## Gradio Web界面（`app.py`）
 
-`app.py`文件将所有东西整合在一起：加载分词器和模型，定义`chat()`函数，并启动Gradio UI。模型加载和`chat()`逻辑与我们在SFT部分介绍的完全相同，所以这里只展示Gradio特定的部分：
+app.py`文件将所有东西整合在一起：加载分词器和模型，定义`chat()`函数，并启动Gradio UI。模型加载和`chat()`逻辑与我们在SFT部分介绍的完全相同，所以这里只展示Gradio特定的部分：
 
 ```
 import gradio as gr
@@ -1892,13 +1892,13 @@ if __name__ == "__main__":
 
 ```
 
-`respond()`用空输入守卫包装`chat()`，匹配Gradio的`ChatInterface`期望的签名。
+respond()`用空输入守卫包装`chat()`，匹配Gradio的`ChatInterface`期望的签名。
 
-`gr.ChatInterface`提供现成的聊天UI，包含消息历史、输入框和发送按钮。
+gr.ChatInterface`提供现成的聊天UI，包含消息历史、输入框和发送按钮。
 
-`examples`是用户可以点击尝试的预填消息。
+examples`是用户可以点击尝试的预填消息。
 
-`theme=gr.themes.Soft()`提供干净、现代的视觉主题。
+theme=gr.themes.Soft()`提供干净、现代的视觉主题。
 
 <strong>注意：</strong> Hugging Face Spaces将`app.py`作为独立脚本运行，所以仓库中完整的`app.py`将所有内容内联到一个文件中：模型配置、完整的Transformer架构、使用`gc.collect()`进行内存优化的模型加载、`chat()`函数，以及上面的Gradio界面。
 

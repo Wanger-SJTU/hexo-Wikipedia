@@ -32,9 +32,9 @@ bss段、数据段和代码段是可执行程序编译时的分段，运行时�
 - mmap 映射区向下扩展，堆向上扩展，两者相对扩展，直到耗尽虚拟地址空间中的剩余区域。
 在Linux中进程由进程控制块(PCB)描述，用一个task_struct 数据结构表示，这个数据结构记录了所有进程信息，包括进程状态、进程调度信息、标示符、进程通信相关信息、进程连接信息、时间和定时器、文件系统信息、虚拟内存信息等. 和malloc密切相关的就是虚拟内存信息，定义为struct mm_struct *mm 具体描述进程的地址空间。mm_struct结构是对整个用户空间（进程空间）的描述
 
-`///include/linux/sched.h 
-
 ```cpp
+///include/linux/sched.h 
+
 struct mm_struct {
   struct vm_area_struct * mmap;  /* 指向虚拟区间（VMA）链表 */
   rb_root_t mm_rb;         /*指向red_black树*/
@@ -74,9 +74,8 @@ struct mm_struct {
 - brk()和sbrk()
 由之前的进程地址空间结构分析可以知道，要增加一个进程实际的可用堆大小，就需要将break指针向高地址移动。Linux通过<strong>brk和sbrk系统调用</strong>操作break指针。两个系统调用的原型如下：
 
-`#include 
-
 ```cpp
+#include 
 int brk(void *addr);
 void *sbrk(intptr_t increment);`
 ```
@@ -92,17 +91,20 @@ brk函数将break指针直接设置为某个地址，而sbrk将break指针从当
 
 其中rlimit是一个结构体：
 
-`struct rlimit {
+```text
+struct rlimit {
   rlim_t rlim_cur;  /* Soft limit */
   rlim_t rlim_max;  /* Hard limit (ceiling for rlim_cur) */
+```
+
 };`
 
 每种资源有软限制和硬限制，并且可以通过setrlimit对rlimit进行有条件设置。其中硬限制作为软限制的上限，非特权进程只能设置软限制，且不能超过硬限制。
 
 - mmap函数
-`#include 
 
 ```cpp
+#include 
 void *mmap(void *addr, size\_t length, int prot, int flags, int fd, off\_t offset);
 int munmap(void *addr, size_t length);`
 ```

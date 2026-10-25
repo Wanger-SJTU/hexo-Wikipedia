@@ -47,37 +47,37 @@ DMB指令后面必须带参数，用来指定共享属性域（share ability dom
 
 【例18-1】CPU执行下面两条指令。
 
-`ldr x0，[x1]
+ldr x0，[x1]
 str x2，[x3]`
 
 LDR指令读取X1地址的值，STR指令把X2的值写入X3地址。如果这两条指令没有数据依赖（data dependency）或者地址依赖（address dependency），那么CPU可以先执行STR指令或者先执行LDR指令，从最终结果来看没有区别。
 
 数据依赖指的是相邻的读写操作是否存在数据依赖，例如，从X*n*地址读取内容到X*m*地址中，然后把X*m*地址中的值写入X*y*地址中，那么X*m*为这两条指令的数据依赖，下面是伪代码。
 
-`ldr xm，[xn]
+ldr xm，[xn]
 str xm，[xy]`
 
 地址依赖指的相邻的读写操作是否存在地址依赖，例如，从X*n*地址读取内容到X*m*地址中，然后把另外的一个值X*y*写入X*m*地址中，那么X*m*为这两条指令的地址依赖，下面是伪代码。
 
-`ldr xm，[xn]
+ldr xm，[xn]
 str xy，[xm]`
 
 在例18-1中，如果想要确保CPU一定按照写的序列来执行代码，那么就需要加入一条DMB指令，这样就可以保证CPU一定先执行LDR指令，后执行STR指令，例如下面的代码片段。
 
-`ldr x0，[x1]
+ldr x0，[x1]
 dmb ish
 str x2，[x3]`
 
 【例18-2】CPU执行下面两条指令。
 
-`ldr x0，[x1]
+ldr x0，[x1]
 str x0，[x3]`
 
 LDR指令读取X1地址的值到X0寄存器，然后把X0寄存器的值写入X3地址。这两条指令存在数据依赖，不使用内存屏障指令也能保证上述两条指令的执行次序。
 
 【例18-3】CPU执行如下3条指令。
 
-`ldr x0，[x1]
+ldr x0，[x1]
 dmb ish
 add x2，x3，x4`
 
@@ -85,7 +85,7 @@ add x2，x3，x4`
 
 【例18-4】CPU执行如下4条指令。
 
-`ldr   x0,   [x2]
+ldr   x0,   [x2]
 dmb ish
 add  x3,   x3, #1
 str   x4,   [x5]`
@@ -94,7 +94,7 @@ str   x4,   [x5]`
 
 【例18-5】CPU执行如下4条指令。
 
-`dc cvac，x6
+dc cvac，x6
 ldr  x1,  [x2]
 dmb ish
 ldr x3, [x7]`
@@ -117,7 +117,7 @@ DSB指令要比DMB指令严格得多。DSB后面的任何指令必须满足下�
 
 【例18-6】CPU执行如下3条指令。
 
-`ldr x0，[x1]
+ldr x0，[x1]
 dsb ish
 add x2，x3，x4`
 
@@ -125,7 +125,7 @@ ADD指令必须要等待DSB指令执行完才能开始执行，它不能重排�
 
 【例18-7】CPU执行如下4条指令。
 
-`dc  civa  x5
+dc  civa  x5
 str   x1， [x2]
 dsb ish
 add x3，x3，#1`
@@ -223,7 +223,7 @@ ARMv8体系结构中有一个术语——更改上下文操作（context-changin
 
 【例18-8】CPU执行如下代码来打开FPU功能。
 
-`//打开FPU
+//打开FPU
 mrs  x1，cpacr_el1
 orr x1, x1 #(0x3 
 
@@ -233,7 +233,7 @@ orr x1, x1 #(0x3
 
 【例18-9】改变页表项。
 
-`1    str x10，[x1]
+1    str x10，[x1]
 2    dsb ish
 3    tlbi    vae1is， x11
 4    dsb ish
@@ -257,7 +257,7 @@ orr x1, x1 #(0x3
 
 首先，CPU0修改代码。
 
-`1    str  x11， [x1]
+1    str  x11， [x1]
 2    dc   cvau，x1
 3    dsb  ish
 4    ic   ivau，x1
@@ -286,7 +286,7 @@ orr x1, x1 #(0x3
 
 CPU1也开始执行新代码。
 
-`1    WAIT (x2 == 1)
+1    WAIT (x2 == 1)
 2    isb
 3    br x1`
 
@@ -304,7 +304,7 @@ CPU1也开始执行新代码。
 
 【例18-11】CPU执行如下两条指令。
 
-`dc  civau  x2
+dc  civau  x2
 ic   ivau  x2`
 
 第一条是数据高速缓存维护指令，第二条是指令高速缓存维护指令。尽管二者都对X2寄存器进行高速缓存的维护，但是IC指令可以乱序并提前执行，或者DC指令还没清理完高速缓存就开始执行IC指令，这会导致IC指令有可能获取了X2寄存器中的旧数据。

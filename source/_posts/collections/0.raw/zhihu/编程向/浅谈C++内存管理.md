@@ -30,9 +30,8 @@ source_url: https://zhuanlan.zhihu.com/p/51855842
 - 为了提升数据读取的效率
 考虑以下的结构体：
 
-`struct Test
-
 ```cpp
+struct Test
 {
 	char a;
 	int b;
@@ -40,15 +39,13 @@ source_url: https://zhuanlan.zhihu.com/p/51855842
 };
 ```
 
-`
 
 C++中可以使用alignof获取类型的对齐值，char类型的对齐值为1， int的对齐值为4, short的对齐值为2，整个结构体的对齐值为4。假设结构体变量的起始地址已经对齐，那么结构体的第一个成员a已经对齐，由于第一个成员a的大小为1而第二成员b的对齐值为4，则根据第二条对齐原则需要在第一个成员后填充3个字节才能使第二个成员对齐，第二个成员对齐后第三个成员的起始地址刚好为其对齐值的整数倍所以不需要进行填充，此时算上填充字节，结构体占用的总字节为10字节，又由第三条原则，结构体大小需要为4的整数倍，因此需要在第三个成员c后填充2个字节，可以算得结构体的总大小为12(在默认对齐值为2时，大小为8字节)。
 
 改变结构体成员顺序如下：
 
-`struct Test
-
 ```cpp
+struct Test
 {
 	int b;
 	short c;
@@ -56,7 +53,6 @@ C++中可以使用alignof获取类型的对齐值，char类型的对齐值为1�
 };
 ```
 
-`
 
 改变成员顺序后，若结构体变量的起始地址已经对齐，则根据原则2三个成员均以对齐，中间不需要进行填充，此时结构体占用的总字节为7，又由原则3需要在最后一个变量后填充1个字节，因此结构体总大小为8(在默认对齐值为2时，大小也为8字节)。
 
@@ -129,9 +125,8 @@ C/C++ Memory Layout从Code Segment到Stack的内存地址均位于用户空间�
 
 这里将内存以块(Block)的方式进行管理，每块内存分为标记区(Header)和数据区(Data)，块的定义如下：
 
-`#define BLOCK_MAGIC_FLAG 0xF
-
 ```text
+#define BLOCK_MAGIC_FLAG 0xF
 #define BLOCK_MAGIC_NUMBER 0xA
 
 struct BlockNode
@@ -141,7 +136,6 @@ struct BlockNode
 };
 ```
 
-`
 
 Header中记录了指向下一块内存的指针和一个size_t类型的flag，flag的前4位中记录了一个Magic Number用来标记这块内存是否由我们所实现的Malloc申请得到的，而其它位记录了这块内存数据区的大小。
 
@@ -149,7 +143,7 @@ Header中记录了指向下一块内存的指针和一个size_t类型的flag，f
 
 Header的结构这里定义了一些简单的函数来帮助读取或设置flag中的信息：
 
-`inline bool SimpleBlockIsValid(const BlockNode *pNode)
+inline bool SimpleBlockIsValid(const BlockNode *pNode)
 
 ```text
 {
@@ -187,9 +181,8 @@ inline void SetSimpleBlockSize(BlockNode *pNode, size_t pSize)
 
 定义一个SimpleAllocator类，类中维持一个指向所有空闲内存块的FreeList。在类的构造函数中通过_aligned_malloc申请一块8字节对齐的内存，并在析构函数中释放了这块内存。
 
-`class SimpleAllocator
-
 ```text
+class SimpleAllocator
 {
 public:
 	SimpleAllocator(size_t pSize, SEARCH_MODE pMode)
@@ -224,9 +217,8 @@ m_numAllocations记录了申请和释放内存的次数(每次申请内存时加
 
 除了申请内存外，构造构造函数还负责初始化FreeList(直接在申请的内存上构建一个空闲块并将其添加到freelist中):
 
-`	void InitFreeList(void *pStart, size_t pSize)
-
-```text
+```cpp
+	void InitFreeList(void *pStart, size_t pSize)
 	{
 #ifdef _DEBUG
 		assert(pStart != nullptr);
@@ -246,7 +238,7 @@ m_numAllocations记录了申请和释放内存的次数(每次申请内存时加
 
 - First fit，返回第一个数据区大小大于等于所申请内存的空闲块。
 - Best fit，检查所有块，返回数据区和所申请内存大小差距最小且大于等于所需内存的空闲块。
-`enum class SEARCH_MODE
+enum class SEARCH_MODE
 
 ```text
 {
@@ -268,9 +260,8 @@ bool GetProperBlock(size_t pSize, SEARCH_MODE pMode, BlockNode **pPrevNode, Bloc
 
 First fit的查找实现如下：
 
-`	bool GetFirstFitBlock(size_t pSize, BlockNode <strong>pPrevNode, BlockNode</strong>pFoundNode)
-
 ```text
+	bool GetFirstFitBlock(size_t pSize, BlockNode **pPrevNode, BlockNode **pFoundNode)
 	{
 		BlockNode *prev = nullptr;
 		BlockNode *curr = m_freeList;
@@ -297,9 +288,8 @@ First fit的查找实现如下：
 
 Best fit的查找实现如下：
 
-`	bool GetBestFitBlock(size_t pSize, BlockNode <strong>pPrevNode, BlockNode</strong>pFoundNode)
-
 ```text
+	bool GetBestFitBlock(size_t pSize, BlockNode **pPrevNode, BlockNode **pFoundNode)
 	{
 		BlockNode *prev = nullptr;
 		BlockNode *curr = m_freeList;
@@ -327,9 +317,8 @@ Best fit的查找实现如下：
 
 若找到的空闲内存块的大小大于所需内存大小+sizeof(BlockNode)，则可以将该空闲块分裂为两个新的块，并将新分出的块插入到FreeList中：
 
-`	void SplitBlock(BlockNode *pOld, size_t pSize)
-
 ```cpp
+	void SplitBlock(BlockNode *pOld, size_t pSize)
 	{
 #ifdef _DEBUG
 		assert(pOld != nullptr);
@@ -355,9 +344,8 @@ Best fit的查找实现如下：
 
 FreeList的插入和删除操作定义如下（均需要插入或删除节点的前驱结点，若前驱结点为空则需要操作的节点为FreeList的头节点）：
 
-`	void RemoveNode(BlockNode *pPrev, const BlockNode *pDelete)
-
 ```cpp
+	void RemoveNode(BlockNode *pPrev, const BlockNode *pDelete)
 	{
 #ifdef _DEBUG
 		assert(pDelete != nullptr);
@@ -392,13 +380,11 @@ FreeList的插入和删除操作定义如下（均需要插入或删除节点的
 	}
 ```
 
-`
 
 Malloc的完整定义如下(Malloc时每次申请的内存大小会被缩放为8的倍数)：
 
-`	void *Malloc(size_t pSize)
-
 ```cpp
+	void *Malloc(size_t pSize)
 	{
 		size_t dataSize = ToMultiple(pSize, 8);
 
@@ -423,9 +409,8 @@ Malloc的完整定义如下(Malloc时每次申请的内存大小会被缩放为8
 
 释放由Malloc所申请的内存时，首先需要检查该内存是否由Malloc申请得到(通过检查头节点flag的magic number)，然后通过指针比较，找到该内存块在FreeList中的前驱节点(FreeList中的节点以地址从小到大的顺序排列)，查找前驱节点的函数定义如下：
 
-`	bool GetPrevNode(BlockNode **pPrev, BlockNode *pNode)
-
 ```text
+	bool GetPrevNode(BlockNode **pPrev, BlockNode *pNode)
 	{
 #ifdef _DEBUG
 		assert(pNode != nullptr);
@@ -453,13 +438,11 @@ Malloc的完整定义如下(Malloc时每次申请的内存大小会被缩放为8
 	}
 ```
 
-`
 
 有了前驱节点和需要释放的内存块后，可以将需要释放的内存块插入到FreeList中，这时可以判断所需释放的内存块的前部和后部的内存块(不是FreeList中的前驱或后驱节点，而是和需要释放的内存块地址连续邻接的内存块)是否处于空闲状态(可以通过指针的地址进行检查所后驱节点和前驱节点与该节点的内存地址连续则为邻接块)，若是则进行合并。
 
-`	void MergeBlock(BlockNode *pPrev, BlockNode *pMerge)
-
 ```cpp
+	void MergeBlock(BlockNode *pPrev, BlockNode *pMerge)
 	{		
 #ifdef _DEBUG
 		assert(pMerge != nullptr);
@@ -501,13 +484,11 @@ Malloc的完整定义如下(Malloc时每次申请的内存大小会被缩放为8
 	}
 ```
 
-`
 
 Free函数的具体实现如下：
 
-`	void Free(void *pPtr)
-
 ```cpp
+	void Free(void *pPtr)
 	{
 		if (pPtr != nullptr)
 		{
@@ -529,7 +510,6 @@ Free函数的具体实现如下：
 	}
 ```
 
-`
 
 由于初始申请的一大块内存为8字节对齐，Header的大小为8，每次申请的内存大小也为8的倍数，所以Malloc所返回的指针均为8字节对齐，这种实现的优点是比较简单，而且对任何对齐大小(1,2,4,8字节对齐)都可以实现对齐，缺点是若所需的内存大小不是8的倍数则会浪费一部分的内存...。若想要实现更节省内存一点的分配方式则可以参考引用3中的实现，每次分配时计算内存对齐地址，然后再进行分配可以节省一些内存。
 
@@ -547,9 +527,9 @@ C++中的new有三种形态：
 
 - new operator即我们经常使用的T *ptr = new T()。
 - operator new，类或结构体可以通过重载operator new来决定如何为对象分配内存，与之对应的还有operator delete。operator new可以被new operator调用，如下所示：
-`struct MyStruct
 
 ```cpp
+struct MyStruct
 {
 	void *operator new(size_t pSize)
 	{
@@ -565,19 +545,16 @@ C++中的new有三种形态：
 };
 ```
 
-`
 
 3. placement new，placement new可以实现在一块指定的内存上(这块内存可以由任意方式分配)构造对象(调用对象的构造函数)。如下所示：
 
-`	void *memory = malloc(sizeof(Test));
-
 ```text
+	void *memory = malloc(sizeof(Test));
 	Test *pt = new(memory) Test();
 	pt->~Test();
 	free(memory);
 ```
 
-`
 
 由palcement new构造的对象在析构时，如果由析构函数则需要在释放时显式调用析构函数(不需要调用delete来释放内存)。
 
@@ -594,7 +571,7 @@ new，delete与malloc，free之间的关系与差别(引用7)：
 
 这里我们可以借助与之前实现的Malloc和palcement new来实现一个简单的New与Delete函数：
 
-`template
+template
 T *New(SimpleAllocator &pAllocator, Args&&... pArgs)
 
 ```cpp
@@ -613,7 +590,7 @@ void Delete(SimpleAllocator &pAllocator, T *pPtr)
 
 可以通过如下方式进行调用：
 
-`SimpleAllocator allocator(16 * 1024 * 1024, SEARCH_MODE::FIRST_FIT);
+SimpleAllocator allocator(16 * 1024 * 1024, SEARCH_MODE::FIRST_FIT);
 
 VinClass *temp = New(allocator, 16);
 Delete(allocator, temp);`

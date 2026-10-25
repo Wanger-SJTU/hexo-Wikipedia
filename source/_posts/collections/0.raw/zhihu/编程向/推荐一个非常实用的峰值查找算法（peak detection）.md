@@ -29,9 +29,9 @@ source_url: https://zhuanlan.zhihu.com/p/549588865
 
 但是原始文献中的算法时间和空间复杂度比较高，我做了优化，明显提高了计算效率，直接上Python代码：
 
-`import numpy as np
-
 ```python
+import numpy as np
+
 def AMPD(data):
     """
     实现AMPD算法
@@ -59,9 +59,9 @@ def AMPD(data):
 
 我们先来合成一段数据看看效果：
 
-`import matplotlib.pyplot as plt
-
 ```python
+import matplotlib.pyplot as plt
+
 def sim_data():
     N = 1000
     x = np.linspace(0, 200, N)

@@ -21,9 +21,8 @@ source_url: https://zhuanlan.zhihu.com/p/344115460
 
 看了一下堆栈，挂在了`basic_string::size()`上：
 
-`// Capacity:
-
 ```text
+// Capacity:
       ///  Returns the number of characters in the string, not including any
       ///  null-termination.
       size_type
@@ -31,7 +30,6 @@ source_url: https://zhuanlan.zhihu.com/p/344115460
       { return _M_rep()->_M_length; }
 ```
 
-`
 
 第一反应是：会不会关服的时候已经把这个字符串释放了。于是给这个字符串的赋值和所在结构体的析构函数加上log， 然而没有任何异常。
 
@@ -44,9 +42,8 @@ source_url: https://zhuanlan.zhihu.com/p/344115460
 - 我明明给这个`string`指定了`allocator`，让他的内存分配走我的共享内存上去，我的共享内存虚拟地址空间是手动指定好的，跟栈基础地址隔了十万八千里，可是为什么`string`内部会出现一个指向栈的指针啊。
 为此，我们来走进科学，进入`gcc 4.8.5 libstdc++ string`的实现。先来看`string`的成员变量：
 
-`// Use empty-base optimization: http://www.cantrip.org/emptyopt.html
-
 ```text
+// Use empty-base optimization: http://www.cantrip.org/emptyopt.html
       struct _Alloc_hider : _Alloc
       {
     _Alloc_hider(_CharT* __dat, const _Alloc& __a)
@@ -58,11 +55,10 @@ source_url: https://zhuanlan.zhihu.com/p/344115460
       mutable _Alloc_hider  _M_dataplus;
 ```
 
-`
 
 上面的实现用了空基类优化来掩盖`allocator`，所以最优形态下只有一个数据成员`char* _M_p`。这个成员是这么来使用的:
 
-`_CharT*
+_CharT*
 
 ```text
       _M_data() const
@@ -72,13 +68,11 @@ source_url: https://zhuanlan.zhihu.com/p/344115460
       { return &((reinterpret_cast_Rep*> (_M_data()))[-1]); }
 ```
 
-`
 
 上面会强制转换为一个`_Rep`的指针来访问：
 
-`struct _Rep_base
-
 ```text
+struct _Rep_base
       {
     size_type       _M_length;
     size_type       _M_capacity;
@@ -90,11 +84,10 @@ source_url: https://zhuanlan.zhihu.com/p/344115460
     // Types:
 ```
 
-`
 
 这个`_Rep`其实就是一个控制块，记录了`string`的大小，容量、引用计数。莫非这个控制块的内存分配不归我的`allocator`管，导致`string`内部的指针并不指向共享内存区域，从而导致服务器重启之后字符串恢复失败。 看来应该就是这个问题，继续看代码确认一下这个结构体怎么分配的， 他走的是`_S_create`函数：
 
-`templatetypename _CharT, typename _Traits, typename _Alloc>
+templatetypename _CharT, typename _Traits, typename _Alloc>
     typename basic_string_CharT, _Traits, _Alloc>::_Rep*
     basic_string_CharT, _Traits, _Alloc>::_Rep::
 
@@ -137,24 +130,21 @@ source_url: https://zhuanlan.zhihu.com/p/344115460
     }
 ```
 
-`
 
 过了一下代码，发现这个`Rep`结构体与对应的字符串是合并`allocate`的，都会通过我们指定的`Allocator`，字符串数据就放在`Rep`结构体的末尾，通过下面的接口来访问的：
 
-`_CharT*
+_CharT*
 
 ```text
     _M_refdata() throw()
     { return reinterpret_cast_CharT*>(this + 1); }
 ```
 
-`
 
 又一轮猜测破灭。 之前测试的时候，其他的`string`恢复之后用的好好的，为什么这两个空字符串却恢复失败，而且这两个空字符串指向的是同一个栈上的`Rep`地址，莫非空字符串有特殊操作。为此我们继续探查源代码，发现了一些蛛丝马迹：
 
-`// The following storage is init'd to 0 by the linker, resulting
-
 ```text
+// The following storage is init'd to 0 by the linker, resulting
         // (carefully) in an empty string with one reference.
         static size_type _S_empty_rep_storage[];
 
@@ -169,13 +159,11 @@ source_url: https://zhuanlan.zhihu.com/p/344115460
     }
 ```
 
-`
 
 好像还真是，空字符串的会共享一个静态的`Rep`结构体，我们看`string`的构造函数来确认一下：
 
-`static _Rep&
-
 ```text
+static _Rep&
       _S_empty_rep()
       { return _Rep::_S_empty_rep(); }
 
@@ -199,13 +187,11 @@ source_url: https://zhuanlan.zhihu.com/p/344115460
 #endif
 ```
 
-`
 
 上面代码的意思就是，如果没有开启全动态字符串的情况下，`gcc 4.8.5`的`string`会使用`copy on write`优化，同样的`string`拷贝复制的时候共享同一个`Rep`结构体指针。此外对于空字符串，会共享同一个静态生命周期的`Rep`结构体。
 
-`// Linker sets _S_empty_rep_storage to all 0s (one reference, empty string)
-
 ```text
+// Linker sets _S_empty_rep_storage to all 0s (one reference, empty string)
   // at static init time (before static ctors are run).
   templatetypename _CharT, typename _Traits, typename _Alloc>
     typename basic_string_CharT, _Traits, _Alloc>::size_type
@@ -214,7 +200,6 @@ source_url: https://zhuanlan.zhihu.com/p/344115460
       sizeof(size_type)];
 ```
 
-`
 
 由于程序装载时的`ASLR`，导致这个静态区域会随时变动。上一次进程启动时的地址在这一次启动时可能没有被映射为有效地址，从而导致访问内存出现`cannot access memory at address`这个问题，因此空字符串的共享内存恢复会失败。
 

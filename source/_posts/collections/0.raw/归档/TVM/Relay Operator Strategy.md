@@ -33,13 +33,13 @@ def cumsum_strategy(attrs, inputs, out_type, target):
 
 ## Operator Strategy Design
 
-`OpStrategy`的核心为`OpImplementation`，包含了一组compute及对应的schedule，不同实现的名字，选择优先级（参见下文的选择策略）。
+OpStrategy`的核心为`OpImplementation`，包含了一组compute及对应的schedule，不同实现的名字，选择优先级（参见下文的选择策略）。
 
 OpStrategy中包含一系列的`OpSpecialization`，每个`OpSpecialization`包含一组`SpecializedCondition`（参考`include/tvm/te/schedule.h`）. 如果`SpecializedCondition`为空（null），表示是一个通用的实现，反之则是对于特定情形优化的。`SpecializedCondition`包含了这一算子的多个TE实现，以及实现被调用的条件。
 
 
 最后一点，对给定的workload，一个strategy 函数或者`FTVMStrategy`,决定了使用哪个compute和schedule，因此这部分需要与relay算子对应起来。
-`FTVMStrategy `实现位置在`include/tvm/target/generic_func.h`,是一个通用函数，对于给定硬件平台可以重写。函数签名是
+FTVMStrategy `实现位置在`include/tvm/target/generic_func.h`,是一个通用函数，对于给定硬件平台可以重写。函数签名是
 ```cpp
 OpStrategy(const Attrs& attrs, const Array<Tensor>& inputs, const Type& out_type, const Target& target)
 ```

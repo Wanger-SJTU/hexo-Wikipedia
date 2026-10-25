@@ -74,7 +74,7 @@ SearchAnything将最先进的AI模型下载至本地运行，因此，无需担�
 
 然后使用如下的conda命令创建本地environment：
 
-`conda env create -f env.yaml
+conda env create -f env.yaml
 conda activate anything`
 
 ### <strong>使用方法</strong>
@@ -85,7 +85,7 @@ conda activate anything`
 
 运行后，你会看到以下说明：
 
-`[nltk_data] Downloading package punkt to /xxx/nltk_data...
+[nltk_data] Downloading package punkt to /xxx/nltk_data...
 [nltk_data] Package punkt is already up-to-date! 
 Adding text embedding model 
 Adding image embedding model 

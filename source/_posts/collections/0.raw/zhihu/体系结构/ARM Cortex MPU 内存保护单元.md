@@ -60,8 +60,11 @@ RegionBaseAddress[(N-1):0] = 0，其中 N 为 log2(SizeofRegion_in_bytes)
 <strong>4.3. MPU 伪代码</strong>**以下伪代码定义了 Armv7-M MPU 的操作。使用的术语与第 B3-635 页 SCS 中 PMSAv7 的寄存器支持中描述的 MPU 寄存器名称和位字段名称一致。
  
 
-`// ValidateAddress()
+```text
+// ValidateAddress()
 // =================
+```
+
 AddressDescriptor ValidateAddress(bits(32) address, AccType acctype, boolean iswrite)
 
 ```text

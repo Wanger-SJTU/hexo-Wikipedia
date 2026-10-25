@@ -31,16 +31,16 @@ android 正统理应用 asan simpleperf 这些小清新工具，可是成熟的 
 ### 一点点用法
 
 - 解压上传到手机
-`unzip -q valgrind-3.16.1-android.zip
+unzip -q valgrind-3.16.1-android.zip
 adb push valgrind /data/local/tmp/
 adb shell`
 
 - adb shell 中用 valgrind 跑程序
-`cd /data/local/tmp/
+cd /data/local/tmp/
 valgrind/bin/valgrind --tool=callgrind ./benchncnn 4 1 0 -1 0`
 
 - 把输出的结果下载到电脑上，用工具看
-`adb pull /data/local/tmp/callgrind.out.9519
+adb pull /data/local/tmp/callgrind.out.9519
 kcachegrind callgrind.out.9519`
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_14b415b9dc44.jpg)

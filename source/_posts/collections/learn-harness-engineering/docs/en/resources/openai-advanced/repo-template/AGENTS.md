@@ -50,7 +50,7 @@ Before changing code:
 - If you see repeated review feedback, promote it into a mechanical rule, check,
   or linter instead of re-explaining it in chat.
 - Keep generated material in `docs/generated/` and source references in
-  `docs/references/`.
+  docs/references/`.
 - Prefer adding small, current docs over growing this file.
 
 ## Definition Of Done

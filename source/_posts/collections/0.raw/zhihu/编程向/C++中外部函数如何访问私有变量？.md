@@ -23,9 +23,8 @@ source_url: https://www.zhihu.com/question/521898260/answer/2399058597
 
 如果类的代码不可以修改，GotW #76: Uses and Abuses of Access Rights 这里提到了几种方法。这几种方法中，除了最后一种，其他方法都是非标准的。而最后一种方法的前提是，私有变量所在的这个类原先定义有成员函数模板，然后通过特化这个函数模板而获得对私有变量的访问权（成员函数模板特化后还是类的成员，自然有对私有成员的访问权），具体例子如下。
 
-`class Bank {
-
 ```cpp
+class Bank {
     int money = 999'999'999;
 public:
     int getMoney() {
@@ -62,7 +61,6 @@ int main() {
 }  
 ```
 
-`
 
 所以，如果类 `Bank` 原先没有那个成员函数模板 `templatevoidf(T& t){}`，这种方法也就行不通了，等于说，还是要修改类的代码，去添加一个成员函数模板，那倒不如正规地添加 getter/setter 了。 
 
@@ -80,7 +78,7 @@ int main() {
 
 #### 显式实例化函数模板
 
-`// 定义一个函数模板 steal，模板形参 p 是指向成员的指针，指向的是 Bank_t 类类型中 Money_t 类型的成员
+// 定义一个函数模板 steal，模板形参 p 是指向成员的指针，指向的是 Bank_t 类类型中 Money_t 类型的成员
 templatetypename Bank_t, typename Money_t, Money_t Bank_t::* p> 
 Money_t& steal(Bank_t& bank) {
 
@@ -93,13 +91,15 @@ Money_t& steal(Bank_t& bank) {
 template int& stealBank, int, &Bank::money>(Bank&);
 ```
 
-`
 
 用 godbolt 查一下上面实例化得到的汇编（x86-64 gcc 11.2，-O1）：
 
-`int& steal(Bank&):
+```text
+int& steal(Bank&):
         mov     rax, rdi
         ret`
+```
+
 
 就一句 `move` 指令，传送寄存器 `rdi` 的值到寄存器 `rax`。根据调用约定，`rdi` 保存的是参数，这里是一个 `Bank` 类的对象的起始地址，而返回值记录在 `rax`中，这里要返回的是该对象中 `money` 成员的起始地址，而 `money` 刚好是类 `Bank` 的第一个成员，偏移刚好为 0，所以直接复制 `rdi` 到 `rax` 就行了。可以在成员 `money` 之前添加其他字段，再看看得到的汇编有何不同，就能更加清楚了。
 
@@ -107,7 +107,7 @@ template int& stealBank, int, &Bank::money>(Bank&);
 
 #### 有副作用的显式实例化
 
-`#include 
+#include 
 
 templatetypename T>
 
@@ -128,11 +128,10 @@ int main() {
 }
 ```
 
-`
 
 上面程序会输出 `A's Ctor`。同样的，用 godbolt 查一下生成的汇编代码（x86-64 gcc 11.2，-std=c++17 -O1）：
 
-`.LC0:
+.LC0:
         .string "A's Ctor"
 A::A() [base object constructor]:
         sub     rsp, 8
@@ -148,7 +147,7 @@ A::A() [base object constructor]:
 
 所以，进亿步：
 
-`templatetypename Class, typename Member>
+templatetypename Class, typename Member>
 
 ```text
 struct Offset {
@@ -195,13 +194,12 @@ int main() {
 }
 ```
 
-`
 
 （上面代码魔改自：[Accessing Private Data](https://link.zhihu.com/?target=https%3A//gist.github.com/dabrahams/1528856)）
 
 #### 改进 Thief，基于另外一种形式的副作用
 
-`templatetypename Bank, typename Money, Money Bank::* p>
+templatetypename Bank, typename Money, Money Bank::* p>
 
 ```cpp
 class Thief {
@@ -225,7 +223,6 @@ int main() {
 }
 ```
 
-`
 
 （上面代码魔改自 @WhoTFAmI
 
@@ -237,7 +234,7 @@ int main() {
 
 同样，还是用 godbolt 查一下生成的汇编代码，但这次不要开 -O1 优化，因为友元声明定义的全局函数默认是 inline 的，开了会被内联掉（x86-64 gcc 11.2，-O0）
 
-`steal(Bank&):
+steal(Bank&):
         push    rbp
         mov     rbp, rsp
         mov     QWORD PTR [rbp-8], rdi #

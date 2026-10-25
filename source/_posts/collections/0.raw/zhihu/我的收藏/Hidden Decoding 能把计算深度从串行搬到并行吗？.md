@@ -101,7 +101,7 @@ python -m sglang.launch_server \
   --model-path tencent/Hidden-Decoding-8B-n8-Instruct \
   --chunked-prefill-size -1 \
   --attention-backend fa3
-`--chunked-prefill-size -1` 避免 chunked prefill 切开 stream 边界，`--attention-backend fa3` 承载跨 stream 注意力。仓库还建议采用保守 batch，因为模型内部处理的是 n 倍长序列。
+--chunked-prefill-size -1` 避免 chunked prefill 切开 stream 边界，`--attention-backend fa3` 承载跨 stream 注意力。仓库还建议采用保守 batch，因为模型内部处理的是 n 倍长序列。
 
 8B 模型适合复现多 stream 机制、检查 n 的扩展曲线和验证推理补丁。它的分数无法替代 80B 与 617B 的独立复现，也不能直接回答生产系统的成本收益。
 

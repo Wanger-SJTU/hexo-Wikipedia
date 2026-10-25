@@ -94,7 +94,6 @@ from modelscope.utils.constant import Tasks
 
  result = p(documents='......')
 print(result[OutputKeys.TEXT])
-`
 
 当然，效果并不是很好，如下一个badcase:
 

@@ -209,7 +209,7 @@ source_url: https://zhuanlan.zhihu.com/p/691066049
 
 - <strong>chunk0的SWA计算完毕后，我们将每个token对应的Xk, Xv值存入cache</strong>。在源码中，我们会通过一个规则确定每个token的KV值在KV cache中的存储位置，这样也方便我们做unrotate操作（见本文3.2部分）时能把cache中存储的元素旋转回正确的位置。
 - 最后，对于KV cache，它的<strong>position序号</strong>的排布顺序是从左至右，从上到下的，即：
-`0 | 1 | 2  | 3
+0 | 1 | 2  | 3
 4 | 5 | 6  | 7
 8 | 9 | 10 | 11`
 

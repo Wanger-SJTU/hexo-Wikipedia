@@ -20,7 +20,7 @@ categories:
 1. 先把 `AGENTS.md` 和 `ARCHITECTURE.md` 放到仓库根目录。
 2. 再复制整个 `docs/` 目录树。
 3. 优先把 `docs/PRODUCT_SENSE.md`、`docs/QUALITY_SCORE.md`、
-   `docs/RELIABILITY.md` 填起来。
+   docs/RELIABILITY.md` 填起来。
 4. 在 `docs/exec-plans/active/` 下创建你的第一份 active plan。
 5. 始终保持入口文件很短，详细规则拆到链接文档里。
 

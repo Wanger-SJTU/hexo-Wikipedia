@@ -75,7 +75,7 @@ SC_METHOD()**
 
 假如模块是组合逻辑，输入是a、b，输出是f，那么上述代码改为：
 
-`#include 
+#include 
 SC_MODULE( and2 ) {
 
 ```cpp
@@ -93,11 +93,10 @@ SC_MODULE( and2 ) {
 }
 ```
 
-`
 
 假如模块是时序逻辑，输入是a、b，输出是f，时钟为clk并在上升沿采样，那么上述代码改为：
 
-`#include 
+#include 
 SC_MODULE( and2 ) {
 
 ```cpp
@@ -116,7 +115,6 @@ SC_MODULE( and2 ) {
 }
 ```
 
-`
 
 #### 1.6. Integer Datatypes
 
@@ -170,9 +168,8 @@ SC_MODULE( and2 ) {
 
 <strong>Coefficients for each FIR</strong>
 
-`// Coefficients for each FIR
-
 ```text
+// Coefficients for each FIR
 const sc_uint8> coef[5] = {
     18,
     77,
@@ -182,7 +179,6 @@ const sc_uint8> coef[5] = {
 };
 ```
 
-`
 
 <strong>FIR Main thread</strong>
 
@@ -228,7 +224,7 @@ const sc_uint8> coef[5] = {
 
 SC_CTOR省略部分代码为：
 
-`SC_CTOR( SYSTEM ): clk_sig ("clk_sig", 10, SC_NS)
+SC_CTOR( SYSTEM ): clk_sig ("clk_sig", 10, SC_NS)
 
 ```text
 {
@@ -244,7 +240,6 @@ SC_CTOR省略部分代码为：
 }
 ```
 
-`
 
 - 时钟名字为“clk_sig”，频率为10ns
 - tb实例名字为“tb0”
@@ -261,9 +256,8 @@ SC_CTOR省略部分代码为：
 
 省略部分代码为reset相关代码：
 
-`void tb::source() {
-
 ```text
+void tb::source() {
     // Reset
     inp.write( 0 );
     rst.write( 1 );
@@ -274,7 +268,6 @@ SC_CTOR省略部分代码为：
 }
 ```
 
-`
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_7c5429e25893.jpg)
 
@@ -360,10 +353,10 @@ SC_CTOR省略部分代码为：
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_93aecc514bc1.jpg)
 
 **1.gcc  `-l`
-`-l` 参数就是用来指定程序要链接的库，`-l` 参数紧接着就是库名，那么库名跟真正的库文件名有什么关系呢？就拿数学库来说，他的库名是 `m`，他的库文件名是 `libm.so`，很容易看出，把库文件名的头 `lib` 和尾 `.so` 去掉就是库名了。好了现在我们知道怎么得到库名，当我们自已要用到一个第三方提供的库名字 `libtest.so`，那么我们只要把 `libtest.so` 拷贝到 `/usr/lib` 里，编译时加上 `-ltest` 参数，我们就能用上 `libtest.so` 库了（当然要用 `libtest.so` 库里的函数，我们还需要与 `libtest.so` 配套的头文件）
+-l` 参数就是用来指定程序要链接的库，`-l` 参数紧接着就是库名，那么库名跟真正的库文件名有什么关系呢？就拿数学库来说，他的库名是 `m`，他的库文件名是 `libm.so`，很容易看出，把库文件名的头 `lib` 和尾 `.so` 去掉就是库名了。好了现在我们知道怎么得到库名，当我们自已要用到一个第三方提供的库名字 `libtest.so`，那么我们只要把 `libtest.so` 拷贝到 `/usr/lib` 里，编译时加上 `-ltest` 参数，我们就能用上 `libtest.so` 库了（当然要用 `libtest.so` 库里的函数，我们还需要与 `libtest.so` 配套的头文件）
 2.gcc `-L`
 放在 `/lib` 和 `/usr/lib` 和 `/usr/local/lib` 里的库直接用 `-l` 参数就能链接了，但如果库文件没放在这三个目录里，而是放在其他目录里，这时我们只用 `-l` 参数的话，链接还是会出错，出错信息大概是：`“/usr/bin/ld: cannot find -lxxx”`，也就是链接程序 `ld` 在那3个目录里找不到 `libxxx.so`。这时另外一个参数 `-L` 就派上用场了，比如常用的 `X11` 的库，它在 `/usr/X11R6/lib` 目录下，我们编译时就要用 `-L/usr/X11R6/lib -lX11` 参数，`-L` 参数跟着的是库文件所在的目录名**。再比如我们把 `libtest.so` 放在 `/aaa/bbb/ccc` 目录下，那链接参数就是 `-L/aaa/bbb/ccc -ltest`**3.gcc `-I`
-`-I` 参数是用来指定头文件目录，`/usr/include` 目录一般是不用指定的，`gcc` 知道去那里找，但是如果头文件不在 `/usr/include` 里我们就要用 `-I` 参数指定了，比如头文件放在 `/myinclude` 目录里，那编译命令行就要加上 `-I/myinclude` 参数了，如果不加你会得到一个 `"xxxx.h: No such file or directory"` 的错误。`-I` 参数可以用相对路径，比如头文件在当前目录，可以用 `-I.` 来指定。
+-I` 参数是用来指定头文件目录，`/usr/include` 目录一般是不用指定的，`gcc` 知道去那里找，但是如果头文件不在 `/usr/include` 里我们就要用 `-I` 参数指定了，比如头文件放在 `/myinclude` 目录里，那编译命令行就要加上 `-I/myinclude` 参数了，如果不加你会得到一个 `"xxxx.h: No such file or directory"` 的错误。`-I` 参数可以用相对路径，比如头文件在当前目录，可以用 `-I.` 来指定。
 
 作者：5974bb7fd509
 链接：https://www.jianshu.com/p/a834e2cd69b3
@@ -390,9 +383,9 @@ SC_CTOR省略部分代码为：
 
 #### http://fir.cc（第四课）
 
-`#include "fir.h"
-
 ```cpp
+#include "fir.h"
+
 // Coefficients for each FIR
 const sc_int16> coef[5] = {
     18,
@@ -453,13 +446,11 @@ void fir::fir_main(void)
 }
 ```
 
-`
 
 #### tb.h（第五课）
 
-`#ifndef TB_H
-
 ```cpp
+#ifndef TB_H
 #define TB_H
 
 #include 
@@ -495,13 +486,12 @@ SC_MODULE(tb)
 #endif
 ```
 
-`
 
 #### http://tb.cc（第四课、第五课）
 
-`#include "tb.h"
-
 ```cpp
+#include "tb.h"
+
 void tb::source()
 {
     sc_int16> tmp;
@@ -586,11 +576,10 @@ void tb::sink()
 }
 ```
 
-`
 
 #### Makefile（第五课、第六课）
 
-`# This makefile assumes SYSTEMC is set to the SystemC
+# This makefile assumes SYSTEMC is set to the SystemC
 # installation. The SystemC installation should have an include
 # directory for the header files and a lib-linux directory for the
 # compiled kernel library. For other platforms, change SYSTEMC_ARCH to
@@ -651,4 +640,3 @@ cmp_result:
     @echo "*****************************************"
 ```
 
-`

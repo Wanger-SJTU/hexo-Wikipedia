@@ -21,9 +21,8 @@ source_url: https://zhuanlan.zhihu.com/p/609483844
 
 首先需要实现高层IR的Index Mapping进行Infer Bounds, 这里我导入一个已经实现好的卷积的BoundsInfer. 
 
-`from TracedArray import TarcedArray, GlobalHierarchy
-
 ```python
+from TracedArray import TarcedArray, GlobalHierarchy
 from Conv2dBoundsInfer import Conv2dBoundsInfer, Segments
 import torch
 import numpy as np
@@ -37,7 +36,7 @@ Infer = Conv2dBoundsInfer(in_channels=2048, out_channels=512, kernel_size=1, gro
 
 假设我们的DSA有一个比较大的SRAM, 并且可以在这个SRAM上执行Tensor级别的操作, 约定好SRAM大小为`L2SIZE`. 这里引入GlobalHierarchy作为多级内存存储抽象,用于计算数据加载次数, 检查存储是否溢出. 那么考虑在上面编写一个最Navie的卷积. 为了匹配Tensor级别的计算操作, 我们将原本按1进行for循环执行的逻辑看作为按tile大小为1取tensor进行计算.
 
-`L2SIZE = 1536 * 1024 #
+L2SIZE = 1536 * 1024 #
 
 ```python
 def demo1(imageArr: np.ndarray, weightArr: np.ndarray, outputArr: np.ndarray, targetOutput: np.ndarray):
@@ -79,7 +78,7 @@ demo1 total loaded : 6578274304`
  
 接下来就可以来改造compute schedule:
 
-`CORE_OC = 24 # TensorCore并行限制
+CORE_OC = 24 # TensorCore并行限制
 CORE_IC = 16
 
 ```python
@@ -127,14 +126,13 @@ demo2 total loaded : 179651584`
 
 这里就是在SRAM中保存所有的weights, 实际上在stage到OC循环外之后, 我们还可以选择在OC循环内逐步的加载weights以进行流水. 
 
-`def demo3_1(imageArr: np.ndarray, weightArr: np.ndarray, outputArr: np.ndarray, targetOutput: np.ndarray):
+```python
+def demo3_1(imageArr: np.ndarray, weightArr: np.ndarray, outputArr: np.ndarray, targetOutput: np.ndarray):
   image = TarcedArray(imageArr)
   weight = TarcedArray(weightArr)
   output = TarcedArray(outputArr)
   (B, OC, OH, OW) = outputArr.shape
   for b in Segments(0, B, 1):
-
-```text
     with GlobalHierarchy(L2SIZE):
       reuse = False # 为了简单起见, 添加reuse的参数来避免重复统计load的数据, 其实应该把allocate buffer和load/store的逻辑分离出来.
       weightTile = weight[Infer.get_w_segment(slice(0, OC))]  # 将weights加载移动到OC循环外 也就是一次加载所有的权重
@@ -166,14 +164,13 @@ demo3-1 We can't move load weights statement out of OC!`
 
 把weights stage在OC循环内部, 这样可以在OH/OW循环中复用. 
 
-`def demo3_2(imageArr: np.ndarray, weightArr: np.ndarray, outputArr: np.ndarray, targetOutput: np.ndarray):
+```python
+def demo3_2(imageArr: np.ndarray, weightArr: np.ndarray, outputArr: np.ndarray, targetOutput: np.ndarray):
   image = TarcedArray(imageArr)
   weight = TarcedArray(weightArr)
   output = TarcedArray(outputArr)
   (B, OC, OH, OW) = outputArr.shape
   for b in Segments(0, B, 1):
-
-```text
     for oc in Segments(0, OC, CORE_OC):
       with GlobalHierarchy(L2SIZE):
         reuse = False
@@ -204,15 +201,14 @@ demo3-2 total loaded : 9586432`
 
 注意这里我们添加一个IC的切分维度, 这样每次内部循环加载的就是不同的weights[oc,ic,:,:]的tile了.
 
-`def demo3_3(imageArr: np.ndarray, weightArr: np.ndarray, outputArr: np.ndarray, targetOutput: np.ndarray, prefix="demo3-3"):
+```python
+def demo3_3(imageArr: np.ndarray, weightArr: np.ndarray, outputArr: np.ndarray, targetOutput: np.ndarray, prefix="demo3-3"):
   image = TarcedArray(imageArr)
   weight = TarcedArray(weightArr)
   output = TarcedArray(outputArr)
   (B, OC, OH, OW) = outputArr.shape
   IC = imageArr.shape[1]
   for b in Segments(0, B, 1):
-
-```text
     for oc in Segments(0, OC, 8):
       for oh in Segments(0, OH, OH):
         for ow in Segments(0, OW, OW):
@@ -248,15 +244,14 @@ demo3-3 total loaded : 4825088`
 
 我们还可以尝试移动image stage到外层的循环, 因为每个oc内都加载了全部的input image, 那么将image移动到外层循环就可以减少许多重复的数据加载.
 
-`def demo4(imageArr: np.ndarray, weightArr: np.ndarray, outputArr: np.ndarray, targetOutput: np.ndarray):
+```python
+def demo4(imageArr: np.ndarray, weightArr: np.ndarray, outputArr: np.ndarray, targetOutput: np.ndarray):
   image = TarcedArray(imageArr)
   weight = TarcedArray(weightArr)
   output = TarcedArray(outputArr)
   (B, OC, OH, OW) = outputArr.shape
   IC = imageArr.shape[1]
   for b in Segments(0, B, 1):
-
-```text
     with GlobalHierarchy(L2SIZE):
       reuse = False
       imageTile = image[Infer.get_input_segment(b, slice(0, OC), slice(0, OH), slice(0, OW))]
@@ -292,15 +287,14 @@ demo4 We can't move load image statement out of OC!`
 
 以上实验了单层卷积的情况, 我们尝试了调整tile size/调整buffer stage的位置来减少总的数据加载次数. 接下来我们需要考虑多个算子fusion的情况, 假设卷积前面不是一个带有reduction的算子, 比如binary add, 首先单独执行两个算子. 
 
-`def demo5_1(imageArr: np.ndarray, biasArr: np.ndarray, weightArr: np.ndarray, outputArr: np.ndarray, targetOutput: np.ndarray):
+```python
+def demo5_1(imageArr: np.ndarray, biasArr: np.ndarray, weightArr: np.ndarray, outputArr: np.ndarray, targetOutput: np.ndarray):
   image = TarcedArray(imageArr)
   bias = TarcedArray(biasArr)
   mid = TarcedArray(np.zeros_like(imageArr))
   # binary add
   (B, C, H, W) = imageArr.shape
   for b in Segments(0, B, 1):
-
-```text
     for c in Segments(0, C, 8):
       for h in Segments(0, H, H):
         for w in Segments(0, W, W):
@@ -322,7 +316,8 @@ demo5-1 total loaded : 30515200`
 
 我们可以发现,后面卷积的循环[B,OH,OW,IC]分别可以对应前面binary的[B,H,W,C], 其实即前面binary的H与W是可以依据卷积的tile size来确定, 他的C维度依据卷积的IC维度确定, 并且因为这个binary计算时没有元素依赖关系, 所以简单调整他的循环顺序我们就可以进行算子Fusion了, 也就是在IC的循环中计算elemwise的计算操作.
 
-`def demo5_2(imageArr: np.ndarray, biasArr: np.ndarray, weightArr: np.ndarray, outputArr: np.ndarray, targetOutput: np.ndarray):
+```python
+def demo5_2(imageArr: np.ndarray, biasArr: np.ndarray, weightArr: np.ndarray, outputArr: np.ndarray, targetOutput: np.ndarray):
   image = TarcedArray(imageArr)
   bias = TarcedArray(biasArr)
   weight = TarcedArray(weightArr)
@@ -330,8 +325,6 @@ demo5-1 total loaded : 30515200`
   (B, OC, OH, OW) = outputArr.shape
   IC = imageArr.shape[1]
   for b in Segments(0, B, 1):
-
-```text
     for oc in Segments(0, OC, 8):
       for oh in Segments(0, OH, OH):
         for ow in Segments(0, OW, OW):
@@ -370,14 +363,13 @@ demo5-2 total loaded : 8036352`
 
 首先测试两层卷积单独执行的数据加载.
 
-`def demo6(Infer1: Conv2dBoundsInfer, Infer2: Conv2dBoundsInfer, imageArr: np.ndarray, weightArr1: np.ndarray, weightArr2: np.ndarray, outputArr: np.ndarray, targetOutput: np.ndarray):
+```python
+def demo6(Infer1: Conv2dBoundsInfer, Infer2: Conv2dBoundsInfer, imageArr: np.ndarray, weightArr1: np.ndarray, weightArr2: np.ndarray, outputArr: np.ndarray, targetOutput: np.ndarray):
   image = TarcedArray(imageArr)
   weight1 = TarcedArray(weightArr1)
   tempOutput = TarcedArray(np.zeros(Infer2.in_shape).astype(np.float32))
   (B, OC, OH, OW) = Infer2.in_shape
   with GlobalHierarchy(L2SIZE):
-
-```text
     reuse = False
     weight1Tile = weight1[:, :, :, :]
     for b in Segments(0, B, 1):
@@ -428,7 +420,8 @@ demo6 total loaded : 722528`
 
 假设我们遇到前面一个算子是带有reduction的情况, 比如卷积+卷积. 那么只需要考虑将两层卷积的循环直接合并即可, 同时现在的compute schedule就不能和单层卷积时相同了, 在两层卷积的循环直接合并时, 我们无法在最后一层卷积的input channel上切分, 因为后一个卷积的每一份input channel都依赖前面一个卷积的所有input channel, 这样切分会导致前面的卷积的weights反复加载, 目前我实现的多层卷积的合并必须要在SRAM中可以存下所有的weights才可以.
 
-`def demo6_1(Infer1: Conv2dBoundsInfer, Infer2: Conv2dBoundsInfer, imageArr: np.ndarray, weightArr1: np.ndarray, weightArr2: np.ndarray, outputArr: np.ndarray, targetOutput: np.ndarray):
+```python
+def demo6_1(Infer1: Conv2dBoundsInfer, Infer2: Conv2dBoundsInfer, imageArr: np.ndarray, weightArr1: np.ndarray, weightArr2: np.ndarray, outputArr: np.ndarray, targetOutput: np.ndarray):
   image = TarcedArray(imageArr)
   weight1 = TarcedArray(weightArr1)
   weight2 = TarcedArray(weightArr2)
@@ -436,8 +429,6 @@ demo6 total loaded : 722528`
   (B, OC, OH, OW) = outputArr.shape
   IC = imageArr.shape[1]
   with GlobalHierarchy(L2SIZE):
-
-```text
     reuse = False
     weight1Tile = weight1[:, :, :, :]
     weight2Tile = weight2[:, :, :, :]
@@ -471,7 +462,7 @@ demo6-1 total loaded : 206432`
 
 宏观上, 我把一个Fused Layer内部计算(循环切分与buffer stage等)优化称为`Compute Schedule`, 而我之前的一篇[文章](https://zhuanlan.zhihu.com/p/585176512)在Fused Layer外部流水(buffer size search/ping pong buffer)优化称为`Buffer Schedule`. 我的理解是硬件架构决定了目前的`Compute Schedule`可能性, 接下来由软件来实现各种`Compute Schedule Pattern`, 后续再根据这些计算模式进行`Buffer Schedule`, 此时根据`Buffer Schedule`的结果来选择最优的`Compute Schedule`, 如此迭代才能尽量发挥硬件性能. 当然如果硬件架构给出的执行方式少, 那么对应的软件也简单, 否则硬件的灵活性大, 软件优化的难度也高. 整个系统的能力也就是软硬件协调程度的体现.
 
-`    ┌───────────────────────────────────────────────────────────────────────┐
+    ┌───────────────────────────────────────────────────────────────────────┐
     │                                                                       │
     │                                                                       │
     │                    ┌──────────────────────────────┐                   │

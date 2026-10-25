@@ -126,7 +126,7 @@ Note that `to_dict` proactively serializes `@property` methods too, meaning deri
 - `tuning/strategy_searcher.py`: Grid searcher that automates `PerfLLM` across candidate strategies.
 - `pp_simu/utils.py`: A small standalone parser for DualPP and other pipeline overlap schemes, mainly for visualization and comparison.
 
-`app/`, `examples/`, `simu_tools/`, and `configs/` serve as UI, examples, machine measurement scripts, and public config libraries respectively. The entire codebase has no C++ extensions and no CUDA operators — all "performance numbers" come from pure Python algebraic expressions, which is exactly why SimuMax can complete a 1024-GPU strategy search on an ordinary laptop in seconds.
+app/`, `examples/`, `simu_tools/`, and `configs/` serve as UI, examples, machine measurement scripts, and public config libraries respectively. The entire codebase has no C++ extensions and no CUDA operators — all "performance numbers" come from pure Python algebraic expressions, which is exactly why SimuMax can complete a 1024-GPU strategy search on an ordinary laptop in seconds.
 
 ## II. Configuration Layer: Computing Feasibility First
 
@@ -184,7 +184,7 @@ def global_batch_size(self):
     return self.micro_batch_size * self.micro_batch_num * self.dp_size
 ```
 
-`dp_size` is not user-provided — it's **derived from `world_size / (pp·tp·cp)`**, immediately catching whether the parallel layout is self-consistent. The `sanity_check` further encodes hundreds of constraints as readable assertions: `seq_len % cp_size == 0`, `world_size % (ep·etp·pp) == 0`, `zero_state ∈ {0,1,2,3}`, `megatron_recompute` requires `recompute_granularity == "selective_recompute"`, `interleaving_size > 1` requires `pp_size > 1` and `microbatch_group_size_per_vp_stage >= pp_size`... Constraints that in real training would only surface via OOM or NaN are caught at config time in SimuMax.
+dp_size` is not user-provided — it's **derived from `world_size / (pp·tp·cp)`**, immediately catching whether the parallel layout is self-consistent. The `sanity_check` further encodes hundreds of constraints as readable assertions: `seq_len % cp_size == 0`, `world_size % (ep·etp·pp) == 0`, `zero_state ∈ {0,1,2,3}`, `megatron_recompute` requires `recompute_granularity == "selective_recompute"`, `interleaving_size > 1` requires `pp_size > 1` and `microbatch_group_size_per_vp_stage >= pp_size`... Constraints that in real training would only surface via OOM or NaN are caught at config time in SimuMax.
 
 ### 2.2 Semantic Translation of Recompute Strategies
 
@@ -271,7 +271,7 @@ def compute_end2end_time(self, compute_time, mem_time):
         return max(compute_time, mem_time)
 ```
 
-`only_compute` serves scenarios where "operators are primarily compute-bound"; `roofline` forces `max(compute, mem)` per the Roofline model. The two modes cover two typical cases: "GEMM dominates during training" and "small operators are bandwidth-limited."
+only_compute` serves scenarios where "operators are primarily compute-bound"; `roofline` forces `max(compute, mem)` per the Roofline model. The two modes cover two typical cases: "GEMM dominates during training" and "small operators are bandwidth-limited."
 
 ### 2.4 ModelConfig: The Parameter & FLOPs Ledger
 
@@ -297,7 +297,7 @@ def qkv_proj_elements(self):
         return self.hidden_size * proj_size
 ```
 
-`flops_per_token` accounts for MoE `topk` amplification, Shared Expert extra width, MLA q/k/v head dimension differences, and the final vocab projection's "3·2·H·V" term. Implementing formulas that typically live in PowerPoint slides directly into config classes, combined with `dp_size` and `global_batch_size`, enables derived metrics like MFU to be <strong>computed directly from the config layer</strong> without waiting for real training.
+flops_per_token` accounts for MoE `topk` amplification, Shared Expert extra width, MLA q/k/v head dimension differences, and the final vocab projection's "3·2·H·V" term. Implementing formulas that typically live in PowerPoint slides directly into config classes, combined with `dp_size` and `global_batch_size`, enables derived metrics like MFU to be <strong>computed directly from the config layer</strong> without waiting for real training.
 
 ## III. Performance Engine: PerfLLM & Operator Graph
 
@@ -349,7 +349,7 @@ Note that `CachedLeafActivationProfile` is `frozen=True`: each leaf module's (a 
 
 > `simumax/core/transformer/dense_module.py` and `moe_module.py` are the two largest files in the project, wrapping every Transformer sub-module (Linear, LayerNorm, RoPE, SDP, SwiGLU, Router, Permutation, GroupGEMM...) into objects that can compute both FLOPs/memory and time.
 
-`language_model.py` assembles these sub-modules into a complete LLM and exposes `get_all_leaf_modules / get_act_info / get_compute_info / get_cost_info` for `PerfLLM` to consume. This "operator-level analysis" maps almost one-to-one with real frameworks (PyTorch + TE):
+language_model.py` assembles these sub-modules into a complete LLM and exposes `get_all_leaf_modules / get_act_info / get_compute_info / get_cost_info` for `PerfLLM` to consume. This "operator-level analysis" maps almost one-to-one with real frameworks (PyTorch + TE):
 
 - For each GEMM, look up `efficient_factor` by shape in the System table; on miss, log to `miss_efficiency`;
 - For each LayerNorm / SwiGLU and other small operators, compute via memory bandwidth with `compute_mem_access_time`;
@@ -382,11 +382,11 @@ def mfu_dualpp(mbn, pp, F_cost, B_cost, W_cost, FandB_cost, opt_time, stage,
     return flops / (dur / 1000) / default_flops / 1e12
 ```
 
-`cal_FandB_multi_layers` further arranges sub-events like "attention forward, Dispatch, MLP backward, Combine, attention backward" into two timelines (compute / comm), using `max(...)` for hard synchronization at each step, ultimately yielding `compute_dur` and `comm_dur` with `max` as the "post-overlap F&B" effective cost. This code is an excellent <strong>introductory sample for understanding pipeline overlap mechanisms</strong>: it transforms graphical PP timing diagrams into a readable, debuggable, plottable Python function.
+cal_FandB_multi_layers` further arranges sub-events like "attention forward, Dispatch, MLP backward, Combine, attention backward" into two timelines (compute / comm), using `max(...)` for hard synchronization at each step, ultimately yielding `compute_dur` and `comm_dur` with `max` as the "post-overlap F&B" effective cost. This code is an excellent <strong>introductory sample for understanding pipeline overlap mechanisms</strong>: it transforms graphical PP timing diagrams into a readable, debuggable, plottable Python function.
 
 ### 3.4 Memory Timeline & Trace Export
 
-`simu_memory.py / simu_artifacts.py / generate_tracing.py / trace_export.py` are responsible for materializing "fake training" artifacts. `simulate(out_dir)` produces at minimum `tracing_logs.json` (directly viewable as a timeline in Chrome Trace Viewer); if strategy and current memory timeline paths allow, it also generates:
+simu_memory.py / simu_artifacts.py / generate_tracing.py / trace_export.py` are responsible for materializing "fake training" artifacts. `simulate(out_dir)` produces at minimum `tracing_logs.json` (directly viewable as a timeline in Chrome Trace Viewer); if strategy and current memory timeline paths allow, it also generates:
 
 - `simu_memory_result.json`: Peak memory data per stage;
 - `simu_memory_snapshot.json`: Per-event memory snapshots;
@@ -398,7 +398,7 @@ For engineers, the real value of these artifacts lies in <strong>reconciliation<
 
 ### 4.1 A Typical Candidate Space
 
-`simumax/tuning/strategy_searcher.py` is the minimal closed loop for automating `PerfLLM`, about 200 lines. Its default candidate space looks like this:
+simumax/tuning/strategy_searcher.py` is the minimal closed loop for automating `PerfLLM`, about 200 lines. Its default candidate space looks like this:
 
 ```python
 # Source: simumax/tuning/strategy_searcher.py
@@ -462,7 +462,7 @@ Concise but extremely dense: a nested loop encodes hard constraints like "PP mus
 
 ### 4.3 Network Selection & Recompute Bucketing
 
-`_select_net` determines whether a communication group uses `high_intra_node` (NVLink/MTLink) or `inter_node` (IB/RoCE) based on whether the mesh prefix product exceeds a single node:
+_select_net` determines whether a communication group uses `high_intra_node` (NVLink/MTLink) or `inter_node` (IB/RoCE) based on whether the mesh prefix product exceeds a single node:
 
 ```python
 # Source: simumax/tuning/strategy_searcher.py

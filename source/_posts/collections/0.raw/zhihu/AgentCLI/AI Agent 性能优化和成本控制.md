@@ -50,9 +50,8 @@ source_url: https://zhuanlan.zhihu.com/p/2009938845945328180
 
 模型输入价格输出价格适用场景GPT-4 Turbo0.K | 0.K复杂推理、关键任务GPT-3.5 Turbo0.K | 0.K简单对话、常规任务Claude 3 Haiku0.K | 0.K快速响应、大量请求本地模型（Llama）0 | 0隐私敏感、高频调用<strong>策略：根据任务复杂度选择模型</strong>
 
-`class SmartModelSelector:
-
 ```python
+class SmartModelSelector:
     def __init__(self):
         self.models = {
             "complex": "gpt-4-turbo-preview",
@@ -98,7 +97,7 @@ cost = selector.estimate_cost(model, 100, 200)  # 约 $0.00028`
 
 <strong>❌ 低效 Prompt（浪费 token）：</strong>
 
-`prompt = """
+prompt = """
 你是一个非常智能的助手，拥有丰富的知识和经验。
 你需要帮助用户解决各种问题，包括但不限于：
 1. 回答问题
@@ -113,7 +112,7 @@ cost = selector.estimate_cost(model, 100, 200)  # 约 $0.00028`
 
 <strong>✅ 高效 Prompt（节省 token）：</strong>
 
-`prompt = """
+prompt = """
 你是天气助手。简洁回答。
 
 用户问：今天天气怎么样？
@@ -128,7 +127,7 @@ cost = selector.estimate_cost(model, 100, 200)  # 约 $0.00028`
 - <strong>使用缩写</strong> — “请” → “pls”（英文场景）
 - <strong>结构化输出</strong> — 用 JSON 代替长文本
 - <strong>Few-shot 精简</strong> — 只给 1-2 个示例
-`# 优化前
+# 优化前
 prompt = "请帮我分析这封邮件的情绪，并告诉我是积极的、消极的还是中性的。"
 
 # 优化后
@@ -138,9 +137,8 @@ prompt = "情绪分析（积极/消极/中性）："`
 
 <strong>三级缓存架构：</strong>
 
-`import redis
-
 ```python
+import redis
 import hashlib
 import json
 from functools import lru_cache
@@ -230,7 +228,7 @@ def call_llm_with_cache(prompt: str, model: str) -> str:
 
 <strong>❌ 非流式（用户等待时间长）：</strong>
 
-`response = llm.invoke(prompt)  # 等待 10 秒
+response = llm.invoke(prompt)  # 等待 10 秒
 print(response)  # 一次性输出`
 
 <strong>✅ 流式（用户体验好）：</strong>
@@ -247,7 +245,7 @@ print(response)  # 一次性输出`
 
 <strong>❌ 逐个处理（慢 + 贵）：</strong>
 
-`for email in emails:
+for email in emails:
 
 ```text
     response = llm.invoke(f"分析邮件：{email}")
@@ -257,7 +255,7 @@ print(response)  # 一次性输出`
 
 <strong>✅ 批量处理（快 + 便宜）：</strong>
 
-`batch_prompt = "分析以下邮件：\n\n"
+batch_prompt = "分析以下邮件：\n\n"
 for i, email in enumerate(emails, 1):
 
 ```text
@@ -283,12 +281,12 @@ response = llm.invoke(batch_prompt)
 
 <strong>❌ 高维度（慢 + 贵）：</strong>
 
-`embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
+embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
 # 维度：3072，存储成本高`
 
 <strong>✅ 低维度（快 + 便宜）：</strong>
 
-`embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
+embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
 # 维度：1536，存储成本降低 50%`
 
 <strong>性能对比：</strong>
@@ -303,9 +301,8 @@ response = llm.invoke(batch_prompt)
 
 <strong>❌ 同步（慢）：</strong>
 
-`def process_emails(emails):
-
-```text
+```python
+def process_emails(emails):
     results = []
     for email in emails:
         result = agent.run(email)  # 串行处理
@@ -318,7 +315,7 @@ response = llm.invoke(batch_prompt)
 
 <strong>✅ 异步（快）：</strong>
 
-`import asyncio
+import asyncio
 
 async def process_emails_async(emails):
 
@@ -335,8 +332,11 @@ async def process_emails_async(emails):
 
 #### 4.2 连接池
 
-`from sqlalchemy import create_engine
+```python
+from sqlalchemy import create_engine
 from sqlalchemy.pool import QueuePool
+```
+
 
 # ❌ 每次创建新连接
 engine = create_engine(DATABASE_URL)
@@ -357,9 +357,8 @@ engine = create_engine(
 
 #### 4.3 预加载和预热
 
-`class PreloadedAgent:
-
 ```python
+class PreloadedAgent:
     def __init__(self):
         # 预加载模型
         self.llm = ChatOpenAI(model="gpt-3.5-turbo")
@@ -391,8 +390,11 @@ agent = PreloadedAgent()`
 
 #### 5.1 成本追踪
 
-`from prometheus_client import Counter, Histogram
+```python
+from prometheus_client import Counter, Histogram
 import time
+```
+
 
 # Prometheus 指标
 API_CALLS = Counter(
@@ -479,12 +481,11 @@ def call_llm_with_tracking(prompt: str, model: str) -> str:
 
 #### 5.2 Grafana 仪表板
 
-`{
+```text
+{
   "dashboard": {
     "tle": "AI Agent 成本监控",
     "panels": [
-
-```text
       {
         "title": "每日成本",
         "targets": [
@@ -523,7 +524,7 @@ def call_llm_with_tracking(prompt: str, model: str) -> str:
 
 <strong>成本分析：</strong>
 
-`模型：GPT-4 Turbo
+模型：GPT-4 Turbo
 平均输入：500 tokens
 平均输出：300 tokens
 单次成本：( * $0.01) + ( * $0.03) = $0.014
@@ -534,7 +535,7 @@ def call_llm_with_tracking(prompt: str, model: str) -> str:
 
 <strong>1. 模型分级（节省 70%）</strong>
 
-`# 简单问题用 GPT-3.5
+# 简单问题用 GPT-3.5
 # 复杂问题用 GPT-4
 
 简单问题（80%）：8000 次 * $0.001 = $8
@@ -543,14 +544,14 @@ def call_llm_with_tracking(prompt: str, model: str) -> str:
 
 <strong>2. 缓存（节省 50%）</strong>
 
-`# 重复问题命中缓存
+# 重复问题命中缓存
 缓存命中率：50%
 实际调用：5000 次
 每日成本：$18（再节省 50%）`
 
 <strong>3. Prompt 优化（节省 30%）</strong>
 
-`# 精简 Prompt
+# 精简 Prompt
 平均输入：300 tokens（-40%）
 平均输出：200 33%）
 单次成本：$0.009
@@ -558,14 +559,14 @@ def call_llm_with_tracking(prompt: str, model: str) -> str:
 
 <strong>4. 批量处理（节省 20%）</strong>
 
-`# 批量处理相似问题
+# 批量处理相似问题
 每日成本：$10（再节省 20%）`
 
 #### 6.3 优化后
 
 <strong>最终成本：</strong>
 
-`每日成本：$10
+每日成本：$10
 每月成本：$300
 节省：$4200 - $300 = $3900（93%）`
 
@@ -609,7 +610,7 @@ def call_llm_with_tracking(prompt: str, model: str) -> str:
 
 <strong>典型优化路径：</strong>
 
-`初始成本：$4200/月
+初始成本：$4200/月
 ↓ 模型分级（-70%）
 $1260/月
 ↓ 缓存（-50%）

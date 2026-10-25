@@ -34,7 +34,7 @@ source_url: https://zhuanlan.zhihu.com/p/457709438
 - 不妨查阅指令手册，我们发现了一条神奇的指令——浮点开方指令（fsqrt）。这条浮点开方指令在2022年的不同ISA中的大部分微架构上都拥有恒定的执行时长，且一般为12cycle左右。在我们测量整数资源、访存资源和控制资源时，fsqrt消耗的是浮点寄存器堆，这无疑也是其一大优势。回到ROB容量的测量上，对于一个预期300+项ROB的六发射处理器，假定我们每周期能够向ROB中填入6条NOP指令，356/6=59 cycle。也就是说我们需要阻止NOP提交60cycle左右的时长。如果我们使用相关的fsqrt指令，60/12=5条，保险起见我们使用6条相关的fsqrt指令来阻止NOP从ROB中退出。
 至此，我们已经获得了所有程序需要的指令组件，那么到底如何构造指令序列，如何从其执行时长中获得ROB的容量信息呢？为了让fsqrt堵塞nop的retire（退出ROB），核心循环指令的排布示意如下：
 
-`fsqrt
+fsqrt
 …………
 fsqrt
 nop
@@ -85,9 +85,8 @@ N数量超过临界时这时，随着N数量的进一步增长执行时长也会
 
 为了较为便捷地构造汇编指令序列，我们使用了asmjit工具。按照asmjit自带的example，我们首先构造出其基本的运行环境，和核心循环函数Func的框架。这个函数Func接受1个输入，指定其需要执行多少遍核心循环。无需深入理解运行环境的意义，我们仅仅是使用工具（asmjit）来快速实现我们的目标，而不是为了详细掌握asmjit的各种用法和原理。
 
-`// Signature of the generated function.
-
-```js
+```sql
+// Signature of the generated function.
 typedef int (*Func)(size_t count);      //我们构造的核心循环函数的定义
 
       JitRuntime rt;                    // Create a runtime specialized for JIT.
@@ -106,11 +105,10 @@ typedef int (*Func)(size_t count);      //我们构造的核心循环函数的�
       code.reset();
 ```
 
-`
 
 为了使得fn能够接受我们的输入参数，我们按照asmjit的example中的示例，加入如下代码：由于我们仅输入了1个参数，其会通过寄存器传参，其位于rdi中，我们将其存入我们申明的1个寄存器变量cnt中。
 
-`      …………………………………………………………
+      …………………………………………………………
 
 ```sql
       code.init(rt.environment());      // Initialize code to match the JIT environment.
@@ -140,15 +138,14 @@ typedef int (*Func)(size_t count);      //我们构造的核心循环函数的�
       …………………………………………………………
 ```
 
-`
 
 加入我们在前文中经常使用的计时函数，给fn输入1个适量的循环次数：倘若对计时方面有困惑，可以参考前言部分提及的两篇前文。
 
-`      …………………………………………………………
+      …………………………………………………………
 
       TODO：！！！！！我们将在此处构造fsqrt和nop的指令序列
 
-```js
+```text
       SumFunc fn;
       Error err = rt.add(&fn, &code);   // Add the generated code to the runtime.
       if (err) return 1;                // Handle a possible error returned by AsmJit.
@@ -163,13 +160,11 @@ typedef int (*Func)(size_t count);      //我们构造的核心循环函数的�
       code.reset();
 ```
 
-`
 
 至此我们可以开始构造我们的目标指令序列了，将该序列嵌入上面代码中的TODO位置即完成了逆向程序，首先构造循环和fn函数的退出机制：
 
-`      Label Loop = a.newLabel();        // 申明1个标签——Loop 用于循环跳转，即汇编中的label
-
 ```text
+      Label Loop = a.newLabel();        // 申明1个标签——Loop 用于循环跳转，即汇编中的label
       a.bind(Loop);                     // 将Loop标签放置在这个位置，也就是核心循环的入口处
 
       a.dec(cnt);                       // cnt接受了我们输入的循环次数，将它减1。dec就是decline指令
@@ -177,13 +172,11 @@ typedef int (*Func)(size_t count);      //我们构造的核心循环函数的�
       a.ret();                          // 从函数中return，如果cnt-1的结果为0就会执行到此处。ret即return
 ```
 
-`
 
 有了循环结构，我们可以在其中嵌入我们的指令序列了：首先是block块，即fsqrt指令。然后是nop指令，nop指令的数量是从0-800（可以自定）变化的，那我们不妨再在外层套1个大循环，其变量nop_num从0-800变化：
 
-`    Label Loop = a.newLabel();        // 申明1个标签——Loop 用于循环跳转，即汇编中的label
-
 ```cpp
+    Label Loop = a.newLabel();        // 申明1个标签——Loop 用于循环跳转，即汇编中的label
     a.finit();                        // 浮点栈初始化，一定不能遗漏！否则会导致fsqrt指令执行报错
     a.fldpi();                        // 给浮点栈顶载入1个数值pi，用于fsqrt指令的输入值
     //以上两条指令防止在Loop外因为初始化仅需进行1次
@@ -208,13 +201,11 @@ typedef int (*Func)(size_t count);      //我们构造的核心循环函数的�
     a.ret();                          // 从函数中return，如果cnt-1的结果为0就会执行到此处。ret即return
 ```
 
-`
 
 至此我们完成了程序构造：
 
-`// Signature of the generated function.
-
 ```cpp
+// Signature of the generated function.
 typedef int (*Func)(size_t count);      //我们构造的核心循环函数的定义
 
 for(int nop_num=0; nop_num800;nop_num+=1){
@@ -279,7 +270,6 @@ for(int nop_num=0; nop_num800;nop_num+=1){
    }
 ```
 
-`
 
 使用脚本运行程序：使用taskset使得程序在核心1上运行，将输出结果重定向到res.txt，方便导入office进行散点图绘制等处理。
 

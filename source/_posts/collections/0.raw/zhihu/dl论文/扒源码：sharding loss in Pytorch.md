@@ -25,8 +25,12 @@ y = x ** 2 + 2
 定义 loss 为求和，梯度回退后打印 x 的梯度出来看看：
 
 loss = torch.sum(y)
+
+```python
 loss.backward()
 print(x.grad)
+```
+
 # tensor([ 2.,  4.,  6.]
 梯度计算正确（即 2x）。以上是普通流程。现在开始分段，直接对每个 shard 回溯：
 

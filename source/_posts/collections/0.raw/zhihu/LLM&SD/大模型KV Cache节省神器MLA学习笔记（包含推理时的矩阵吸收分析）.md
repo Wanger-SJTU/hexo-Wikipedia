@@ -161,7 +161,7 @@ $- \mathbf{W}^{QR} \in \mathbb{R}^{d_h^R n_h \times d_c'} 和 \mathbf{W}^{KR} \i
 
 首先来看初始化部分，为了快速理解代码直接忽略掉RoPE计算相关的代码部分。
 
-`# Copied from transformers.models.llama.modeling_llama.LlamaAttention with Llama->DeepseekV2
+# Copied from transformers.models.llama.modeling_llama.LlamaAttention with Llama->DeepseekV2
 
 ```python
 class DeepseekV2Attention(nn.Module):
@@ -235,7 +235,6 @@ class DeepseekV2Attention(nn.Module):
         )
 ```
 
-`
 
 根据0x2节的原理介绍，现在已经可以把 DeepseekV2Attention 模块里面所有的权重矩阵都和初始化的代码对应起来了，如果你想继续看下去一定要理解到初始化的每行代码。
 
@@ -245,11 +244,10 @@ class DeepseekV2Attention(nn.Module):
 
 在这里插入图片描述接下来再看一下forward的代码，这对应了完整公式里面的详细计算过程：
 
-`def forward(
+```python
+def forward(
         self,
         hidden_states: torch.Tensor,
-
-```text
         attention_mask: Optional[torch.Tensor] = None,
         position_ids: Optional[torch.LongTensor] = None,
         past_key_value: Optional[Cache] = None,
@@ -342,7 +340,6 @@ class DeepseekV2Attention(nn.Module):
 
         # 后续就是标准的多头自注意力计算了，为了篇幅，忽略这部分代码
         ...
-`
 
 读完这一节基本就能将MLA完整公式的每一行都搞清楚了，并且我们可以看到目前的官方实现在存储KV Cache的时候并不是存储隐向量，而是把隐向量都解压缩变成了标准的MHA的KV Cache，实际上是完全不能节省显存的。
 
@@ -365,7 +362,7 @@ $\text{atten\_weights} = \mathbf{q}_{t}^\top \mathbf{k}_{t} = (\mathbf{W}^{UQ} \
 
 $也就是说我们实际上不需要将低维的 \mathbf{c}_{t}^{KV} 展开再计算，而是直接将 \mathbf{W}^{UK} 通过结合律先和左边做乘法。$
 
-`# 以下和上一节的MLA forward部分实现相同
+# 以下和上一节的MLA forward部分实现相同
 # hidden_states对应公式中的h_t，的shape是(batch_size, seq_length,  
 # hidden_size)，其中 hidden_size 具体为 5120，假设batch_size为1，seq_length为q_len
 bsz, q_len, _ = hidden_states.size()
@@ -400,11 +397,10 @@ compressed_kv, k_pe = torch.split(
 
 # 这里的 k_pe 和 上面的 q_pe 要扔给 RoPE模块，所以需要重整下shape
 k_pe = k_pe.view(bsz, q_len, 1, self.qk_rope_head_dim).transpose(1, 2)
-`
 
 以下部分是W^{UK}的吸收需要做的改动，省略掉了把compressed_kv和k_pe加入到Transformers KV Cache的改动：
 
-`# 从 kv_b_proj 中分离的 W^{UK} 和 W^{UV} 两部分，他们要分别在不同的地方吸收
+# 从 kv_b_proj 中分离的 W^{UK} 和 W^{UV} 两部分，他们要分别在不同的地方吸收
 kv_b_proj = self.kv_b_proj.weight.view(self.num_heads, -1, self.kv_lora_rank)
 q_absorb = kv_b_proj[:, :self.qk_nope_head_dim,:]
 out_absorb = kv_b_proj[:, self.qk_nope_head_dim:, :]
@@ -416,7 +412,6 @@ q_nope = torch.einsum('hdc,bhqd->bhqc', q_absorb, q_nope)
 # 吸收后 attn_weights 直接基于 compressed_kv 计算不用展开。
 attn_weights = torch.matmul(q_pe, k_pe.transpose(2, 3)) + torch.einsum('bhqc,blc->bhql', q_nope, compressed_kv)
 attn_weights *= self.softmax_scale
-`
 
 主要是吸收这里的代码需要仔细理解：
 
@@ -424,7 +419,7 @@ attn_weights *= self.softmax_scale
 - `q_nope = torch.einsum('hdc,bhqd->bhqc', q_absorb, q_nope) `这行代码中，`q_nope`的shape是`[batch_size, num_heads, q_len, q_head_dim]`。所以这行代码就是一个矩阵乘法，把W^{UK}吸收到W^{UQ}。
 - 吸收后 attn_weights 直接基于 compressed_kv 计算不用展开。对应`torch.einsum('bhqc,blc->bhql', q_nope, compressed_kv)`这行代码。其中q_nope 的维度是 `[batch_size, num_heads, q_len, kv_lora_rank]`，compressed_kv 是 `[batch_size, past_len, kv_lora_rank]`，输出的维度是 `[batch_size, num_heads, q_len, past_len]`。
 - 此外，我们还可以观察到`torch.matmul(q_pe, k_pe.transpose(2, 3))`这行代码是分开计算了RoPE部分的q和k的注意力计算再求和，没有和原本的实现一样将加上了 rope 的 q_pe/k_pe 和没加 rope 的 q_nope/k_nope 拼接起来一起，也就是下面的代码。作者团队把这个拆分叫做 Move Elision 的优化，后续有性能对比。
-`# 更新和拼接历史 KVCache，可以看到这里存储的是展开后的 MHA KVCache
+# 更新和拼接历史 KVCache，可以看到这里存储的是展开后的 MHA KVCache
 # 其中 q_head_dim 等于 qk_nope_head_dim + qk_rope_head_dim
 query_states = k_pe.new_empty(bsz, self.num_heads, q_len, self.q_head_dim)
 query_states[:, :, :, : self.qk_nope_head_dim] = q_nope
@@ -433,7 +428,6 @@ query_states[:, :, :, self.qk_nope_head_dim :] = q_pe
 key_states = k_pe.new_empty(bsz, self.num_heads, q_len, self.q_head_dim)
 key_states[:, :, :, : self.qk_nope_head_dim] = k_nope
 key_states[:, :, :, self.qk_nope_head_dim :] = k_pe
-`
 
 >  除了压缩KV Cache之外，我们还可以观察到上面涉及到的2个矩阵乘法实际上都来到了计算密集的领域，例如对于 `torch.einsum('bhqc,blc->bhql', q_nope, compressed_kv)` 。由于不同 head 的 q_nope 部分 share 了共同的 compressed_kv 部分，实际计算的是 batch_size 个 [num_heads * q_len, kv_lora_rank] 和 [past_len, kv_lora_rank] 的矩阵乘法。计算等价于一个 MQA 操作，计算强度正比于 num_heads 的也就是 128。
  
@@ -454,7 +448,7 @@ o = Mc_t^{KV}W^{UV}W_o
 
 我们可以把W^{UV}吸收到W_o中，对应的代码实现：
 
-`# attn_weight的shape是[batch_size, num_heads, q_len, past_len]
+# attn_weight的shape是[batch_size, num_heads, q_len, past_len]
 # compressed_kv的shape是[batch_size, past_len, kv_lora_rank]
 # attn_output的shape是[batch_size, num_heads, q_len, kv_lora_rank]
 attn_output = torch.einsum('bhql,blc->bhqc', attn_weights, compressed_kv)
@@ -462,7 +456,6 @@ attn_output = torch.einsum('bhql,blc->bhqc', attn_weights, compressed_kv)
 # out_absorb.mT的shape是[num_heads, kv_lora_rank, v_head_dim]
 # 最终attn_output的shape是[batch_size, num_heads, q_len, v_head_dim]
 attn_output = torch.matmul(attn_output, out_absorb.mT)
-`
 
 >  注意：.mT 方法用于获取张量的转置（transpose）。对于二维张量（矩阵），转置操作会交换其行和列。而对于高维张量，.mT 会交换最后两个维度。
  

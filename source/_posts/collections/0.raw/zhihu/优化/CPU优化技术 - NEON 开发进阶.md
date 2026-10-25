@@ -45,9 +45,8 @@ source_url: https://zhuanlan.zhihu.com/p/479398400
 
 C代码实现：
 
-`void DownscaleUv(uint8_t *src, uint8_t *dst, int32_t src_stride, int32_t dst_width, int32_t dst_height, int32_t dst_stride)
-
 ```cpp
+void DownscaleUv(uint8_t *src, uint8_t *dst, int32_t src_stride, int32_t dst_width, int32_t dst_height, int32_t dst_stride)
 {
     for (int32_t j = 0; j  dst_height; j++)
     {
@@ -68,15 +67,13 @@ C代码实现：
 }
 ```
 
-`
 
 2.2.1 内层循环向量化**
 
 内层循环是代码执行次数最多的部分，因此是向量化的重点。我们的输入和输出都是u8类型，NEON寄存器128bit，所以我们每次处理16个数据。
 
-`// 每次有16个数据输出
-
 ```cpp
+// 每次有16个数据输出
 for (i = 0; i 
 ```
 
@@ -97,9 +94,8 @@ for (i = 0; i
 
 <strong>2.2.4 代码实现</strong>
 
-`//使用intrinsic需要包含的头文件
-
 ```cpp
+//使用intrinsic需要包含的头文件
 #include 
 
 void DownscaleUvNeon(uint8_t *src, uint8_t *dst, int32_t src_width, int32_t src_stride, int32_t dst_width, int32_t dst_height, int32_t dst_stride)
@@ -146,9 +142,9 @@ void DownscaleUvNeon(uint8_t *src, uint8_t *dst, int32_t src_width, int32_t src_
 
 这种做法是在处理尾部数据的时候，从后往前提取一个向量的数据进行计算，这样会出现一部分数据重复计算。接着2.2.4节的示例，这种方法的实现代码如下：
 
-`#include 
-
 ```cpp
+#include 
+
 void DownscaleUvNeon(uint8_t *src, uint8_t *dst, int32_t src_width, int32_t src_stride, int32_t dst_width, int32_t dst_height, int32_t dst_stride)
 {
     uint8x16x2_t v8_src0;
@@ -193,9 +189,8 @@ void DownscaleUvNeon(uint8_t *src, uint8_t *dst, int32_t src_width, int32_t src_
 
 剩余部分直接采用标量来处理，这种是最简单的方法，也是最常用的方法，每行的剩余元素可以简单的用标量处理，因为绝大部分都是向量计算，剩余元素所占比例非常小，因此使用标量不会对性能产生太明显的影响。
 
-`void DownscaleUvNeonScalar(uint8_t *src, uint8_t *dst, int32_t src_width, int32_t src_stride, int32_t dst_width, int32_t dst_height, int32_t dst_stride)
-
 ```cpp
+void DownscaleUvNeonScalar(uint8_t *src, uint8_t *dst, int32_t src_width, int32_t src_stride, int32_t dst_width, int32_t dst_height, int32_t dst_stride)
 {
     uint8x16x2_t v8_src0;
     uint8x16x2_t v8_src1;
@@ -226,7 +221,7 @@ void DownscaleUvNeon(uint8_t *src, uint8_t *dst, int32_t src_width, int32_t src_
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_2397f69cd8c1.jpg)
 
-`//dup指令生成pading向量
+//dup指令生成pading向量
 uint8x16_t v8_const_pad = vdupq_n_u8(pad_val);
 //-1行数据
 v8_pre_row_data = v8_const_pad;
@@ -247,7 +242,7 @@ uint8x16_t v8_next_row_data = vextq_u8(v8_const_pad, v8_tmp_data, 15); `
 - 左右边界的方法一样，对于左边界，我们可以使用VLD1_DUP指令提取边界数据，然后使用vext来组建新的向量，参考代码如下。
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_e089ccb03480.jpg)
 
-`//提取0行padding数据
+//提取0行padding数据
 uint8x16_t v8_dup_pad = vld1q_dup_u8(pt_row0);
 //提取第0行数据
 uint8x16_t v8_tmp_data = vld1q_u8(pt_row0);
@@ -271,7 +266,7 @@ uint8x16_t v8_next_row_data = vextq_u8(v8_dup_pad, v8_tmp_data, 15);`
 
 参考代码：
 
-`uint8x8_t v8_ref_pad = vld1_u8(pt_row0 + 1);
+uint8x8_t v8_ref_pad = vld1_u8(pt_row0 + 1);
 uint8x8_t v8_ref_pad1;
 uint8x8_t v8_tmp_data = vld1q_u8(pt_row0);
 //翻转数据，用于生成101反射padding
@@ -303,7 +298,7 @@ Gaussian3x3Sigma0NeonU8C1是主函数
 
 第一次处理上边边界，然后是中间处理，最后是下边界处理
 
-`int32_t Gaussian3x3Sigma0NeonU8C1(const uint8_t *src, uint8_t *dst, int32_t height, int32_t width, int32_t istride, int32_t ostride)
+int32_t Gaussian3x3Sigma0NeonU8C1(const uint8_t *src, uint8_t *dst, int32_t height, int32_t width, int32_t istride, int32_t ostride)
 
 ```cpp
 {
@@ -334,9 +329,8 @@ Gaussian3x3RowCalcu实现
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_dd7882331c58.jpg)
 
-`static inline int32_t Gaussian3x3RowCalcu(const uint8_t *src0, const uint8_t *src1, const uint8_t *src2, uint8_t *dst, int32_t width)
-
 ```text
+static inline int32_t Gaussian3x3RowCalcu(const uint8_t *src0, const uint8_t *src1, const uint8_t *src2, uint8_t *dst, int32_t width)
 {
     if ((NULL == src0) || (NULL == src1) || (NULL == src2) || (NULL == dst))
     {
@@ -383,9 +377,8 @@ Gaussian3x3RowCalcu实现
 
 最后一次的向量计算单独处理，为了防止提取下一组数据时越界。
 
-`static inline int32_t Gaussian3x3RowCalcu(const uint8_t *src0, const uint8_t *src1, const uint8_t *src2, uint8_t *dst, int32_t width)
-
 ```cpp
+static inline int32_t Gaussian3x3RowCalcu(const uint8_t *src0, const uint8_t *src1, const uint8_t *src2, uint8_t *dst, int32_t width)
 {
     // 计算前8个输出......
     for (col = 8; col 
@@ -394,9 +387,8 @@ Gaussian3x3RowCalcu实现
 
 最后剩余的非对齐部分我们使用标量进行计算。
 
-`static inline int32_t Gaussian3x3RowCalcu(const uint8_t *src0, const uint8_t *src1, const uint8_t *src2, uint8_t *dst, int32_t width)
-
 ```cpp
+static inline int32_t Gaussian3x3RowCalcu(const uint8_t *src0, const uint8_t *src1, const uint8_t *src2, uint8_t *dst, int32_t width)
 {
     // 向量计算部分......
     for (; col > 4) & 0xFFFF;

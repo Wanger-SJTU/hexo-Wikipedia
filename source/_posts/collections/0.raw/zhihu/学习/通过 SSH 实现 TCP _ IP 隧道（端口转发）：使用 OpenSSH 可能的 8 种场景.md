@@ -49,7 +49,7 @@ source_url: https://zhuanlan.zhihu.com/p/30000490
 
 现在，我们可以在 externo1 节点上确认下 7900 端口是否处于监听状态中：
 
-`externo1 $ netstat -ltn
+externo1 $ netstat -ltn
 Active Internet connections  (only servers)
 Proto Recv-Q  Send-Q  Local Address Foreign Address State 
 ...
@@ -76,7 +76,7 @@ Tcp 0 0 127.0.0.1:7900 0.0.0.0:*  LISTEN
 
 看起来跟方案 1 中的命令类似，但是让我们看看 netstat 命令的输出上的区别。7900 端口被绑定到了本地（127.0.0.1），所以只有本地进程可以访问。这次我们将端口关联到了 0.0.0.0，所以系统允许任何 IP 地址的机器访问 7900 这个端口。
 
-`externo1 $ netstat -ltn
+externo1 $ netstat -ltn
 Active Internet connections  (only servers)
 Proto Recv-Q  Send-Q  Local Address Foreign Address State 
 ...
@@ -99,7 +99,7 @@ Tcp 0 0 0.0.0.0:7900 0.0.0.0:*  LISTEN
 
 换句话说，如果我们想限制只能连接到系统上的某个 IP，可以像下面这样定义：
 
-`externo1 $ ssh -L 192.168.24.80:7900:localhost:5900 user@interno1
+externo1 $ ssh -L 192.168.24.80:7900:localhost:5900 user@interno1
 
 externo1 $ netstat -ltn
 Active Internet connections (only servers)
@@ -124,7 +124,7 @@ Tcp 0 0 192.168.24.80:7900 0.0.0.0:* LISTEN
 
 然后我们就能看到 interno1 节点上对 7900 端口正在监听：
 
-`interno1 $ netstat -lnt
+interno1 $ netstat -lnt
 Active Internet connections (only servers)
 Proto Recv-Q Send-Q Local Address Foreign Address State 
 ... 
@@ -166,7 +166,7 @@ Tcp 0 0 127.0.0.1:7900 0.0.0.0:* LISTEN
 
 我们确认一下现在 interno1 节点上存在 7900 端口的监听程序，监听来自不同 IP 的请求：
 
-`interno1 $ netstat -ltn
+interno1 $ netstat -ltn
 Active Internet connections (only servers)
 Proto Recv-Q Send-Q Local Address Foreign Address State 
 ... 
@@ -253,7 +253,7 @@ SSH 服务器需要配置为：
 
 如果我们需要一次性的创建多个隧道，使用配置文件的方式替代一个可能很长的命令是一个更好的选择。假设我们只能通过 SSH 的方式访问某个特定网络，同时又需要创建多个隧道来访问该网络内不同服务器上的服务，比如 VNC 或者 远程桌面。此时只需要创建一个如下的配置文件 $HOME/redirects 即可（在 SOCKS 服务器 上）。
 
-`# SOCKS server
+# SOCKS server
 DynamicForward 1080
 
 # SSH redirects
@@ -272,8 +272,7 @@ LocalForward 5903 172.16.23.45:5901`
 
 然后我们只需要执行如下命令：
 
-`externo1 $ ssh -F $HOME/redirects user@interno1 
-`
+externo1 $ ssh -F $HOME/redirects user@interno1 
 
 via: https://wesharethis.com//creating-tcp-ip-port-forwarding-tunnels-ssh-8-possible-scenarios-using-openssh/
 

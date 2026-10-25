@@ -27,7 +27,7 @@ source_url: https://zhuanlan.zhihu.com/p/210665963
 
 变化激烈的指标：
 
-`context-sw: 15k vs 11k
+context-sw: 15k vs 11k
 cycle: 5b vs 2.7b (1.847GHz)
 bus_cycle: 5b vs 2b
 l1d-refill: 20.4m vs 18.7m, 7.4M/s vs 12M/s
@@ -41,7 +41,7 @@ br_mis_pred: 28m vs 15m`
 
 基本不变的：
 
-`inst: 1.5b vs 1.4b
+inst: 1.5b vs 1.4b
 l1d_tlb: 800m vs 739m
 l1i_tlb: 18.9m vs 17.9m
 exec_ret/exec_taken: 164k vs 144k

@@ -144,7 +144,7 @@ source_url: https://zhuanlan.zhihu.com/p/645658201
 
 比如一些示例：
 
-`>  
+>  
 instruction: who is Lady Gaga? 
 question: is the instruction out of scope (not related with TiDB)? 
 answer: YES  
@@ -221,7 +221,7 @@ TiDB Bot 的逻辑架构至此，我们成功开发出了一款具备特定企�
 
 第一步：收集线上和测试中所有的相关问题，进行毒性标记，并且清洗成与现有系统提示词中示例一样的格式。格式如下：
 
-`instruction: {user's querstion}  
+instruction: {user's querstion}  
 question: is the instruction out of scope (not related with TiDB)? 
 answer: YES or NO`
 

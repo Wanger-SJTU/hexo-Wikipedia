@@ -39,7 +39,7 @@ Anthropic 显然也意识到了这个瓶颈。Claude Code 最近推出了一个�
 
 团队和任务的数据都存储在本地文件系统：
 
-`~/.claude/teams/{team-name}/config.json    # 团队配置（成员列表、ID、类型）
+~/.claude/teams/{team-name}/config.json    # 团队配置（成员列表、ID、类型）
 ~/.claude/tasks/{team-name}/               # 共享任务列表`
 
 团队配置文件里有一个 `members` 数组，记录了每个队员的 `name`、`agentId` 和 `agentType`，队员可以读这个文件来发现团队里的其他成员。
@@ -102,11 +102,10 @@ Agent Teams 目前还是实验性功能，默认关闭。需要手动开启，�
 
 在 `settings.json` 里添加环境变量：
 
-`{
+```text
+{
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
-
-```text
   }
 ```
 
@@ -120,7 +119,7 @@ Agent Teams 目前还是实验性功能，默认关闭。需要手动开启，�
 
 开启后，用自然语言告诉 Claude 你想要什么样的团队就行了。比如：
 
-`我在设计一个 CLI 工具来追踪代码库中的 TODO 注释。
+我在设计一个 CLI 工具来追踪代码库中的 TODO 注释。
 创建一个 Agent Team 从不同角度来探索这个需求：
 一个队员负责 UX 设计，一个负责技术架构，一个扮演 Devil's Advocate 提反对意见。`
 
@@ -154,8 +153,11 @@ Agent Teams 支持两种显示模式，这个选择挺影响使用体验的：
 - <strong>iTerm2</strong>：需要安装 [it2 CLI](https://link.zhihu.com/?target=https%3A//github.com/mkusaka/it2)，然后在 iTerm2 的设置里启用 Python API（iTerm2 → Settings → General → Magic → Enable Python API）
 默认是 `auto` 模式——如果你已经在 tmux session 里了，就自动用分屏；否则用进程内模式。`tmux` 设置会启用分屏模式，并自动检测你用的是 tmux 还是 iTerm2。也可以在 settings 里强制指定：
 
-`{
+```text
+{
   "teammateMode": "in-process"
+```
+
 }`
 
 或者启动时传参覆盖：
@@ -229,7 +231,7 @@ lead 会发一个 shutdown request，队员可以批准（优雅退出）或拒�
 
 一个人 review 代码的时候，注意力往往集中在某一类问题上——你盯着安全漏洞看的时候，就容易忽略性能问题。Agent Teams 可以把不同的关注维度分给不同的队员：
 
-`创建一个 Agent Team 来 review PR #142，生成三个 reviewer：
+创建一个 Agent Team 来 review PR #142，生成三个 reviewer：
 - 一个专注安全隐患
 - 一个检查性能影响
 - 一个验证测试覆盖率
@@ -241,7 +243,7 @@ lead 会发一个 shutdown request，队员可以批准（优雅退出）或拒�
 
 这是我觉得最有意思的用法。当你遇到一个搞不清楚根因的 bug 时：
 
-`用户反馈 App 在发送一条消息后就断开连接了，没有保持长连接。
+用户反馈 App 在发送一条消息后就断开连接了，没有保持长连接。
 生成 5 个 Agent 队员调查不同的假说。
 让他们互相对话，像科学辩论一样尝试推翻对方的理论。
 把达成共识的结论写入分析文档。`
@@ -254,7 +256,7 @@ lead 会发一个 shutdown request，队员可以批准（优雅退出）或拒�
 
 如果你要开发一个涉及前端、后端和测试的完整功能：
 
-`创建一个团队来实现用户头像上传功能：
+创建一个团队来实现用户头像上传功能：
 - 一个队员负责后端 API（文件上传、存储、压缩）
 - 一个队员负责前端组件（上传界面、预览、裁剪）
 - 一个队员负责写端到端测试
@@ -315,7 +317,7 @@ Carlini 自己也说了一个很清醒的判断：没有人类验证的情况下
 
 队员会自动加载项目的 `CLAUDE.md`、MCP servers 和 skills，但它们<strong>不会继承 lead 的对话历史</strong>。所以 spawn 的时候一定要在 prompt 里把任务相关的信息说清楚：
 
-`创建一个安全审计队员，prompt 是："审查 src/auth/ 目录下的认证模块，
+创建一个安全审计队员，prompt 是："审查 src/auth/ 目录下的认证模块，
 重点关注 token 处理、session 管理和输入校验。
 应用使用 JWT token 存储在 httpOnly cookie 中。
 按严重程度对发现的问题分级。"`
@@ -395,7 +397,7 @@ iTerm2 用户则需要确认 `it2` CLI 已安装，并且在 iTerm2 偏好设置
 
 如果团队结束后 tmux session 没被正确清理，可以手动处理：
 
-`tmux ls                          # 列出所有 session
+tmux ls                          # 列出所有 session
 tmux kill-session -t    # 杀掉残留的`
 
 #### 参考资料

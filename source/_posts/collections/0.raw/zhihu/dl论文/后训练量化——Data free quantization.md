@@ -165,7 +165,7 @@ $$s_i=\frac{1}{r_i^{(2)}}\sqrt{r_i^{(1)}r_i^{(2)}} \tag{9} $$
 
 至此，两个卷积核的 equalization 算法可以通过下面的代码实现：
 
-`def equalize(weight1, bias1, weight2):
+def equalize(weight1, bias1, weight2):
  # 重排列
  weight2 = weight2.permute(1, 0, 2, 3)
  out_channel = weight1.shape[0]

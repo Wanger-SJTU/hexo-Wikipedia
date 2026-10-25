@@ -124,7 +124,7 @@ for subgraph in extract_subgraphs(tagged_graph):          # 提取子图
     replace_with_delegate_call(subgraph, blob)             # 替换为 delegate 调用
 ```
 
-`to_backend()` 函数用 Python 的 `singledispatch` 实现多态分发——传 backend_id 直接编译、传 Partitioner 先分区再编译、传多方法规格批量处理，统一入口不同行为。
+to_backend()` 函数用 Python 的 `singledispatch` 实现多态分发——传 backend_id 直接编译、传 Partitioner 先分区再编译、传多方法规格批量处理，统一入口不同行为。
 
 <strong>Step 4: ToOutVarPass——函数式变 out-variant，消灭动态分配</strong>
 这一步是降阶过程中最关键的一步。
@@ -134,18 +134,18 @@ for subgraph in extract_subgraphs(tagged_graph):          # 提取子图
 %3 = aten::add(%1, %2)   # 返回新张量
 函数式风格优雅，但有一个致命问题：<strong>返回新张量 = 需要分配内存</strong>。运行时得给 `%3` 分配一块新内存。对端侧来说，动态分配是禁忌。
 
-`ToOutVarPass` 把所有函数式算子转为 out-variant 风格——输出通过预分配的缓冲区传入：
+ToOutVarPass` 把所有函数式算子转为 out-variant 风格——输出通过预分配的缓冲区传入：
 
 %buf = memory.alloc(size=[1,64,112,112], dtype=float32)  # 预分配
 aten::add.out(%1, %2, out=%buf)                          # 写入预分配缓冲区
-`memory.alloc` 节点只声明大小，不分配内存。真正的分配由下一步的 `MemoryPlanningPass` 完成。
+memory.alloc` 节点只声明大小，不分配内存。真正的分配由下一步的 `MemoryPlanningPass` 完成。
 
 这个转换让运行时完全不需要动态分配——算子函数签名从 `Tensor add(Tensor, Tensor)` 变成了 `void add(Tensor, Tensor, Tensor& out)`，调用者（运行时）提前准备好 `out`，算子只管往里写。
 
 代价是 API 变丑了——每个算子都要显式传 out 参数。但对端侧来说，内存可控性比 API 美观重要得多。这是一个&#34;丑但正确&#34;的设计取舍。
 
 <strong>Step 5: MemoryPlanningPass——给每个张量安排座位</strong>
-`ToOutVarPass` 产出了大量 `memory.alloc` 节点，声明了每个张量的大小但没分配实际内存。`MemoryPlanningPass` 完成最后一步——给每个张量分配具体的内存偏移量。
+ToOutVarPass` 产出了大量 `memory.alloc` 节点，声明了每个张量的大小但没分配实际内存。`MemoryPlanningPass` 完成最后一步——给每个张量分配具体的内存偏移量。
 
 它做的事情类似于操作系统的内存管理，但更简单——因为编译时已经知道所有张量的<strong>完整生命周期</strong>。
 

@@ -33,12 +33,12 @@ SVM 的问题就变成：求解一系列满足约束的 alpha 值，使得上面
 
 现在大部分的 SVM 开源实现，源头都是 platt 的 smo 算法，读完他的文章和推导，然后照着伪代码写就行了，核心代码没几行：
 
-`target = desired output vector
+target = desired output vector
 point = training point matrix
 
 procedure takeStep(i1,i2)
 
-```js
+```text
 	if (i1 == i2) return 0
 	alph1 = Lagrange multiplier for i1
 	y1 = target[i1]
@@ -97,14 +97,12 @@ platt 的文章建议是做一个 E 函数的缓存，方便后面选择 i, j �
 
 所以最好的办法是对 g(x) 进行缓存，platt 的方法里因为所有 alpha 值初始化成了 0，所以 g(x) 一开始就可以全部设置成 0，稍微观察一下 g(x) 的公式，你就会发现，因为去掉了 b 的干扰，而每次 SMO 迭代更新 ai, aj 参数时，这两个值都是线性变化的，所以我们可以给 g(x) 求一个关于 a 的偏导，假设 ai，aj 变化了步长 delta，那么所有样本对应的 g(x) 加上一个 delta 乘以针对 ai, aj 的偏导数就行了，具体代码类似：
 
-`double Kik = kernel(i, k);
-
 ```text
+double Kik = kernel(i, k);
 double Kjk = kernel(j, k);
 ```
 
 G[k] += delta_alpha_i * Kik * y[i] + delta_alpha_j * Kjk * y[j];
-`
 
 把这段代码放在 takeStep 后面，每次成功更新一对 ai, aj 以后，更新所有样本对应的 g(x) 缓存，这样通过每次迭代更新 g(x) 避免了大量的重复计算。
 

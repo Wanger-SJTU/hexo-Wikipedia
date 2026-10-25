@@ -110,7 +110,7 @@ Vectorizer(Var var, int var_lanes) : var_(var), var_lanes_(var_lanes) {
 
 ##### BufferStoreNode
 
-`BufferStoreNode`中有三部分：
+BufferStoreNode`中有三部分：
 - buffer——写入的buffer
 - value——待写入的值或者表达式
 - indices——写入buffer的坐标

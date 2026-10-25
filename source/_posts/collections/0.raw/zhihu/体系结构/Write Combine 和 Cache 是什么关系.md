@@ -57,15 +57,13 @@ ARM 并没有直接的 WC 的概念，但它提供的 Normal NC** 的效果等�
 
 图-3而 ARM 里这个 Normal NC 跟它的 noncached 并不是一回事（以下代码取自 v6.1 内核 "arch/arm64/include/asm/pgtable.h"）：
 
-`#define pgprot_noncached(prot) \
-
 ```text
+#define pgprot_noncached(prot) \
     _pgprot_modify(prot, PTE_ATTRINDX_MASK, PTE_ATTRINDX(MT_DEVICE_nGnRnE) | PTE_PXN | PTE_UXN)
 #define pgprot_writecombine(prot) \
     _pgprot_modify(prot, PTE_ATTRINDX_MASK, PTE_ATTRINDX(MT_NORMAL_NC) | PTE_PXN | PTE_UXN)
 ```
 
-`
 
 这里你会看到 ARM 有个 GRE 的概念（不是 GRE 考试），其中 G 代表 Gathering：
 

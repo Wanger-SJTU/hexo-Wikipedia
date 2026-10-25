@@ -63,7 +63,7 @@ Milvus不同于Annoy、faiss这类型的向量检索工具，它更是一款开�
 
 没办法翻墙的可以自己新建<strong>docker-compose.yml</strong>文件，然后填入以下内容：
 
-`version: '3.5'
+version: '3.5'
 
 services:
   etcd:
@@ -145,7 +145,7 @@ https://milvus.io/cn/docs/v2.0.0/install_cluster-docker.md
 
 ### 连接milvus服务
 
-`from pymilvus_orm import connections, FieldSchema, CollectionSchema, DataType, Collection
+from pymilvus_orm import connections, FieldSchema, CollectionSchema, DataType, Collection
 
 # 连接milvus服务器
 connections.connect(host='localhost', port='19530')`
@@ -154,7 +154,7 @@ connections.connect(host='localhost', port='19530')`
 
 collection必须要有一个field是主键，一个field是存储向量，另外还可以创建其他类型的field
 
-`field_name = "example_field"
+field_name = "example_field"
 
 ```python
 def create_collection():
@@ -181,14 +181,13 @@ def create_collection():
 
 collection还可以将数据存储在不同的分区。默认是有一个"Default partition"的分区，不指定分区的话，都会存储在default分区。
 
-`def create_partition(collection: Collection):
+```python
+def create_partition(collection: Collection):
     """
     为collection创建分区
     :param collection:
     :return:
     """
-
-```python
     partition_name = "example_partition"
     partition = collection.create_partition(partition_name)
 
@@ -205,7 +204,9 @@ collection还可以将数据存储在不同的分区。默认是有一个"Defaul
 - 当前版本数据格式只能是list，numpy的ndarray也不行；
 - 如果主键设置自增`auto_id=True`，则无需添加主键的值了；
 - 数据插入之后，它是存储在内存中，还需要将其传输到磁盘中，下次可以继续使用。
-`def insert(collection: Collection, partition_name=None):
+
+```python
+def insert(collection: Collection, partition_name=None):
     """
     插入数据
     :param partition_name: 指定插入的分区
@@ -213,8 +214,6 @@ collection还可以将数据存储在不同的分区。默认是有一个"Defaul
     :return:
     """
     # 由于主键field_id设置自增，所以无需插入
-
-```python
     mr = collection.insert([
         # 只能是list
         np.random.random([10000, 8]).tolist(),  # 向量
@@ -235,14 +234,13 @@ collection还可以将数据存储在不同的分区。默认是有一个"Defaul
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3fc281dca044.jpg)
 
-`def create_index(collection: Collection):
+```python
+def create_index(collection: Collection):
     """
     为向量检索的field 创建索引
     :param collection:
     :return:
     """
-
-```python
     index_param = {
         "metric_type": "L2",
         "index_type": "IVF_FLAT",
@@ -263,7 +261,8 @@ collection还可以将数据存储在不同的分区。默认是有一个"Defaul
 
 支持关系运算符（如==, >）、逻辑运算符(AND &&, OR ||)和IN运算符。
 
-`def search(collection: Collection, partition_name=None):
+```python
+def search(collection: Collection, partition_name=None):
     """
     向量检索
     :param collection:
@@ -271,8 +270,6 @@ collection还可以将数据存储在不同的分区。默认是有一个"Defaul
     :return:
     """
     # 将collection加载到内存
-
-```python
     collection.load()
     search_params = {"metric_type": "L2", "params": {"nprobe": 10}}
     # 向量搜索
@@ -299,10 +296,9 @@ collection还可以将数据存储在不同的分区。默认是有一个"Defaul
 
 目前支持以下三种删除操作
 
-`def drop(collection: Collection):
+```python
+def drop(collection: Collection):
     # 删除collection
-
-```text
     collection.drop()
     # 删除索引
     collection.drop_index()
@@ -313,10 +309,13 @@ collection还可以将数据存储在不同的分区。默认是有一个"Defaul
 
 ### 释放
 
-`def release(collection: Collection = None):
+```python
+def release(collection: Collection = None):
     # 从内存中释放collection
     if collection:
         collection.release()
+```
+
 
     # 断开与服务器的连接，释放资源
     connections.disconnect("default")`

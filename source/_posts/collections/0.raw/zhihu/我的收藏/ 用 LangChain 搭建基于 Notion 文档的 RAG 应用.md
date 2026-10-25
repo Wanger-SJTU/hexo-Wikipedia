@@ -29,7 +29,7 @@ source_url: https://zhuanlan.zhihu.com/p/669896230
 
 接下来，用 LangChain 的 markdown 标题文本分割器。我们向其提供一个分割符列表，然后传入之前命名的 md_file 来获取分割内容。在实际定义`headers_to_split_on`列表时，请使用自己 Notion 文档的标题。
 
-`# Load Notion page as a markdownfile filefrom langchain.document_loaders import NotionDirectoryLoader
+# Load Notion page as a markdownfile filefrom langchain.document_loaders import NotionDirectoryLoader
 path='./notion_docs'
 loader = NotionDirectoryLoader(path)
 docs = loader.load()
@@ -44,20 +44,18 @@ headers_to_split_on = [
 
 markdown_splitter = MarkdownHeaderTextSplitter(headers_to_split_on=headers_to_split_on)
 md_header_splits = markdown_splitter.split_text(md_file)
-`
 
 分割任务并检查分割结果。用 LangChain 的 `RecursiveCharacterTextSplitter`，使用一些不同的字符来进行分割。四个默认的检查字符是换行符、双换行符、空格或无空格。也可以选择传入自己的 `separators` 参数。
 
 将 Notion文档进行分块时，我们还需要定义两个关键超参数——分块大小（chunk size）和分块重叠（chunk overlap）。本例中，分块大小为 64，重叠为 8。随后，我们就可以调用 split_documents 函数将所有文档进行分割。
 
-`# Define our text splitter
+# Define our text splitter
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 chunk_size = 64
 chunk_overlap = 8
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
 all_splits = text_splitter.split_documents(md_header_splits)
 all_splits
-`
 
 下图展示了部分分割的 document 对象，其中包含了页面内容和元数据。元数据显示了内容是从哪个章节中提取出来的。
 
@@ -69,10 +67,9 @@ all_splits
 
 用 LangChain 的 Milvus 模块为文档块创建 Collection。这个步骤中我们需要传入的参数包括：文档列表、使用的 Embedding 模型、连接参数、以及 Collection 名称（可选）。
 
-`from milvus import default_server
-default_server.start()
-
 ```python
+from milvus import default_server
+default_server.start()
 from langchain.vectorstores import Milvus
 from langchain.embeddings import OpenAIEmbeddings
 ```
@@ -86,7 +83,6 @@ vectordb = Milvus.from_documents(documents=all_splits,
     collection_name="EngineeringNotionDoc")
 ```
 
-`
 
 ### <strong>03.查询 Notion 文档</strong>
 
@@ -99,9 +95,8 @@ vectordb = Milvus.from_documents(documents=all_splits,
  
 首先，我们定义元数据。随后，需要给自查询检索器提供文档的描述。本例中，描述即为“文档的主要部分”。在我们实例化自查询检索器前，现将 GPT 的温度（Temperature）设置为 0，并赋值给一个名为 llm 的变量。有了 LLM、向量数据库、文档描述和元数据字段后，我们就完成了自查询检索器定义。
 
-`from langchain.llms import OpenAI
-
 ```python
+from langchain.llms import OpenAI
 from langchain.retrievers.self_query.base import SelfQueryRetriever
 from langchain.chains.query_constructor.base import AttributeInfo
 ```
@@ -123,7 +118,6 @@ document_content_description = "Major sections of the document"
 llm = OpenAI(temperature=0)
 retriever = SelfQueryRetriever.from_llm(llm, vectordb, document_content_description, metadata_fields_info, verbose=True)
 retriever.get_relevant_documents("What makes a distinguished engineer?")
-`
 
 以下例子中我们提出了一个问题：“一名优秀工程师有哪些品质？”（What makes a distinguished engineer?）
 

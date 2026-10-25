@@ -27,9 +27,9 @@ This is the capstone project for the Learn Harness Engineering course. It combin
 - Clean state management for testing
 
 This starter intentionally has a weak harness surface. It does not include
-`CLAUDE.md`, `feature_list.json`, `init.sh`, `session-handoff.md`, benchmark
+CLAUDE.md`, `feature_list.json`, `init.sh`, `session-handoff.md`, benchmark
 scripts, or cleanup scripts. Use it as the baseline for comparison with
-`../solution/`.
+../solution/`.
 
 ## What to Evaluate or Improve
 

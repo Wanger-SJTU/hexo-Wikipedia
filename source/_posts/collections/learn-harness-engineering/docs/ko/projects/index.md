@@ -34,4 +34,4 @@ categories:
 - `solution/`: 참조 구현체(막히면 참고하세요)입니다.
 - 배경 지식과 구체적인 목표를 설명하는 작업 지침입니다.
 
-`starter/` 디렉터리 안에서 원하는 AI 코딩 에이전트(예: Claude Code, Cursor, Trae)를 사용하여 작업을 완료하시기 바랍니다.
+starter/` 디렉터리 안에서 원하는 AI 코딩 에이전트(예: Claude Code, Cursor, Trae)를 사용하여 작업을 완료하시기 바랍니다.

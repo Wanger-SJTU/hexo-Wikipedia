@@ -92,7 +92,7 @@ CLAUDE.md
   - 永远不要使用 `/init`，除非项目明确要求。
   - `CLAUDE.md` 必须按项目实际需求编写，不套用空泛模板。
   - 不要在代码注释、commit message 或 PR body 中使用描述开发进度的词，如 `FIXED`、`Step`、`Week`、`Section`、`Phase`、
-  `AC-x`。
+  AC-x`。
   - 不要在代码注释、commit message 或 PR body 中出现 AI 工具名称，如 Codex、Claude、Grok、Gemini 等。
   - 不要把外部实现细节、外部文档或外部技能树直接提升为当前项目的硬约束。
 

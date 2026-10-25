@@ -53,7 +53,7 @@ source_url: https://zhuanlan.zhihu.com/p/360364235
 - 跟踪调(trace schedule)度：真正全局调度的运用，编译器会尽量去优化最经常被运行的代码控制流路
 LLVM 调度有两种IR状态的调度，基于SchduleDAGSDNode 或者基于ScheduleDAGInstr，目前LLVM框架下，很多后端都是基于MachineScheduler （ScheduleDAGInstr）做调度。使能调度的优化选项：
 
-`-pre-RA-sched        - Instruction schedulers available (before register allocation):
+-pre-RA-sched        - Instruction schedulers available (before register allocation):
 -enable-misched      - Enable the machine instruction scheduling pass.默认开启
 -enable-post-misched - Enable the post-ra machine instruction scheduling pass. 默认开启`
 
@@ -85,21 +85,20 @@ LLVM框架下，target-description 的描述信息的填充主要是基于以下
 
 •为指令的每个操作数分配调度资源，确定输入输出操作数
 
-`def WriteIALU : SchedWrite; // 32-bit integer ALU operations
-
 ```python
+def WriteIALU : SchedWrite; // 32-bit integer ALU operations
 def ReadIALU  : SchedRead;  // 32-bit integer ALU operations`
 ```
 
 
 - 将其填充到真实的指令中
-`def MUL : ALU_rr,
+def MUL : ALU_rr,
  Sched;`
 
 - 设置调度模型
-`def ProcessorModel : SchedMachineModel {
 
-```text
+```python
+def ProcessorModel : SchedMachineModel {
   let MicroOpBufferSize = 0;      //  in-order is zero.
   let IssueWidth = xx;            // xx micro-op is dispatched per cycle.
   let LoadLatency = xx;           // cache miss 
@@ -110,9 +109,9 @@ def ReadIALU  : SchedRead;  // 32-bit integer ALU operations`
 }`
 
 - 为指令分配writeRes 和 ReadAdvance，WriteRes，是指令执行多少个cycles，能够产生输出，而ReadAdvance 是指令执行多少个cycles，能够产生输入，这个值的设定与硬件的Forwarding机制相关。
-`def : WriteRes {
 
 ```python
+def : WriteRes {
   let Latency = xx;
 }
 
@@ -123,7 +122,7 @@ def : ReadAdvance;`
 如果想基于自己的架构，自定义自己的调度器，该如何做？一般是通过三个方面去实现自定义自己架构或者处理器的调度器。1）自定义实现调度Policy；2）自定义实现调度的Strategy；3）改变DAG mutation
 
 - 自定义实现自己架构下的调度Policy，主要是基于当前已经创建好的DAG图，决定当前遍历是自顶向下，或者自底向上，或者遍历过程，是否跟踪纪录寄存器压力信息，为后面启发式算法，提供优化机会
-`void 
+void 
 SubTarget::overrideSchedPolicy(MachineSchedPolicy &Policy,
 
 ```text
@@ -139,7 +138,7 @@ SubTarget::overrideSchedPolicy(MachineSchedPolicy &Policy,
 - 自定义自己架构下调度Strategy，列表调度+ 启发式算法，选择当前可以调度的下一个节点。当前LLVM框架下也是基于列表调度算法，结合启发式算法完成调度程序下一个节点的选择，你可以设计自己架构下的启发式算法，使其尽可能的让调度接近最优解。
 list scheduling ：本质上是拓扑排序，针对有向无环图做序列化排序，同时在选择下一条指令的过程会有一些启发式算法。 算法会模拟每个cycle 的流水线的状态，会维护一个readlist，存放当前时间节点可以参与调度的指令。通常可以被调度的指令是没有前驱的，他不依赖于任何指令 ，可以立刻被调度。（Heuristic 启发式算法，表示可以从一系列可以被调度的指令，选择其中一个进行调度）。列表调度结合启发式 ，主要调整启发式Fucntion算法（通常大部分情况下给不出最优，但是能够接近最优解），调整更通用的算法，对于各种各样的输入指令能够达到更优解，一般启发式算法，可以根据以下属性，选择当前优先级最高的指令进行调度：1）节点是否在关键路径上，关键路径上表示执行的时间最长，关键路径上的指令赋予更高的优先级。2）指令测周期更长。给他更高的优先级 ；3）可以选择有更多后继节点的指令进行调度（这样参与调度的机会更多）4）寄存器压力等
 
-`Class customestragy : public GenericScheduler {
+Class customestragy : public GenericScheduler {
   Sunit *pickNode(bool &IsTopNode) override{
 
 ```text

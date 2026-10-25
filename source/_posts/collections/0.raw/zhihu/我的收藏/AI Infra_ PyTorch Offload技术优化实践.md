@@ -61,9 +61,8 @@ CUDA toolkit 提供了相对于host同步或者异步的数据搬移方法。在
 - 源数据必须位于锁页内存中。
 附：简易的实验代码
 
-`import contextlib
-
 ```python
+import contextlib
 import torch
 from torch.cuda import Stream
 ```
@@ -159,9 +158,8 @@ benchmark_with_profiler(pinned=1, streamed=1)`
 
 这个参数可以使`to()`等方法相对于host异步执行，也就是不阻塞CPU的主线程。 我们设计实验来观察其影响，对1000个数据进行传输，其中100次进行profile，代码如下：
 
-`import torch
-
 ```python
+import torch
 import matplotlib.pyplot as plt
 import time
 import functools
@@ -359,7 +357,7 @@ D2H的数据传输仍然可以借助DMA引擎避开CPU的介入从而避免阻�
 - <strong>第二步（CPU拷贝）</strong>：CPU介入，将数据从中转缓冲区拷贝到指定的最终目标（那个可分页的内存地址）。
 为了获得较高的传输速度，应当尽量使用锁页内存，但是cuda的tensor没有`pin_memory()`操作或参数，较好的实践是：
 
-`# 1. 在主机端预先分配一个目标缓冲区，并确保它是锁页内存
+# 1. 在主机端预先分配一个目标缓冲区，并确保它是锁页内存
 cpu_result_buffer = torch.empty_like(cpu_tensor, pin_memory=True)
 
 # 2. 使用 .copy_() 将GPU张量的数据拷贝到这个预分配的缓冲区中
@@ -371,9 +369,8 @@ torch.cuda.synchronize() `
 
 基于我实际遇到的情况（较大的激活内存(B,S,D)，多层分次传输 layer=30），给出以下测试代码：
 
-`import torch
-
 ```python
+import torch
 import time
 from contextlib import contextmanager
 import numpy as np
@@ -528,7 +525,7 @@ if __name__ == "__main__":
 
 运行结果如下：
 
-`=== 测试配置 ===
+=== 测试配置 ===
 Tensor shape: (1, 16800, 1536)
 Number of layers: 30
 单个tensor大小: 49.22 MB
@@ -587,7 +584,7 @@ Number of layers: 30
 - <strong>第3层数据</strong>：在 `stream1` 上执行 ...
 当GPU在`stream1`上为第1层数据执行<strong>计算</strong>时，DMA引擎可以利用空闲时间，在`stream2`上为第2层数据执行<strong>H2D传输</strong>。这就是重叠发生的地方，形如：
 
-`时间轴：
+时间轴：
    Stream1: [H2D1][Compute1][D2H1][H2D3][Compute3][D2H3]
    Stream2:      [H2D2][Compute2][D2H2][H2D4][Compute4]`
 
@@ -603,9 +600,8 @@ Number of layers: 30
 
 理论可行，实践开始，下面给出测试代码：
 
-`import torch
-
 ```python
+import torch
 import time
 from contextlib import contextmanager
 import numpy as np
@@ -731,7 +727,7 @@ if __name__ == "__main__":
 
 执行结果如下：
 
-`==================== 测试计算与通信重叠 ====================
+==================== 测试计算与通信重叠 ====================
 Tensor shape: (1, 16800, 1536), Size: 49.22 MB
 Layers: 30, Compute Intensity: 20
 总耗时 (单流顺序执行): 178.03 ms

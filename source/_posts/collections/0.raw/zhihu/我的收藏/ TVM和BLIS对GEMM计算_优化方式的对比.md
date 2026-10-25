@@ -96,7 +96,7 @@ Auto Scheduler调优IR和TVM How to中的IR对比        因为上述三份TVM�
 
 下面是auto scheduler调优后的生成的IR
 
-`@main = primfn(A_1: handle, B_1: handle, C_1: handle) -> ()
+@main = primfn(A_1: handle, B_1: handle, C_1: handle) -> ()
   attr = {"from_legacy_te_schedule": True, "global_symbol": "main", "tir.noalias": True}
   buffers = {C: Buffer(C_2: Pointer(float32), float32, [1024, 1024], []),
 
@@ -173,9 +173,8 @@ Auto Scheduler调优IR和TVM How to中的IR对比        因为上述三份TVM�
 
  BLIS将需要计算的矩阵按照前述方式分成大块后，在我的机器上将每块再次分成多个6x16小块，并调用手工优化的内核对每个小块进行计算。核心计算代码如下：
 
-`	mov(var(k_iter), rsi) // i = k_iter;
-
 ```text
+	mov(var(k_iter), rsi) // i = k_iter;
 	test(rsi, rsi) // check i via logical AND.
 	je(.SCONSIDKLEFT) // if i == 0, jump to code that
 	// contains the k_left loop.
@@ -291,11 +290,10 @@ Auto Scheduler调优IR和TVM How to中的IR对比        因为上述三份TVM�
 
 	dec(rsi) // i -= 1;
 	jne(.SLOOPKITER) // iterate again if i != 0.
-```
-
-`
 
          BLIS在计算时使用了一个6x16的内核来计算。在一个C(6x16)的计算中，C的所有数据常驻寄存器ymm4~ymm15；k从0到256（KC=256），对每一个k值ki，将b（1x16)的值加载到ymm0和ymm1中；将ki对应的a(6x1)中的a0，a1值作为一组，load到ymm2和ymm3中，与ymm0，ymm1相乘后加回C对应行数据所在的寄存器中，之后再计算第二组a2，a3和第三组a4，a5。
+```
+
 
         从代码中可以注意到，a, b数组内数据全部连续存放。（每次的vbroadcastss数据地址连续）
 
@@ -311,7 +309,7 @@ BLIS Kernel做如下计算![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84
 
         TVM auto scheduler生成的kernel对应的汇编代码如下：
 
-`.LBB3_8:
+.LBB3_8:
 
 ```text
 	vmovaps	(%rsi), %ymm8
@@ -413,7 +411,7 @@ BLIS 影响线程的环境变量
 **参考关于sgemm_hsw的一点解释说明，CPU的register renaming技术可能有硬件将这段代码中引用的逻辑寄存器ymm14实际mapping到不同的物理寄存器上以提高并行性。好的编译器也可能可以对这部分进行优化。
 编辑于2022.4.19                下面代码是矩阵乘法与 SIMD文章使用144x144x144的MKN搜索出的6x16的kernel。
 
-`vbroadcastss    -2324(%rdx,%rbx), %ymm14
+vbroadcastss    -2324(%rdx,%rbx), %ymm14
 vmovaps (%rbp), %ymm13
 vmovaps 32(%rbp), %ymm12
 vfmadd231ps     %ymm13, %ymm14, %ymm10

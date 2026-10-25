@@ -111,7 +111,7 @@ $$\sum_{i=1}^n y_i^2 = \sum_{i=1}^n x_i^2$$
 
 用标准Sylvester H₈（未归一化）计算 y = H₈x 得到：
 
-`y[0] = 7.9
+y[0] = 7.9
 y[1] = -7.7
 y[2] = 8.1
 y[3] = -7.9
@@ -286,9 +286,8 @@ stride 从1开始，每层翻倍：1, 2, 4, 8, …, n/2。这意味着第一层�
 
 线程内蝶形是最内层的循环。对8个寄存器 x[0..7]，执行3层蝶形：
 
-`// 第0层，stride=1
-
 ```cpp
+// 第0层，stride=1
 for (int j = 0; j 
 ```
 
@@ -303,7 +302,7 @@ for (int j = 0; j
 
 Warp shuffle指令 `__shfl_xor_sync` 可以让warp内的线程直接交换寄存器值，无需经过共享内存。对于第 step 层的蝶形，每个线程与 `lane_id XOR (1 
 
-`__shfl_xor_sync` 的第一个参数是掩码，0xFFFFFFFF 表示warp内所有32个线程参与。第二个参数是要交换的值，第三个参数是XOR的lane偏移。
+__shfl_xor_sync` 的第一个参数是掩码，0xFFFFFFFF 表示warp内所有32个线程参与。第二个参数是要交换的值，第三个参数是XOR的lane偏移。
 
 sign的计算决定了这是加法还是减法。如果当前线程的lane_id在第step位是1，执行 `-x + x_other`，否则执行 `+x + x_other`。这对应于蝶形单元的两个输出。
 
@@ -317,7 +316,10 @@ GPU的共享内存通常分成32个bank（每个bank宽度4字节）。如果一
 
 为了避免bank冲突，使用XOR swizzle技巧。在写入共享内存时，地址按 `col XOR row` 重新排列，而不是简单的 `row * width + col`。
 
-`int smem_write_idx = (threadIdx.x * k + i) XOR (threadIdx.x / 32);
+```cpp
+int smem_write_idx = (threadIdx.x * k + i) XOR (threadIdx.x / 32);
+```
+
 smem[smem_write_idx] = x[i];`
 
 这种XOR置换打破了规则的bank映射关系。原本连续的32个线程会访问bank 0, 1, 2, …, 31，如果数据排列不当可能集中到少数bank。XOR后，访问分散到不同bank，冲突概率大幅降低。
@@ -344,7 +346,10 @@ smem[smem_write_idx] = x[i];`
 
 符号模式由矩阵的第 i 行决定。可以把这12个输出全部展开：
 
-`float y[12];
+```text
+float y[12];
+```
+
 y[0] = x[0] + x[1] + x[2] + x[3] + x[4] + x[5] + x[6] + x[7] + x[8] + x[9] + x[10] + x[11];
 y[1] = x[0] - x[1] + x[2] - x[3] + x[4] - x[5] + x[6] - x[7] + x[8] - x[9] + x[10] - x[11];
 y[2] = x[0] + x[1] - x[2] - x[3] + x[4] + x[5] - x[6] - x[7] + x[8] + x[9] - x[10] - x[11];
@@ -362,7 +367,10 @@ GPU的全局内存访问以128字节为粒度最高效。对于float类型（4�
 
 在实现中，根据数据类型和每线程持有量，选择合适的向量宽度：
 
-`using vec_t = uint4;  // 16字节，4个float或8个half
+```text
+using vec_t = uint4;  // 16字节，4个float或8个half
+```
+
 
 vec_t* input_ptr = reinterpret_cast(input);
 vec_t loaded = input_ptr[threadIdx.x];
@@ -377,7 +385,7 @@ memcpy(x, &loaded, sizeof(vec_t));`
 
 写回时也是同样的操作：
 
-`vec_t to_store;
+vec_t to_store;
 memcpy(&to_store, x, sizeof(vec_t));
 output_ptr[threadIdx.x] = to_store;`
 
@@ -389,9 +397,12 @@ output_ptr[threadIdx.x] = to_store;`
 
 更好的做法是隐式填充：GPU核函数按 n’=1024 的逻辑运行，但在读取输入时检查边界。如果索引超出 n=1000，就不读取，局部变量保持0。
 
-`float x[8] = {0};  // 初始化为0
+```text
+float x[8] = {0};  // 初始化为0
 
 if (global_idx 
+```
+
 
 这样在蝶形计算中，超出边界的元素都是0。0±a = ±a，不会影响其他元素的结果。最后写回时，也检查边界，只写入 n=1000 个有效元素。
 
@@ -401,7 +412,7 @@ if (global_idx
 
 对于half（fp16）和bfloat16输入，累加时容易出现精度损失。解决办法是在载入后立即升级为float进行计算：
 
-`__half loaded_half = input[idx];
+__half loaded_half = input[idx];
 
 ```text
 float x = __half2float(loaded_half);

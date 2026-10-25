@@ -27,7 +27,7 @@ SVE对比NEON有几个新增的地方。
 
 ## SVE 寄存器
 - Scalable vector registers
-`Z0-Z15`, 支持double、float、float16，int64、int32、int16、int8
+Z0-Z15`, 支持double、float、float16，int64、int32、int16、int8
 向量寄存器长度128-2048bit可变，具体取决于SoC厂商确定，当前手机上上商用的由联发科的天玑9200，长度是128bit，这部分与NEON共用。
 - Scalable predicate registers
 谓词寄存器，

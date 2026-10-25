@@ -24,7 +24,7 @@ tvm希望在任何一个语言中定义的函数，可以在其他的语言中�
 
 
 ## PackedFunc
-`PackedFunc`是解决上述问题的一个优雅的方案。一个`PackedFunc`对象对应着一个函数调用，即使定义与调用分散在不同语言之间也可以满足。下面展示一个C++的例子。
+PackedFunc`是解决上述问题的一个优雅的方案。一个`PackedFunc`对象对应着一个函数调用，即使定义与调用分散在不同语言之间也可以满足。下面展示一个C++的例子。
 
 ```cpp
 #include <tvm/runtime/packed_func.h>

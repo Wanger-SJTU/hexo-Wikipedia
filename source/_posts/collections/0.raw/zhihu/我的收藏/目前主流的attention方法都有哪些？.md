@@ -89,7 +89,7 @@ MQA只让 Q 保留了原始多头的性质（每个Head存在不同的转换）,
 GQA(Group Query Attention)
 
 GQA（Grouped Query Attention）是一种在MQA基础上进一步优化的注意力机制，旨在平衡参数量减少和模型性能之间的关系。通过将查询（Query, Q）进行分组，并让每个组内的所有头共享同一组键（Key, K）和值（Value, V），GQA试图保留多头注意力机制的优势，同时减少计算成本和显存占用。
-`GQA(Group Query Attention)实现步骤`：
+GQA(Group Query Attention)实现步骤`：
 
 - 查询分组：将所有的查询 Q 分成若干个组，每个组内的查询共享一组键 K 和值 V 。
 - 共享键和值矩阵：每个组内共享同一个键矩阵 W_k^g 和值矩阵 W_V^g ，其中 g表示组编号。

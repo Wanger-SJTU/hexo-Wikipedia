@@ -50,9 +50,8 @@ Flush即clflush指令，Visual C++中定义如下：
 
 测量代码：
 
-`/* flush */
-
 ```text
+/* flush */
         _mm_clflush(&data[0]);
 
         /* measure cache miss latency */
@@ -88,7 +87,7 @@ Flush即clflush指令，Visual C++中定义如下：
 
 - 通过BIOS设置： 通过BIOS选项来关闭hwprefetcher，对所有的CPU生效
 - 通过内核调试器windbg直接关闭：通过直接改写msr寄存器关闭当前核的硬件预取功能:
-`0: kd> rdmsr 0x1a4
+0: kd> rdmsr 0x1a4
 msr[1a4] = 00000000`00000000
 0: kd> wrmsr 0x1a4 0x0f
 0: kd> ~1

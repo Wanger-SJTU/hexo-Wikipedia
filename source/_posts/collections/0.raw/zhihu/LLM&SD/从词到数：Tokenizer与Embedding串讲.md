@@ -35,7 +35,7 @@ source_url: https://zhuanlan.zhihu.com/p/631463712
 
  从GPT-2开始一直到GPT-4，OpenAI一直采用BPE分词法。这种方法的子词构造算法是这样的：
 
-`1. 统计输入中所有出现的单词并在每个单词后加一个单词结束符 -> ['hello': 6, 'world': 8, 'peace': 2]
+1. 统计输入中所有出现的单词并在每个单词后加一个单词结束符 -> ['hello': 6, 'world': 8, 'peace': 2]
 2. 将所有单词拆成单字 -> {'h': 6, 'e': 10, 'l': 20, 'o': 14, 'w': 8, 'r': 8, 'd': 8, 'p': 2, 'a': 2, 'c': 2, '': 3}
 3. 合并最频繁出现的单字(l, o) -> {'h': 6, 'e': 10, 'lo': 14, 'l': 6, 'w': 8, 'r': 8, 'd': 8, 'p': 2, 'a': 2, 'c': 2, '': 3}
 4. 合并最频繁出现的单字(lo, e) -> {'h': 6, 'lo': 4, 'loe': 10, 'l': 6, 'w': 8, 'r': 8, 'd': 8, 'p': 2, 'a': 2, 'c': 2, '': 3}
@@ -45,7 +45,7 @@ source_url: https://zhuanlan.zhihu.com/p/631463712
 
 在获得子词词表后，就可以将句子分割成子词了，算法见下面的例子（引自[文章](https://zhuanlan.zhihu.com/p/378323693)）：
 
-`# 给定单词序列
+# 给定单词序列
 ["the", "highest", "mountain"]
 
 # 从一个很大的corpus中排好序的subword表如下
@@ -98,7 +98,7 @@ Word-Piece和BPE非常相似，BPE使用<strong>出现最频繁的组合</strong
 
 这之后，还需要告诉模型我已经更新了词汇表，使用`model.resize_token_embeddings(len(tokenizer))`。完整的添加例子如下： 
 
-`from transformers import AutoTokenizer, AutoModel
+from transformers import AutoTokenizer, AutoModel
 
 # pick the model type
 model_type = "roberta-base"
@@ -131,7 +131,7 @@ LMTokenizerVocabulary SizeBERTWord-Piece30kALBERTSentence-Piece30kRoBERTaBPE50kX
 
 tokenize完的下一步就是将token的one-hot编码转换成更dense的embedding编码。在ELMo之前的模型中，embedding模型很多是单独训练的，而ELMo之后则爆发了直接将embedding层和上面的语言模型层共同训练的浪潮（ELMo的全名就是<strong>Embeddings from Language Model</strong>）。不管是哪种方法，Embedding层的形状都是一样的。我们举个例子来看看embedding层是怎么工作的。在huggingface中，seq2seq模型往往是这样调用的：
 
-`input_ids = tokenizer.encode('Hello World!', return_tensors='pt')
+input_ids = tokenizer.encode('Hello World!', return_tensors='pt')
 output = model.generate(input_ids, max_length=50)
 tokenizer.decode(output[0])`
 

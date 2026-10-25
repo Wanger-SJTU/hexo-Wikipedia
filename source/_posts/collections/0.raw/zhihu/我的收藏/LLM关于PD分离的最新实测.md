@@ -165,8 +165,12 @@ NCCL 负责 GPU 间的数据传输，而 ZMQ 仅用于控制信道（metadata �
 
 # 在 P2pNcclEngine 中：
 self.nccl = NCCLLibrary(library_path)  # 初始化 NCCL 库
+
+```text
 self._create_connect(remote_address)  # 使用 ZMQ 发起连接请求，并初始化 NCCL Comm
 self._send(comm, tensor, dst, stream)  # 实际调用 ncclSend 进行 GPU 数据传输
+```
+
 
 LMCacheConnectorV1——LMCache
 https://github.com/LMCache/LMCache封装了一层LMCache调用逻辑。

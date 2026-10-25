@@ -71,7 +71,7 @@ Run `bash scripts/check-architecture.sh` before committing.
 - `clean-state-checklist.md`: pre-commit repository health check
 
 Do not assume `feature_list.json`, `claude-progress.md`, `init.sh`, or
-`session-handoff.md` exist in this starter.
+session-handoff.md` exist in this starter.
 
 ## Definition Of Done
 

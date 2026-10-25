@@ -34,14 +34,14 @@ https://vv4vfmb5mk.feishu.cn/docx/GLZydDSP3oGIQexFJqdcfOxGnfb?from=from_copylink
 - Filter（Kernel）的Size为MKQC：M个卷积核，每个卷积核高为K、宽为Q、Channel为C。这里的Channel数和feature Tensor的Channel数必须一致，而这个M就会对应到输出Tensor的Channel维度。
 - Output Feature Tensor（OFMAPs）：N个输出Tensor，每个Tensor高为R，宽为S，Channel为卷积核的数量M。RS和HW、KQ的关系是：
 
-`# Padding表示填充的元素行或者列数
+# Padding表示填充的元素行或者列数
 # Stride表示步长
 R = (H + 2*Padding - K)/Stride + 1
 S = (W + 2*Padding - Q)/Stride + 1`
 
 在硬件实现上，不能做到无限制的并行化，因此Conv的计算通常被展开成7层循环：
 
-`Kernel: KL[M,C,K,Q]
+Kernel: KL[M,C,K,Q]
 Output: OF[N,M,R,S]
 在没有Padding，Stride==1的情况下，以OF的维度Size为目标，则H=R+K-1,W=S+Q-1:
 Input : IF[N,C,R+K-1,S+Q-1] 
@@ -59,7 +59,7 @@ for (n=0; n
 需要注意上面三个点的运算中，weight完全相同，feature存在重叠部分，且没有Padding、Stride时，每一个点的Feature Out计算需要用到维度+2的Input Map。
 计算过程如下：
 
-`# 为了简化理解，不妨设 C = N = M = 1，weight的Size为3x3，也就是 KL[1,1,3,3]，OF[1,1,R,S]
+# 为了简化理解，不妨设 C = N = M = 1，weight的Size为3x3，也就是 KL[1,1,3,3]，OF[1,1,R,S]
 # 计算三个点：
 OF[n,m,r,s]
 # r=0, s=0 

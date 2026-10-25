@@ -32,9 +32,8 @@ source_url: https://zhuanlan.zhihu.com/p/403163009
 - Parallelization
 Parallelization非常好理解，就是利用了cpu的多核特性，进行并行计算。假设我们要优化的算子是一个长度为n的向量加法，它再tvm里可以写成 
 
-`def add(n):
-
-```text
+```python
+def add(n):
     A = te.placeholder((n,), name='a')
     B = te.placeholder((n,), name='b')
     C = te.compute(A.shape, lambda i: A[i] + B[i], name="C") # 也可通过topi调用
@@ -49,9 +48,8 @@ Parallelization非常好理解，就是利用了cpu的多核特性，进行并�
 
 另外，TVM 在运行时将每个工作线程绑定到一个不相交的物理内核，以避免资源争用和线程迁移开销。 在tvm中这种schedule的实现如下：
 
-`  def parallel(n):
-
-```text
+```python
+  def parallel(n):
      s, A, B, C = add(n)
      # add thread-level parallelism
      s[C].parallel(C.op.axis[0])
@@ -69,9 +67,8 @@ Parallelization非常好理解，就是利用了cpu的多核特性，进行并�
 
 tvm实现如下：
 
-`def vectorized(n):
-
-```text
+```python
+def vectorized(n):
     s, A, B, C = add(n)
     outer, inner = s[C].split(C.op.axis[0], factor=8)
     s[C].parallel(outer)
@@ -86,9 +83,8 @@ tvm实现如下：
 
 Reorder这种策略在矩阵乘法中用的比较多，比如在卷积神经网络中的卷积层的应用。它的原理也比较简单，我们以矩阵乘法为例，对于矩阵乘法C=A*B，它的初始实现为
 
-`def matmul(n, m, l):
-
-```text
+```python
+def matmul(n, m, l):
     k = te.reduce_axis((0, l), name='k')
     A = te.placeholder((n, l), name='A')
     B = te.placeholder((l, m), name='B')
@@ -106,9 +102,8 @@ Reorder这种策略在矩阵乘法中用的比较多，比如在卷积神经网�
 
 在tvm中的实现为：
 
-`def reorder(n):
-
-```text
+```python
+def reorder(n):
     s, A, B, C = matmul(n, n, n)
     (x, y), (k,) = C.op.axis, C.op.reduce_axis
     s[C].reorder(x, k, y)
@@ -120,9 +115,8 @@ Reorder这种策略在矩阵乘法中用的比较多，比如在卷积神经网�
 
 接下来我们介绍的策略叫Blocking，也是一种常见的策略，它的目的就是能够把数据放入缓存中计算。我们知道速度越快的存储器一般size也越小，所以当我们的数据在缓存中放不下时，需要采用tiling的方法，也就是分片，把大数据分成小数据逐个计算。这里我们还是以矩阵乘法C=A*B为例，对于C中的一个block，例如 C[x:x+tx, y:y+ty] ，可以通过 A 的相应行和 B 的列计算。 那么C[x:x+tx, y:y+ty] = np.dot(A[x:x+tx,:], B[:,y:y+ty])我们可以进一步将这个矩阵乘法分解成多个小的乘法C[x:x+tx, y:y+ty] = sum(np.dot(A[x:x+tx,k:k+tk], B[k:k+tk,y:y+ty] ) for k in range(0,n,tk))在每个子矩阵计算中，我们需要写一个[tx, ty]形状的矩阵，并得到两个形状为[tx, tk]和[tk, ty]的矩阵。这样的计算可以在单个 CPU core中进行。tvm中代码实现如下：
 
-`def block(n, tx, ty, tk):
-
-```text
+```python
+def block(n, tx, ty, tk):
     s, A, B, C = matmul(n, n, n)
     # Tile by blocks, and then parallelize the computation of each block
     xo, yo, xi, yi = s[C].tile(*C.op.axis, tx, ty) # 得到的分别是外层循环x_outer和内层循环x_inner，以tx为factor切片
@@ -141,9 +135,8 @@ Reorder这种策略在矩阵乘法中用的比较多，比如在卷积神经网�
 
 最后一种我们再介绍一个--write cache，之前我们只考虑了读数据的连续性，但是写数据时的连续写入问题比读取更重要，因为对于矩阵乘法C=A*B，我们对A和B的每个子矩阵都读了一次，而对C的子矩阵需要写n次。因此，我们首先将每个子矩阵计算的结果写入本地缓冲区，然后把它们写回C。在TVM中是通过 cache_write 方法来完成的。代码如下：
 
-`def cached_block(n):
-
-```sql
+```python
+def cached_block(n):
     s, A, B, C = matmul(n, n, n)
     # Create a write cache for C
     CachedC = s.cache_write(C, 'local')

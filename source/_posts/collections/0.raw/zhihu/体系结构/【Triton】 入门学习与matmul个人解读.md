@@ -128,7 +128,7 @@ https://triton-lang.org/main/index.html
 
 通常一个 warp 中有32个 threads，一个warp内的thread 执行相同的 instrution，在 triton.Config 函数中，num_warps的数量表示该 kernel 会在多少 个 warp上并行的 execute 。
 
-`triton.Config 是 Triton中用于配置内核的对象，允许用户设置不同的元参数，定义搜索tune空间，以优化内核性能。
+triton.Config 是 Triton中用于配置内核的对象，允许用户设置不同的元参数，定义搜索tune空间，以优化内核性能。
 
 在 triton 中并不需要对线程块进行编写，只需要指定 num_warps的数量，即warps是并行执行的基本单位，表示该核函数有多少个warp并行的执行。Triton 会自动管理这些线程的调度核执行，确保它们能够有效利用GPU资源。
 
@@ -142,7 +142,7 @@ https://triton-lang.org/main/index.html
 
 在API函数中定义的 grid 通常为：（以 matmul函数为例）
 
-`grid = lambda META: (
+grid = lambda META: (
 
 ```text
         triton.cdiv(M, META['BLOCK_SIZE_M']) * triton.cdiv(N, META['BLOCK_SIZE_N']),
@@ -162,7 +162,7 @@ matmul_kernel[grid](
 ```
 
 
-`grid` 是一个函数，他的输入和 `matmul_kernel` 的输入相同，通过拿到 `matmul_kenel` 的输入 `kwargs` 来计算 `grid` 。这里的 `gird`  可以人做是通过 `M`  与 `N` 即数据块的大小计算出的实际需要分块的数量，即 warps 数量。比如这里将 M* N的数据分为了
+grid` 是一个函数，他的输入和 `matmul_kernel` 的输入相同，通过拿到 `matmul_kenel` 的输入 `kwargs` 来计算 `grid` 。这里的 `gird`  可以人做是通过 `M`  与 `N` 即数据块的大小计算出的实际需要分块的数量，即 warps 数量。比如这里将 M* N的数据分为了
 
 **
 
@@ -180,9 +180,9 @@ matmul_kernel[grid](
 
 #### 关于 num_statges 参数理解
 
-`num_stages` 是 Triton 中用于控制计算流水线并行深度的关键参数。
+num_stages` 是 Triton 中用于控制计算流水线并行深度的关键参数。
 
-`num_stages` 定义了计算内核中异步操作的流水线阶段数量。每个阶段包含一组并行的内存加载（Load）、计算（Compute）和存储（Store）操作。
+num_stages` 定义了计算内核中异步操作的流水线阶段数量。每个阶段包含一组并行的内存加载（Load）、计算（Compute）和存储（Store）操作。
 
 该参数直接对应 NVIDIA GPU 的 Shared Memory Bank 数量<strong>和 AMD GPU 的</strong>Wavefront 调度深度**，控制着计算单元与存储单元的交错执行节奏
 

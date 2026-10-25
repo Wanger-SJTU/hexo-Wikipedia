@@ -57,9 +57,8 @@ Intel intrinsics中与load相关的指令集函数之所以有这么多种，首
 - 最后通过一次_mm_store_ss操作，把结果写回内存。由于寄存器中的四个元素的值都是最终的结果，因此只需要执行一次scalar操作即可。
 此外，我们仍然可以用openmp，在循环的最外层进行并行计算加速，详细代码如下：
 
-`// 导入SSE指令集的头文件
-
 ```cpp
+// 导入SSE指令集的头文件
 #include 
 
 void blur_mat_sse(const vector> &input,

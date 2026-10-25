@@ -66,7 +66,7 @@ Le skill inclut aussi des scripts Node.js purs pour le scaffold, la validation, 
 
 ### Comment ce skill a été construit
 
-`harness-creator` a été développé avec la méthodologie <strong>skill-creator</strong>, le méta-skill officiel d'Anthropic pour créer, tester et itérer sur des skills d'agents. skill-creator fournit un workflow structuré brouillon → test → évaluation → itération, avec runners d'évaluation, graders et visualiseur de benchmark.
+harness-creator` a été développé avec la méthodologie <strong>skill-creator</strong>, le méta-skill officiel d'Anthropic pour créer, tester et itérer sur des skills d'agents. skill-creator fournit un workflow structuré brouillon → test → évaluation → itération, avec runners d'évaluation, graders et visualiseur de benchmark.
 
 - <strong>Source de skill-creator</strong> : [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
 - <strong>Documentation des skills Claude Code</strong> : [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)

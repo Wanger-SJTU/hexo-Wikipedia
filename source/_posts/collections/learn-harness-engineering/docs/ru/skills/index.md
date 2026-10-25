@@ -66,7 +66,7 @@ npx skills add walkinglabs/learn-harness-engineering --skill harness-creator
 
 ### Как был построен этот скил
 
-`harness-creator` был разработан с использованием методологии <strong>skill-creator</strong> — официальной мета-скила Anthropic для создания, тестирования и итерации над скилами агентов. skill-creator предоставляет структурированный воркфлоу (draft → test → evaluate → iterate) со встроенными eval-runner'ами, грейдерами и средством просмотра бенчмарков.
+harness-creator` был разработан с использованием методологии <strong>skill-creator</strong> — официальной мета-скила Anthropic для создания, тестирования и итерации над скилами агентов. skill-creator предоставляет структурированный воркфлоу (draft → test → evaluate → iterate) со встроенными eval-runner'ами, грейдерами и средством просмотра бенчмарков.
 
 - <strong>Исходник skill-creator</strong>: [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
 - <strong>Документация по скилам Claude Code</strong>: [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)

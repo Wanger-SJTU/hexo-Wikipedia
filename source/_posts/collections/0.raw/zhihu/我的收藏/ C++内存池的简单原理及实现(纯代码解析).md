@@ -50,9 +50,8 @@ C++程序默认的内存管理（new，delete，malloc，free）会频繁地在�
 
 memory_pool.hpp
 
-`#ifndef _MEMORY_POOL_H_
-
 ```cpp
+#ifndef _MEMORY_POOL_H_
 #define _MEMORY_POOL_H_
 
 #include 
@@ -182,17 +181,15 @@ private:
 #endif // !_MEMORY_POOL_H_
 ```
 
-`
 
 <strong>运行结果：</strong>
 
-`p1 00000174BEDE0440 1
+p1 00000174BEDE0440 1
 p2 00000174BEDE0450 2
 p3 00000174BEDE0450 3
 p4 00000174BEDE0460 4
 p5 00000174BEDD5310 5
 p6 00000174BEDD5320 6
-`
 
 可以看到内存地址是连续，并且回收一个节点后，依然有序地开辟内存**对象先开辟内存再构造，先析构再释放内存
 

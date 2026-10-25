@@ -60,9 +60,9 @@ $ echo 10 > /proc/sys/vm/nr_hugepages也可以命令行配置
 sudo grubby --update-kernel=ALL --args="hugepagesz=1G default_hugepagesz=1G hugepages=10"
 
 - 编写申请 HugePages 的代码
-`#include  
 
 ```cpp
+#include  
 #include  
 #include  
 #include  
@@ -165,9 +165,8 @@ __split_huge_pmd函数把PMD级别透明大页分裂成普通页,流程如下:
 
 透明大页支持页表拆分，这样可以在必要的时候退回到四级页表。实现如下：
 
-`static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
-
 ```cpp
+static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
 		unsigned long haddr, bool freeze)
 {
 	struct mm_struct *mm = vma->vm_mm;
@@ -268,9 +267,8 @@ __split_huge_pmd函数把PMD级别透明大页分裂成普通页,流程如下:
 
 拆分页表最终的目的也是为了拆分大页，这样在系统内存不够时可以回收大页中没有使用的部分。最终通过split_huge_page_to_list函数实现拆分大页
 
-`int split_huge_page_to_list(struct page *page, struct list_head *list)
-
-```text
+```cpp
+int split_huge_page_to_list(struct page *page, struct list_head *list)
 {
 	struct page *head = compound_head(page);
 	struct pglist_data *pgdata = NODE_DATA(page_to_nid(head));
@@ -341,9 +339,8 @@ out:
 
  当page发生反向映射时page_remove_rmap发现page的mapcount等于-1即已经没有进程对这个page进行映射。就会将此page通过deferred_split_huge_page加入链表中，在下次内存压力紧张时进行shrink拆分回收。
 
-`void page_remove_rmap(struct page *page, bool compound)
-
-```text
+```cpp
+void page_remove_rmap(struct page *page, bool compound)
 {
 	lock_page_memcg(page);
     //如果是文件页，通过文件页的方式反向映射。主要是mapcount的统计差异
@@ -381,9 +378,8 @@ out:
 
 在反向映射时如果page已经没有进程映射了， 就会把page加到deferred_split的链表， 在下次内存紧张shrink时进分裂回收。通过deferred_split_huge_page进行。
 
-`void deferred_split_huge_page(struct page *page)
-
-```text
+```cpp
+void deferred_split_huge_page(struct page *page)
 {
 	struct deferred_split *ds_queue = get_deferred_split_queue(page);
 #ifdef CONFIG_MEMCG
@@ -425,9 +421,8 @@ out:
 
 在内存压力紧张时系统回调各驱动注册的shrink接口，就会调用到deferred_split_scan。这个回调会进程大页分裂和普通页释放。
 
-`static unsigned long deferred_split_scan(struct shrinker *shrink,
-
 ```cpp
+static unsigned long deferred_split_scan(struct shrinker *shrink,
 		struct shrink_control *sc)
 {
 	struct pglist_data *pgdata = NODE_DATA(sc->nid);

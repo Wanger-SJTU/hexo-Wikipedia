@@ -89,11 +89,11 @@ Hook 解决这个问题。
 
 Hook 挂载在 Claude Code 生命周期的特定节点上——工具调用之前（`PreToolUse`）、工具执行之后（`PostToolUse`）、Claude 声明完成时（`Stop`）、context 被压缩后（`PostCompact`）——在这些节点运行你定义的外部逻辑。
 
-`Stop` Hook 的作用是：Claude 说”完成了”时，自动运行测试套件，测试失败就把错误信息反馈给 Claude，要求它继续修复。这不是在”提醒”Claude 跑测试，而是测试失败时系统直接拒绝它声明完成。<strong>失败就是失败，没有语言空间可以绕过。</strong>
+Stop` Hook 的作用是：Claude 说”完成了”时，自动运行测试套件，测试失败就把错误信息反馈给 Claude，要求它继续修复。这不是在”提醒”Claude 跑测试，而是测试失败时系统直接拒绝它声明完成。<strong>失败就是失败，没有语言空间可以绕过。</strong>
 
-`PreToolUse` Hook 的作用是：工具调用之前拦截，检查操作是否合规。`exit 2` 是阻断信号——系统直接拦截，让这个操作在技术层面无法完成。比在 CLAUDE.md 里写”不要 push 到 main”有效一个数量级，因为这是架构层面的阻止，不是语言层面的告诫。
+PreToolUse` Hook 的作用是：工具调用之前拦截，检查操作是否合规。`exit 2` 是阻断信号——系统直接拦截，让这个操作在技术层面无法完成。比在 CLAUDE.md 里写”不要 push 到 main”有效一个数量级，因为这是架构层面的阻止，不是语言层面的告诫。
 
-`PostCompact` Hook 解决另一个隐蔽的问题：Claude Code 在 context 接近上限时会自动压缩对话历史，这个过程会把早期注入的一些约束和背景知识覆盖掉。`PostCompact` Hook 在每次压缩后把关键约束文件重新注入，确保核心规范不会因为 context 压缩而消失。这是 Harness Engineering 里”状态外置”原则的具体实现——重要的状态不能只活在 context window 里，必须有外部持久化，能在任何时候重新注入。
+PostCompact` Hook 解决另一个隐蔽的问题：Claude Code 在 context 接近上限时会自动压缩对话历史，这个过程会把早期注入的一些约束和背景知识覆盖掉。`PostCompact` Hook 在每次压缩后把关键约束文件重新注入，确保核心规范不会因为 context 压缩而消失。这是 Harness Engineering 里”状态外置”原则的具体实现——重要的状态不能只活在 context window 里，必须有外部持久化，能在任何时候重新注入。
 
 Hook 的实现可以是 shell 脚本、HTTP 调用、甚至一个小型 LLM。选择哪种，有一条原则：<strong>越接近安全和强制性约束，越应该用确定性实现；越接近业务语义的判断，才考虑引入 LLM。</strong> 用 LLM 来判断”这条命令是否危险”是常见错误——安全护栏需要 bash 的确定性，不是模型的推理。
 

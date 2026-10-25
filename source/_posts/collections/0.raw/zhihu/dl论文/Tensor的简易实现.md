@@ -89,7 +89,7 @@ int* array1d = reinterpret_cast<int*>(array);
 
 ASSERT(array3d[i][j][k] == array1d[i*12 + j*4 + k])
 
-`Tensor::stride`就是一样的东西，记录了如何把一维的`Tensor::data`解释成多维。
+Tensor::stride`就是一样的东西，记录了如何把一维的`Tensor::data`解释成多维。
 
 data_t& get_value(Tensor& t, const std::vector<int>& inds) {
 

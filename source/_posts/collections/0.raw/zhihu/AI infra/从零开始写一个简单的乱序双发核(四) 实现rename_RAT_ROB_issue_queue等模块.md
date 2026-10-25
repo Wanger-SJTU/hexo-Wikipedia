@@ -174,7 +174,7 @@ age matrix就是一个矩阵，它的核心意思是这样的，如果有一个�
 
 Age matrix的控制模块还有点意思，我们单独包装了一下，如下：
 
- `include "defines.sv"
+ include "defines.sv"
 module age_deq_policy_ooo (
     input wire                           clock,
     input wire                           reset_n,

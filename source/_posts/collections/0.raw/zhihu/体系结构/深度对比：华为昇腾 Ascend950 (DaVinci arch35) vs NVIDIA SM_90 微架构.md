@@ -42,7 +42,7 @@ NVIDIA 和华为昇腾代表了两条截然不同的 AI 加速器设计哲学：
 
 #### NVIDIA H100 (Hopper 架构)
 
-`┌──────────────────────────────────────────────────────────┐
+┌──────────────────────────────────────────────────────────┐
 │                    NVIDIA H100 GPU                       │
 │                                                          │
 │  ┌─────────┐ ┌─────────┐ ┌─────────┐     ┌─────────┐     │
@@ -68,7 +68,7 @@ H100 SXM5: 8 GPC, 共 132 SM (各 GPC 含 16~18 SM 不等)
 
 #### 华为昇腾 Ascend950 (DaVinci arch35)
 
-`┌───────────────────────────────────────────────────────────┐
+┌───────────────────────────────────────────────────────────┐
 │                   Ascend950 NPU (4Die 合封)               │
 │                                                           │
 │  ┌─ 计算 DIE 0 ──────────────────────────────────────┐    │
@@ -133,7 +133,7 @@ UB (Unified Buffer): 248 KB per AI Core
 
 以 H100 Hopper SM_90 为例：
 
-`┌──────────────────────────────────────────────────────────┐
+┌──────────────────────────────────────────────────────────┐
 │                   H100 SM_90 (Hopper)                    │
 │                                                          │
 │  ┌───────────────────────────────────────────────────┐   │
@@ -263,7 +263,7 @@ H100 L2 Cache 特点**：
 - 支持 <strong>L2 Persistent Cache Control</strong>（CUDA 11.0+，compute capability 8.0+），允许开发者<strong>显式配置 L2 Cache 亲和性</strong>
 <strong>NVIDIA L2 Cache 开发者控制 API</strong>：
 
-`// 1. 预留 L2 Cache 空间给持久化数据
+// 1. 预留 L2 Cache 空间给持久化数据
 cudaDeviceProp prop;
 cudaGetDeviceProperties(&prop, device_id);
 size_t persistSize = min(int(prop.l2CacheSize * 0.75), prop.persistingL2CacheMaxSize);
@@ -300,34 +300,30 @@ cudaCtxResetPersistingL2Cache();  // 清除所有持久化缓存行`
 
 开发者可以通过 `GlobalTensor` 提供的 `SetL2CacheHint` 接口，<strong>逐 Tensor 粒度</strong>地控制 L2 Cache 行为，决定哪些数据进入 L2 Cache、哪些绕过（bypass）：
 
-`// 昇腾 Ascend C：显式配置 L2 Cache 亲和性
-
 ```text
+// 昇腾 Ascend C：显式配置 L2 Cache 亲和性
 // 场景：x 需要被 40 个核反复读取，y 和 z 只读写一次
 
 // 设置 GlobalBuffer
-```
-
 xGm.SetGlobalBuffer((__gm__ float *)x + blockIdx * TILE_N);
 yGm.SetGlobalBuffer((__gm__ float *)y + blockIdx * TILE_N);
 zGm.SetGlobalBuffer((__gm__ float *)z + blockIdx * TILE_N);
 
-```text
 // x 保持默认 CACHE_MODE_NORMAL —— 数据经过 L2 Cache（被频繁复用）
 // y 和 z 设置为 CACHE_MODE_DISABLE —— 数据绕过 L2 Cache（只访问一次）
-```
-
 yGm.SetL2CacheHint(AscendC::CacheMode::CACHE_MODE_DISABLE);
 zGm.SetL2CacheHint(AscendC::CacheMode::CACHE_MODE_DISABLE);`
+```
+
 
 <strong>两种 CacheMode 说明</strong>：
 
 CacheMode含义适用场景CACHE_MODE_NORMAL数据经过 L2 Cache（默认）需要被多个核或多次迭代反复读取的热数据CACHE_MODE_DISABLE数据绕过 L2 Cache只访问一次的冷数据，避免其挤占宝贵的 L2 Cache 空间<strong>实战案例——vLLM-Ascend 中的动态 L2 亲和性</strong>：
 
-`// 来自 vLLM-Ascend 项目：Grouped MatMul 算子中的权重矩阵 L2 策略
+```text
+// 来自 vLLM-Ascend 项目：Grouped MatMul 算子中的权重矩阵 L2 策略
 weightGM.SetGlobalBuffer(GetTensorAddr(groupIdx, weightTensorPtr) + offset);
 
-```text
 if (mnConfig.blockDimM == 1) {
     // M 维度只有 1 个分块 → 权重只被读取一次 → 绕过 L2
     weightGM.SetL2CacheHint(CacheMode::CACHE_MODE_DISABLE);
@@ -346,7 +342,7 @@ if (mnConfig.blockDimM == 1) {
 
 Ascend C 核函数启动符 `>` 中包含一个 `l2ctrl` 参数，用于 L2 Cache 控制。但根据 CANN 8.5 官方文档，该参数目前为保留参数，暂时设置为固定值 `nullptr`**：
 
-`// 当前 l2ctrl 为保留参数，传 nullptr
+// 当前 l2ctrl 为保留参数，传 nullptr
 kernel_name>(argument_list);`
 
 这意味着 L2 Cache 的高层控制策略（如全局切分策略）目前主要通过 Tiling 切分 + SetL2CacheHint** 组合实现，而非通过 launch 参数。`l2ctrl` 参数的存在暗示华为未来可能开放更多 L2 Cache 控制能力。
@@ -429,9 +425,8 @@ CUDA APIAscend950 SIMT API说明threadIdx.xSimt::GetThreadIdx()线程索引block
 
 #### 6.1 CUDA 实现
 
-`// ===== CUDA Vector Add =====
-
 ```cpp
+// ===== CUDA Vector Add =====
 // 文件: vector_add.cu
 
 #include 
@@ -470,9 +465,8 @@ __global__ void vectorAdd(const float *x, const float *y,
 
 #### 6.2 Ascend C 实现
 
-`// ===== Ascend C Vector Add =====
-
 ```cpp
+// ===== Ascend C Vector Add =====
 // 文件: vector_add.cpp
 
 #include "kernel_operator.h"
@@ -595,9 +589,8 @@ extern "C" __global__ __aicore__ void vector_add_kernel(
 
 #### 7.1 CUDA 矩阵乘法（使用 Tensor Core）
 
-`// CUDA 矩阵乘法 - Tensor Core 版本 (WMMA API)
-
 ```cpp
+// CUDA 矩阵乘法 - Tensor Core 版本 (WMMA API)
 #include 
 using namespace nvcuda;
 ```
@@ -626,9 +619,8 @@ __global__ void matmul_tensor_core(half *A, half *B, float *C,
 
 #### 7.2 Ascend C 矩阵乘法思路
 
-`// Ascend C 矩阵乘法 - Cube Unit 版本 (概念示意)
-
 ```cpp
+// Ascend C 矩阵乘法 - Cube Unit 版本 (概念示意)
 class MatMulKernel {
 public:
     __aicore__ inline void Process() {
@@ -662,9 +654,9 @@ Ascend950 支持直接操作寄存器的编程模式（Regbase 架构），相�
 - 寄存器内计算**：中间结果无需回写 UB，减少对 Local Buffer 的访问带宽需求
 - <strong>OOO 指令双发</strong>：通过支持乱序执行（Out-of-Order）实现指令双发，提升 Vector 性能
 - <strong>非对齐友好</strong>：便于支持 Local Buffer 非 32B 对齐数据处理
-`// Regbase 编程：直接操作寄存器（仅 arch35）
 
 ```text
+// Regbase 编程：直接操作寄存器（仅 arch35）
 // 相比 Membase 编程方式，处理的数据由 block/repeat 参数
 // 换成 for-loop 形式，代码更容易编写和理解
 
@@ -710,7 +702,7 @@ HiFloat8 不是简单的固定阶码/尾数分配，而是采用<strong>变长�
 <strong>💡 实战意义</strong>：业界普遍认为 E5M2 精度过低（如 DeepSeek V3 训练只用 E4M3），而 E4M3 仅 18 个二进制指数，需要极端细粒度 Scaling 保精度。HiFloat8 的 38 阶码值使其可以用<strong>更粗粒度的 Scaling</strong>达到同等或更好的精度，降低 Scaling 开销。
 #### 8.3 arch35 代码目录结构
 
-`operator/
+operator/
 ├── op_kernel/
 │   ├── *.cpp / *.h          # 通用实现（所有架构）
 │   ├── arch32/              # 910B/310P 系列优化
@@ -730,7 +722,7 @@ HiFloat8 不是简单的固定阶码/尾数分配，而是采用<strong>变长�
 
 #### NVIDIA 优化策略：”隐藏延迟”
 
-`核心思路：用足够多的线程来隐藏访存延迟
+核心思路：用足够多的线程来隐藏访存延迟
 
 优化手段：
 1. 提高 Occupancy（SM_90 利用率）
@@ -753,7 +745,7 @@ HiFloat8 不是简单的固定阶码/尾数分配，而是采用<strong>变长�
 
 #### 昇腾优化策略：”榨干带宽”
 
-`核心思路：让搬运和计算完全重叠，充分利用每个时钟周期
+核心思路：让搬运和计算完全重叠，充分利用每个时钟周期
 
 优化手段：
 1. Double Buffer 流水线

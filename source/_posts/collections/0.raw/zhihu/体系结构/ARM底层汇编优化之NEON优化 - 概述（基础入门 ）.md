@@ -145,9 +145,8 @@ C语言实现版本：**
 
 就是两块内存中的数据求差分值，然后平方和，就是求均方差的函数，在求出差分（写入作为目的寄存器）后马上又要使用差分值平方（平方作为源寄存器）。
 
-`float SumSquareError_C(const float* src_a, const float* src_b, int count)
-
 ```cpp
+float SumSquareError_C(const float* src_a, const float* src_b, int count)
 {
   float sse = 0u;
   int i;
@@ -159,7 +158,6 @@ C语言实现版本：**
 }
 ```
 
-`
 
 **
 
@@ -167,9 +165,8 @@ C语言实现版本：**
 
 这里几乎是常规的写法，你看注释那里，可以看到q0是vsub的目的寄存器，马上又是下面vmla的源寄存器了，所以这里是会打断流水线的（粗略解释见上面*<strong>Hazard</strong>*部分）。
 
-`float SumSquareError_NEON1(const float* src_a, const float* src_b, int count)
-
-```text
+```cpp
+float SumSquareError_NEON1(const float* src_a, const float* src_b, int count)
 {
   float sse;
   asm volatile (
@@ -223,7 +220,6 @@ C语言实现版本：**
 }
 ```
 
-`
 
 **
 
@@ -233,9 +229,8 @@ C语言实现版本：**
 
 **
 
-`float SumSquareError_NEON2(const float* src_a, const float* src_b, int count)
-
-```text
+```cpp
+float SumSquareError_NEON2(const float* src_a, const float* src_b, int count)
 {
   float sse;
   asm volatile (
@@ -286,7 +281,6 @@ C语言实现版本：**
 }
 ```
 
-`
 
 结论:** 
 
@@ -308,9 +302,8 @@ C语言实现版本：**
 
 *C语言版本：***
 
-`if( flag )
-
 ```text
+if( flag )
 {
     dst[x * 4]     = a;
     dst[x * 4 + 1] = a;
@@ -326,15 +319,14 @@ else
 }
 ```
 
-`
 
 **
 
 *NEON版本：***
 
-`//dst[x * 4]       = (a&Eflag) | (b&~Eflag);
-
 ```text
+//dst[x * 4]       = (a&Eflag) | (b&~Eflag);
+
 //dst[x * 4 + 1] = (a&Eflag) | (b&~Eflag);
 
 //dst[x * 4 + 2] = (a&Eflag) | (b&~Eflag);
@@ -344,7 +336,6 @@ else
 
 
 VBSL qFlag, qA, qB
-`
 
 **
 
@@ -356,9 +347,8 @@ VBSL qFlag, qA, qB
 
 *ARM NEON 指令集提供以下指令来帮助用户实现上述的逻辑操作：***
 
-`VCEQ, VCGE, VCGT, VCLE, VCLT……
+VCEQ, VCGE, VCGT, VCLE, VCLT……
 VBIT, VBIF, VBSL……
-`
 
 **
 
@@ -378,7 +368,7 @@ ARM处理器是加载/存储的系统（load/store system）。
 
 但是，预取也不是百试百灵的，在新的处理器里面预取非常难用，而且一个预取的不好就会降低性能的。
 
-`PLD syntax:
+PLD syntax:
 
 ```text
     PLD{cond} [Rn {, #offset}]
@@ -402,7 +392,6 @@ Rm - contains an offset value and must not be PC (or SP, in Thumb state).
 Shift - is an optional shift.
 
 Label - is a PC-relative expression.
-`
 
 *PLD操作的一些特征：***
 
@@ -433,7 +422,7 @@ Label - is a PC-relative expression.
 
 这里在*VMLA*之间只有一个*VEXT*指令，而*VMLA*则需要9个指令周期的延时（*according to the table of NEON floating-point instructions timing*）
 
-`Implementation 1: VMLA
+Implementation 1: VMLA
 
 VEXT qTemp1,qInp,qTemp,#1
 VMLA qAcc0,qInp,dCoeff_0[0]
@@ -442,7 +431,6 @@ VMLA qAcc0,qTemp1,dCoeff_0[1]
 VEXT qTemp3,qInp,qTemp,#3
 VMLA qAcc0,qTemp2,dCoeff_1[0]
 VMLA qAcc0,qTemp3,dCoeff_1[1]
-`
 
 **
 
@@ -450,7 +438,7 @@ Implementation 2: VMUL+VADD**
 
 这里仍然还有*qAcc0*的数据依赖缺（就是说流水线里面的Hazard，见前文的分析），但是 *VADD/VMUL*只需要5个指令周期哈！
 
-`Implementation 2: VMUL+VADD
+Implementation 2: VMUL+VADD
 
 VEXT qTemp1,qInp,qTemp,#1
 VMLA qAcc0,qInp,dCoeff_0[0] ]
@@ -462,7 +450,6 @@ VEXT qTemp3,qInp,qTemp,#3
 VMUL qAcc3,qTemp3,dCoeff_1[1]
 VADD qAcc0, qAcc0, qAcc2
 VADD qAcc0, qAcc0, qAcc3
-`
 
 <strong>小结：</strong>实测第二个版本有更好的性能。
 
@@ -594,7 +581,7 @@ NEON intrinsics 精调的方法更难哟！**：
 
 下面以Ne10工程下的FFT实现为例子：
 
-`// radix 4 butterfly with twiddles
+// radix 4 butterfly with twiddles
 
 scratch[0].r = scratch_in[0].r;
 
@@ -611,7 +598,6 @@ scratch[2].i = scratch_in[2].i * scratch_tw[1].r + scratch_in[2].r * scratch_tw[
 scratch[3].r = scratch_in[3].r * scratch_tw[2].r - scratch_in[3].i * scratch_tw[2].i;
 
 scratch[3].i = scratch_in[3].i * scratch_tw[2].r + scratch_in[3].r * scratch_tw[2].i;
-`
 
 以上的代码片段列出了FFT的基本操作单元-`radix4 butterfly`，从代码里面我们能推出如下信息：
 

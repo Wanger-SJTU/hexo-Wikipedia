@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/2001389056492319761
 
 #### 项目概述
 
-`tiny-gpu` 是一个<strong>面向教学的最小化 GPU 硬件实现</strong>，目标是从“架构 → 控制信号 → 指令执行”把 GPU 的关键原理讲清楚。项目资料明确给出其特点包括：<strong>Verilog 文件</strong>、<strong>完整架构与 ISA 说明</strong>、可运行的<strong>矩阵加法/乘法 kernel</strong>，以及支持<strong>内核仿真与执行 trace</strong>（见 `README.md`）。
+tiny-gpu` 是一个**面向教学的最小化 GPU 硬件实现**，目标是从“架构 → 控制信号 → 指令执行”把 GPU 的关键原理讲清楚。项目资料明确给出其特点包括：**Verilog 文件**、**完整架构与 ISA 说明**、可运行的**矩阵加法/乘法 kernel**，以及支持**内核仿真与执行 trace**（见 `README.md`）。
 
 其使用方式被刻意简化为“单 kernel 模式”：在启动前由外部把 kernel 代码写入<strong>程序内存</strong>、数据写入<strong>数据内存</strong>，再把线程数写入<strong>设备控制寄存器（DCR）</strong>，最后拉高 `start` 触发执行。
 
@@ -33,7 +33,7 @@ source_url: https://zhuanlan.zhihu.com/p/2001389056492319761
 
 下面这段译码器定义展示了指令 opcode（便于对照 ISA 图与测试用例中的二进制程序）：
 
-`localparam NOP = 4'b0000,
+localparam NOP = 4'b0000,
 
 ```text
         BRnzp = 4'b0001,
@@ -51,9 +51,8 @@ source_url: https://zhuanlan.zhihu.com/p/2001389056492319761
 
 执行控制上，Core 被拆成固定阶段：<strong>FETCH → DECODE → REQUEST → WAIT → EXECUTE → UPDATE</strong>。其中最能体现 GPU 难点的是 <strong>WAIT</strong>：`LDR/STR` 通过 LSU 发起异步访问，调度器需要等待所有线程的 LSU 都不再处于请求/等待态，才能进入执行阶段：
 
-`// SCHEDULER
-
 ```sql
+// SCHEDULER
 // > Manages the entire control flow of a single compute core processing 1 block
 // 1. FETCH - Retrieve instruction at current program counter (PC) from program memory
 // 2. DECODE - Decode the instruction into the relevant control signals
@@ -175,7 +174,7 @@ TinyGPU 把每条指令拆成固定阶段（`scheduler.sv`）：
 
 #### 1.1 三类外部接口
 
-`gpu.sv` 的端口可以分成三组（见 `gpu.sv` 端口声明）：
+gpu.sv` 的端口可以分成三组（见 `gpu.sv` 端口声明）：
 
 - <strong>时钟复位</strong>：`clk`, `reset`
 - <strong>启动/结束握手</strong>：`start` 输入、`done` 输出（单 kernel 模式）
@@ -192,7 +191,7 @@ TinyGPU 把每条指令拆成固定阶段（`scheduler.sv`）：
 
 设备控制寄存器 `dcr.sv` 只做一件事：在 `device_control_write_enable` 为 1 时，把 8-bit `device_control_data` 写入寄存器，并输出为 `thread_count`：
 
-`reg [7:0] device_conrol_register;
+reg [7:0] device_conrol_register;
 
 ```text
     assign thread_count = device_conrol_register[7:0];
@@ -205,7 +204,7 @@ TinyGPU 把每条指令拆成固定阶段（`scheduler.sv`）：
 
 ### 2) 外部内存如何被“接入”：`controller.sv` 的通道
 
-`controller.sv` 是 TinyGPU 很“工程”的一块：它把“<strong>很多消费者</strong>”（program 侧是每个 core 的 fetcher；data 侧是每个线程的 LSU）汇聚到“<strong>有限通道</strong>”的外部内存接口。
+controller.sv` 是 TinyGPU 很“工程”的一块：它把“<strong>很多消费者</strong>”（program 侧是每个 core 的 fetcher；data 侧是每个线程的 LSU）汇聚到“<strong>有限通道</strong>”的外部内存接口。
 
 #### 2.1  ready/valid 协议
 
@@ -230,9 +229,9 @@ Dispatcher 的职责就是把总线程数切块，并把 block 分配给空闲 c
 
 #### 3.1 切块规则（决定 block 数量）
 
-`dispatch.sv` 用整除实现向上取整：
+dispatch.sv` 用整除实现向上取整：
 
-`wire [7:0] total_blocks;
+wire [7:0] total_blocks;
 
 ```text
     assign total_blocks = (thread_count + THREADS_PER_BLOCK - 1) / THREADS_PER_BLOCK;`
@@ -258,7 +257,7 @@ Dispatcher 的职责就是把总线程数切块，并把 block 分配给空闲 c
 
 Scheduler 是整个 Core 的“拍点”（每拍推进哪个阶段）。状态定义：
 
-`localparam IDLE = 3'b000,
+localparam IDLE = 3'b000,
 
 ```sql
         FETCH = 3'b001,
@@ -306,16 +305,18 @@ Decoder 用统一字段切分指令：
 
 ALU 在 `decoded_alu_output_mux==1` 时把比较结果编码进 `alu_out[2:0]`（正/零/负），PC 单元在 UPDATE 阶段写入 `nzp` 寄存器：
 
-`if (decoded_alu_output_mux == 1) begin 
+```text
+if (decoded_alu_output_mux == 1) begin 
                     alu_out_reg  0), (rs - rt == 0), (rs - rt 
+```
+
 
 #### 7.2 BRnzp：在 EXECUTE 阶段决定 next_pc
 
 PC 单元在 EXECUTE 阶段，根据 `(nzp & decoded_nzp)` 决定跳转到 `decoded_immediate` 还是 `current_pc+1`：
 
-`if (core_state == 3'b101) begin 
-
 ```text
+if (core_state == 3'b101) begin 
                 if (decoded_pc_mux == 1) begin 
                     if (((nzp & decoded_nzp) != 3'b0)) begin 
                         next_pc 

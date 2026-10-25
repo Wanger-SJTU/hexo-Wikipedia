@@ -68,7 +68,7 @@ KLT算法工作有三个假设前提条件：
 
 ✔️ Opencv中使用`cv2.calcOpticalFlowPyrLK()`函数计算一个稀疏特征集的光流，使用金字塔中的迭代 Lucas-Kanade 方法。
 
-`nextPts,status,err = cv2.calcOpticalFlowPyrLK(prevImg,   #上一帧图片
+nextPts,status,err = cv2.calcOpticalFlowPyrLK(prevImg,   #上一帧图片
                                               nextImg,   #当前帧图片
                                               prevPts,   #上一帧找到的特征点向量 
                                               nextPts    #与返回值中的nextPtrs相同
@@ -108,9 +108,8 @@ KLT算法工作有三个假设前提条件：
 
 <strong>1. 删除静止点的光流分析：</strong>
 
-`import numpy as np
-
 ```python
+import numpy as np
 import cv2 as cv
 import math
 ```
@@ -205,19 +204,18 @@ while True:
 ```text
         p0 = cv.goodFeaturesToTrack(old_gray, mask=None, **feature_params)
         good_ini=p0.copy()
-```
-
 
 cv.destroyAllWindows()
 cap.release()`
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%89%E7%94%A8%E7%9A%84%E6%96%B9%E5%90%91%E6%80%9D%E8%80%83/asset/img_a5fce382d542.jpg)
 
 输出<strong>2. 反向检测的光流分析：</strong>
 
-`import numpy as np
-
 ```python
+import numpy as np
 import cv2 as cv
 import math
 ```
@@ -325,11 +323,11 @@ while True:
             break
     else:
         break
-```
-
 
 cv.destroyAllWindows()
 cap.release()`
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%89%E7%94%A8%E7%9A%84%E6%96%B9%E5%90%91%E6%80%9D%E8%80%83/asset/img_9fb360f7790c.jpg)
 
@@ -351,7 +349,7 @@ cap.release()`
 
 ✔️ 方向与Hue值相关，大小与Value值相关。
 
-`flow=cv.calcOpticalFlowFarneback(
+flow=cv.calcOpticalFlowFarneback(
         prev, 
         next, flow, 
         pyr_scale, levels, winsize, 
@@ -375,8 +373,11 @@ cap.release()`
 
 ### 示例代码
 
-`import cv2 as cv
+```python
+import cv2 as cv
 import numpy as np
+```
+
 cap = cv.VideoCapture("vtest.avi")
 ret, frame1 = cap.read()
 prvs = cv.cvtColor(frame1,cv.COLOR_BGR2GRAY)
@@ -410,10 +411,10 @@ while(1):
         cv.imwrite('opticalfb.png',frame2)
         cv.imwrite('opticalhsv.png',bgr)
     prvs = next
-```
-
 cap.release()
 cv.destroyAllWindows()`
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%89%E7%94%A8%E7%9A%84%E6%96%B9%E5%90%91%E6%80%9D%E8%80%83/asset/img_d8bd6c0f3eae.jpg)
 

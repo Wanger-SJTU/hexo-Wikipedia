@@ -42,8 +42,11 @@ Agent = LLM + 工具调用 + 循环
 
 #### 伪代码
 
-`function agent(userMessage, tools, maxSteps):
+```js
+function agent(userMessage, tools, maxSteps):
     messages = [systemPrompt, userMessage]
+```
+
 
     for step in 1..maxSteps:
         response = LLM(messages, tools)
@@ -79,9 +82,8 @@ Agent = LLM + 工具调用 + 循环
 
 #### 2.1 基础版：单次工具调用
 
-`// src/manual-agent-basic.ts
-
 ```python
+// src/manual-agent-basic.ts
 // 手写 agent 循环 - 理解 SDK 背后在做什么
 
 import "dotenv/config";
@@ -162,7 +164,7 @@ async function callLLM(messages: any[]) {
 
 async function runAgent(userMessage: string, maxSteps = 10) {
 
-```cpp
+```js
   console.log(`\n🧑 用户: ${userMessage}\n`);
 
   // 这就是 agent 的全部状态 —— 一个 messages 数组
@@ -195,7 +197,7 @@ async function runAgent(userMessage: string, maxSteps = 10) {
 
 #### 3.1 System Prompt 的要素
 
-`你是一个 [角色描述]。
+你是一个 [角色描述]。
 
 ## 能力
 你可以使用以下工具：
@@ -218,7 +220,7 @@ async function runAgent(userMessage: string, maxSteps = 10) {
 问题现象解法模型不调工具用户问天气，模型直接编一个回答在 prompt 里强调”必须使用工具获取实时信息，不要猜测”模型乱调工具用户随便聊天，模型也去调工具在 prompt 里说明”只在需要时使用工具”参数错误模型传了错误的参数格式改善工具的 description 和参数 description无限循环模型反复调用同一个工具设置 maxSteps + 在 prompt 里说”不要重复调用相同工具”忽略工具结果工具返回了数据但模型没用在 prompt 里强调”基于工具返回的实际数据回答”
 #### 3.3 高级技巧：思维链 (Chain of Thought)
 
-`## 回答流程
+## 回答流程
 在每次决定是否调用工具前，先用  标签思考：
 1. 用户想知道什么？
 2. 我目前已经知道哪些信息？
@@ -235,7 +237,7 @@ async function runAgent(userMessage: string, maxSteps = 10) {
 
 <strong>差的设计：</strong>
 
-`tool({
+tool({
   description: "数据库操作",  // 太模糊，模型不知道什么时候该用
   inputSchema: z.object({
 
@@ -248,7 +250,7 @@ async function runAgent(userMessage: string, maxSteps = 10) {
 
 <strong>好的设计：</strong>
 
-`tool({
+tool({
   description: "根据用户ID查询用户信息，返回姓名、邮箱、注册时间",
   inputSchema: z.object({
 
@@ -263,7 +265,7 @@ async function runAgent(userMessage: string, maxSteps = 10) {
 
 <strong>原则 1：单一职责</strong>
 
-`❌ processData(action: "create" | "read" | "update" | "delete", ...)
+❌ processData(action: "create" | "read" | "update" | "delete", ...)
 ✅ createUser(name, email)
 ✅ getUser(userId)
 ✅ updateUser(userId, fields)
@@ -276,12 +278,12 @@ async function runAgent(userMessage: string, maxSteps = 10) {
 - 说明返回值包含什么信息
 <strong>原则 3：参数设计要降低模型犯错概率</strong>
 
-`❌ date: z.string()  // 模型可能给出 "明天"、"2024-01-01"、"Jan 1" 等各种格式
+❌ date: z.string()  // 模型可能给出 "明天"、"2024-01-01"、"Jan 1" 等各种格式
 ✅ year: z.number(), month: z.number(), day: z.number()  // 结构化，不容易出错`
 
 <strong>原则 4：返回值要有足够的上下文</strong>
 
-`// 差：模型不知道单位，可能误解
+// 差：模型不知道单位，可能误解
 ❌ return { temp: 5 }
 
 // 好：自包含，模型能正确理解和转述
@@ -300,7 +302,7 @@ async function runAgent(userMessage: string, maxSteps = 10) {
 
 核心思想：让模型交替进行「推理」和「行动」。
 
-`用户：北京和东京哪个更热？
+用户：北京和东京哪个更热？
 
 Thought: 我需要知道两个城市的温度才能比较。先查北京。
 Action: getWeather(city="北京")
@@ -319,7 +321,7 @@ Answer: 东京（8°C）比北京（5°C）更热，温差 3°C。`
 
 与 ReAct 的「走一步看一步」不同，Plan-and-Execute 是「先规划完，再执行」。
 
-`用户：帮我调研 React 和 Vue 的区别，写一份对比报告
+用户：帮我调研 React 和 Vue 的区别，写一份对比报告
 
 Plan:
   1. 搜索 React 的核心特点
@@ -339,7 +341,7 @@ Execute:
 
 让 agent 在失败后反思原因，并改进下一次尝试。
 
-`Attempt 1:
+Attempt 1:
   Action: search("Python 排序") → 结果不相关
   Reflection: 搜索太宽泛，应该具体到算法名称
 
@@ -355,7 +357,7 @@ Attempt 2:
 
 DeepSeek 的 context window 大约 64K-128K tokens。看似很大，但在 agent 场景下：
 
-`System Prompt:        ~500 tokens
+System Prompt:        ~500 tokens
 工具定义 (3 个工具):    ~800 tokens
 用户消息:              ~100 tokens
 每轮工具调用+结果:      ~300-1000 tokens
@@ -366,7 +368,7 @@ DeepSeek 的 context window 大约 64K-128K tokens。看似很大，但在 agent
 
 #### 6.2 解法一：对话压缩
 
-`// 当 messages 太长时，用另一个 LLM 调用来压缩历史
+// 当 messages 太长时，用另一个 LLM 调用来压缩历史
 async function compressHistory(messages: Message[]): Promise {
 
 ```js
@@ -389,7 +391,7 @@ async function compressHistory(messages: Message[]): Promise {
 
 不把所有信息塞进 context，而是用向量数据库存储，需要时检索。
 
-`用户提问 → 向量搜索相关文档 → 把相关片段塞进 context → LLM 生成回答
+用户提问 → 向量搜索相关文档 → 把相关片段塞进 context → LLM 生成回答
 
 ```js
 // 概念示意
@@ -413,7 +415,7 @@ const response = await generateText({
 
 #### 7.1 模式一：顺序链 (Pipeline)
 
-`Planner Agent → Executor Agent → Reviewer Agent
+Planner Agent → Executor Agent → Reviewer Agent
      规划            执行            检验
 
 ```js
@@ -436,17 +438,16 @@ const review = await reviewerAgent.generateText({
 
 一个 “管理者” agent 把子任务分配给专门的 agent。
 
-`Manager Agent
+Manager Agent
         /      |      \
   Search Agent  Code Agent  Test Agent`
 
 实现方式：把「调用其他 agent」作为管理者的工具。
 
-`const managerTools = {
+```js
+const managerTools = {
   delegateToSearchAgent: tool({
     description: "将搜索任务委托给搜索专家",
-
-```js
     inputSchema: z.object({ query: z.string() }),
     execute: async ({ query }) => {
       const result = await searchAgent.generateText({ prompt: query });
@@ -469,7 +470,7 @@ const review = await reviewerAgent.generateText({
 
 多个 agent 从不同角度分析同一个问题，最后综合。
 
-`Agent A (乐观视角) ──┐
+Agent A (乐观视角) ──┐
   Agent B (悲观视角) ──┤→ Synthesizer Agent → 最终结论
   Agent C (技术视角) ──┘`
 
@@ -477,7 +478,7 @@ const review = await reviewerAgent.generateText({
 
 多个 agent 共享一个任务池，自主领取和完成任务。
 
-`Task Pool: [task1, task2, task3, task4, task5]
+Task Pool: [task1, task2, task3, task4, task5]
                     ↑
   Agent A (领 task1) | Agent B (领 task2) | Agent C (领 task3)`
 
@@ -493,7 +494,7 @@ const review = await reviewerAgent.generateText({
 错误类型示例防御措施幻觉编造工具不存在的参数Zod schema 验证输入格式错误工具参数不是合法 JSONtry-catch + 重试选错工具该搜索时去算数改善工具 description忽略错误工具报错但模型当没看见在 prompt 里强调错误处理无限循环反复调同一个工具maxSteps + 重复检测过度调用简单问题也调一堆工具在 prompt 里引导”先思考是否需要”
 #### 8.2 防御性编程
 
-`// 工具执行的 wrapper
+// 工具执行的 wrapper
 async function safeExecute(
   toolName: string,
   args: unknown,
@@ -523,9 +524,8 @@ async function safeExecute(
 
 #### 8.3 输出校验
 
-`// 用 Zod 校验模型的最终输出
-
 ```python
+// 用 Zod 校验模型的最终输出
 import { z } from "zod/v4";
 import { generateObject } from "ai";
 
@@ -563,7 +563,7 @@ Agent 的输出是不确定的。同一个问题跑两次可能得到不同的�
 维度衡量什么评估方法正确性最终答案是否正确人工标注 + 自动对比工具效率是否用最少的步骤完成统计平均步骤数工具准确性是否选了正确的工具与预期工具序列对比鲁棒性工具出错时能否恢复故意注入错误，观察表现延迟端到端耗时计时成本token 消耗量统计 token 用量
 #### 9.2 简单的评估框架
 
-`interface TestCase {
+interface TestCase {
   input: string;
   expectedToolCalls?: string[];    // 期望调用的工具名列表
   expectedOutputContains?: string[]; // 期望输出包含的关键词
@@ -591,7 +591,7 @@ const testCases: TestCase[] = [
 
 async function runEval(testCases: TestCase[]) {
 
-```cpp
+```js
   let passed = 0;
   for (const tc of testCases) {
     const { text, steps } = await runAgent(tc.input);
@@ -616,9 +616,12 @@ async function runEval(testCases: TestCase[]) {
 
 用另一个 LLM 来评判 agent 的输出质量。
 
-`const judgment = await generateText({
+```js
+const judgment = await generateText({
   model: deepseek("deepseek-chat"),
   prompt: `你是一个评判者。请评估以下 AI 助手的回答质量。
+```
+
 
 用户问题：${userQuestion}
 助手回答：${agentAnswer}
@@ -659,7 +662,7 @@ async function runEval(testCases: TestCase[]) {
 - 错误恢复
 <strong>工具示例：</strong>
 
-`readFile(path) → 读文件
+readFile(path) → 读文件
 writeFile(path, content) → 写文件
 runCommand(cmd) → 执行命令（需要确认）
 listFiles(dir) → 列目录`
@@ -705,7 +708,7 @@ listFiles(dir) → 列目录`
 资源说明DeepLearning.AI - AI Agents 系列课程Andrew Ng 的短课程，免费Lilian Weng 的博客OpenAI 研究员，写了很多 agent 综述文章Simon Willison 的博客LLM 实践经验，大量真实案例
 ### 总结
 
-`SDK 调用        → 入门（你已经在这里了）
+SDK 调用        → 入门（你已经在这里了）
 手写 agent 循环  → 理解本质
 工具设计         → 决定 agent 能力上限
 Prompt 工程     → 决定 agent 稳定性

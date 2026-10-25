@@ -25,7 +25,7 @@ Debug模式下没问题而Release模式下有问题，区别就在Release时我�
 
 既然如此，直接关掉lto？ 问题解决。但我不明白，为什么lto会导致这个问题，而且偏偏这个库出了问题？
 
-`$ nm -C ARM64/Release/libboost.context.a
+$ nm -C ARM64/Release/libboost.context.a
 
 nm: stack_traits.cpp.o: file format not recognized
 
@@ -42,7 +42,7 @@ ontop_arm64_aapcs_elf_gas.S.o:
 
 直接`nm -C`来看这个静态库，发现出现一个文件无法识别格式。原本以为是编译的结果损坏了，拿cutter一看，llvm在lto时产生的.o文件是`LLVM-IR-bytecode`。几经搜索，发现用llvm-nm就能看到详情：
 
-`$ llvm-nm -C ARM64/Release/libboost.context.a
+$ llvm-nm -C ARM64/Release/libboost.context.a
 
 stack_traits.cpp.o:
 ---------------- d guard variable for (anonymous namespace)::stacksize_limit()::limit

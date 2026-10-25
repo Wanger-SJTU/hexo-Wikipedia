@@ -27,7 +27,7 @@ source_url: https://zhuanlan.zhihu.com/p/578290634
 
 下面这段代码读取 `payload` 的 结果正确**：
 
-`BufferReader reader(response.buffer().data());
+BufferReader reader(response.buffer().data());
 int32_t payload = 0;
 
 ```text
@@ -36,11 +36,10 @@ if (reader.ReadInt32(&payload)) {
 }
 ```
 
-`
 
 下面这段代码读取 `payload1`/`payload2` 的 <strong>结果错误</strong>：
 
-`BufferReader reader(response.buffer().data());
+BufferReader reader(response.buffer().data());
 int32_t payload1 = 0, payload2 = 0;
 
 ```text
@@ -49,13 +48,11 @@ if (reader.ReadInt32(&payload1) && reader.ReadInt32(&payload2)) {
 }
 ```
 
-`
 
 只有结合 `BufferReader` 和 `Response` 的源码，才能找到错误（[完整代码](https://link.zhihu.com/?target=https%3A//bot-man-jl.github.io/articles/2022/Cpp-Memory-Occasionally-Corruption/string-buffer-crash.cc)）——
 
-`class BufferReader {
-
 ```cpp
+class BufferReader {
  public:
   explicit BufferReader(const char* data)
       : payload_(data + sizeof(uint32_t)),
@@ -99,7 +96,6 @@ class Response {
 };
 ```
 
-`
 
 <strong>看到这里，你找到答案了吗？</strong> 
 
@@ -107,7 +103,7 @@ class Response {
 
 如果往 `Response` 写入从 1 到 4 个 `int32_t` 数值，再用 `BufferReader` 逐个读取并输出（<strong>本文代码均使用 clang 编译、libc++ 的 STL 实现</strong>，[在线运行](https://link.zhihu.com/?target=https%3A//godbolt.org/z/zzjz7YKsW)）：
 
-`41
+41
 41, 42
 0, 28098576, 0
 0, 37052432, 0, 44`
@@ -124,7 +120,7 @@ class Response {
 - 而 `BufferReader::ReadInt32()` 读取了上述 <strong>已释放的内存</strong>，结果可能错误
 类似的写法还有（从调用代码来看，问题更隐晦一些）：
 
-`BufferReader::BufferReader(const std::string& buffer)
+BufferReader::BufferReader(const std::string& buffer)
 
 ```text
     : payload_(buffer.data() + sizeof(uint32_t)),
@@ -133,7 +129,6 @@ class Response {
 
 
 BufferReader reader(response.buffer());
-`
 
 然而，为什么 Payload 在包含 1 或 2 个 `int32_t` 的情况下总是正确的，而只有超过 3 个时才会出现错误呢？
 
@@ -157,12 +152,11 @@ BufferReader reader(response.buffer());
 
 于是，进一步阅读 [libc++ 源码](https://link.zhihu.com/?target=https%3A//github.com/llvm/llvm-project/blob/0fbe860711be2af4dc8454feb64506595e928e7f/libcxx/include/string%23L776)，发现较短的 `std::string` 使用了 Small String Optimization *(SSO)* 优化（数据存储在栈上，无需申请堆上的内存）：
 
-`struct __long {
+```text
+struct __long {
   pointer __data_;
   size_type __size_;
   size_type __cap_;
-
-```text
 };
 
 struct __short {
@@ -180,13 +174,12 @@ struct __rep {
 };
 ```
 
-`
 
 - `std::string` 对象内部使用 `__rep` 存储字符串数据，其中分为 `__long`、`__short` 两种模式，分别用于存储较长、较短的字符串（细节参考 [Stack Overflow](https://link.zhihu.com/?target=https%3A//stackoverflow.com/questions/21694302/what-are-the-mechanics-of-short-string-optimization-in-libc)）
 - 对于较短的字符串，`std::string` 优先采用 `__short` 模式存储；当且仅当 `__short::__data_[]` 没有足够的空间存储字符串时，才会使用 `__long` 模式存储
 为了进一步确认 `std::string` 的存储方式，在之前的代码中打印 `response.buffer().data()` 指针（[在线运行](https://link.zhihu.com/?target=https%3A//godbolt.org/z/3MxffvezG)）：
 
-`0x00007ffcdef27bd0 -- 41
+0x00007ffcdef27bd0 -- 41
 0x00007ffcdef27bd0 -- 41, 42
 0x00000000021c0f20 -- 0, 35315728, 0
 0x00000000021c0f20 -- 0, 35315728, 0, 44`
@@ -207,7 +200,7 @@ struct __rep {
 
 首先，使用 [AddressSanitizer](https://link.zhihu.com/?target=https%3A//github.com/google/sanitizers/wiki/AddressSanitizer) *(ASan)* 重新编译、运行上述代码（[在线运行](https://link.zhihu.com/?target=https%3A//godbolt.org/z/vfnv7vnfK)）：
 
-`==1==ERROR: AddressSanitizer: stack-use-after-scope on address 0x7ffd7bc8d2d4 at pc 0x00000050f408 bp 0x7ffd7bc8d180 sp 0x7ffd7bc8d178
+==1==ERROR: AddressSanitizer: stack-use-after-scope on address 0x7ffd7bc8d2d4 at pc 0x00000050f408 bp 0x7ffd7bc8d180 sp 0x7ffd7bc8d178
 READ of size 4 at 0x7ffd7bc8d2d4 thread T0
 
 ```text
@@ -236,7 +229,7 @@ Address 0x7ffd7bc8d2d4 is located in stack of thread T0 at offset 180 in frame
 - 而 `ref.tmp` 对应的是 `response.buffer()` 返回值拷贝构造的临时变量，此时已离开其作用域
 接着，把 `Foo(3)` 改到最前面调用，再重新使用 Asan 编译、运行上述代码（[在线运行](https://link.zhihu.com/?target=https%3A//godbolt.org/z/zsYjr13nj)）：
 
-`==1==ERROR: AddressSanitizer: heap-use-after-free on address 0x603000000074 at pc 0x00000050f408 bp 0x7ffef71c0360 sp 0x7ffef71c0358
+==1==ERROR: AddressSanitizer: heap-use-after-free on address 0x603000000074 at pc 0x00000050f408 bp 0x7ffef71c0360 sp 0x7ffef71c0358
 READ of size 4 at 0x603000000074 thread T0
 
 ```text

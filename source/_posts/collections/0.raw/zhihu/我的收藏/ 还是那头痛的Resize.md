@@ -80,7 +80,7 @@ A == B and B == C
 
 但是Pillow在双线性插值的时候用了一个高级的 two pass resize于是乎取值的逻辑就变了。从上面的issue中摘抄一个真实数据来看看
 
-`INPUT:
+INPUT:
  [[ 0.  1.  2.  3.  4.  5.  6.  7.  8.  9.]
  [10. 11. 12. 13. 14. 15. 16. 17. 18. 19.]
  [20. 21. 22. 23. 24. 25. 26. 27. 28. 29.]
@@ -108,7 +108,7 @@ Opencv的结果比较好理解，比如第一个点：5.5 = (0 + 1 + 10 +11) / 4
 
 但是Pillow的结果就比较不常见了。直接看官方的解释
 
-`Regarding the first post, Pillow performs two passes over the image - horizontal, and then vertical.
+Regarding the first post, Pillow performs two passes over the image - horizontal, and then vertical.
 
 So why is the first value 7.857143?
 

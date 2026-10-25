@@ -42,7 +42,7 @@ AI框架本质的作用在于把一个把用户的模型表达翻译到可执行
 
 线性IR的一个例子是堆栈机代码（Stack-Machine Code），它是一种单地址代码，假定操作数存在一个栈中。大多数操作从栈获得操作数，并将其结果推入栈中。例如：表达式 b-a*3对应的堆栈机代码如下：
 
-`push 3
+push 3
 push a
 multiply
 push b
@@ -74,12 +74,15 @@ Sea of Nodes IR提供了一种非常重要的思路：将依赖信息显式的�
 
 Continuation-passing style（CPS）直译为：连续传递风格。CPS 表示这样一种形式：一个函数 f 除了它自身的参数外，总是有一个额外的参数continuation。continuation也是一个函数，当f完成了自己的返回值计算之后，不是返回，而是将此返回值作为continuation的参数，调用continuation。所以CPS形式的函数从形式上看它不会return，当它要return 的时候会将所有的参数传递给continuation，让continuation继续去执行。比如：
 
-`def foo(x):
+```python
+def foo(x):
 return x+1`
+```
+
 
 转换为CPS形式，k就是一个continuation：
 
-`def foo(x,k):
+def foo(x,k):
 k(x+1)`
 
 直观上看，函数不“return”，而是“continue”;
@@ -88,9 +91,8 @@ CPS的优点是让如下的信息显式化：过程返回（调用一个continua
 
 比如如下的一段python代码，求小于n的所有素数的积。
 
-`def prodprimes(n):
-
-```text
+```python
+def prodprimes(n):
     if n == 1:
         return 1
     if isprime(n):
@@ -101,9 +103,8 @@ return prodprimes(n - 1)`
 
 当采用CPS形式表示时：
 
-`def prodprimes(n, c):
-
 ```python
+def prodprimes(n, c):
     def k(b):
         if b == True:
             m = n - 1
@@ -127,8 +128,11 @@ return prodprimes(n - 1)`
 
 CPS形式非常适合编译器进行分析和变换，比如tail-recursion elimination变换：如果函数f的最后是调用函数g，那么函数g的continuation就不需要是在f内生成的一个continuation，而可以被替换为传递给f的continuation。上面的例子的原始代码中，“return prodprimes(n - 1)”语句就是一个尾递归。在CPS形式中，可以很清楚的看到h(q）的定义其实就等于c(q)，所以可以说h等于c，于是可以进行如下的变换：
 
-`def h(q):                         i = n - 1
+```python
+def h(q):                         i = n - 1
     c(q)            ->           prodprimes(i, c)
+```
+
 i = n - 1
 prodprimes(i, h)`
 
@@ -142,7 +146,7 @@ ANF形式将表达式划分为两类：原子表达式和复合表达式，原�
 
 它的文法定义如下，参考[5]：
 
-` ::= NUMBER | STRING | VAR | BOOLEAN | PRIMOP
+ ::= NUMBER | STRING | VAR | BOOLEAN | PRIMOP
           |  (lambda (VAR …) )
  ::= (  …)
           |  (if   )
@@ -150,7 +154,7 @@ ANF形式将表达式划分为两类：原子表达式和复合表达式，原�
 
 例如上面的prodprimes函数，如果用上述的文法表示，应该为：
 
-`(define prodprimes
+(define prodprimes
   (lambda (n)
 
 ```text
@@ -169,9 +173,8 @@ ANF形式将表达式划分为两类：原子表达式和复合表达式，原�
 
 应该类似于：
 
-`def prodprimes(n):
-
-```text
+```python
+def prodprimes(n):
     r = n == 1
     if r:
         return 1
@@ -269,9 +272,8 @@ AI的计算涉及大量的Tensor运算，对编译器来说就是Loop优化（�
 
 对于非控制流，计算AD的方法和上述的BB块内计算AD的方法相同。对于控制流，函数式IR采用了不同的处理方式，将迭代转换为递归，并且通过switch函数来进行分支的选择。例如上述相同的pow()函数：
 
-`def pow(x, n):
-
 ```python
+def pow(x, n):
     return header_pow(n, 1, x)
 def header_pow(phi_n, phi_r, x):
     def body_pow():
@@ -295,9 +297,8 @@ pow(5, 3) -> header_pow(3, 1, 5) -> body_pow() -> header_pow(2, 5, 5) -> body_po
 
 # 对x求导数
 
-`def x_grad_pow(x, n):
-
 ```python
+def x_grad_pow(x, n):
     phi_n = n
     phi_r = 1
     return x_bprop_header_pow(phi_n, phi_r, x, 1)
@@ -353,7 +354,7 @@ MindSpore的图层IR叫做MindIR，MindIR选择的技术路线是采用Functiona
 
 MindIR文法继承于ANF，其定义如下所示：
 
-` ::=  | 
+ ::=  | 
  ::= Parameter
  ::= Scalar | Named | Tensor | Type | Shape
                | Primitive | MetaFuncGraph | FuncGraph 
@@ -368,8 +369,11 @@ MindIR中CNode对应于ANF的复合表达式，表示一次函数调用。
 
 下面以一段程序作为示例，对比理解MindIR。
 
-`def func(x, y):
+```python
+def func(x, y):
  return x / y
+```
+
 
 @ms_function
 
@@ -384,9 +388,9 @@ def test_f(x, y):
 
 这段Python代码对应的ANF表达为：
 
-`lambda (x, y)
+lambda (x, y)
 
-```text
+```js
     let a = x - 1 in
     let b = a + y in
     let func = lambda (x, y)
@@ -414,7 +418,7 @@ MindIR较传统计算图的一个重要特性是不仅可以表达算子之间�
 
 在MindIR中，函数的定义是由一个子图来定义，但其本身可以是一个被传递的值，作为其他高阶函数的输入或输出。 例如下面一个简单的示例中，函数f作为参数传入了函数g，因此函数g是一个接收函数输入的高阶函数，函数f真正的调用点是在函数g内部。
 
-`@ms_function
+@ms_function
 
 ```python
 def hof(x):
@@ -441,7 +445,7 @@ def hof(x):
 
 下面以一个简单的斐波那契用例来演示说明。
 
-`@ms_function
+@ms_function
 
 ```python
 def fibonacci(n):
@@ -463,7 +467,7 @@ def fibonacci(n):
 
 一个典型的闭包用例如下：
 
-`@ms_function
+@ms_function
 
 ```python
 def func_outer(a, b):

@@ -43,11 +43,11 @@ The scripts use only Node.js built-in modules. They can be run after copying the
 - `init.sh`
 - `session-handoff.md`
 
-`create-harness.mjs` detects common project types and package managers. It supports Node/npm/pnpm/yarn/bun, Python, Go, Rust, Maven, Gradle, and .NET at a basic verification-command level.
+create-harness.mjs` detects common project types and package managers. It supports Node/npm/pnpm/yarn/bun, Python, Go, Rust, Maven, Gradle, and .NET at a basic verification-command level.
 
 ## What It Checks
 
-`validate-harness.mjs` scores the five harness subsystems:
+validate-harness.mjs` scores the five harness subsystems:
 
 1. Instructions
 2. State

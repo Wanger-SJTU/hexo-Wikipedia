@@ -45,7 +45,7 @@ source_url: https://zhuanlan.zhihu.com/p/384874383
 
 那么数据要等到什么时候呢？答案是当遇到下一个 Store 指令的时候，在其比较标签 Tag 的时候，来自上一个 Store 指令的数据就可以完成第二步：从缓冲区写入缓存。下面的时序图能更直观的展示流水线缓存的工作流程：
 
-`        0   1   2   3   4   5   6   7   8  
+        0   1   2   3   4   5   6   7   8  
 SW1     CHK WC
 SW2         CHK -   -   -   -   WC
 INTR1           F   D   E   M   W

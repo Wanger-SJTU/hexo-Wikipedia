@@ -21,7 +21,7 @@ categories:
 1. انسخ `AGENTS.md` و `ARCHITECTURE.md` إلى جذر المستودع.
 2. انسخ شجرة `docs/` بالكامل.
 3. املأ `docs/PRODUCT_SENSE.md` و `docs/QUALITY_SCORE.md` و
-   `docs/RELIABILITY.md` أولًا.
+   docs/RELIABILITY.md` أولًا.
 4. أضف أول خطة نشطة تحت `docs/exec-plans/active/`.
 5. أبقِ ملفات الدخول قصيرة وجوّه التفاصيل إلى الوثائق المرتبطة.
 

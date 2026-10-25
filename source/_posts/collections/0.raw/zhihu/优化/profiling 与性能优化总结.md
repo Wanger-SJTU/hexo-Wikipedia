@@ -167,7 +167,7 @@ repo: [https://github.com/benfred/py-spy](https://link.zhihu.com/?target=https%3
 
 使用方法:
 
-`# 基本使用方法：
+# 基本使用方法：
 py-spy record --format speedscope -o output.json --native -- python3 xxx.py
   
 # =====
@@ -212,7 +212,7 @@ cProfile 是一个 event based profiler，它的工作原理是追踪 Python 解
 
 cProfile 的输出格式是一个 table，如下：
 
-`    2173 function calls (2145 primitive calls) in 10.230 seconds
+    2173 function calls (2145 primitive calls) in 10.230 seconds
  
 Ordered by: standard name
  
@@ -241,7 +241,7 @@ ncalls  tottime  percall  cumtime  percall filename:lineno(function)
 原始输出不方便分析，我们需要一些第三方工具来处理输出数据和可视化，下面介绍两种方法：
 
 - 转成一个 call graph 的图片
-`# dependency: gprof2dot, graphviz
+# dependency: gprof2dot, graphviz
 # sudo apt install graphviz
 # pip3 install gprof2dot
   
@@ -252,7 +252,7 @@ gprof2dot -f pstats xxx.cprof | dot -Tpng -o xxx.png && feh`
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_4e3a0227346a.jpg)
 
 - 转成flamegraph
-`# dependency: flameprof
+# dependency: flameprof
 # pip3 install flameprof
  
 flameprof xxx.cprof > flamegraph.svg`
@@ -274,7 +274,7 @@ pyinstrument 是一个 sampling based profiler，功能上与 cProfile 类似，
 
 默认输出结果在命令行中，如下:
 
-`  _     ._   __/__   _ _  _  _ _/_   Recorded: 15:50:07  Samples:  8794
+  _     ._   __/__   _ _  _  _ _/_   Recorded: 15:50:07  Samples:  8794
  /_//_/// /_\ / //_// / //_'/ //     Duration: 23.332    CPU time: 31.381
 /   _/                      v3.4.1
  
@@ -315,7 +315,7 @@ perf 的版本需要与 Linux kernel 的版本保持一致，安装命令中的 
 
 使用方法：
 
-`# 直接运行程序并进行采样，如 python3 xxx.py
+# 直接运行程序并进行采样，如 python3 xxx.py
 perf record -F 99 --call-graph dwarf python3 xxx.py
  
 # 或对给定线程 id(TID) 进行采样
@@ -333,7 +333,7 @@ perf record -F 99 --call-graph dwarf --tid
 
 我们更推荐将其转为火焰图:
 
-`# 将 perf.data 转成调用栈
+# 将 perf.data 转成调用栈
 perf script -i perf.data > perf.unfold
  
 # clone FlameGraph
@@ -385,7 +385,7 @@ systemtap 的运行需要 sudo 权限，我们可以运行下面的命令来检�
 
 我们需要用到 openresty-systemtap-toolkit 提供的两个工具：sample_gt 和 sample_bt_off_cpu，这两个工具分别对程序 cpu time 和 off-cpu time 的调用栈进行采样：
 
-`git clone https://github.com/openresty/openresty-systemtap-toolkit.git
+git clone https://github.com/openresty/openresty-systemtap-toolkit.git
 cd openresty-systemtap-toolkit
  
 # 对程序 cpu time 的调用栈进行采样，采样时间为 10s, 采样对象为 user space 调用栈，并将结果保存为 cpu.bt
@@ -402,7 +402,7 @@ sudo ./sample_bt_off_cpu -u -t 10 -p PID > off_cpu.bt
 
 可视化方法与 perf 类似，flamegraph 支持处理 systemtap 的输出结果：
 
-`# 处理 cpu.bt 或 off_cpu.bt
+# 处理 cpu.bt 或 off_cpu.bt
 stackcollapse-stap.pl /cpu.bt > cpu.fold
  
 # 可以直接在 speedscope 里打开 cpu.fold，或者将其转化为 svg:
@@ -413,7 +413,7 @@ flamegraph.pl cpu.fold > cpu.svg`
 
 eu-stack 是 elfutils（https://sourceware.org/elfutils）工具集中的一员，它的基础功能是对一个程序的调用栈进行采样：
 
-`eu-stack -p 
+eu-stack -p 
  
 #===== 可以得到类似下面的输出:
 #0  0x00007f5f96bbadd7 __select
@@ -434,7 +434,7 @@ eu-stack 是 elfutils（https://sourceware.org/elfutils）工具集中的一员�
 与 perf 和 systemtap 不同的地方是，即使程序处于 off-CPU 的状态，eu-stack 依然可以获得它的 C/C++ 调用栈。因此我们可以写一个简单的脚本对一个线程的调用栈不断采样来实现一个 wall clock time 上的 sampling based profiler。**
 一个简单的 profiler 实现：
 
-`#!/bin/bash -xe
+#!/bin/bash -xe
 pid=$1
 for x in $(seq 0 1000)
 do
@@ -446,7 +446,7 @@ eu-stack 执行时不需要 root 权限，运行一次的时间大约几十毫�
 
 使用方法：
 
-`# 1. 安装 elfutils
+# 1. 安装 elfutils
 sudo apt install elfutils
  
 # 2. 运行上面的脚本
@@ -456,7 +456,7 @@ sudo apt install elfutils
 
 flamegraph 里也自带了一个处理 eu-stack 输出结果的工具，可以把采集的样本转为 flamegraph，同样也可以在 speedscope 中进行查看：
 
-`# 假设采样结果放在了里
+# 假设采样结果放在了里
 stackcollapse-elfutils.pl /d*txt > eu_perf.txt
  
 # 可视化：

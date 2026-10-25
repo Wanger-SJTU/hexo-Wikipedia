@@ -166,11 +166,14 @@ void box_filter_3x3(const Mat  in, Mat  blury)
 调度转换
 在调度中可以使用许多优化手段，这些方式可以通过变换调度树来体现。当然在代码中Halide提供了封装好的api，原始代码：
 
+```cpp
 Var x("x"), y("y"); //定义两个变量
 Func gradient("gradient");  //定义一个待执行的function
 gradient(x, y) = x + y;
 // realize 即为实现这个操作 到了这一步才会对上述的操作进行编译并执行
 Buffer int  output = gradient.realize(4, 4);
+```
+
 
 这个代码转换为C++就是：
 
@@ -187,10 +190,10 @@ for (int y = 0; y   4; y++) {
 
 例如对于Fuse：
 
+```cpp
 Var fused;
 gradient.fuse(x, y, fused);
 
-```cpp
 //对应的C++代码
 for (int fused = 0; fused   4*4; fused++) {
     int y = fused / 4;
@@ -204,12 +207,12 @@ for (int fused = 0; fused   4*4; fused++) {
 
 在这一步首先对x轴和y轴进行循环分块，分块因子为4，然后将外侧的y和外侧的x轴循环进行融合(2+2=4)，再将这个融合后的操作进行并行操作。
 
+```cpp
 Var x_outer, y_outer, x_inner, y_inner, tile_index;
 gradient.tile(x, y, x_outer, y_outer, x_inner, y_inner, 4, 4);
 gradient.fuse(x_outer, y_outer, tile_index);
 gradient.parallel(tile_index);
 
-```cpp
 //对应的C++代码
 // This outermost loop should be a parallel for loop, but that's hard in C.
 for (int tile_index = 0; tile_index   4; tile_index++) {
@@ -230,11 +233,11 @@ for (int tile_index = 0; tile_index   4; tile_index++) {
 
 如果用Halide实现一个完整的算子，它就是这样的风格：
 
+```cpp
 Func blur_3x3(Func input) {
   Func blur_x, blur_y;
   Var x, y, xi, yi;
 
-```text
   // The algorithm - no storage or order
   blur_x(x, y) = (input(x-1, y) + input(x, y) + input(x+1, y))/3;
   blur_y(x, y) = (blur_x(x, y-1) + blur_x(x, y) + blur_x(x, y+1))/3;

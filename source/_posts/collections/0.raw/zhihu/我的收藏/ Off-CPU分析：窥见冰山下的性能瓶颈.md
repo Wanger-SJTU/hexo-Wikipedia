@@ -25,13 +25,13 @@ source_url: https://zhuanlan.zhihu.com/p/645283689
 
 - `On-CPU`分析：考虑运行在`CPU`上的进程/线程
 - `Off-CPU`分析：考虑因为`I/O`、锁、计数器、换页等事件阻塞的时间
-`Off-CPU`分析是一种研究`Off-CPU`时间开销、执行上下文等内容的性能分析方法。和`CPU Profiling`不同，`Off-CPU`不关注运行在`CPU`上的进程，它更关注那些被阻塞的进程。如下图所示，很多种原因都会让进程/线程进入到阻塞状态，可能是进程自身的磁盘`I/O`、网络`I/O`等；也可能是因为别的进程导致的上下文切换：总之，这些都会引入延时。
+Off-CPU`分析是一种研究`Off-CPU`时间开销、执行上下文等内容的性能分析方法。和`CPU Profiling`不同，`Off-CPU`不关注运行在`CPU`上的进程，它更关注那些被阻塞的进程。如下图所示，很多种原因都会让进程/线程进入到阻塞状态，可能是进程自身的磁盘`I/O`、网络`I/O`等；也可能是因为别的进程导致的上下文切换：总之，这些都会引入延时。
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d33a3693334d.jpg)
 
 线程状态 https://www.brendangregg.com/offcpuanalysis.html
 
-`Off-CPU`分析是`On-CPU`分析的补充，这样我们就可以理解整个线程执行的时间里都干了些什么。`Off-CPU`分析和追踪技术不一样，因为其主要关内核调度器中阻塞的部分，很容易获得全部的信息。
+Off-CPU`分析是`On-CPU`分析的补充，这样我们就可以理解整个线程执行的时间里都干了些什么。`Off-CPU`分析和追踪技术不一样，因为其主要关内核调度器中阻塞的部分，很容易获得全部的信息。
 
 #### Off-CPU分析方法
 
@@ -67,7 +67,7 @@ Application Tracing
 
 Off-CPU Tracing
 
-`Off-CPU`追踪只追踪切换进程的内核系统函数信息，包括时间戳和用户态调用栈。这样我们就可以聚焦于`Off-CPU`事件，而不需要去追踪全部的应用函数，或者去猜测尝试是哪个应用。
+Off-CPU`追踪只追踪切换进程的内核系统函数信息，包括时间戳和用户态调用栈。这样我们就可以聚焦于`Off-CPU`事件，而不需要去追踪全部的应用函数，或者去猜测尝试是哪个应用。
 
 #### Off-CPU Sampling
 
@@ -75,9 +75,9 @@ Off-CPU Tracing
 
 Off-CPU Sampling
 
-`Off-CPU`采样通过时序采样来捕获被阻塞的线程调用栈信息，也可以通过`wall-time`采样来实现：采样全部时间全部线程的信息，然后再进行过滤。
+Off-CPU`采样通过时序采样来捕获被阻塞的线程调用栈信息，也可以通过`wall-time`采样来实现：采样全部时间全部线程的信息，然后再进行过滤。
 
-`Off-CPU`采样在系统采样器中很少使用。在`On-CPU`采样中，每当`CPU`的计时器产生中断，就会记录当前`CPU`上进程的调用栈信息，从而产生一次记录；然而`Off-CPU`采样需要做与之不同的事情，要么在每个应用中设置计时器唤醒他们并记录堆栈，要么让内核按照一定时间间隔遍历线程并捕获堆栈。
+Off-CPU`采样在系统采样器中很少使用。在`On-CPU`采样中，每当`CPU`的计时器产生中断，就会记录当前`CPU`上进程的调用栈信息，从而产生一次记录；然而`Off-CPU`采样需要做与之不同的事情，要么在每个应用中设置计时器唤醒他们并记录堆栈，要么让内核按照一定时间间隔遍历线程并捕获堆栈。
 
 #### Off-CPU开销
 
@@ -101,11 +101,11 @@ BrendanGregg曾在一个`8CPU`的`Linux 4.15`机器上运行`Mysql`做测试追�
 
 #### Off-CPU时间
 
-`Off-CPU`时间指的是进程/线程被阻塞的时间，我们可以通过`/proc`中的统计信息获取，也可以通过追踪每个阻塞事件来获取。
+Off-CPU`时间指的是进程/线程被阻塞的时间，我们可以通过`/proc`中的统计信息获取，也可以通过追踪每个阻塞事件来获取。
 
 首先我们可以通过已有的工具来获取相关的时间：
 
-`[root@VM-16-2-centos ~]# time ls
+[root@VM-16-2-centos ~]# time ls
 real    0m0.102s
 user    0m0.007s
 sys     0m0.006s`
@@ -114,7 +114,7 @@ sys     0m0.006s`
 
 我们可以用`bcc`工具来追踪某个进程被阻塞的时间：
 
-`[root@VM-16-2-centos ~]# /usr/share/bcc/tools/cpudist -O -p 5312
+[root@VM-16-2-centos ~]# /usr/share/bcc/tools/cpudist -O -p 5312
 Tracing off-CPU time... Hit Ctrl-C to end.
 ^C
      usecs               : count     distribution
@@ -139,23 +139,23 @@ Tracing off-CPU time... Hit Ctrl-C to end.
 
 这里会展示阻塞时间间隔内出现的次数，例如第一行的含义是0-1微秒的阻塞出现了19次。
 
-`cpudist`使用了`kprobe`插桩，插桩了内核函数`finish_task_switch`：
+cpudist`使用了`kprobe`插桩，插桩了内核函数`finish_task_switch`：
 
 `static struct rq *finish_task_switch(struct task_struct *prev)`
 
-`finish_task_switch`会被即将运行的进程调用。`eBPF`可以对这个函数插桩，并通过`bpf_get_current_pid_tgid`和`bpf_ktime_get_ns`来得到当前的`PID`和时间戳。基于这些信息就可以统计出如上的分布图。
+finish_task_switch`会被即将运行的进程调用。`eBPF`可以对这个函数插桩，并通过`bpf_get_current_pid_tgid`和`bpf_ktime_get_ns`来得到当前的`PID`和时间戳。基于这些信息就可以统计出如上的分布图。
 
 以直方图的形式了解`Off-CPU`的时间对于我们排查问题有一点作用，但并不太大。因为我们只能知道多少时间被阻塞了，而不能知道为什么被阻塞，所以我们需要用到`Off-CPU`分析。
 
 #### Off-CPU分析
 
-`Off-CPU`分析是基于调用栈分析`Off-CPU`时间的方法，可以帮助我们了解进程/线程为什么被阻塞。我们可以基于如下的准则实现`Off-CPU`追踪分析：
+Off-CPU`分析是基于调用栈分析`Off-CPU`时间的方法，可以帮助我们了解进程/线程为什么被阻塞。我们可以基于如下的准则实现`Off-CPU`追踪分析：
 
 >  Off-CPU时应用程序的调用栈不会改变。
 
 这意味着我们只需要获取一次程序的调用栈即可，这要么在进程进入`CPU`执行时进行，要么在进程切换出`CPU`时进行。一般在进程离开`CPU`时进行比较简单，因为我们可以记录时间间隔。下面就是基于调用栈计算`Off-CPU`时间的方法：
 
-`on context switch finish: # 上下文切换结束的时候
+on context switch finish: # 上下文切换结束的时候
 
 ```text
     sleeptime[prev_thread_id] = timestamp  # 记录上一个进程A的sleep时间是当前时间
@@ -182,7 +182,7 @@ Off-CPU时间计算
 
 我们可以通过`bcc`工具包中的`offcputime`工具来做这样的追踪：
 
-`[root@VM-16-2-centos ~]# /usr/share/bcc/tools/offcputime -K -p 996942
+[root@VM-16-2-centos ~]# /usr/share/bcc/tools/offcputime -K -p 996942
 Tracing off-CPU time (us) of PID 996942 by kernel stack... Hit Ctrl-C to end.
 ^C
     finish_task_switch
@@ -205,7 +205,7 @@ Tracing off-CPU time (us) of PID 996942 by kernel stack... Hit Ctrl-C to end.
 
 这里我们通过`-K`来追踪了内核栈，我们也可以追踪用户栈：
 
-`[root@VM-16-2-centos ~]# /usr/share/bcc/tools/offcputime -U -p 996942
+[root@VM-16-2-centos ~]# /usr/share/bcc/tools/offcputime -U -p 996942
 Tracing off-CPU time (us) of PID 996942 by user stack... Hit Ctrl-C to end.
 ^C
 
@@ -241,7 +241,7 @@ Tracing off-CPU time (us) of PID 996942 by user stack... Hit Ctrl-C to end.
 
 类似我们平常说的火焰图，`Off-CPU`分析也可以生成火焰图，生成步骤如下所示：
 
-`/usr/share/bcc/tools/offcputime -df -p `pgrep -nx mysqld` 30 > out.stacks
+/usr/share/bcc/tools/offcputime -df -p `pgrep -nx mysqld` 30 > out.stacks
 git clone https://github.com/brendangregg/FlameGraph
 ./FlameGraph/flamegraph.pl --color=io --title="Off-CPU Time Flame Graph" --countname=us  out.svg`
 

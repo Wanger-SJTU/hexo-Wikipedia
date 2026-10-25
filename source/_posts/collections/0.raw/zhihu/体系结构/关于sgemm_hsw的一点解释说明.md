@@ -63,9 +63,8 @@ source_url: https://zhuanlan.zhihu.com/p/426127316
 
 可以看到程序里面对于矩阵B的三个向量的读取，分别用了三个寄存器（ymm12，ymm13和ymm14），但对于矩阵A的四个标量的读取，只用一个ymm15寄存器，这样不会有问题吗？我们拿出程序的一段结构观察：
 
-`    vmovaps  0(%rbx), %ymm12
-
 ```text
+    vmovaps  0(%rbx), %ymm12
     vmovaps 32(%rbx), %ymm13
     vmovaps 64(%rbx), %ymm14
     vbroadcastss 0(%r12, %rax, 4), %ymm15

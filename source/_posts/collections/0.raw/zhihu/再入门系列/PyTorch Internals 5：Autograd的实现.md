@@ -25,7 +25,7 @@ source_url: https://zhuanlan.zhihu.com/p/109338369
 
 从下往上即为前向传播的过程，如果想要计算L相对于x1和x2的梯度则可以从上往下进行求导，上述过程用PyTorch实现为：
 
-`import torch
+import torch
 
 x1 = torch.rand((2,2), requires_grad=True)
 x2 = torch.rand((2,2), requires_grad=True)
@@ -33,8 +33,12 @@ x2 = torch.rand((2,2), requires_grad=True)
 y=torch.mm(x1,x2)
 z=torch.sin(y+x2)
 L=z.mean()
+
+```python
 L.backward()
 print(x1.grad, x2.grad)`
+```
+
 
 下面我们将结合代码具体来分析`L.backward()`的实现。
 
@@ -42,9 +46,9 @@ print(x1.grad, x2.grad)`
 
 为了理解计算图的组成方式，首先需要介绍几个与之相关的数据结构：Variable、Node。Variable是承载数据的载体，在计算图中可以用来表示叶子结点，也可以用来表示计算时产生的中间变量。在早期的版本中，存储的数据分为tensor和variable两种数据结构，其中后者包含了与autograd的实现相关的属性。虽然目前在前端使用时tensor和variable已经合并了，但在后端的实现中两者还是有所差别，从代码中可以看到，variable继承自at::Tensor，同时对at::Tensor中与梯度计算相关的方法进行了重载。在at::Tensor中使用`std::unique_ptr autograd_meta_ = nullptr;`来作为与autograd相关的字段，而在variable中使用的是AutogradMeta类型，AutogradMeta是对接口c10::AutogradMetaInterface的实现，
 
-`// pytorch/torch/csrc/autograd/variable.h
-
 ```cpp
+// pytorch/torch/csrc/autograd/variable.h
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //                            Variable::AutogradMeta
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -93,11 +97,10 @@ struct TORCH_API Variable::AutogradMeta : public c10::AutogradMetaInterface {
 };
 ```
 
-`
 
 可以看到，AutogradMeta不仅存储了该节点的梯度值，还保存了数据通过该节点时梯度的计算function。当我们使用PyTorch构建神经网络时，直接定义的是其前向计算图，而反向计算图则是PyTorch在进行前向操作时帮我们偷偷构建的，以sin算子为例，当我们在python中使用`y=torch.sin(x)`时，实际执行的代码为
 
-`// pytorch/torch/csrc/autograd/generated/VariableType_0.cpp
+// pytorch/torch/csrc/autograd/generated/VariableType_0.cpp
 
 Tensor sin(const Tensor & self) {
   RECORD_FUNCTION("sin", std::vectorc10::IValue>({self}), Node::peek_at_next_sequence_nr());
@@ -180,15 +183,14 @@ inline void set_history(
   }
 ```
 
-`
 
 从上述代码可以看到，计算图中每个variable都拥有属于自己的grad_fn。而对于网络中预先定义的可学习参数（叶子结点），grad_fn_为空，使用grad_accumulator_作为其梯度处理的函数，负责将传入的梯度累加存储到其grad_变量中。
 
 接下去我们再进一步看看grad_fn，对于上面的sin算子，它的grad_fn为SinBackward，继承自TraceableFunction，而TraceableFunction继承自Node，在早期的版本中，Node类的名字是Function，可能是为了更好的与计算图中的节点概念相对应所以后面的版本将其重新命名为Node。下面我们来看看Node的定义：
 
-`// pytorch/torch/csrc/autograd/function.h
-
 ```cpp
+// pytorch/torch/csrc/autograd/function.h
+
 struct TORCH_API Node : std::enable_shared_from_thisNode> {
  public:
   /// Construct a new `Node` with the given `next_edges`. `sequence_nr` is
@@ -494,11 +496,10 @@ struct TORCH_API Node : std::enable_shared_from_thisNode> {
 };
 ```
 
-`
 
 上述代码中有两点比较值得关注，第一个是所有继承它的方法都需要对apply进行实现，apply代表的是该算子梯度的计算方法，另一个则是next_edges_变量，next_edges_的类型为edge_list，它代表了一系列在前向过程中与该算子相关联的边。首先我们来看前者，对于SinBackward而言，其apply方法为：
 
-`// pytorch/torch/csrc/autograd/generated/Functions.cpp
+// pytorch/torch/csrc/autograd/generated/Functions.cpp
 
 variable_list SinBackward::apply(variable_list&& grads) {
 
@@ -517,13 +518,12 @@ variable_list SinBackward::apply(variable_list&& grads) {
 }
 ```
 
-`
 
 sin的导数为cos，与我们的常识是相符的。接下去我们再来看看next_edges_，它的类型edge_list其实是std::vector的别名，代表一系列的Edge。Edge的定义则相对要简单不少：
 
-`// pytorch/torch/csrc/autograd/edge.h
-
 ```text
+// pytorch/torch/csrc/autograd/edge.h
+
 struct Edge {
   Edge() noexcept : function(nullptr), input_nr(0) {}
 ```
@@ -556,13 +556,12 @@ struct Edge {
 };
 ```
 
-`
 
 ### Engine
 
 目前我们已经介绍了Variable，AutogradMeta，Node，Edge几种建立计算图需要用到的数据结构。本节将正式介绍PyTorch的自动微分引擎是如何进行工作的。当我们在python中通过`L.backward()`进行反向传播时，在python中最后调用的方式是pytorch/torch/autograd/<strong>init</strong>.py中的`Variable._execution_engine.run_backward(tensors, grad_tensors, retain_graph, create_graph, allow_unreachable=True)`。`Variable._execution_engine.run_backward`在后端c++中对应的代码为pytorch/torch/csrc/autograd/python_engine.cpp中的THPEngine_run_backward。THPEngine_run_backward方法的代码比较长，为此我们将按照其功能分成几部分来讲解。首先代码的第一部分对输入的参数进行解析，初始化相关的变量：
 
-`HANDLE_TH_ERRORS
+HANDLE_TH_ERRORS
   _maybe_reinitialize_engine_after_fork();
   PyObject *tensors = nullptr;
   PyObject *grad_tensors = nullptr;
@@ -590,11 +589,10 @@ struct Edge {
       "expected to be a tuple, but got %s", THPUtils_typename(grad_tensors));
 ```
 
-`
 
 第二部分为新建`edge_list roots`和`variable_list grads`，其实就是把网络最终输出节点的信息放入roots和grads作为后续反向求导的开始：
 
-`Py_ssize_t num_tensors = PyTuple_GET_SIZE(tensors);
+Py_ssize_t num_tensors = PyTuple_GET_SIZE(tensors);
   Py_ssize_t num_gradients = PyTuple_GET_SIZE(grad_tensors);
   THPUtils_assert(num_tensors == num_gradients, "got %ld tensors and %ld "
 
@@ -604,11 +602,11 @@ struct Edge {
 
 
   edge_list roots;
+
+```cpp
   roots.reserve(num_tensors);
   variable_list grads;
   grads.reserve(num_tensors);
-
-```cpp
   for (int i = 0; i  num_tensors; i++) {
     PyObject *_tensor = PyTuple_GET_ITEM(tensors, i);
     THPUtils_assert(THPVariable_Check(_tensor), "element %d of tensors "
@@ -641,13 +639,11 @@ struct Edge {
   }
 ```
 
-`
 
 接下去一部分代码用来初始化output_edges，output_edges的类型为std::vector，表示一系列与该节点相连的输出边：
 
-`std::vectorEdge> output_edges;
-
 ```cpp
+std::vectorEdge> output_edges;
   if (inputs != nullptr) {
     int num_inputs = PyTuple_GET_SIZE(inputs);
     output_edges.reserve(num_inputs);
@@ -672,25 +668,22 @@ struct Edge {
   }
 ```
 
-`
 
 在这个例子中，inputs为空，所以直接跳过了这部分代码。 接下去便是最重要的部分，即执行自动微分引擎进行计算。
 
-`{
-
 ```text
+{
     AutoNoGIL no_gil;
     outputs = engine.execute(roots, grads, keep_graph, create_graph, output_edges);
   }
 ```
 
-`
 
 下面我们来重点看看`engine.execute`。首先engine的类型为`torch::autograd::python::PythonEngine`，继承自`Engine`类。Engine类的定义为:
 
-`// pytorch/torch/csrc/autograd/engine.h
-
 ```cpp
+// pytorch/torch/csrc/autograd/engine.h
+
 struct TORCH_API Engine {
   using ready_queue_type = std::dequestd::pairstd::shared_ptrNode>, InputBuffer>>;
   using dependencies_type = std::unordered_mapNode*, int>;
@@ -722,11 +715,10 @@ protected:
 };
 ```
 
-`
 
 我们首先来看`execute`函数，它是整个Engine类的核心，接收的参数有需要进行反向传播的根节点(roots)，根节点的梯度(inputs)，计算图是否需要保留的标志（keep_graph），是否构建微分图以用来进行高阶求导（create_graph）以及需要输出梯度的节点(outputs)。
 
-`// pytorch/torch/csrc/autograd/python_engine.cpp
+// pytorch/torch/csrc/autograd/python_engine.cpp
 variable_list PythonEngine::execute(
 
 ```text
@@ -846,7 +838,6 @@ auto Engine::execute(const edge_list& roots,
 }
 ```
 
-`
 
 上面的函数比较长，我们将按照功能进行拆解讲解。
 
@@ -854,7 +845,7 @@ auto Engine::execute(const edge_list& roots,
 
 顾名思义，`start_threads`方法用来启动新的线程，启动的线程数与设备数有关，而使用`std::call_once(start_threads_flag_, &Engine::start_threads, this);`的方式进行调用则保证了在进程的整个生命周期该初始化函数只能被调用一次。
 
-`// pytorch/torch/csrc/autograd/engine.cpp
+// pytorch/torch/csrc/autograd/engine.cpp
 
 auto Engine::start_threads() -> void {
 
@@ -887,13 +878,12 @@ auto Engine::start_threads() -> void {
 }
 ```
 
-`
 
 上述代码首先确定了需要新建的线程数num_threads，num_threads为设备数+1，假如设备上有8张显卡，则num_threads=9。第二步是为每个线程创建一个ReadyQueue实例，通过的ReadyQueue的vector ready_queues_来进行管理。ReadyQueue的结构如下，它使用了一个优先队列来管理NodeTask，
 
-`// pytorch/torch/csrc/autograd/engine.cpp
-
 ```cpp
+// pytorch/torch/csrc/autograd/engine.cpp
+
 struct ReadyQueue {
   std::priority_queueNodeTask, std::vectorNodeTask>, CompareNodeTaskTime> heap_;
   // To notify threads waiting on the ReadyQueue of available tasks on the heap_
@@ -936,7 +926,6 @@ auto ReadyQueue::pop() -> NodeTask {
 }
 ```
 
-`
 
 最后一部分代码在for循环中通过`std::thread`构造了num_threads个线程并通过`t.detach()`使它们刻意独立运行。此外，我们注意到在创建新线程时传入了this指针，this指针指代的就是当前的engine实例，由于所有的线程都共享同一个engine实例，这样就可以实现线程间的数据传递。
 
@@ -944,9 +933,12 @@ auto ReadyQueue::pop() -> NodeTask {
 
 compute_dependencies的作用是对微分图中每个node的依赖进行计算，通过给定根节点后利用bfs的方式进行。
 
-`// pytorch/torch/csrc/autograd/engine.cpp
+```text
+// pytorch/torch/csrc/autograd/engine.cpp
 
 /* Computes the number of dependencies for each function which requires grad */
+```
+
 auto Engine::compute_dependencies(Node* root, GraphTask& task) -> void {
 
 ```cpp
@@ -971,13 +963,12 @@ auto Engine::compute_dependencies(Node* root, GraphTask& task) -> void {
 }
 ```
 
-`
 
 依赖关系保存在dependencies中，dependencies是GraphTask中的一个成员变量，类型为std::unordered_map。执行完上述函数后，dependencies中key的数量和计算图中Node的数量是一样的，而每个key对应的value可以看做前向计算图中该Node的出度。
 
-`// pytorch/torch/csrc/autograd/engine.cpp
-
 ```cpp
+// pytorch/torch/csrc/autograd/engine.cpp
+
 // GraphTask holds metadata needed for a single execution of backward()
 struct GraphTask {
   std::exception_ptr exception_;
@@ -999,15 +990,14 @@ struct GraphTask {
   std::unordered_mapNode*, int> dependencies_;
 ```
 
-`
 
 #### 3. NodeTask
 
 接下去通过`ready_queue(at::kCPU).push(NodeTask(&graph_task, std::move(graph_root), InputBuffer(0)));`将向ready_queues_中加入NodeTask实例，这个类正是我们在queue中传输的对象。加入的NodeTask实例由graph_task、graph_root和0构建。
 
-`// pytorch/torch/csrc/autograd/engine.cpp
-
 ```cpp
+// pytorch/torch/csrc/autograd/engine.cpp
+
 struct NodeTask {
   GraphTask* base_;
   std::shared_ptrNode> fn_;
@@ -1033,11 +1023,10 @@ struct NodeTask {
 };
 ```
 
-`
 
 #### 4. Engine::thread_main
 
-`// pytorch/torch/csrc/autograd/engine.cpp
+// pytorch/torch/csrc/autograd/engine.cpp
 
 auto Engine::thread_main(GraphTask *graph_task) -> void {
   auto queue = ready_queues_[worker_device + 1];
@@ -1103,7 +1092,6 @@ auto Engine::thread_main(GraphTask *graph_task) -> void {
 }
 ```
 
-`
 
 上述代码为线程的主函数，在while循环中不断从属于当前线程的queue中取出task并通过`evaluate_function(task)`执行该task，执行完task后：
 
@@ -1112,7 +1100,7 @@ auto Engine::thread_main(GraphTask *graph_task) -> void {
 - 如果当前task来自其他工作线程则outstanding_tasks_自减1，当outstanding_tasks_=0时，则向那个线程添加一个dummy function task以防止进入sleeping
 下面来看`evaluate_function`函数，该函数接收NodeTask类型的输入，NodeTask中保存了该Node的导数计算函数fn_以及链式求导中到当前Node前的梯度。
 
-`// pytorch/torch/csrc/autograd/engine.cpp
+// pytorch/torch/csrc/autograd/engine.cpp
 
 auto Engine::evaluate_function(NodeTask& task) -> void {
 
@@ -1291,7 +1279,6 @@ static variable_list call_function(NodeTask& task) {
 }
 ```
 
-`
 
 在`evaluate_function`中调用了`call_function(task)`，`call_function`返回的是该节点对应的导数，类型为std::vector。完成当前Node的导数计算后，`evaluate_function`的后半部分代码为对该节点在前向计算图中的入边连接的节点进行枚举，如果该前置节点计算梯度所依赖的其他节点梯度都已经完成计算（通过`--it->second == 0`进行判断，it指向dependencies中该节点对应的项，即`it = dependencies.find(next.function.get())`），则将is_ready置为true，后续的操作为计算next节点（前向计算图中与当前节点相连的前置节点）的前置梯度并在完成计算后将前置节点放入ready_queue中，具体的操作可以看上述代码中的注释。
 

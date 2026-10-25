@@ -23,6 +23,6 @@ categories:
 ## Strenge Regeln
 
 - Ändere nicht die Electron main/preload/renderer-Grenzen ohne
-  `docs/ARCHITECTURE.md` gelesen zu haben
+  docs/ARCHITECTURE.md` gelesen zu haben
 - Markiere kein Feature als abgeschlossen ohne Verifikation
 - Hinterlasse einen sauberen Zustand (clean state) für die nächste Session

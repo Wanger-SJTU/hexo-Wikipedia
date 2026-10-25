@@ -55,7 +55,7 @@ source_url: https://zhuanlan.zhihu.com/p/656990524
 下面捡重要的说一下：
 
 - 首先这里用 LangSmith 作为实验结果的分析平台，所以先去 http://smith.langchain.com 申请好 proj，生成好 key：
-`import os
+import os
 os.environ['OPENAI_API_KEY'] = "your-openai-key"
 os.environ['LANGCHAIN_TRACING_V2']='true'
 os.environ['LANGCHAIN_ENDPOINT']='https://api.smith.langchain.com'
@@ -63,9 +63,9 @@ os.environ['LANGCHAIN_API_KEY'] = 'your-langsmith-key'
 os.environ['LANGCHAIN_PROJECT']='ragas-demo'`
 
 - 测试语料用 wikipedia 的，首先用 LangChain 的 wikipedia loader  载入内容，指定查询「Ney York City」相关的内容：
-`from langchain.document_loaders import WikipediaLoader
 
 ```python
+from langchain.document_loaders import WikipediaLoader
 from langchain.indexes import VectorstoreIndexCreator
 from langchain.chains import RetrievalQA
 from langchain.chat_models import ChatOpenAI
@@ -76,7 +76,7 @@ loader = WikipediaLoader('New York City')
 docs = loader.load()`
 
 - 默认是用  Chroma  来保存向量，OpenAI  的  emb api  生成  embedding，组合成一个  qa chain：
-`index = VectorstoreIndexCreator().from_loaders([loader])
+index = VectorstoreIndexCreator().from_loaders([loader])
 
 # temperature 设成 0，尽量让 llm 不要乱讲话
 llm = ChatOpenAI(temperature=0)
@@ -91,7 +91,7 @@ qa_chain = RetrievalQA.from_chain_type(
 )`
 
 - 稍微测试一下检索效果：
-`question = "How did New York City get its name?"
+question = "How did New York City get its name?"
 result = qa_chain({"query": question})
 result["result"]`
 
@@ -102,7 +102,7 @@ result["result"]`
 图一：qa retrieval  结果 测试
 
 - 接下来生成测试对照用的「标准答案」：
-`eval_questions = [
+eval_questions = [
     "What is the population of New York City as of 2020?",
     "Which borough of New York City has the highest population?",
     "What is the economic significance of New York City?",
@@ -136,9 +136,9 @@ result["result"]
 # 很满意！`
 
 - 正主终于要上场！从  ragas  引入 RagasEvaluatorChain(参考源码：[https://github.com/explodinggradients/ragas/blob/main/src/ragas/langchain/evalchain.py#L20](https://link.zhihu.com/?target=https%3A//github.com/explodinggradients/ragas/blob/main/src/ragas/langchain/evalchain.py%23L20))，
-`from ragas.langchain.evalchain import RagasEvaluatorChain
 
 ```python
+from ragas.langchain.evalchain import RagasEvaluatorChain
 from ragas.metrics import (
     faithfulness,
     answer_relevancy,
@@ -162,7 +162,7 @@ context_recall_chain = RagasEvaluatorChain(metric=context_recall)`
 - 上下文相关性之召回率
 仔细看下各个结果：
 
-`# 事实准确度
+# 事实准确度
 eval_result = faithfulness_chain(result)
 eval_result["faithfulness_score"]
 # >>1.0
@@ -188,7 +188,7 @@ r`
 ragas 的评测需要先创建一个可信的、基准的数据集，langsmith  给提供了一个可以存放这些数据集，并保留每次评测结果、中间结果、报表的服务（这个思路说来话长，可以翻一下之前的文章专门整理过关于 mlflow、wandb、comet、neptune...），一步步来：
 
 - 首先创建并上传  dataset：
-`# dataset creation
+# dataset creation
 
 ```python
 from langsmith import Client

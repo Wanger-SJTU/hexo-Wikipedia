@@ -46,9 +46,8 @@ SSD 的核心洞察很简单：
 
 用 Python 伪代码来理解 speculator 的核心逻辑：
 
-`class Speculator:
-
 ```python
+class Speculator:
     def run(self, prompt, primary_draft, backup_draft):
         spec_tokens = primary_draft.speculate(prompt)
 ```
@@ -144,7 +143,7 @@ Cache miss 不可避免。此时需要 <strong>backup speculator</strong> 来生
 
 Theorem 17 (p.24)** 给出了选择准则：
 
-`# 简化的选择逻辑
+# 简化的选择逻辑
 if batch_size * draft_model_size 
 
 *[解读者注]* 这个 tradeoff 在工程实践中非常实用。在线服务场景（大 batch）倾向 fast backup；离线推理场景（小 batch, 追求单请求延迟）倾向 neural backup。

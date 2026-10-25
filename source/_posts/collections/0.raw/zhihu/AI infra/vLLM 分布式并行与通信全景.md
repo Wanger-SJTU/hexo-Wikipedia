@@ -26,7 +26,7 @@ vLLM变化实在太快，本文的版本基线是 <strong>vLLM v0.26.0</strong>�
 - <strong>跨实例状态传输</strong>：P/D 分离、KV offload/persistence 使用的 KV Connector；
 - <strong>控制面通信</strong>：调度 RPC、元数据广播、DP 对齐、barrier、握手和完成通知。
 0. 先区分通信类型、逻辑阶段与实际 primitive
-`--enable-expert-parallel` 决定 MoE expert 权重采用 TP shard 还是 EP placement，但它不直接决定底层一定执行物理 AllToAll。
+--enable-expert-parallel` 决定 MoE expert 权重采用 TP shard 还是 EP placement，但它不直接决定底层一定执行物理 AllToAll。
 
 本文使用以下记号：
 
@@ -110,7 +110,7 @@ vllm serve MODEL \
   }&#39;
 ```
 
-`fuse_gemm_comms=true` 会自动令 `enable_sp=true`，示例同时写出两项是为了明确意图。需要注意：尽管本版本默认优化级别是 `-O2`，`IS_DENSE` 当前被硬编码为 `False`，因此 `-O2/-O3` <strong>不会自动打开</strong>这两个 pass，必须像上面一样显式配置。
+fuse_gemm_comms=true` 会自动令 `enable_sp=true`，示例同时写出两项是为了明确意图。需要注意：尽管本版本默认优化级别是 `-O2`，`IS_DENSE` 当前被硬编码为 `False`，因此 `-O2/-O3` <strong>不会自动打开</strong>这两个 pass，必须像上面一样显式配置。
 
 实际进入优化路径的条件
 条件当前工作区版本的具体判断TPtensor_parallel_size > 1；TP=1 时 vLLM 会关闭 enable_sp 和 fuse_gemm_comms编译模式必须进入 vLLM 的 TorchInductor 编译路径，并满足 full-graph 要求：use_inductor_graph_partition=true，或 splitting_ops=[]；显式开启上述 pass 后，vLLM 会在需要时把 splitting_ops 清空token 阈值只有当前 compiled range 的 batched-token 数达到 sp_min_token_num 才应用；低于阈值仍保留普通 AR[TP]自动阈值未显式设置 sp_min_token_num 时，当前启发式覆盖 CUDA SM90/H100、SM100-family Blackwell 和 XPU；设备与模型未命中对应 policy 时关闭该优化shapetoken 数必须能被 TP 整除；GPU model runner 会把 batched tokens 向上 padding 到 TP 的整数倍计算图模式必须实际匹配 AllReduce -> RMSNorm、AllReduce -> fused_add_RMSNorm，或其支持的静态 FP8 quantization 变体；没有匹配到的层不会改写融合支持fuse_gemm_comms 依赖 CUDA symmetric-memory collective；普通 FP16/BF16 GEMM 有对应模式，scaled-matmul 变体只在模型 dtype 为 BF16 时注册自动阈值统一按下面的公式计算：
@@ -122,7 +122,7 @@ sp_min_token_num =
 平台最小 hidden sizeper_device_min_bytesCUDA SM90 / H10081928 MiBCUDA SM100-family / Blackwell819232 MiBXPU40968 MiB例如 H100 上使用 BF16/FP16、`hidden_size=8192` 时，`TP=2/4/8` 的阈值分别为 `1024/2048/4096` tokens；相同 shape 在 Blackwell policy 下阈值是其 4 倍。该值还会被 `max_num_batched_tokens` 封顶。未命中自动 policy，或希望覆盖默认启发式时，可以在 `pass_config` 中显式加入 `&#34;sp_min_token_num&#34;: N`；这是强制选择优化区间的调优旋钮，不能代表该设备和负载一定更快，应通过基准测试确定 `N`。
 
 优劣分析
-`enable_sp` 单独开启与再开启通信融合的优劣要分开看：
+enable_sp` 单独开启与再开启通信融合的优劣要分开看：
 
 配置优势代价和局限仅 enable_sp：RS -> local RMSNorm -> AG每个 rank 的 RMSNorm 只处理 T/TP tokens，减少重复点计算；RS～AG 区间的 residual/activation 占用约降为原来的 1/TP；为后续 GEMM-collective fusion 创建计算图边界RS+AG 与 ring AllReduce 的总通信量级相同，SP 本身不直接减少通信；拆分、聚合和同步存在额外调度开销，小 batch 可能变慢再开 fuse_gemm_comms：GEMM+RS、AG+GEMM使用 symmetric-memory fused op 按 token chunk 建立通信计算流水，减少独立 kernel launch，并让 GEMM 与通信重叠；这是主要性能收益来源要求 full-graph compilation、CUDA symmetric memory、足够大的 token 数和可匹配的计算图；需要额外通信 workspace，收益对模型形状、TP 大小和 GPU/NVLink 拓扑敏感总体上，这条优化更适合 hidden size 较大、batched-token 数较多且 TP 卡间互联较快的吞吐场景；小 batch decode、互联较弱或无法命中融合模式时，额外 padding、同步和调度成本可能抵消收益。vLLM 的 fusion 设计文档给 `fuse_gemm_comms` 的经验收益是约 <strong>7%～10% E2E</strong>，但这不是保证值，必须针对实际模型和负载做开启/关闭对照测试。
 
@@ -171,7 +171,7 @@ slice_tensor = tensor.reshape(tp_size, -1)[tp_rank]
 
 # 接收端
 tensor = all_gather(slice_tensor, dim=0).reshape(original_shape)
-`isend_tensor_dict/irecv_tensor_dict` 在传输前保留完整 tensor 的 shape metadata；接收端先只对属于本 TP rank 的 slice 发起 `irecv`，等待 P2P 完成后再执行上述 AllGather postprocess。默认启用条件是传入了 `all_gather_group=get_tp_group()`，且 `tensor.numel() % TP == 0`；`all_gather_tensors` 还可以逐 tensor 覆盖该决定。
+isend_tensor_dict/irecv_tensor_dict` 在传输前保留完整 tensor 的 shape metadata；接收端先只对属于本 TP rank 的 slice 发起 `irecv`，等待 P2P 完成后再执行上述 AllGather postprocess。默认启用条件是传入了 `all_gather_group=get_tp_group()`，且 `tensor.numel() % TP == 0`；`all_gather_tensors` 还可以逐 tensor 覆盖该决定。
 
 这项优化要求发送 stage 上的 tensor 在 TP ranks 间完全相同。开启 Dense SP 后，`residual` 可能已经沿 token 维分布在不同 TP ranks 上，此时再按 TP rank 取一段会造成二次切分和数据缺失，因此 vLLM 会通过 `all_gather_tensors[&#34;residual&#34;]=False` 禁用该 tensor 的优化。
 
@@ -350,7 +350,7 @@ allgather_reducescatter
 deepep_high_throughput / deepep_low_latency
 mori_high_throughput / mori_low_latency
 nixl_ep
-`deepep_v2`、`flashinfer_nvlink_two_sided` 和 `flashinfer_nvlink_one_sided` 当前不在这个 MoE-SP gate 中。它们即使能实现 A2A，也不能由 backend 名称直接推导出本节的 SP 数据流。
+deepep_v2`、`flashinfer_nvlink_two_sided` 和 `flashinfer_nvlink_one_sided` 当前不在这个 MoE-SP gate 中。它们即使能实现 A2A，也不能由 backend 名称直接推导出本节的 SP 数据流。
 
 对 v0.26.0 的 DeepSeek 主路径，数据流为：
 
@@ -391,7 +391,7 @@ P/D 至少包含三类流量：
 流量内容常见实现请求控制流prompt、sampling params、P/D 路由HTTP/RPC/ProxyConnector 控制流handshake、engine/rank、block IDs/地址、完成通知ZMQ、HTTP、msgpack 或 connector 自定义 side channelKV 数据流各 attention layer 的 KV blocks；部分 connector 也支持 hidden statesNIXL/RDMA transfer engine、cache service、GPU↔CPU offload、共享/分布式存储只有第三项是主要带宽负载。它通常不属于 P 或 D 内部已有的 `TP/PP/DP/EP` process group；P、D 各自在传输同时或前后执行自己的 collectives。
 
 3.3 工作区版本中的 connector 类型
-`KVTransferConfig` 使用 `kv_role=kv_producer/kv_consumer/kv_both` 区分角色，物理传输由 `kv_connector` 决定。v0.26.0 内置注册项可以按用途归类：
+KVTransferConfig` 使用 `kv_role=kv_producer/kv_consumer/kv_both` 区分角色，物理传输由 `kv_connector` 决定。v0.26.0 内置注册项可以按用途归类：
 
 类型Connector 示例通信特征注册内存/RDMANixlConnector、NixlPullConnector、NixlPushConnector、MooncakeConnector、MoRIIOConnector注册 KV memory region，异步 read/write；握手和通知另走 side channel外部 KV cache/存储LMCacheConnectorV1、LMCacheMPConnector、MooncakeStoreConnector、FlexKVConnectorV1、HF3FSKVConnector通过 cache service、共享或分布式存储按 key/block lookup本机 offloadOffloadingConnector、SimpleCPUOffloadConnectorGPU↔CPU/本地层级缓存，不一定用于 P/D 分离组合/测试MultiConnector、ExampleConnector、ExampleHiddenStatesConnector、DecodeBenchConnector串接多个 connector、KV/hidden-state 示例或性能仿真旧版本的 `P2pNcclConnector` 已从 v0.26.0 注册表和实现中删除，因此当前内置 Connector 不能再用它作为“NCCL GPU P2P”的示例。自定义 Connector 仍可自行选择传输协议。
 
@@ -411,7 +411,7 @@ Encoder instance
   -> save_caches / EC-Xfer
   -> Prefill 或 Decode instance 的 start_load_caches
   -> multimodal embedding merge
-`ECTransferConfig` 同样区分 producer/consumer/both，并把 scheduler metadata 与 worker 数据操作分开。v0.26.0 内置两个实现：
+ECTransferConfig` 同样区分 producer/consumer/both，并把 scheduler metadata 与 worker 数据操作分开。v0.26.0 内置两个实现：
 
 Connector数据路径适用范围ECExampleConnectorGPU tensor 先复制到 CPU，再以 safetensors 写入共享目录；consumer 从共享文件加载调试/流程示例ECCPUConnectorscheduler 管理共享 CPU mmap region，worker 执行 GPU↔CPU mmap copy单机 CPU encoder-cache offload/reuse这两个内置实现都不是跨机 RDMA，也不建立 NCCL/PyNccl P2P 通道。通过 `ec_connector_module_path` 接入的外部 Connector 可以自行实现其他 transport。
 

@@ -105,8 +105,11 @@ Spec_RAT / Arch_RAT就是两张32entry的表，0-31个entry的内容分别是0-3
 
 做hazard检查的代码本身很简单的，假设rename一次来俩opcode都时候，就像下面这样：
 
-`// RAW Hazard Detection for rs1
+```text
+// RAW Hazard Detection for rs1
 // A RAW hazard occurs if Instruction 1's rs1 reads a register that Instruction 0 writes to.
+```
+
 assign raw_hazard_rs1 = instr0_lrd_valid && instr1_lrs1_valid && 
 
 ```text
@@ -180,7 +183,7 @@ age matrix就是一个矩阵，它的核心意思是这样的，如果有一个�
 
 Age matrix的控制模块还有点意思，我们单独包装了一下，如下：
 
-` `include "defines.sv"
+ `include "defines.sv"
 module age_deq_policy_ooo (
     input wire                           clock,
     input wire                           reset_n,
@@ -200,7 +203,7 @@ module age_deq_policy_ooo (
     output reg                          oldest_found,
     output reg [`ISSUE_QUEUE_DEPTH-1:0] oldest_idx_oh
 
-```cpp
+```js
 );
 
     // age_matrix[i][j] = 1 => "entry i" is older than "entry j"

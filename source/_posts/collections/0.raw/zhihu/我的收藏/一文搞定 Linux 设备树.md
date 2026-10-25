@@ -31,9 +31,11 @@ source_url: https://zhuanlan.zhihu.com/p/425420889
 
 和 C 语言一样，设备树也支持头文件，设备树的头文件扩展名为 .dtsi；同时也可以像C 语言一样包含 .h头文件；例如：（代码来源 linux-4.15/arch/arm/boot/dts/s3c2416.dtsi）
 
-`#include 
+```cpp
+#include 
 #include "s3c24xx.dtsi"
-`
+```
+
 
 注：.dtsi 文件一般用于描述 SOC 的内部外设信息，比如 CPU 架构、主频、外设寄存器地址范围，比如 UART、 IIC 等等。
 
@@ -41,8 +43,7 @@ source_url: https://zhuanlan.zhihu.com/p/425420889
 
 在设备树中节点命名格式如下：
 
-`node-name@unit-address
-`
+node-name@unit-address
 
 <strong>node-name：</strong>是设备节点的名称，为ASCII字符串，节点名字应该能够清晰的描述出节点的功能，比如“uart1”就表示这个节点是UART1外设；<strong>unit-address：</strong>一般表示设备的地址或寄存器首地址，如果某个节点没有地址或者寄存器的话 “unit-address” 可以不要；注：根节点没有node-name 或者 unit-address，它被定义为 /。
 
@@ -60,15 +61,13 @@ source_url: https://zhuanlan.zhihu.com/p/425420889
 
 compatible 属性也叫做 “兼容性” 属性，这是非常重要的一个属性！compatible 属性的值是一个字符串列表， compatible 属性用于将设备和驱动绑定起来。字符串列表用于选择设备所要使用的驱动程序。compatible 属性值的推荐格式：
 
-`"manufacturer,model"
-`
+"manufacturer,model"
 
 - ① manufacturer : 表示厂商；
 - ② model : 一般是模块对应的驱动名字。
 例如：
 
-`compatible = "fsl,mpc8641", "ns16550";
-`
+compatible = "fsl,mpc8641", "ns16550";
 
 上面的compatible有两个属性，分别是 "fsl,mpc8641" 和 "ns16550"；其中 "fsl,mpc8641" 的厂商是 fsl；设备首先会使用第一个属性值在 Linux 内核里面查找，看看能不能找到与之匹配的驱动文件；
 
@@ -79,14 +78,13 @@ compatible 属性也叫做 “兼容性” 属性，这是非常重要的一个�
 
 model 属性值也是一个字符串，一般 model 属性描述设备模块信息，比如名字什么的，例如：
 
-`model = "Samsung S3C2416 SoC";
-`
+model = "Samsung S3C2416 SoC";
 
 #### <strong>2.2.1.3 phandle 属性</strong>
 
 phandle属性为devicetree中唯一的节点指定一个数字标识符，节点中的phandle属性，它的取值必须是唯一的(不要跟其他的phandle值一样)，例如：
 
-`pic@10000000 {
+pic@10000000 {
 
 ```text
     phandle = ;
@@ -101,7 +99,6 @@ another-device-node {
 };
 ```
 
-`
 
 **注：DTS中的大多数设备树将不包含显式的phandle属性，当DTS被编译成二进制DTB格式时，DTC工具会自动插入phandle属性。
 #### 2.2.1.4 status 属性**
@@ -113,12 +110,11 @@ status值描述
 
 #address-cells 和 #size-cells的值都是无符号 32 位整型，可以用在任何拥有子节点的设备中，用于描述子节点的地址信息。#address-cells 属性值决定了子节点 reg 属性中地址信息所占用的字长(32 位)， #size-cells 属性值决定了子节点 reg 属性中长度信息所占的字长(32 位)。#address-cells 和 #size-cells 表明了子节点应该如何编写 reg 属性值，一般 reg 属性都是和地址有关的内容，和地址相关的信息有两种：起始地址和地址长度，reg 属性的格式一为：
 
-`reg = 
-`
+reg = 
 
 例如一个64位的处理器：
 
-`soc {
+soc {
 
 ```text
     #address-cells = ;
@@ -130,7 +126,6 @@ status值描述
 };
 ```
 
-`
 
 #### <strong>2.2.1.6 reg 属性</strong>
 
@@ -138,8 +133,7 @@ reg 属性的值一般是 (address， length) 对，reg 属性一般用于描述
 
 例如：一个设备有两个寄存器块，一个的地址是0x3000，占据32字节；另一个的地址是0xFE00，占据256字节，表示如下：
 
-`reg = ;
-`
+reg = ;
 
 **注：上述对应#address-cells = ; #size-cells = ;。
 #### 2.2.1.7 ranges 属性**
@@ -149,7 +143,7 @@ ranges属性值可以为空或者按照 (child-bus-address,parent-bus-address,le
 - child-bus-address：子总线地址空间的物理地址，由父节点的 #address-cells 确定此物理地址所占用的字长。
 - parent-bus-address：父总线地址空间的物理地址，同样由父节点的 #address-cells 确定此物理地址所占用的字长。
 - length：子地址空间的长度，由父节点的 #size-cells 确定此地址长度所占用的字长。
-`soc {
+soc {
 
 ```text
     compatible = "simple-bus";
@@ -167,7 +161,6 @@ ranges属性值可以为空或者按照 (child-bus-address,parent-bus-address,le
 };
 ```
 
-`
 
 节点 soc 定义的 ranges 属性，值为 ，此属性值指定了一个 1024KB(0x00100000) 的地址范围，子地址空间的物理起始地址为 0x0，父地址空间的物理起始地址为 0xe0000000。
 
@@ -185,7 +178,7 @@ name 属性值为字符串， name 属性用于记录节点名字， name 属性
 
 device_type 属性值为字符串， IEEE 1275 会用到此属性，用于描述设备的 FCode，但是设备树没有 FCode，所以此属性也被抛弃了。此属性只能用于 cpu 节点或者 memory 节点。
 
-`memory@30000000 {
+memory@30000000 {
 
 ```text
     device_type = "memory";
@@ -193,7 +186,6 @@ device_type 属性值为字符串， IEEE 1275 会用到此属性，用于描述
 };
 ```
 
-`
 
 #### <strong>2.2.2 根节点</strong>
 
@@ -209,7 +201,7 @@ aliases 节点的主要功能就是定义别名，定义别名的目的就是为
 
 例如：定义 flexcan1 和 flexcan2 的别名是 can0 和 can1。
 
-`aliases {
+aliases {
 
 ```text
     can0 = &flexcan1;
@@ -217,7 +209,6 @@ aliases 节点的主要功能就是定义别名，定义别名的目的就是为
 };
 ```
 
-`
 
 #### <strong>2.2.3.2 /memory 子节点</strong>
 
@@ -225,7 +216,7 @@ aliases 节点的主要功能就是定义别名，定义别名的目的就是为
 
 例如：一个64位的系统有两块内存空间：RAM1：起始地址是0x0，地址空间是 0x80000000；RAM2：起始地址是0x10000000，地址空间也是0x80000000；同时根节点下的 #address-cells = 和#size-cells = ，这个memory节点描述为：
 
-`memory@0 {
+memory@0 {
 
 ```text
     device_type = "memory";
@@ -233,11 +224,10 @@ aliases 节点的主要功能就是定义别名，定义别名的目的就是为
 };
 ```
 
-`
 
 或者：
 
-`memory@0 {
+memory@0 {
 
 ```text
     device_type = "memory";
@@ -253,34 +243,31 @@ memory@10000000 {
 };
 ```
 
-`
 
 #### <strong>2.2.3.3 /chosen 子节点</strong>
 
 chosen 并不是一个真实的设备， chosen 节点主要是为了 uboot 向 Linux 内核传递数据，重点是 bootargs 参数。例如：
 
-`chosen {
+chosen {
 
 ```text
     bootargs = "root=/dev/nfs rw nfsroot=192.168.1.1 console=ttyS0,115200";
 };
 ```
 
-`
 
 #### **2.2.3.4 /cpus 和 /cpus/cpu* 子节点**
 
 cpus节点下有1个或多个cpu子节点, cpu子节点中用reg属性用来标明自己是哪一个cpu，所以 /cpus 中有以下2个属性:
 
-`#address-cells   // 在它的子节点的reg属性中, 使用多少个u32整数来描述地址(address)
+#address-cells   // 在它的子节点的reg属性中, 使用多少个u32整数来描述地址(address)
 
 #size-cells      // 在它的子节点的reg属性中, 使用多少个u32整数来描述大小(size)
                  // 必须设置为0
-`
 
 例如：
 
-`cpus {
+cpus {
 
 ```text
     #address-cells = ;
@@ -332,7 +319,6 @@ cpus节点下有1个或多个cpu子节点, cpu子节点中用reg属性用来标�
 };
 ```
 
-`
 
 #### <strong>2.2.3.5 引用其他节点</strong>
 
@@ -340,7 +326,7 @@ cpus节点下有1个或多个cpu子节点, cpu子节点中用reg属性用来标�
 
 节点中的phandle属性, 它的取值必须是唯一的(不要跟其他的phandle值一样)
 
-`pic@10000000 {
+pic@10000000 {
 
 ```text
     phandle = ;
@@ -356,11 +342,10 @@ another-device-node {
 };
 ```
 
-`
 
 #### <strong>2.2.3.5.2 label</strong>
 
-`PIC: pic@10000000 {
+PIC: pic@10000000 {
 
 ```text
     interrupt-controller;
@@ -377,7 +362,6 @@ another-device-node {
 };
 ```
 
-`
 
 #### <strong>2.2.4 DTB格式</strong>
 
@@ -391,11 +375,11 @@ another-device-node {
 - ② memory reservation block：在设备树中使用/memreserve/ 定义的保留内存信息；
 - ③ structure block：保存节点的信息，节点的结构；
 - ④ strings block：保存属性的名字，单独作为字符串保存；
-struct ftd_header结构体的定义如下：
-
-`struct fdt_header {
 
 ```text
+struct ftd_header结构体的定义如下：
+
+struct fdt_header {
     uint32_t magic; /*它的值为0xd00dfeed，以大端模式保存*/
     uint32_t totalsize; /*整个DTB文件的大小*/
     uint32_t off_dt_struct; /*structure block的偏移地址*/
@@ -409,19 +393,16 @@ struct ftd_header结构体的定义如下：
 };
 ```
 
-`
 
 fdtreserveentry结构体如下：
 
-`struct fdt_reserve_entry {
-
 ```text
+struct fdt_reserve_entry {
     uint64_t address;  /*64bit 的地址*/
     uint64_t size;    /*保留的内存空间的大小*/
 };
 ```
 
-`
 
 该结构体用于表示memreserve的起始地址和内存空间的大小，它紧跟在struct ftdheader结构体后面。
 
@@ -432,15 +413,14 @@ structure block是用于描述设备树节点的结构，保存着节点的信�
 - ① FDTBEGINNODE (0x00000001)：表示节点的开始，它的后面紧跟的是节点的名字；
 - ② FDTENDNODE (0x00000002)：表示节点的结束；
 - ③ FDTPROP (0x00000003) ：表示开始描述节点里面的一个属性，在FDTPROP后面紧跟一个结构体如下所示:
-`struct {
 
 ```text
+struct {
     uint32_t len;       /*表示属性值的长度*/
     uint32_t nameoff;   /*属性的名字在string block的偏移*/
 } 
 ```
 
-`
 
 注：上面的这个结构体后紧跟着是属性值，属性的名字保存在字符串块（Strings block）中。
 
@@ -461,9 +441,8 @@ structure block是用于描述设备树节点的结构，保存着节点的信�
 
 编译生成dtb文件的源设备树jz2440.dts文件如下：
 
-`// SPDX-License-Identifier: GPL-2.0
-
 ```text
+// SPDX-License-Identifier: GPL-2.0
 /*
  * SAMSUNG SMDK2440 board device tree source
 ```
@@ -497,7 +476,6 @@ structure block是用于描述设备树节点的结构，保存着节点的信�
 };
 ```
 
-`
 
 jz2440.dtb 文件的内容如下：
 

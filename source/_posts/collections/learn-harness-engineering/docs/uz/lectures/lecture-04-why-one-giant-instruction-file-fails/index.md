@@ -72,7 +72,7 @@ flowchart TB
 
 Asosiy tamoyil: tez-tez kerak boʻladigan maʼlumotlarni yonida saqlang, vaqti-vaqti bilan kerak boʻladigan maʼlumotlarni chetroqqa qoʻying va umuman ishlatilmaydigan narsalardan voz keching.
 
-`AGENTS.md` kirish fayli 50-200 qatordan iborat boʻlib qoladi va unda faqat eng koʻp ishlatiladigan narsalar saqlanadi — loyiha boʻyicha qisqacha maʼlumot (bir yoki ikki jumla), birinchi marta ishga tushirish buyruqlari (`make setup && make test`), global qatʼiy cheklovlar (15 tadan ortiq boʻlmagan qatʼiy qoidalar) va mavzuviy hujjatlarga havolalar (bir qatorli izoh + qoʻllanilish sharti).
+AGENTS.md` kirish fayli 50-200 qatordan iborat boʻlib qoladi va unda faqat eng koʻp ishlatiladigan narsalar saqlanadi — loyiha boʻyicha qisqacha maʼlumot (bir yoki ikki jumla), birinchi marta ishga tushirish buyruqlari (`make setup && make test`), global qatʼiy cheklovlar (15 tadan ortiq boʻlmagan qatʼiy qoidalar) va mavzuviy hujjatlarga havolalar (bir qatorli izoh + qoʻllanilish sharti).
 
 ```markdown
 # AGENTS.md

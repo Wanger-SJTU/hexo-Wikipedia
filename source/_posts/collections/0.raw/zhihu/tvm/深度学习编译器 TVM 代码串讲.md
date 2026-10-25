@@ -170,7 +170,7 @@ CudaModule 定义在 src/runtime/cuda/cuda_module.cc 中，CudaModule接口中�
 
 PackedFunc CUDAModuleNode::GetFunction(const std::string  name,
 
-```js
+```text
                                        const ObjectPtr Object   sptr_to_self) {
   ICHECK_EQ(sptr_to_self.get(), this);
   ICHECK_NE(name, symbol::tvm_module_main)    "Device function do not have main";
@@ -272,7 +272,7 @@ class PrimTypeNode : public TypeNode {
 
  *
 
-```js
+```text
  * We support polymorphic function type.
  * This can be roughly viewed as template function in C++.
 ```
@@ -510,12 +510,11 @@ RELAY_REGISTER_OP("nn.bias_add")
 
 注册完以后我们可以通过 FFI 机制暴露给 Python 端调用
 
+```cpp
 // Positional relay function to create dense operator used by frontend FFI.
 Expr MakeBiasAdd(Expr data, Expr bias, int axis) {
   auto attrs = make_object BiasAddAttrs ();
   attrs- axis = axis;
-
-```text
   static const Op  op = Op::Get("nn.bias_add");
   return Call(op, {data, bias}, Attrs(attrs), {});
 }
@@ -914,7 +913,7 @@ class TypeCallNode : public TypeNode {
 
 接着我们过一下 Match 相关的 Expr, 首先我们看 Match 本身
 
-```text
+```cpp
 class MatchNode : public ExprNode {
  public:
   /*! \brief The input being deconstructed. */
@@ -932,7 +931,7 @@ class MatchNode : public ExprNode {
 
 Clause 就是前面的多个 Case, 我们看 Clause
 
-```text
+```cpp
 class ClauseNode : public Object {
  public:
   /*! \brief The pattern the clause matches. */
@@ -977,7 +976,7 @@ Let Binding 这个概念也来自函数式编程，为了理解引入 Let Bindin
 
 这是一个经典的计算图表达方式，唯一与传统不太一致的，就是使用 Function 来代替 Graph 的概念。在这个例子中，需要注意的是 add 的两个参数都是 1%，在 DAG 中出现了一个共享节点，我们假设 add 表达式的代码如下
 
-```text
+```cpp
 class Add : public Expr {
   Expr lhs;
   Expr rhs;
@@ -1086,7 +1085,7 @@ let %a = %a + %a; // %a = 2. %a is shadowed
 
 接下来我们看函数，这是前文提到的 BaseFunc 在 Relay 中的具体实现
 
-```js
+```cpp
 class FunctionNode : public BaseFuncNode {
  public:
   /*! \brief Function parameters */
@@ -1173,7 +1172,7 @@ class CallNode : public ExprNode {
 
  *
 
-```text
+```js
  * let x = if (true) { 1 } else { 0 }; // x is 1
  * let y = if (false) { 1 } else { 0 }; // y is 0
 ```
@@ -1182,7 +1181,7 @@ class CallNode : public ExprNode {
  * \note This is similar to C's ternary operator.
  */
 
-```text
+```cpp
 class If;
 /*! \brief container of If */
 class IfNode : public ExprNode {
@@ -1361,11 +1360,11 @@ def softmax_strategy_cuda(attrs, inputs, out_type, target):
             plevel=15,
         )
     return strategy
-```
-
 
 reg.register_strategy("nn.softmax", strategy.softmax_strategy)
 reg.register_pattern("nn.softmax", OpPattern.OUT_ELEMWISE_FUSABLE)
+```
+
 从代码中可以看到，除了 Strategy 还会注册其他属性用于后续优化，其他的属性读者可自行查阅代码，本文不再细究。
 
 5.4 Pattern Match
@@ -1607,16 +1606,17 @@ bool MatchPattern(DFPattern pattern, Expr expr);
 ```
 
  */
+
+```cpp
 Expr RewritePatterns(Array DFPatternCallback  callbacks, Expr expr, IRModule mod = IRModule());
 
-```text
 /*!
  * \brief Partition all matches of a DFPattern inside an Expr into separate Function calls
 ```
 
  *
 
-```js
+```text
  * \param pattern The pattern to match
  * \param expr The expression to patition
  * \param attrs A set of parameter names and values to apply to the partitioned function
@@ -1627,7 +1627,11 @@ Expr RewritePatterns(Array DFPatternCallback  callbacks, Expr expr, IRModule mod
  *
  * \return Return the paritioned Expr.
  */
+
+```cpp
 Expr PartitionPattern(DFPattern pattern, Expr expr, Map String, ObjectRef  attrs, PackedFunc check);
+```
+
 
 5.5 AST Traversers
 编写 Pass 时最常做的操作就是遍历 AST/IR，TVM为此设计了专门的工具。我们首先看一个基类 ExprFunctor 如下
@@ -1738,10 +1742,9 @@ class ExprMutator : public ::tvm::relay::ExprFunctor Expr(const Expr )  {
 
 注意 Mutate 只是 VisitExpr 的别名。ExprMutator 的 VisitExpr 会返回一个修改后的新 Expr, 我们看一下 VisitExpr 的实现
 
+```cpp
 Expr ExprMutator::VisitExpr(const Expr  expr) {
   auto it = this- memo_.find(expr);
-
-```text
   if (it != this- memo_.end()) {
     return it- second;
   } else {
@@ -1755,12 +1758,12 @@ Expr ExprMutator::VisitExpr(const Expr  expr) {
 
 如代码所述，内部会保存一个原 Expr 到新 Expr 的映射，同时也避免了多次访问同一个 Expr, 我们还是以 If 作为例子来看
 
+```cpp
 Expr ExprMutator::VisitExpr_(const IfNode* if_node) {
   auto cond = this- Mutate(if_node- cond);
   auto true_b = this- Mutate(if_node- true_branch);
   auto false_b = this- Mutate(if_node- false_branch);
 
-```cpp
   return WithFields(GetRef If (if_node), std::move(cond), std::move(true_b), std::move(false_b));
 }
 ```
@@ -1819,9 +1822,8 @@ enum OpPatternKind {
 - 构建后序支配树，可以从中得到每个节点的支配节点
 - 根据后序支配树的信息融合接下来代码，首先 Fuse 是一个 Function Level Pass, 如下
 
+```cpp
 Expr FuseOps(const Expr  expr, int fuse_opt_level, size_t max_fuse_depth, const IRModule  module) {
-
-```text
   return FuseMutator().Transform(expr, fuse_opt_level, max_fuse_depth);
 }
 
@@ -1845,9 +1847,8 @@ Pass FuseOps(int fuse_opt_level) {
 
 可以看到主要逻辑落在 FuseMutator 中，其继承自上一节提到的 MixedModeMutator, 我们来看 Transform
 
-  Expr Transform(const Expr  body, int fuse_opt_level, size_t max_fuse_depth) {
-
 ```cpp
+  Expr Transform(const Expr  body, int fuse_opt_level, size_t max_fuse_depth) {
     // setup the group map.
     auto graph = IndexedForwardGraph::Create( arena_, body);
     auto groups = GraphPartitioner( arena_, fuse_opt_level, max_fuse_depth).Partition(graph);
@@ -2243,9 +2244,8 @@ struct Group {
 
 这个路径压缩，确实是并查集。至此，我们切好了 groups, 走到最终的 FuseMutator::Mutate 来生成新表达式了。跟踪 Mutate 会来到 Rewrite
 
-  Expr Rewrite_(const CallNode* call, const Expr  post) {
-
 ```cpp
+  Expr Rewrite_(const CallNode* call, const Expr  post) {
     if (call- op.as OpNode ()) {
       static auto fnoncomputational = Op::GetAttrMap TNonComputational ("TNonComputational");
 
@@ -2282,10 +2282,9 @@ struct Group {
 
 我们注意到碰到每个 group 的 root 时，会调用 MakeNewFunction, 代码如下
 
+```cpp
   Expr MakeNewFunction(GraphPartitioner::Group* group, Type ret_type, Expr body) {
     ...
-
-```cpp
     const GroupInfo  ginfo = ginfo_[group];
     auto func = Function(ginfo.params, body, ret_type, {});
     func = WithAttr(std::move(func), attr::kPrimitive, tvm::Integer(visitor.has_call));
@@ -2391,7 +2390,7 @@ Executor 有两种实现，本文关注默认的 GraphExecutor, 代码中主要�
   LoweredOutput Codegen(IRModule mod, relay::Function func, String mod_name) {
     ...
 
-```js
+```text
     IRModule lowered_mod = tec::LowerTEPass(
         mod_name_,
         [this](BaseFunc func) {
@@ -2517,9 +2516,8 @@ Pass LowerTensorExpr(const String  module_name, TECompiler compiler, ProcessFn p
 
 注意 LowerTensorExprMutator 是前文提到的 ExprMutator, 我们关注其对 Call 的修改，忽略非关键代码添加注释如下
 
-  Expr DeviceAwareVisitExpr_(const CallNode* call_node) override {
-
 ```cpp
+  Expr DeviceAwareVisitExpr_(const CallNode* call_node) override {
     // 1. 带 Primitive 标记的 Function, 将其 lower 为全局的 PrimFunc 再调用
     // 2. 带 Compiler 标记的 Function, 如前文所述，本文不展开
     // 3. 预定义的 PrimFunc, 将 Relay Call 替换为 call_lowered 即可
@@ -2564,9 +2562,8 @@ Pass LowerTensorExpr(const String  module_name, TECompiler compiler, ProcessFn p
 
 Lower 发生在 MakeLoweredCall 中，继续追踪
 
+```cpp
   Expr MakeLoweredCall(Function func, Array Expr  visited_args, Span span, Target target) {
-
-```text
     CCacheKey key = CCacheKey(func, target);
     CachedFunc cfunc = compiler_- Lower(key, module_name_);
 ```

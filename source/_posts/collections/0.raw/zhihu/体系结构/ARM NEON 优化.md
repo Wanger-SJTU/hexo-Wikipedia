@@ -27,9 +27,8 @@ For the color to grayscale conversion I used a very simple conversion scheme: A 
 
 First a reference implementation in C:
 
-`void reference_convert (uint8_t * __restrict dest, uint8_t * __restrict src, int n)
-
 ```cpp
+void reference_convert (uint8_t * __restrict dest, uint8_t * __restrict src, int n)
 {
   int i;
   for (i=0; in; i++)
@@ -51,9 +50,8 @@ Lets start optimizing the code using the compiler intrinsics. Intrinsics are nic
 
 Since NEON works in 64 or 128 bit registers it’s best to process eight pixels in parallel. That way we can exploit the parallel nature of the SIMD-unit. Here is what I came up with:
 
-`void neon_convert (uint8_t * __restrict dest, uint8_t * __restrict src, int n)
-
 ```cpp
+void neon_convert (uint8_t * __restrict dest, uint8_t * __restrict src, int n)
 {
   int i;
   uint8x8_t rfac = vdup_n_u8 (77);
@@ -76,7 +74,6 @@ Since NEON works in 64 or 128 bit registers it’s best to process eight pixels 
 }
 ```
 
-`
 
 Lets take a look at it step by step:
 
@@ -144,7 +141,7 @@ That’s only a speed-up of factor 1.5. I expected much more from the NEON imple
 
 速度仅仅提升了1.5倍，看下汇编代码发生了什么：**
 
-` 160:   f46a040f        vld3.8  {d16-d18}, [sl]
+ 160:   f46a040f        vld3.8  {d16-d18}, [sl]
  164:   e1a0c005        mov     ip, r5
  168:   ecc80b06        vstmia  r8, {d16-d18}
  16c:   e1a04007        mov     r4, r7
@@ -177,7 +174,7 @@ Since the compiler can’t generate good code I wrote the same loop in assembler
 编译器没有生成高效的汇编代码，因此作者自己优化了一下代码
 convert_asm_neon:
 
-` # r0: Ptr to destination data
+ # r0: Ptr to destination data
       # r1: Ptr to source data
       # r2: Iteration count:
 
@@ -238,7 +235,7 @@ http://gcc.gnu.org/onlinedocs/gcc/ARM-NEON-Intrinsics.html
 
 <strong>有些指令看名字并不是很理解，下面的代码能帮助你理解其中的作用</strong>
 
-`#ifndef __ARM_NEON__  
+#ifndef __ARM_NEON__  
 #error You must enable NEON instructions (e.g. -mfloat-abi=softfp -mfpu=neon) to use arm_neon.h  
 
 ```text

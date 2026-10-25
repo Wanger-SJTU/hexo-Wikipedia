@@ -19,7 +19,7 @@ source_url: https://zhuanlan.zhihu.com/p/392826624
 
 ### 单算子例子
 
-`module {
+module {
   func @test_matmul(%arg0: tensor1x14x19xf32>, %arg1: tensor1x19x28xf32>) -> tensor1x14x28xf32> {
 
 ```text
@@ -36,7 +36,7 @@ source_url: https://zhuanlan.zhihu.com/p/392826624
 
 output:
 
-`module  {
+module  {
   func @test_matmul(%arg0: tensor1x14x19xf32>, %arg1: tensor1x19x28xf32>) -> tensor1x14x28xf32> {
 
 ```text
@@ -56,7 +56,7 @@ output:
 
 output:
 
-`#map0 = affine_mapd0, d1, d2) -> ()>
+#map0 = affine_mapd0, d1, d2) -> ()>
 #map1 = affine_mapd0, d1, d2) -> (d0, d1, d2)>
 #map2 = affine_mapd0, d1, d2, d3) -> (d0, d1, d3)>
 #map3 = affine_mapd0, d1, d2, d3) -> (d0, d3, d2)>
@@ -91,7 +91,7 @@ module  {
 
 output:
 
-`#map0 = affine_mapd0) -> (4, -d0 + 14)>
+#map0 = affine_mapd0) -> (4, -d0 + 14)>
 #map1 = affine_mapd0, d1, d2) -> ()>
 #map2 = affine_mapd0, d1, d2) -> (d0, d1, d2)>
 #map3 = affine_mapd0, d1, d2, d3) -> (d0, d1, d3)>
@@ -155,7 +155,7 @@ module  {
 
 output:
 
-`#map0 = affine_mapd0, d1, d2)[s0, s1, s2, s3] -> (d0 * s1 + s0 + d1 * s2 + d2 * s3)>
+#map0 = affine_mapd0, d1, d2)[s0, s1, s2, s3] -> (d0 * s1 + s0 + d1 * s2 + d2 * s3)>
 #map1 = affine_mapd0) -> (4, -d0 + 14)>
 #map2 = affine_mapd0, d1, d2)[s0] -> (d0 * 392 + s0 + d1 * 28 + d2)>
 #map3 = affine_mapd0, d1, d2) -> ()>
@@ -214,7 +214,7 @@ module  {
 
 output:
 
-`#map = affine_mapd0, d1, d2)[s0, s1, s2, s3] -> (d0 * s1 + s0 + d1 * s2 + d2 * s3)>
+#map = affine_mapd0, d1, d2)[s0, s1, s2, s3] -> (d0 * s1 + s0 + d1 * s2 + d2 * s3)>
 module  {
   func @test_matmul(%arg0: memref1x14x19xf32, #map>, %arg1: memref1x19x28xf32, #map>) -> memref1x14x28xf32> {
 
@@ -255,7 +255,7 @@ module  {
 
 output:
 
-`#map = affine_mapd0, d1, d2)[s0, s1, s2, s3] -> (d0 * s1 + s0 + d1 * s2 + d2 * s3)>
+#map = affine_mapd0, d1, d2)[s0, s1, s2, s3] -> (d0 * s1 + s0 + d1 * s2 + d2 * s3)>
 module  {
   func @test_matmul(%arg0: memref1x14x19xf32, #map>, %arg1: memref1x19x28xf32, #map>) -> memref1x14x28xf32> {
 
@@ -291,7 +291,7 @@ module  {
 
 output:
 
-`#map0 = affine_mapd0, d1, d2)[s0, s1, s2, s3] -> (d0 * s1 + s0 + d1 * s2 + d2 * s3)>
+#map0 = affine_mapd0, d1, d2)[s0, s1, s2, s3] -> (d0 * s1 + s0 + d1 * s2 + d2 * s3)>
 #map1 = affine_mapd0) -> (d0)>
 #map2 = affine_mapd0) -> (d0 + 4, 14)>
 #map3 = affine_mapd0) -> (d0 + 4)>
@@ -333,7 +333,7 @@ module  {
 
 output:
 
-`#map0 = affine_mapd0, d1, d2)[s0, s1, s2, s3] -> (d0 * s1 + s0 + d1 * s2 + d2 * s3)>
+#map0 = affine_mapd0, d1, d2)[s0, s1, s2, s3] -> (d0 * s1 + s0 + d1 * s2 + d2 * s3)>
 #map1 = affine_mapd0) -> (d0)>
 #map2 = affine_mapd0) -> (d0 + 4, 14)>
 #map3 = affine_mapd0) -> (d0 + 4)>
@@ -375,7 +375,7 @@ module  {
 
 output:
 
-`#map0 = affine_mapd0) -> (d0)>
+#map0 = affine_mapd0) -> (d0)>
 #map1 = affine_mapd0) -> (d0 + 4, 14)>
 #map2 = affine_mapd0) -> (d0 + 4)>
 module  {
@@ -457,7 +457,7 @@ module  {
 
 output:
 
-`#map0 = affine_mapd0) -> (d0 - 4)>
+#map0 = affine_mapd0) -> (d0 - 4)>
 #map1 = affine_mapd0) -> (d0, 14)>
 #map2 = affine_mapd0) -> (d0)>
 module  {

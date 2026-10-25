@@ -98,10 +98,9 @@ Profiling示例：
 - torch.cdist（两两欧氏距离）：78%时间花在矩阵乘法，是优化重点。
 PyTorch内置profile 核心代码
 
-`def profile(description: str, run: Callable, num_warmups: int = 1, with_stack: bool = False):
+```python
+def profile(description: str, run: Callable, num_warmups: int = 1, with_stack: bool = False):
     # Warmup（预热迭代，避免启动开销影响计时）
-
-```text
     for _ in range(num_warmups):
         run()
     if torch.cuda.is_available():
@@ -129,7 +128,7 @@ PyTorch内置profile 核心代码
 
 剖析调用示例（矩阵乘法）：
 
-`matmul_function_128 = lambda a, b: a @ b
+matmul_function_128 = lambda a, b: a @ b
 matmul_profile_128 = profile("matmul(dim=128)", run_operation2(dim=128, operation=matmul_function_128))
 matmul(dim=128)`
 
@@ -175,9 +174,9 @@ GELU近似公式（所有实现均基于此，保证结果一致）：
 - 实现：手写公式，包含多个独立操作（tanh、x³等）。
 - 性能：8.1毫秒（最慢）。
 - 问题：启动多个CUDA内核，内存读写开销大，无内核融合。
-`import torch
 
 ```python
+import torch
 import math
 
 def manual_gelu(x: torch.Tensor):
@@ -191,9 +190,10 @@ def manual_gelu(x: torch.Tensor):
 - 实现：调用torch.nn.functional.gelu，设置approximate=‘tanh’，与手写公式一致。
 - 性能：1.1毫秒（最快）。
 - 优势：自动内核融合，仅启动一个CUDA内核，无多余内存开销。
-`import torch.nn.functional as F
 
 ```python
+import torch.nn.functional as F
+
 def pytorch_gelu(x: torch.Tensor):
     # 原生实现，自动内核融合，approximate='tanh'匹配手写公式
     return F.gelu(x, approximate="tanh")`
@@ -205,9 +205,9 @@ def pytorch_gelu(x: torch.Tensor):
 - 实现：分CPU端（调度内核）和GPU端（执行计算）。
 - 性能：1.8毫秒（接近原生版）。
 - 优势：内核融合，可直接在Python中加载编译，无需命令行。
-`import os
 
 ```python
+import os
 import torch
 from torch.utils.cpp_extension import load_inline
 
@@ -306,9 +306,9 @@ Triton：OpenAI 2021年开发，Python抽象，自动管理内存合并、共享
 - 实现：分CPU端（调度）和Triton内核（计算），与CUDA结构类似。
 - 性能：1.848毫秒（与CUDA基本一致）。
 - 优势：Python编写，易上手，无需手动管理GPU底层细节。
-`import torch
 
 ```python
+import torch
 import triton
 
 def triton_gelu(x: torch.Tensor):
@@ -376,8 +376,11 @@ PyTorch内置即时编译器，自动优化未优化的PyTorch代码（如内核
 
 torch.compile版GELU耗时1.47毫秒，略优于手写CUDA/Triton，接近原生版；底层自动生成Triton代码，优化效果接近手动编写。
 
-`import torch
+```python
+import torch
 import torch.nn.functional as F
+```
+
 
 # 定义未优化的GELU函数（与手写版一致）
 
@@ -413,8 +416,12 @@ softmax比GELU复杂，包含归约操作（跨元素求和），需对矩阵每
 - torch.compile版：1.3秒（最优）；
 - PyTorch原生版：1.5秒（较好）；
 - Triton版：1.9秒（接近原生，易编写）。
-`import torch
+
+```python
+import torch
 import triton
+```
+
 
 # 1. 手写版softmax（无内核融合，性能差）
 

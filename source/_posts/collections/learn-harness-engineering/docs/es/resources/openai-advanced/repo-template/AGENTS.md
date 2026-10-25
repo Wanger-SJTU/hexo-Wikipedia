@@ -50,7 +50,7 @@ Antes de cambiar código:
 - Si ves comentarios de revisión repetidos, promuévelos a una regla mecánica, verificación
   o linter en lugar de volver a explicarlo en el chat.
 - Mantén el material generado en `docs/generated/` y las referencias fuente en
-  `docs/references/`.
+  docs/references/`.
 - Prefiere agregar documentos pequeños y actuales en lugar de hacer crecer este archivo.
 
 ## Definición de completado

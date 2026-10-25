@@ -57,7 +57,7 @@ B矩阵二分(<strong>列切</strong>)后，子矩阵B1、B2的尺寸为<strong>
 
 矩阵切分运算可用numpy做个辅助验证，这里提供一个示例：
 
-`import numpy as np
+import numpy as np
 # 1. 定义整数输入矩阵 (M, N) 和 (N, K)
 M, N, K = 3, 4, 6
 A = np.random.randint(0, 10, size=(M, N))  # 随机整数矩阵 [0, 10)
@@ -219,9 +219,9 @@ Scaled Dot-Product Attention这里我们分三个子问题来分析：
 - step4：将计算的O进行allgather，结果相等。
 所以：<strong>单独切Q的序列值后进行结果拼接，与原计算相等</strong>。我们可以通过如下例子来验证：
 
-`import numpy as np
-
 ```python
+import numpy as np
+
 def softmax(x):
     e_x = np.exp(x - np.max(x, axis=-1, keepdims=True))
     return e_x / np.sum(e_x, axis=-1, keepdims=True)

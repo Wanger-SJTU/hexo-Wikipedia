@@ -51,9 +51,8 @@ source_url: https://zhuanlan.zhihu.com/p/382372072
 
 图4. 优化（Herb Sutter: atomic Weapons）对于重排（Reordering），编译器和CPU都会有重排，主要就是为了优化性能。既然发生在哪一层不重要，我们这里就从编译器方面来看，以下面代码为例，
 
-`//reordering 重排示例代码
-
 ```cpp
+//reordering 重排示例代码
 int A = 0, B = 0;
 void foo()
 {
@@ -70,15 +69,13 @@ movl  B(%rip), %eax
 movl  $1, B(%rip)          // B = 1
 addl  $1, %eax             // A = B + 1
 movl  %eax, A(%rip)
-`
 
 可以看到，B=1居然先于A=B+1被执行，不过，最终的结果仍然与重排前一致。对于单线程来说，这没什么问题。但是，对于多线程，若另一个线程依赖于未重排的假设，当B为1时，它认为A=B+1已经执行了。这样，就会发生非预期的行为。重排有什么好处呢？我们前文谈到了Cache，其实Cache的读写单位是Cache line，即一块内存区域，大小一般为64字节。若需要读写该区域中的某个变量，则CPU会将该区域整体进行读写。对于重排的例子，假设A和B在不同的Cache line，且假定没有重排优化，也就是第二句汇编放于最后，那我们设想一种情形，当CPU将B读入Cache之后，Cache已经满了，那么，若要接着读入A，这时候只能移出某些Cache line，且假设刚好B所在的Cache line被移出，这样导致最后一句（原先的第二句汇编）给B赋值时，又要再次读取B到Cache。要知道，读取变量到Cache是需要读写主存的，还记得图3中主存的访问速度吗？重排只需读取主存一次，而未重排则需要两次读取。
 
 再来说Invention，其实这主要涉及CPU的Speculative execution，我们看如下代码，
 
-`// Invention示例代码
-
 ```text
+// Invention示例代码
 // 原始代码
 if( cond ) x = 42;
 
@@ -93,7 +90,6 @@ if( !cond)// check if we guessed wrong
     x = r1;// oops: back-out write is not SC
 ```
 
-`
 
 我们看到，相比于最初的代码，多了一次对x的写入。同样，对于单线程来说，没有什么问题，但是对于多线程，显然是有问题的，另一个线程在cond为false的情况下，依然可能看到x为42.
 
@@ -128,7 +124,6 @@ if S(a) p S(b) ⇒ S(a) m S(b)
 
  /* Store→Load */
 if S(a) p L(b) ⇒ S(a) m L(b)	
-`
 
 既然顺序一致这么严格，其显然会限制编译器和CPU的优化，所以业界提出了很多宽松的模型，例如在X86中使用的TSO（Total Store Order）便允许某些条件下的重排。
 
@@ -172,9 +167,8 @@ C++内存模型借鉴lock/unlock，引入了两个等效的概念，Acquire（�
 
 图8. 三种屏障 （可下移、可上移、不能跨越）现代C++的内存模型，其实主要表现在对原子变量进行操作时，通过指定memory order（内存顺序）的参数，来控制线程间同步。图7的示例便是其中一种内存顺序模型（获取发布模型：Acquire-Release Ordering）。memory order是一个枚举值，定义如下：
 
-`// 内存模型枚举值
-
 ```text
+// 内存模型枚举值
 typedef enum memory_order {
     memory_order_relaxed,
     memory_order_consume,
@@ -185,7 +179,6 @@ typedef enum memory_order {
 ```
 
 } memory_order;
-`
 
 以上6个枚举值可以细分为三种内存顺序模型，见下表1
 
@@ -206,9 +199,8 @@ or memory_order_seq_cst同上read-modify-writememory_order_relaxed, memory_order
 
 以如下代码为例，以下代码，其执行结果是否能保证z不为0？
 
-`// 顺序一致
-
 ```cpp
+// 顺序一致
 std::atomicbool> x,y;
 std::atomicint> z;
 void write_x()
@@ -248,7 +240,6 @@ int main()
 }
 ```
 
-`
 
 由代码可知，显然线程a Synchronizes-with 线程c（线程c读取到了线程a对原子变量x的写入值），同理，线程b Synchronizes-with 线程d（根据对原子变量y的写入读取），但是其它线程关系，则只能分情况推知：
 
@@ -280,9 +271,8 @@ int main()
 
 该模型比获取发布模型更为宽松，所以依旧需要结合图2进行分析。以下面代码为例
 
-`// 松散模型
-
 ```cpp
+// 松散模型
 std::atomicbool> x(false),y(false);
 std::atomicint> z(0);
 void write_x_then_y()    // thread 1
@@ -298,7 +288,6 @@ void read_y_then_x()     // thread 2
 }
 ```
 
-`
 
 执行结果，z值可能为0。其实很简单，若y.store重排于x.store之前，便可得出结论。重排可以发生在编译器，也可以在CPU/Cache。例如，将写入结果先缓存至Store Buffer，最后写入内存，但是Store Buffer到内存，可能会先写y再写x（先进后出），这样也相当于重排。所以正如前面的优化分析所述，我们无需关注优化发生在哪一层，我们只需关注这种优化是否发生以及发生后的影响，以便我们进行分析。当然，即使不是重排，也有可能，例如，线程2对于x的读取，可能读取的是cache而非内存。
 
@@ -306,9 +295,8 @@ void read_y_then_x()     // thread 2
 
 从前面的表2可知，Relaxed ordering仅要求保证原子性和内存修改顺序一致性（modification order consistency）。原子性不用多说。举例说一下修改顺序一致性，
 
-`// 内存修改顺序一致性
-
 ```cpp
+// 内存修改顺序一致性
 std::atomicint> x(0),y(0);
 
 // thread 1
@@ -330,11 +318,10 @@ for(unsigned i=0;i10;++i) {
 }
 ```
 
-`
 
 假设上述两个线程同时分别执行两个for循环，那么，输出的结果可能如下：
 
-`线程1：(0,0),(1,0),(2,0),(3,0),(4,0),(5,7),(6,7),(7,9),(8,9), (9,9)
+线程1：(0,0),(1,0),(2,0),(3,0),(4,0),(5,7),(6,7),(7,9),(8,9), (9,9)
 线程2：(0,0),(0,1),(0,2),(1,3),(8,4),(8,5),(8,6),(8,7),(10,8),(10,9)`
 
 由上述结果可知，对于线程中的变量，例如线程1中的x，其写入的值必定会被<strong>同一个线程</strong>后续的读取操作所读取，即使写入仅发生在Store Buffer，而未写入到内存。因而我们看到了线程1输出中连续递增的x （load/store都在线程1）。而线程2对于x的读取（x的写入操作在线程1），并不一定能读取到x的最新值，但如果能读取到（证明线程1将该值写入了内存），则也是按照x的写入顺序，即假设读取到8之后，后续读取不可能是8之前的值（即小于8的值）。 

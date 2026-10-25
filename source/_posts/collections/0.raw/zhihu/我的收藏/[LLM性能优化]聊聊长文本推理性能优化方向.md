@@ -133,9 +133,8 @@ Attention 类型Grid Size设置算术强度MHA[B, N]O(1)MQA[B]O(N)BPA[N]O(B)但 
 - Merge State。以上两步仅完成序列中一部分的 Attention 结果，需要将 Attention 结果进行合并，合并方式与FlashAttention 类似。
 下面是 Cascade Attention 的源码：
 
-`class BatchDecodeWithSharedPrefixPagedKVCacheWrapper:
-
 ```python
+class BatchDecodeWithSharedPrefixPagedKVCacheWrapper:
     def forward(
         self,
         q: torch.Tensor,

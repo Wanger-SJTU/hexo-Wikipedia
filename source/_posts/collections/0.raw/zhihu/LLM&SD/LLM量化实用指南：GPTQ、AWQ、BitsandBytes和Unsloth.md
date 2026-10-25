@@ -144,9 +144,8 @@ Unsloth支持表格改编自官方仓库Unsloth与HuggingFace和vllm兼容，我
 
 我们将使用Google Colab Notebook环境。我们实验使用最高24GB VRAM的模型。首先，我们安装以下库。
 
-`pip install auto-gptq autoawq trl bitsandbytes>=0.39.0
-
 ```bash
+pip install auto-gptq autoawq trl bitsandbytes>=0.39.0
 pip install accelerate transformers optimum
 pip install git+https://github.com/unslothai/unsloth.git`
 ```
@@ -159,7 +158,7 @@ pip install git+https://github.com/unslothai/unsloth.git`
 - <strong>如何加载GPTQ预量化模型</strong>
 要加载GPTQ预量化模型，你只需要将你想使用的模型名称传递给AutoModelForCausalLM类。当你将device_map设置为“auto”时，系统会自动利用可用的GPU。让我们使用以下代码加载Mistral 7B模型。
 
-`from transformers import AutoModelForCausalLM
+from transformers import AutoModelForCausalLM
 ​
 model_name_or_path = "TheBloke/Mistral-7B-Instruct-v0.1-GPTQ"
 model = AutoModelForCausalLM.from_pretrained(model_name_or_path, device_map="auto")`
@@ -173,7 +172,7 @@ Mistral-GPTQ VRAM使用情况（作者提供）加载模型部分完成。
 - <strong>如何使用GPTQ预量化模型进行推理</strong>
 我们可以按照与非量化模型相同的程序进行推理。在这种情况下，我们可以使用名为apply_chat_template的分词器函数来制作LLM输入。我问量化模型如何制作蛋黄酱。我们可以使用transformers API编写以下代码。
 
-`messages = [
+messages = [
 
 ```text
     {"role": "user", "content": "What is your favourite condiment?"},
@@ -214,7 +213,7 @@ print(decoded[0])
 - <strong>如何量化和保存我们自己的GPTQ模型？</strong>
 现在，让我们量化Llama3.2 3B。我们需要为GPTQ量化定义GPTQConfig类。我们可以传递校准数据集，可以在[“c4”, “wikitext2”, “c4-new”]中选择。我们应该使用相同的数据集来避免过拟合。由于Llama没有公开使用哪个数据集进行训练，我选择wikitext2作为安全选项。以下代码显示了GPTQ量化。
 
-`from transformers import GPTQConfig, AutoModelForCausalLM, AutoTokenizer
+from transformers import GPTQConfig, AutoModelForCausalLM, AutoTokenizer
 ​
 # setting 
 model_id = "meta-llama/Llama-3.2-3B"
@@ -225,8 +224,12 @@ gptq_config = GPTQConfig(bits=4, dataset="wikitext2", tokenizer=tokenizer)
 quantized_model = AutoModelForCausalLM.from_pretrained(model_id, device_map="auto", quantization_config=gptq_config)
 ​
 # save quantized model
+
+```text
 quantized_model.save_pretrained(result_dir)
 tokenizer.save_pretrained(result_dir)`
+```
+
 
 对3B模型进行量化大约需要30分钟。当我们保存量化模型时，输出目录将如下图所示。
 
@@ -246,7 +249,7 @@ tokenizer.save_pretrained(result_dir)`
 - <strong>如何加载AWQ预量化模型</strong>
 要加载AWQ预量化模型，你只需要将你想使用的模型名称传递给AutoModelForCausalLM类。当你将device_map设置为“auto”时，系统会自动利用可用的GPU。让我们使用以下代码加载Mistral 7B模型。
 
-`model_name_or_path = "TheBloke/Mistral-7B-Instruct-v0.1-AWQ"
+model_name_or_path = "TheBloke/Mistral-7B-Instruct-v0.1-AWQ"
 model = AutoModelForCausalLM.from_pretrained(model_name_or_path, device_map="auto")`
 
 你可以看到，我们可以只用~5GB VRAM就加载一个量化的7B模型。
@@ -260,7 +263,7 @@ Mistral AWQ VRAM使用情况（作者提供）
 - 如何使用AWQ预量化模型进行推理**
 我们可以像正常的CausalLM推理一样使用预量化模型进行推理。在这种情况下，分词器没有chat_template，所以我们必须传递模板。推理代码如下所示。
 
-`prompt = "Tell me about blackhole."
+prompt = "Tell me about blackhole."
 prompt_template=f'''{prompt}'''
 ​
 ​
@@ -294,7 +297,7 @@ print(decoded)
 - <strong>如何量化和保存我们自己的AWQ模型？</strong>
 现在，让我们量化Llama3.2 3B。首先，我们需要以字典格式定义AWQ量化的配置。我选择了4位量化和零点量化。此外，AWQ模型有一个特定的类，所以我们需要用模型名称加载它。以下代码显示了AWQ量化。
 
-`model_path = "meta-llama/Llama-3.2-3B"
+model_path = "meta-llama/Llama-3.2-3B"
 quant_config = {"zero_point": True, "q_group_size": 128, "w_bit": 4, "version":"GEMM"}
 ​
 # Load model
@@ -306,7 +309,7 @@ model.quantize(tokenizer, quant_config=quant_config)`
 
 对3B模型进行量化需要15分钟。要保存AWQ量化的模型，我们需要修改模型和配置的某些部分，使其与transformers兼容。
 
-`# modify the config file so that it is compatible with transformers integration
+# modify the config file so that it is compatible with transformers integration
 quantization_config = AwqConfig(
 
 ```text
@@ -322,8 +325,12 @@ quantization_config = AwqConfig(
 model.model.config.quantization_config = quantization_config
 
 # save model weights
+
+```text
 model.save_quantized(result_dir)
 tokenizer.save_pretrained(result_dir)`
+```
+
 
 当我们保存量化模型时，输出目录将如下图所示。它看起来像GPTQ量化模型的保存目录。
 
@@ -343,7 +350,7 @@ AWQ输出目录图片（作者提供）
 - <strong>如何使用BitsandBytes实现QLoRA？</strong>
 在本节中，我们将使用BitsandBytes 4位量化实现QLoRA。现在，我们将微调llama3.2 3B使其成为指令调整的聊天机器人。首先，我们需要配置BitsandBytes 4位配置。我们使用与QLoRA论文相同的设置，它具有NormalFloat4数据类型和双重量化。
 
-`# configure BitsandBytes configuration for 4-bit quantization
+# configure BitsandBytes configuration for 4-bit quantization
 bnb_config = BitsAndBytesConfig(
    load_in_4bit=True,
    bnb_4bit_quant_type="nf4",
@@ -361,7 +368,7 @@ model_nf4.gradient_checkpointing_enable()`
 
 接下来，我们需要为模型微调定义LoRA。LoraConfig中的以下参数是超参数，所以我们必须调整它们。我们可以通过应用get_peft_model函数获得LoRA模型。
 
-`config = LoraConfig(
+config = LoraConfig(
 
 ```text
     r=16, 
@@ -385,7 +392,7 @@ model_nf4 = get_peft_model(model_nf4, config)`
 
 使用BitsandBytes量化的Llama3.2 VRAM使用情况图片（作者提供）对于指令调整数据集，我们使用grade-school-math-instructions[5]。我们可以通过dataset API加载它。
 
-`dataset = load_dataset("qwedsacf/grade-school-math-instructions", split='train')
+dataset = load_dataset("qwedsacf/grade-school-math-instructions", split='train')
 
 # 示例数据
 # Instruction:
@@ -395,9 +402,8 @@ model_nf4 = get_peft_model(model_nf4, config)`
 
 trl库存在于实现指令调整。我们想使用trl库中的监督微调(SFT) Trainer来方便使用，所以我们需要修改我们的数据格式以适应SFTTrainer。我们通过定义如下的格式函数来格式化我们的数据。
 
-`def formatting_prompts_func(example):
-
-```text
+```python
+def formatting_prompts_func(example):
     output_texts = []
     for i in range(len(example['INSTRUCTION'])):
         text = f"### Question: {example['INSTRUCTION'][i]}\n ### Answer: {example['RESPONSE'][i]}"
@@ -408,12 +414,12 @@ trl库存在于实现指令调整。我们想使用trl库中的监督微调(SFT)
 
 接下来，我们定义整理器来使模型只针对给定的数据集答案进行训练。有一个名为“DataCollatorForCompleionOnlyLM”的类可以完成这项工作，所以我们只需要用答案模板实例化这个类来区分给定输入中的答案部分。
 
-`response_template = " ### Answer:"
+response_template = " ### Answer:"
 collator = DataCollatorForCompletionOnlyLM(response_template=response_template, tokenizer=tokenizer, mlm=False)`
 
 最后，在我们定义了训练参数之后，我们可以开始训练！处理整个数据集大约需要2小时。在这篇博客中，为了训练速度，数据量被限制了。
 
-`output_dir = os.path.join(base_dir, "llama3.2-3B-qlora")
+output_dir = os.path.join(base_dir, "llama3.2-3B-qlora")
 per_device_train_batch_size = 8
 gradient_accumulation_steps = 4
 optim = "paged_adamw_32bit"
@@ -456,14 +462,14 @@ trainer = SFTTrainer(
     formatting_func=formatting_prompts_func,
     data_collator=collator,
 )
+
+trainer.train()`
 ```
 
 
-trainer.train()`
-
 训练后，我们需要保存模型。我们可以使用以下方法。
 
-`# 保存模型
+# 保存模型
 trainer.save_model(output_dir)`
 
 我们可以保存分词器和LoRA模型权重。保存的目录看起来如下图所示。
@@ -475,13 +481,13 @@ trainer.save_model(output_dir)`
 - 如何使用训练好的QLoRA模型进行推理？**
 当我们加载QLoRA模型时，我们只需要传递trainer.save_model()的保存目录。
 
-`tokenizer = AutoTokenizer.from_pretrained(output_dir)
+tokenizer = AutoTokenizer.from_pretrained(output_dir)
 tokenizer.pad_token = tokenizer.eos_token
 model = AutoModelForCausalLM.from_pretrained(output_dir, load_in_4bit=True, device_map="auto")`
 
 现在，使用测试数据集检查微调结果。我们使用以下问题比较结果。
 
-`There are 180 school days in the academic year. 
+There are 180 school days in the academic year. 
 Aliyah packs a lunch half the time. 
 Becky packs her lunch half as much as Aliyah. 
 How many days a year does Becky pack her lunch?
@@ -493,7 +499,7 @@ Find the solution. `
 
 QLoRA模型的推理如下所示。
 
-`Aliyah packs her lunch =90 days.
+Aliyah packs her lunch =90 days.
 Becky packs her lunch =45 days.`
 
 如你所见，即使使用小数据集，我们也可以微调模型！当我们有限的计算资源和数据时，QLoRA真的很有用。 
@@ -503,7 +509,7 @@ Becky packs her lunch =45 days.`
 - <strong>如何使用Unsloth实现QLoRA？</strong>
 当我们使用Unsloth应用QLoRA时，过程与使用BitsandBytes的QLoRA非常相似。不同的部分是如何加载模型和分词器。当我们使用Unsloth加载模型时，我们需要使用Unsloth包装器和Unsloth定义的模型，如下所示。你可以看到模型类和模型名称与前一节不同。
 
-`max_seq_length = 2048 # 选择任意值！我们内部自动支持RoPE缩放！
+max_seq_length = 2048 # 选择任意值！我们内部自动支持RoPE缩放！
 dtype = None # None用于自动检测。Tesla T4、V100使用Float16，Ampere+使用Bfloat16
 load_in_4bit = True # 使用4位量化来减少内存使用。可以为False。
 
@@ -520,7 +526,7 @@ model, tokenizer = FastLanguageModel.from_pretrained(
 
 要加载LoRA适配器，我们也需要使用Unsloth包装器，如下所示。
 
-`model = FastLanguageModel.get_peft_model(
+model = FastLanguageModel.get_peft_model(
     model,
 
 ```text
@@ -545,7 +551,7 @@ model, tokenizer = FastLanguageModel.from_pretrained(
 
 Unsloth VRAM使用情况图片（作者提供）除了上述设置外，其余部分几乎相同。我们使用SFTTrainer进行微调。处理整个数据集大约需要2小时。在这篇博客中，为了训练速度，数据量被限制了。
 
-`trainer = SFTTrainer(
+trainer = SFTTrainer(
     model,
 
 ```text
@@ -554,22 +560,26 @@ Unsloth VRAM使用情况图片（作者提供）除了上述设置外，其余�
     formatting_func=formatting_prompts_func,
     data_collator=collator,
 )
+
+trainer.train()`
 ```
 
 
-trainer.train()`
-
 训练后，我们需要保存模型。我们可以使用以下方法。保存的目录看起来如下图所示。
 
-`# 只保存LoRA权重
+# 只保存LoRA权重
+
+```text
 model.save_pretrained(os.path.join(output_dir, "lora_model"))
 tokenizer.save_pretrained(os.path.join(output_dir, "lora_model"))`
+```
+
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_bd5d3a96c991.jpg)
 
 保存目录图片（作者提供）这种方法保存了一个名为adapter_config.json的配置文件用于加载模型。在推理时，Unsloth会自动读取设置，我们只需要传递保存LoRA权重和配置的目录名称。
 
-`model, tokenizer = FastLanguageModel.from_pretrained(
+model, tokenizer = FastLanguageModel.from_pretrained(
 
 ```text
         model_name = os.path.join(output_dir, "lora_model"), # 你用于训练的模型
@@ -577,13 +587,13 @@ tokenizer.save_pretrained(os.path.join(output_dir, "lora_model"))`
         dtype=None,
         load_in_4bit=True,
     )
+FastLanguageModel.for_inference(model) # 启用原生2倍速推理`
 ```
 
-FastLanguageModel.for_inference(model) # 启用原生2倍速推理`
 
 我们可以以与标准HuggingFace CausalLM相同的方式推理给定的句子。
 
-`prompt = f"###Question: {dataset['test']['INSTRUCTION'][idx]}\n ### Answer:"
+prompt = f"###Question: {dataset['test']['INSTRUCTION'][idx]}\n ### Answer:"
 prompt_template=f'''{prompt}'''
 ​
 tokens = tokenizer(prompt_template, return_tensors="pt").input_ids.cuda()
@@ -601,7 +611,7 @@ print(tokenizer.batch_decode(outputs, skip_special_tokens=True)[0])`
 
 这是BitsandBytes QLoRA部分中相同示例问题的结果。它可以正确回答问题！
 
-`Aliyah packs her lunch  = 90 days.
+Aliyah packs her lunch  = 90 days.
 Becky packs her lunch  = 45 days.`
 
 在这篇博客中，我们从基础开始学习了最近流行的量化技术的概念。随着最近LLMs规模的增长，量化的重要性变得越来越高。这种技术对实际的AI应用很有帮助，我希望这篇博客能帮助你进入量化领域。下面的代码可以用来复现这篇博客的结果。

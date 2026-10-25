@@ -100,7 +100,7 @@ https://distill.pub/2021/gnn-intro/
       来源：ImageNet Classification with Deep Convolutional Neural Networks
 #### 3.2 从Word2Vec到Anything2Vec
 
-`Man :          [1,0,0,0,0,0,0,0]
+Man :          [1,0,0,0,0,0,0,0]
 Woman :        [0,1,0,0,0,0,0,0]
 King:          [0,0,1,0,0,0,0,0]
 Queen:         [0,0,0,1,0,0,0,0]

@@ -17,9 +17,8 @@ source_url: https://zhuanlan.zhihu.com/p/553071153
 
 本文分享我自己造的trim，基于std ranges库，因为基于标准库开发，所以没有任何负担。
 
-`#include 
-
 ```cpp
+#include 
 #include 
 #include 
 #include 
@@ -114,7 +113,6 @@ auto filter(const std::string_view sand, const char droped_ch = ' ') {
 }
 ```
 
-`
 
 除了trim可以去除原串两边的特殊字符，还构造了一个filter函数用来去除字符串中出现的特殊字符，比如说你想去除一个字符串中的空格字符串，那么传一个参数给filter就可以返回一个vector string，里面就有你想要的“不含空格”的子串。
 
@@ -139,8 +137,7 @@ auto filter(const std::string_view sand, const char droped_ch = ' ') {
 
 这就是以下代码的作用。
 
-`views::counted(str.cbegin()+ left_pos, right_pos - left_pos)
-`
+views::counted(str.cbegin()+ left_pos, right_pos - left_pos)
 
 代码的最后，我们用move函数已经把满足要求的字符插入到vector string, 最后返回这个容器，就可以方便后续其他人处理了。
 

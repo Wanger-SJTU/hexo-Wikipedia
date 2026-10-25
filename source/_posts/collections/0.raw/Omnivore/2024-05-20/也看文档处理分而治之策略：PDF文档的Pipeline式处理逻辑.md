@@ -69,9 +69,9 @@ result = table_engine(img)
 save_structure_res(result, save_folder,os.path.basename(img_path).split('.')[0])
 
 for line in result:
-    line.pop('img')
 
 ```python
+    line.pop('img')
     print(line)
 
 from PIL import Image
@@ -83,7 +83,6 @@ image = Image.open(img_path).convert('RGB')
 im_show = draw_structure_result(image, result,font_path=font_path)
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
-`
 
 地址：https://github.com/PaddlePaddle/PaddleOCR/blob/133d67f27dc8a241d6b2e30a9f047a0fb75bebbe/ppstructure/layout/README\_ch.md
 

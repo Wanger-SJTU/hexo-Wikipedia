@@ -23,9 +23,8 @@ source_url: https://zhuanlan.zhihu.com/p/623724335
 
 我们直接写一段 Hello World 的 C 代码：
 
-`#include 
-
 ```cpp
+#include 
 int main()
 {
     printf("Hello World!\n");
@@ -42,7 +41,7 @@ int main()
 
 我们看一下大小：
 
-`$ wc -c hello_world
+$ wc -c hello_world
 16048 hello_world`
 
 这个最最最简单的程序竟然高达 16048 字节！
@@ -51,9 +50,8 @@ int main()
 
 我们只打印一个字符串，显然不需要 `printf` 这么高级的东西。我们把 `printf` 改为 `puts`：
 
-`#include 
-
 ```cpp
+#include 
 int main()
 {
     puts("Hello World!\n");
@@ -68,7 +66,7 @@ int main()
 
 我们看一下大小：
 
-`$ wc -c hello_world
+$ wc -c hello_world
 16048 hello_world`
 
 你猜怎么着？<strong>编译器比我们聪明多了！</strong>他不需要我们提醒，早就自动帮我们把 `printf` 优化成 `puts` 了！
@@ -83,7 +81,7 @@ int main()
 
 我们查看一下程序的符号表：
 
-`$ nm hello_world
+$ nm hello_world
 0000000000003dc8 d _DYNAMIC
 0000000000003fb8 d _GLOBAL_OFFSET_TABLE_
 0000000000002000 R _IO_stdin_used
@@ -128,7 +126,7 @@ int main()
 
 两种方法效果是一样的。现在文件的大小为：
 
-`$ wc -c hello_world
+$ wc -c hello_world
 14472 hello_world`
 
 ### 进阶优化
@@ -137,7 +135,7 @@ int main()
 
 C 代码显然还是太重型了。一切优化的尽头是汇编，所以我们使用汇编重写程序：
 
-`; hello_world.asm
+; hello_world.asm
   BITS 64                 ; change to 64-bit mode
   GLOBAL main
   SECTION .data
@@ -163,12 +161,12 @@ C 代码显然还是太重型了。一切优化的尽头是汇编，所以我们
 
 我们编译程序：
 
-`$ nasm -f elf64 hello_world.asm
+$ nasm -f elf64 hello_world.asm
 $ gcc -m64 -s -o hello_world hello_world.o`
 
 现在看看大小：
 
-`$ wc -c hello_world
+$ wc -c hello_world
 14256 hello_world`
 
 很好，又小了一些。
@@ -179,7 +177,7 @@ $ gcc -m64 -s -o hello_world hello_world.o`
 
 这是因为它会自动链接到 `crt` 库。我们的目标是不用这个库，定义自己的函数入口：
 
-`; hello_world.asm
+; hello_world.asm
   BITS 64                 ; change to 64-bit mode
   GLOBAL nomainhere
   SECTION .data
@@ -205,12 +203,12 @@ $ gcc -m64 -s -o hello_world hello_world.o`
 
 编译时指定无 start files：
 
-`$ nasm -f elf64 hello_world.asm
+$ nasm -f elf64 hello_world.asm
 $ gcc -m64 -nostartfiles -s -o hello_world hello_world.o`
 
 现在看看大小：
 
-`$ wc -c hello_world
+$ wc -c hello_world
 13176 hello_world`
 
 很好，又小了一些。
@@ -219,7 +217,7 @@ $ gcc -m64 -nostartfiles -s -o hello_world hello_world.o`
 
 我们看看现在的可执行 elf 中有什么：
 
-`$ readelf -S -W ./hello_world
+$ readelf -S -W ./hello_world
 There are 12 section headers, starting at offset 0x3078:
 
 Section Headers:
@@ -241,7 +239,7 @@ Section Headers:
 
 我们直接手动设置符号链接 `link.lds`：
 
-`ENTRY(nomainhere)
+ENTRY(nomainhere)
 SECTIONS
 
 ```text
@@ -255,13 +253,13 @@ SECTIONS
 
 然后链接：
 
-`$ nasm -f elf64 hello_world.asm
+$ nasm -f elf64 hello_world.asm
 $ ld -T link.lds -o hello_world hello_world.o
 $ strip hello_world`
 
 现在看看大小：
 
-`$ wc -c hello_world
+$ wc -c hello_world
 440 hello_world`
 
 巨大的进步！
@@ -272,7 +270,7 @@ $ strip hello_world`
 
 我们之前都直接用 nasm 和 ld 生成的 elf。但众所周知，elf 为了其鲁棒性，有一堆不太需要的内容。我们直接自定义其格式：
 
-`; hello_world.asm
+; hello_world.asm
   BITS 64
   org 0x400000
 
@@ -341,7 +339,7 @@ $ strip hello_world`
 
 现在看看大小：
 
-`$ wc -c hello_world
+$ wc -c hello_world
 164 hello_world`
 
 更小了！
@@ -352,7 +350,7 @@ $ strip hello_world`
 
 elf 文件格式规定，除了文件头之外，别的部分可以出现在任何地方——甚至可以重叠！嘿嘿，那我们就可以把 `phdr` 往前移一移了：
 
-`; hello_world.asm
+; hello_world.asm
   BITS 64
   org 0x400000
 
@@ -416,7 +414,7 @@ elf 文件格式规定，除了文件头之外，别的部分可以出现在任�
 
 现在我们的程序大小为：
 
-`$ nasm -f bin hello_world.asm
+$ nasm -f bin hello_world.asm
 $ wc -c hello_world
 156 hello_world`
 
@@ -428,7 +426,7 @@ $ wc -c hello_world
 
 一些 `mov` 数字的指令可以更换为 `push` 和 `pop`，这样会更省空间：
 
-`; hello_world.asm
+; hello_world.asm
   BITS 64
   org 0x400000
 
@@ -487,7 +485,7 @@ $ wc -c hello_world
 
 此时，文件大小变为：
 
-`$ nasm -f bin hello_world.asm
+$ nasm -f bin hello_world.asm
 $ wc -c hello_world
 151 hello_world`
 
@@ -505,7 +503,7 @@ $ wc -c hello_world
 
  大佬提供的思路，对汇编的优化还可以更进一步，程序如下
 
-`; hello_world.asm
+; hello_world.asm
   BITS 64
   org 0x400000
 

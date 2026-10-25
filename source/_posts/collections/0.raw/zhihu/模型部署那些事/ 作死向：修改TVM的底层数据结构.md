@@ -29,9 +29,8 @@ source_url: https://zhuanlan.zhihu.com/p/151265644
 
 首先把`3rdparty/dlpack/include/dlpack/dlpack.h`的`DLDataType::lanes`改为`int32_t`（顺便把code和bits也都改成`uint16_t`，这样可以构成一个64-bits的packed-struct，方便跨域的传输）。
 
-`typedef struct {
-
 ```text
+typedef struct {
   /*!
    * \brief Type code of base types.
    * We keep it uint8_t instead of DLDataTypeCode for minimal memory
@@ -47,13 +46,12 @@ source_url: https://zhuanlan.zhihu.com/p/151265644
 ```
 
 } DLDataType;
-`
 
 然后编译一下，有几个涉及类型转换地方的会报错，修改之：
 
 - `include/tvm/runtime/data_type.h:75`:
 
-`DataType(int code, int bits, int lanes) {
+DataType(int code, int bits, int lanes) {
 
 ```text
     data_.code = static_castuint16_t>(code); // MARK
@@ -65,11 +63,10 @@ source_url: https://zhuanlan.zhihu.com/p/151265644
 }
 ```
 
-`
 
 - `include/tvm/runtime/serializer.h:41,46`:
 
-`inline static void Write(Stream* strm, const DLDataType& dtype) {
+inline static void Write(Stream* strm, const DLDataType& dtype) {
   Handleruint16_t>::Write(strm, dtype.code); // MARK
   Handleruint16_t>::Write(strm, dtype.bits); // MARK
   Handlerint32_t>::Write(strm, dtype.lanes); // MARK
@@ -88,7 +85,6 @@ inline static bool Read(Stream* strm, DLDataType* dtype) {
 }
 ```
 
-`
 
 #### Cython相关
 
@@ -96,28 +92,26 @@ inline static bool Read(Stream* strm, DLDataType* dtype) {
 
 - `python/tvm/_ffi/_cython/base.pxi:47`:
 
-`ctypedef struct DLDataType:
+ctypedef struct DLDataType:
     uint16_t code # MARK
     uint16_t bits # MARK
     int32_t lanes # MARK
-`
 
 - `python/tvm/_ffi/runtime_ctypes.py:64`:
 
-`_fields_ = [("type_code", ctypes.c_uint16), # MARK
+_fields_ = [("type_code", ctypes.c_uint16), # MARK
 
 ```text
             ("bits", ctypes.c_uint16), # MARK
             ("lanes", ctypes.c_int32)] # MARK
 ```
 
-`
 
 #### LLVM生成的Host端代码
 
 之后可以正常地进行代码生成了（`tvm.build`），但一旦部署运行就会出问题，比如运行下面的代码：
 
-`A = te.placeholder((101,), dtype="float32", name="A")
+A = te.placeholder((101,), dtype="float32", name="A")
 B = te.compute((101,), lambda i: A[i] + 1, name="B")
 s = te.create_schedule([B.op])
 
@@ -127,18 +121,16 @@ a_np = np.random.uniform(size=(101,)).astype(A.dtype)
 a = tvm.nd.array(a_np, ctx)
 b = tvm.nd.array(np.zeros((101,), dtype=B.dtype), ctx)
 fun(a, b)
-`
 
 会报错：
 
-`TVMError: Check failed: ret == 0 (-1 vs. 0) : Assert fail: (((tvm_struct_get(arg0, 0, 5) == (uint8)2) && (tvm_struct_get(arg0, 0, 6) == (uint8)32)) && (tvm_struct_get(arg0, 0, 7) == (uint16)1)), arg0.dtype is expected to be float32
-`
+TVMError: Check failed: ret == 0 (-1 vs. 0) : Assert fail: (((tvm_struct_get(arg0, 0, 5) == (uint8)2) && (tvm_struct_get(arg0, 0, 6) == (uint8)32)) && (tvm_struct_get(arg0, 0, 7) == (uint16)1)), arg0.dtype is expected to be float32
 
 尴尬的是从traceback上来看该错误是一个Foreign-Function-Call造成的，仅靠调试很难进行溯源。
 
 用`grep`搜索`dtype is expected to be`，发现了错误的可能来源：`src/tir/transforms/arg_binder.cc:170`，修改之：
 
-`  type_err_msg  arg_name  ".dtype is expected to be "  dtype;
+  type_err_msg  arg_name  ".dtype is expected to be "  dtype;
   PrimExpr cond = (TVMArrayGet(DataType::UInt(16), handle, intrinsic::kArrTypeCode) ==
 
 ```text
@@ -149,11 +141,10 @@ fun(a, b)
                        IntImm(DataType::Int(32), dtype.lanes())); // MARK
 ```
 
-`
 
 但是这样修改一下，甚至连`tvm.build`都运行不了了，在LLVM/CPU代码生成（Host端代码生成）时会出问题。这里困惑了我很久，之后我把`arg_binder.cc`的修改取消后，查看了一下生成的LLVM IR才发现问题：
 
-`; ModuleID = 'TVMMod'
+; ModuleID = 'TVMMod'
 source_filename = "TVMMod"
 target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
 target triple = "x86_64-pc-linux-gnu"
@@ -161,13 +152,12 @@ target triple = "x86_64-pc-linux-gnu"
 %0 = type { i8*, %1, i32, %2, i64*, i64*, i64 }
 %1 = type { i32, i32 }
 %2 = type { i8, i8, i16 } # MARK
-`
 
 原来TVM生成Host端代码时还会自己再构造一遍`DLTensor`、`DLContext`、`DLDataType`等底层结构（对应代码的`%0`、`%1`、`%2`）。
 
 这样一来就很好找了，直接用`grep`搜索`StructType::create`，很快就发现了错误来源：`src/target/llvm/codegen_cpu.c:47`，修改之：
 
-`// TVM runtime types
+// TVM runtime types
 t_tvm_shape_index_ = llvm::Type::getIntNTy(*ctx, DataType::ShapeIndex().bits());
 t_tvm_context_ = llvm::StructType::create({t_int_, t_int_});
 t_tvm_type_ = llvm::StructType::create({t_int16_, t_int16_, t_int32_}); // MARK
@@ -188,7 +178,6 @@ ftype_tvm_parallel_lambda_ = llvm::FunctionType::get(
 ```
 
 md_tbaa_ctx_ptr_ = md_builder_->createTBAAScalarTypeNode("ctx_ptr", md_tbaa_root_);
-`
 
 改完之后就可以正常进行代码生成以及运行了。
 
@@ -196,22 +185,16 @@ md_tbaa_ctx_ptr_ = md_builder_->createTBAAScalarTypeNode("ctx_ptr", md_tbaa_root
 
 过了一段时间，用autotvm的时候又出了问题，根据报错信息溯源，问题似乎出在tvm的RPC模块，想必是跟`DLDataType`的数据读写有关。在RPC部分（`src/runtime/rpc/`）搜索`DLDataType`和`kTVMDataType`，很快就发现了问题源头，在`src/runtime/rpc/rpc_protocol:225,344`：
 
-`case kTVMDataType: {
-
 ```text
+case kTVMDataType: {
     channel->Write(value.v_type);
     // padding
     int32_t padding = 0;
     channel->template Writeint32_t>(padding); // MARK
     break;
 }
-```
 
-`
-
-`case kTVMDataType: {
-
-```text
+case kTVMDataType: {
     channel->Read(&(value.v_type));
     int32_t padding = 0;
     channel->template Readint32_t>(&padding); // MARK
@@ -219,7 +202,6 @@ md_tbaa_ctx_ptr_ = md_builder_->createTBAAScalarTypeNode("ctx_ptr", md_tbaa_root
 }
 ```
 
-`
 
 这里tvm传输`TVMValue`需要凑齐8字节，而它“知道”`DLDataType`的大小为4字节（又是一处擅自假设`DLDataType`的结构与大小的代码），所以再额外读/写了4字节的padding。这里我们直接吧padding部分删掉就行了（因为之前把`DLDataType`改成了一个8字节的packed-struct）。
 

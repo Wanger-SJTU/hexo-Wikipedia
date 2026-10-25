@@ -27,9 +27,8 @@ $ab=m&#x21D2;eln&#x2061;ab=m&#x21D2;ebln&#x2061;a=m&#x21D2;ln&#x2061;ebln&#x2061
 
 所以我们知道所有的对数函数的计算都可化为两个 ln" role="presentation">ln\ln 函数相除，比如：
 
-`double log10(double x) {
-
 ```text
+double log10(double x) {
     return log(x) / log(10); // log == ln
 ```
 
@@ -39,9 +38,9 @@ $ab=m&#x21D2;eln&#x2061;ab=m&#x21D2;ebln&#x2061;a=m&#x21D2;ln&#x2061;ebln&#x2061
 
 这才开篇进入正题！我们先看 ln" role="presentation">ln\ln 函数的实现源码（程序里面都是用 log" role="presentation">log\log 代替 ln" role="presentation">ln\ln 表示自然底数的对数函数）：
 
-`#include "fdlibm.h"
+```cpp
+#include "fdlibm.h"
 
-```text
 #ifdef __STDC__
 static const double
 ```
@@ -186,7 +185,7 @@ $$\ln(x) = k\ln 2 + \ln (1+f) = k\ln2 + f - {ff\over2}  + s(\frac{ff}{2}+R(z)) $
 
 一年多来这个回答收到了很多赞，看来大家对计算机+数学都是真爱，刚好前两天顺道看到 Go 的源码，发现里面的 `log` 实现得更“可读”，于是贴出来给大家参考参考：
 
-`func log(x float64) float64 {
+func log(x float64) float64 {
 
 ```text
 	const (
@@ -232,7 +231,6 @@ $$\ln(x) = k\ln 2 + \ln (1+f) = k\ln2 + f - {ff\over2}  + s(\frac{ff}{2}+R(z)) $
 } 
 ```
 
-`
 
 算法还是同C一样的，这次看完相信大家一定能手写了！
 

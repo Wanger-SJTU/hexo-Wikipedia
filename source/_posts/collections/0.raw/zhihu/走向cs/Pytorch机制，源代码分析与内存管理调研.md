@@ -53,7 +53,7 @@ Mainly these parts are contained in `cuda` folder: Stream, Event, Broadcast, and
 
 #### optim
 
-`torch.optim` is a package implementing various optimization algorithms. Most commonly used methods are already supported, like `adam`, `sgd` and `adagrad`.
+torch.optim` is a package implementing various optimization algorithms. Most commonly used methods are already supported, like `adam`, `sgd` and `adagrad`.
 
 #### distributed
 
@@ -101,9 +101,8 @@ Access: <strong>THTensor</strong>. It provides access to the user.
 
 #### Data Storage
 
-`typedef struct THStorage
-
 ```text
+typedef struct THStorage
 {
 ```
 
@@ -123,16 +122,14 @@ Access: <strong>THTensor</strong>. It provides access to the user.
 ```
 
 } THStorage;
-`
 
 - All of the "Tensor" in CPU is, in fact, a C pointer pointing to a data structure in memory like this. And it uses reference count to do memory management.
 - refcount**: Here we apply the reference count method to do automatic garbage collection. When the reference number becomes 0, this struct will be freed automatically.
 
 #### Data Access
 
-`typedef struct THTensor
-
 ```cpp
+typedef struct THTensor
 {
  long *size;
  long *stride;
@@ -152,7 +149,6 @@ Access: <strong>THTensor</strong>. It provides access to the user.
 
 
 } THTensor;
-`
 
 - <strong>nDimension</strong>: The number of dimensions
 - <strong>size</strong>: It contains the length information of all dimensions.
@@ -164,9 +160,9 @@ Access: <strong>THTensor</strong>. It provides access to the user.
 
 #### `/c10/core/Allocator.h`
 
-`#include 
+```cpp
+#include 
 
-```text
 struct C10_API Allocator {
   virtual ~Allocator() = default;
 ```
@@ -191,13 +187,12 @@ struct C10_API Allocator {
 };
 ```
 
-`
 
 The `allocate` function is directly included from head file `memory`.
 
 #### `/aten/src/TH/THAllocator.cpp`
 
-`at::DataPtr THMapAllocator::makeDataPtr(const char *filename, int flags, size_t size, size_t* actual_size_out) {
+at::DataPtr THMapAllocator::makeDataPtr(const char *filename, int flags, size_t size, size_t* actual_size_out) {
   auto* context = new THMapAllocator(filename, flags, size);
 
 ```text
@@ -206,7 +201,6 @@ The `allocate` function is directly included from head file `memory`.
 }
 ```
 
-`
 
 ** Default allocator is malloc/free allocator. malloc and realloc raise an error (using THError) on allocation failure.
  
@@ -257,7 +251,7 @@ Here's a simplified example:
 
 #### File structure:
 
-`.
+.
 ├── add.c # Used to extend generic/add.c
 ├── add.h # Used to extend generic/add.h
 ├── general.h # Including other header files
@@ -267,9 +261,8 @@ Here's a simplified example:
 
 #### add.h
 
-`// add.h
-
 ```cpp
+// add.h
 #include "general.h"
 #define CONCAT_2_EXPAND(A, B) A ## B
 #define CONCAT_2(A, B) CONCAT_2_EXPAND(A, B)
@@ -298,9 +291,8 @@ Here's a simplified example:
 
 #### add.c
 
-`// add.c
-
 ```cpp
+// add.c
 #include "add.h"
 
 #define num float
@@ -322,9 +314,9 @@ Here's a simplified example:
 
 #### generic/add.h
 
-`// generic/add.h
-
 ```text
+// generic/add.h
+
 typedef struct Vector
 {
 ```
@@ -341,9 +333,9 @@ extern void Vector_(add)(Vector *C, Vector *A, Vector *B);`
 
 #### generic/add.c
 
-`// generic/add.c
-
 ```cpp
+// generic/add.c
+
 void Vector_(add)(Vector *C, Vector *A, Vector *B)
 {
 int i, n;
@@ -368,7 +360,7 @@ C->data[i] = A->data[i] + B->data[i];
 
 I try to find the definition of THStorage, since it will give us a brief understanding of the file management structure of PyTorch, and we can also grab a basic idea of how those macros and includes are forming this huge project. We start from `torch/csrc/Storage.cpp`, and check step by step to the file included.
 
-`Storage.cpp                 ->
+Storage.cpp                 ->
 
 ```cpp
 #include           ->
@@ -377,18 +369,15 @@ I try to find the definition of THStorage, since it will give us a brief underst
 #include 
 ```
 
-`
 
 Find the macro definition in `TH/generic/THStorage.h`:
 
-`#define THStorage at::StorageImpl
-`
+#define THStorage at::StorageImpl
 
 Find the structure definition in `c10/core/StorageImpl.h`:
 
-`namespace c10 {
-
 ```text
+namespace c10 {
 struct C10_API StorageImpl final : public c10::intrusive_ptr_target {
 ```
 
@@ -406,11 +395,10 @@ private:
 }
 ```
 
-`
 
 Therefore, the hidden real type of `THWStorage` is `at::StorageImpl`, and it is the implementation of data storage. Let's look into the definition of `THPStorage_(pynew)` at first, when the value of  `cdata` is not provided, it needs to create an implementation of class `THWStorage` using function `THWStorage_(NAME)`,  and the value of NAME can possibly be:
 
-`new                // New a THStorage, if size not specified, size=0, that means using default Allocator
+new                // New a THStorage, if size not specified, size=0, that means using default Allocator
 free
 size
 get
@@ -423,13 +411,14 @@ copyByte
 ...
 copyCudaByte
 ...
-`
 
 And also some macro definitions:
 
-`#define THWStorage_(NAME) THStorage_(NAME)     // torch/csrc/THP.h
+```text
+#define THWStorage_(NAME) THStorage_(NAME)     // torch/csrc/THP.h
 #define THStorage_(NAME) TH_CONCAT_4(TH,Real,Storage_,NAME)   // TH/THStorageFunctions.h
-`
+```
+
 
 The declaration of function `THStorage_(NAME)` lives in `TH/generic/THStorage.h`, `TH/generic/THStorageCopy.h` and the implementation part lies in corresponding cpp files.
 
@@ -437,7 +426,7 @@ The declaration of function `THStorage_(NAME)` lives in `TH/generic/THStorage.h`
 
 Take THStorage_(newWithSize) function as an example, look into `TH/generic/THStorage.cpp` and we can find the definition:
 
-`THStorage* THStorage_(newWithSize)(ptrdiff_t size)
+THStorage* THStorage_(newWithSize)(ptrdiff_t size)
 
 ```text
 {
@@ -458,17 +447,15 @@ Take THStorage_(newWithSize) function as an example, look into `TH/generic/THSto
 }
 ```
 
-`
 
 It's not hard to infer from this code block that it new a `StorageImpl`, and add an intrusive pointer pointing to one of them, at last return a pointer pointing to `StorageImpl` and destroy the intrusive pointer. Macro THStorage is `at::StorageImpl`, so this method simply new a `StorageImpl and return a pointer pointing to it. According to the definition of`c10::make_instrusive`, this work will actually be done by the constructor of StorageImpl' and it is:
 
-`StorageImpl(
+StorageImpl(
     caffe2::TypeMeta data_type,
     int64_4 numel,
     at::Allocator* allocator,
     bool resizable)
 ...
-`
 
 We will only trace here and this shows a representative example of how PyTorch inner code call and implement that method.
 
@@ -566,7 +553,7 @@ This context is inefficient because we have to do a dynamic allocation `Ineffici
 - There is a fake allocator in Aten(`aten/src/ATen/CPUFixedAllocator.h`), which just throws exceptions if some CPU fixed operation is actually used, like `cpu_fixed_malloc`, `cpu_fixed_realloc`, `cpu_fixed_free`.
 - `c10/core/CPUAllocator.cpp` contains functions: `alloc_cpu`, `free_cpu`, `memset_junk`,  `alloc_cpu` even has the code dealing with NUMA machine. And there is a class `MemoryAllocationReporter` which is used to report C10's memory allocation and deallocation status.
 - `c10/core/Allocator.cpp`: Set and get the allocator for the different device types.
-`DeviceType::CPU
+DeviceType::CPU
 DeviceType::CUDA
 DeviceType::OPENGL
 DeviceType::OPENCL
@@ -576,13 +563,12 @@ DeviceType::HIP
 DeviceType::FPGA
 DeviceType::MSNPU
 DeviceType::XLA
-`
 
 - `c10/core/StorageImpl.h` & `c10/core/Storage.h`: Mainly allocates memory buffer using a given allocator and creates storage with it. Mark.
  
 - `c10/cuda/CUDACachingAllocator.cpp` is a caching allocator for CUDA. It has the following description:
  
-`Yet another caching allocator for CUDA device allocations.
+Yet another caching allocator for CUDA device allocations.
 
  - Allocations are associated with a stream. Once freed, blocks can be
    re-allocated on the same stream, but not on any other stream.
@@ -619,11 +605,11 @@ DeviceType::XLA
 - Load `*.so` file inside a python file.
 - *Define the input type of a C function.
 - Call function inside the `*.so` file.
+
+```cpp
 function.c**
 
-`int myFunction(int num)
-
-```text
+int myFunction(int num)
 {
     if (num == 0){
         return 0;
@@ -644,7 +630,7 @@ function.c**
 
 <strong>function.py</strong>
 
-`import ctypes 
+import ctypes 
 NUM = 16      
 fun = ctypes.CDLL(libfun.so)   
 fun.myFunction.argtypes=[ctypes.c_int] 
@@ -654,9 +640,9 @@ returnVale = fun.myFunction(NUM)`
 
 If this is a C++ file, you need to expose the function you want to use in an `extern "C"` wrapper.
 
-`#include 
-
 ```cpp
+#include 
+
 class Foo{
     public:
         void bar(){
@@ -676,16 +662,15 @@ extern "C" {
 }
 ```
 
-`
 
 And then compile:
 
-`g++ -c -fPIC foo.cpp -o foo.o
+g++ -c -fPIC foo.cpp -o foo.o
 g++ -shared -Wl,-install_name,libfoo.so -o libfoo.so  foo.o`
 
 Afterward, things in Python code are similar as those in C.
 
-`from ctypes import cdll
+from ctypes import cdll
 lib = cdll.LoadLibrary('./libfoo.so')
 
 ```python
@@ -708,9 +693,9 @@ Include  the function in BOOST_PYTHON_MODULE
 
 A C++ Function can be exposed to Python by writing a Boost.Python wrapper:
 
-`#include **
+```cpp
+#include **
 
-```text
 char const* greet()
 {
    return "hello, world";
@@ -730,7 +715,7 @@ BOOST_PYTHON_MODULE(hello_ext)
 
 That's it. We're done. We can now build this as a shared library. The resulting DLL is now visible to Python. Here's a sample Python session:
 
-`>>> import hello_ext
+>>> import hello_ext
 >>> print hello_ext.greet()
 hello, world`
 
@@ -744,8 +729,11 @@ Besides integrate the C++ file in python and use it in Pytorch, Pytorch itself p
 
 For the “ahead of time” flavor, we build our C++ extension by writing a `setup.py` script that uses setuptools to compile our C++ code. For the LLTM, it looks as simple as this:
 
-`from setuptools import setup, Extension
+```python
+from setuptools import setup, Extension
 from torch.utils import cpp_extension
+```
+
 
 setup(name='lltm_cpp',
 
@@ -757,7 +745,7 @@ setup(name='lltm_cpp',
 
 The JIT compilation mechanism provides you with a way of compiling and loading your extensions on the fly by calling a simple function in PyTorch’s API called `torch.utils.cpp_extension.load()`. For the LLTM, this would look as simple as this:
 
-`from torch.utils.cpp_extension import load
+from torch.utils.cpp_extension import load
 
 lltm_cpp = load(name="lltm_cpp", sources=["lltm.cpp"])`
 
@@ -765,8 +753,11 @@ lltm_cpp = load(name="lltm_cpp", sources=["lltm.cpp"])`
 
 The integration of our CUDA-enabled op with PyTorch is again very straightforward. If you want to write a `setup.py` script, it could look like this:
 
-`from setuptools import setup
+```python
+from setuptools import setup
 from torch.utils.cpp_extension import BuildExtension, CUDAExtension
+```
+
 
 setup(
 
@@ -786,7 +777,7 @@ setup(
 
 Instead of `CppExtension()`, we now use `CUDAExtension()`. We can just specify the `.cu` file along with the `.cpp` files – the library takes care of all the hassle this entails for you. The JIT mechanism is even simpler:
 
-`from torch.utils.cpp_extension import load
+from torch.utils.cpp_extension import load
 
 lltm = load(name='lltm', sources=['lltm_cuda.cpp', 'lltm_cuda_kernel.cu'])`
 

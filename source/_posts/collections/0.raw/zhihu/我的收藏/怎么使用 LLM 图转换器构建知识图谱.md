@@ -67,7 +67,7 @@ source_url: https://zhuanlan.zhihu.com/p/1943429453502980274
 
 ，在本地创建数据库实例。示例代码：
 
-`fromlangchain_community.graphs importNeo4jGraph
+fromlangchain_community.graphs importNeo4jGraph
 graph =Neo4jGraph(  url="bolt://54.87.130.140:7687",  username="neo4j",  password="cables-anchors-directories",  refresh_schema=False)`
 ### LLM 图转换器
 
@@ -109,7 +109,7 @@ graph =Neo4jGraph(  url="bolt://54.87.130.140:7687",  username="neo4j",  passwor
 
 以下是一个`Node`类的示例，用于描述知识图谱中的节点：
 
-`classNode(BaseNode): id:str=Field(..., description="名称或人类可读的唯一标识符")  label:str=Field(..., description=f"可选项包括{enum_values}")  properties:Optional[List[Property]]`Node 类说明每个<strong>节点（Node）</strong>都包含以下部分：
+classNode(BaseNode): id:str=Field(..., description="名称或人类可读的唯一标识符")  label:str=Field(..., description=f"可选项包括{enum_values}")  properties:Optional[List[Property]]`Node 类说明每个<strong>节点（Node）</strong>都包含以下部分：
 
 •`id`：节点唯一标识符（要求是<strong>人类可读的唯一名称</strong>）。•说明：有些 LLM 会将 ID 理解为随机字符串或自增整数，但我们更希望 ID 能直接表示实体的名称。•`label`：节点标签（通过描述中列出可选项来限制标签类型）。•`properties`：可选的属性（用于存放节点的额外信息）。
 
@@ -117,7 +117,7 @@ graph =Neo4jGraph(  url="bolt://54.87.130.140:7687",  username="neo4j",  passwor
 
 Relationship 类定义接下来是<strong>关系（Relationship）</strong>的定义：
 
-`classRelationship(BaseRelationship):  source_node_id:str  source_node_label:str=Field(..., description=f"可选项包括{enum_values}")  target_node_id:str  target_node_label:str=Field(..., description=f"可选项包括{enum_values}") type:str=Field(..., description=f"可选项包括{enum_values}")  properties:Optional[List[Property]]`Relationship 类的改进（第二版）这是<strong>Relationship 类</strong>的第二个迭代版本。
+classRelationship(BaseRelationship):  source_node_id:str  source_node_label:str=Field(..., description=f"可选项包括{enum_values}")  target_node_id:str  target_node_label:str=Field(..., description=f"可选项包括{enum_values}") type:str=Field(..., description=f"可选项包括{enum_values}")  properties:Optional[List[Property]]`Relationship 类的改进（第二版）这是<strong>Relationship 类</strong>的第二个迭代版本。
 
 在最初的实现中，我们为关系的<strong>起始节点（source）</strong>和<strong>目标节点（target）</strong>使用了嵌套的`Node`对象。
 但实验发现：<strong>嵌套对象会降低提取的准确性和质量</strong>。
@@ -131,7 +131,7 @@ Relationship 类定义接下来是<strong>关系（Relationship）</strong>的�
 定义属性类（Property）在<strong>工具驱动提取</strong>模式下，我们可以为节点和关系都定义属性。
 以下是用于定义属性的`Property`类：
 
-`classProperty(BaseModel):"""由键值对组成的单个属性"""  key:str=Field(..., description=f"可选项包括{enum_values}")  value:str`属性（Property）的局限性每个<strong>Property</strong>都是以<strong>键值对（key-value pair）</strong>的形式定义。
+classProperty(BaseModel):"""由键值对组成的单个属性"""  key:str=Field(..., description=f"可选项包括{enum_values}")  value:str`属性（Property）的局限性每个<strong>Property</strong>都是以<strong>键值对（key-value pair）</strong>的形式定义。
 这种方式虽然灵活，但也存在一些局限：
 
 •无法为每个属性单独提供唯一的描述。•无法区分哪些属性是<strong>必填</strong>，哪些是<strong>可选</strong>—— 因此所有属性都被统一定义为可选。•属性并不是针对每种节点或关系类型分别定义的，而是<strong>在所有节点和关系之间共享</strong>。
@@ -170,7 +170,7 @@ ImportantNotes:-Donot addanyextra explanationsortext.`提示驱动模式的关�
 少样本示例（Few-shot Examples）在 Prompt 中，我们会加入若干<strong>少样本示例</strong>，用来引导 LLM 学习所需的抽取格式。
 下面是部分示例代码：
 
-`examples=[{"text":("Adam is a software engineer in Microsoft since 2009, ""and last year he got an award as the Best Talent"),"head":"Adam","head_type":"Person","relation":"WORKS_FOR","tail":"Microsoft","tail_type":"Company",},{"text":("Adam is a software engineer in Microsoft since 2009, ""and last year he got an award as the Best Talent"),"head":"Adam","head_type":"Person","relation":"HAS_AWARD","tail":"Best Talent","tail_type":"Award",},...]`自定义 Few-shot 示例的限制在<strong>提示驱动模式</strong>下，目前还<strong>不支持添加自定义的 few-shot 示例</strong>或额外的说明指令。
+examples=[{"text":("Adam is a software engineer in Microsoft since 2009, ""and last year he got an award as the Best Talent"),"head":"Adam","head_type":"Person","relation":"WORKS_FOR","tail":"Microsoft","tail_type":"Company",},{"text":("Adam is a software engineer in Microsoft since 2009, ""and last year he got an award as the Best Talent"),"head":"Adam","head_type":"Person","relation":"HAS_AWARD","tail":"Best Talent","tail_type":"Award",},...]`自定义 Few-shot 示例的限制在<strong>提示驱动模式</strong>下，目前还<strong>不支持添加自定义的 few-shot 示例</strong>或额外的说明指令。
 唯一的定制方式是通过`prompt`属性，直接修改整个 Prompt。
 
 > 扩展自定义选项是我们正在积极考虑的方向。
@@ -190,21 +190,21 @@ ImportantNotes:-Donot addanyextra explanationsortext.`提示驱动模式的关�
 
 的维基百科开头段落，并在结尾加了一句关于<strong>罗宾·威廉姆斯（Robin Williams）</strong>的描述。
 
-`fromlangchain_core.documents importDocument
+fromlangchain_core.documents importDocument
 text ="""MarieCurie,7November1867–4July1934, was a Polishand naturalised-French physicist and chemist who conducted pioneering research on radioactivity.She was the first woman to win a NobelPrize, the first person to win a NobelPrize twice,and the only person to win a NobelPrizein two scientific fields.Her husband,PierreCurie, was a co-winner of her first NobelPrize, making them the first-ever married couple to win the NobelPrizeand launching the Curie family legacy of five NobelPrizes.She was,in1906, the first woman to become a professor at the University of Paris.Also,RobinWilliams."""documents =[Document(page_content=text)]`使用 GPT-4o 作为 LLM
 
 在所有示例中，我们都使用 GPT-4o 作为底层 LLM：
 
-`fromlangchain_openai importChatOpenAIimportgetpassimportos
+fromlangchain_openai importChatOpenAIimportgetpassimportos
 os.environ["OPENAI_API_KEY"]= getpass.getpass("OpenAI api key")
 llm =ChatOpenAI(model='gpt-4o')`下面先看看在未定义任何图谱 schema 的情况下，抽取流程是如何工作的。
 
-`fromlangchain_experimental.graph_transformersimportLLMGraphTransformer
+fromlangchain_experimental.graph_transformersimportLLMGraphTransformer
 no_schema =LLMGraphTransformer(llm=llm)`接下来使用异步的`aconvert_to_graph_documents`来处理文档。 推荐在 LLM 抽取中使用 async：它可以并行处理多个文档，显著缩短等待时间、提升吞吐量，尤其适合批量场景。
 
-`data= await no_schema.aconvert_to_graph_documents(documents)`LLM Graph Transformer 的返回结果是一个图文档（graph document），其结构大致如下：
+data= await no_schema.aconvert_to_graph_documents(documents)`LLM Graph Transformer 的返回结果是一个图文档（graph document），其结构大致如下：
 
-`[GraphDocument(    nodes=[Node(id="Marie Curie",type="Person", properties={}),Node(id="Pierre Curie",type="Person", properties={}),Node(id="Nobel Prize",type="Award", properties={}),Node(id="University Of Paris",type="Organization", properties={}),Node(id="Robin Williams",type="Person", properties={}),],    relationships=[Relationship(       source=Node(id="Marie Curie",type="Person", properties={}),        target=Node(id="Nobel Prize",type="Award", properties={}),       type="WON",        properties={},),Relationship(       source=Node(id="Marie Curie",type="Person", properties={}),        target=Node(id="Nobel Prize",type="Award", properties={}),       type="WON",        properties={},),Relationship(       source=Node(id="Marie Curie",type="Person", properties={}),        target=Node(         id="University Of Paris",type="Organization", properties={}),       type="PROFESSOR",        properties={},),Relationship(       source=Node(id="Pierre Curie",type="Person", properties={}),        target=Node(id="Nobel Prize",type="Award", properties={}),       type="WON",        properties={},),],   source=Document(      metadata={"id":"de3c93515e135ac0e47ca82a4f9b82d8"},      page_content="\nMarie Curie, 7 November 1867 – 4 July 1934, was a Polish and naturalised-French physicist and chemist who conducted pioneering research on radioactivity.\nShe was the first woman to win a Nobel Prize, the first person to win a Nobel Prize twice, and the only person to win a Nobel Prize in two scientific fields.\nHer husband, Pierre Curie, was a co-winner of her first Nobel Prize, making them the first-ever married couple to win the Nobel Prize and launching the Curie family legacy of five Nobel Prizes.\nShe was, in 1906, the first woman to become a professor at the University of Paris.\nAlso, Robin Williams!\n",),)]`图文档与可视化图文档（graph document）中不仅描述了抽取出的<strong>节点（nodes）</strong>与<strong>关系（relationships）</strong>， 还会在`source`字段下附上<strong>抽取所依据的源文档</strong>，便于溯源与校验。
+[GraphDocument(    nodes=[Node(id="Marie Curie",type="Person", properties={}),Node(id="Pierre Curie",type="Person", properties={}),Node(id="Nobel Prize",type="Award", properties={}),Node(id="University Of Paris",type="Organization", properties={}),Node(id="Robin Williams",type="Person", properties={}),],    relationships=[Relationship(       source=Node(id="Marie Curie",type="Person", properties={}),        target=Node(id="Nobel Prize",type="Award", properties={}),       type="WON",        properties={},),Relationship(       source=Node(id="Marie Curie",type="Person", properties={}),        target=Node(id="Nobel Prize",type="Award", properties={}),       type="WON",        properties={},),Relationship(       source=Node(id="Marie Curie",type="Person", properties={}),        target=Node(         id="University Of Paris",type="Organization", properties={}),       type="PROFESSOR",        properties={},),Relationship(       source=Node(id="Pierre Curie",type="Person", properties={}),        target=Node(id="Nobel Prize",type="Award", properties={}),       type="WON",        properties={},),],   source=Document(      metadata={"id":"de3c93515e135ac0e47ca82a4f9b82d8"},      page_content="\nMarie Curie, 7 November 1867 – 4 July 1934, was a Polish and naturalised-French physicist and chemist who conducted pioneering research on radioactivity.\nShe was the first woman to win a Nobel Prize, the first person to win a Nobel Prize twice, and the only person to win a Nobel Prize in two scientific fields.\nHer husband, Pierre Curie, was a co-winner of her first Nobel Prize, making them the first-ever married couple to win the Nobel Prize and launching the Curie family legacy of five Nobel Prizes.\nShe was, in 1906, the first woman to become a professor at the University of Paris.\nAlso, Robin Williams!\n",),)]`图文档与可视化图文档（graph document）中不仅描述了抽取出的**节点（nodes）**与**关系（relationships）**， 还会在`source`字段下附上<strong>抽取所依据的源文档</strong>，便于溯源与校验。
 
 我们可以使用<strong>Neo4j Browser</strong>对结果进行可视化，从而获得更清晰、直观的理解。
 
@@ -220,7 +220,7 @@ no_schema =LLMGraphTransformer(llm=llm)`接下来使用异步的`aconvert_to_gra
 
 使用提示驱动模式（Prompt-based）进行同样的抽取对于<strong>支持工具</strong>的模型，也可以通过设置`ignore_tool_usage`参数来启用<strong>提示驱动模式</strong>：
 
-`no_schema_prompt=LLMGraphTransformer(llm=llm, ignore_tool_usage=True)data= await no_schema.aconvert_to_graph_documents(documents)`![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_2f74925ad0d3.jpg)
+no_schema_prompt=LLMGraphTransformer(llm=llm, ignore_tool_usage=True)data= await no_schema.aconvert_to_graph_documents(documents)`![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_2f74925ad0d3.jpg)
 
 使用提示驱动模式的效果与局限在<strong>提示驱动模式（prompt-based approach）</strong>下，不会出现“<strong>孤立节点</strong>”。
 不过，与之前的抽取一样，由于未定义 schema，<strong>同一输入在不同运行之间的结构仍可能变化</strong>，从而得到不同的输出。
@@ -235,7 +235,7 @@ no_schema =LLMGraphTransformer(llm=llm)`接下来使用异步的`aconvert_to_gra
 
 我们先用`allowed_nodes`参数定义期望抽取的节点类型：
 
-`allowed_nodes=["Person","Organization","Location","Award","ResearchField"]nodes_defined=LLMGraphTransformer(llm=llm, allowed_nodes=allowed_nodes)data= await allowed_nodes.aconvert_to_graph_documents(documents)`在这里，我们规定 LLM 只能抽取五类节点，如`Person`、`Organization`、`Location`等。 随后，可以在 Neo4j Browser 中对两次独立执行的结果进行可视化对比。
+allowed_nodes=["Person","Organization","Location","Award","ResearchField"]nodes_defined=LLMGraphTransformer(llm=llm, allowed_nodes=allowed_nodes)data= await allowed_nodes.aconvert_to_graph_documents(documents)`在这里，我们规定 LLM 只能抽取五类节点，如`Person`、`Organization`、`Location`等。 随后，可以在 Neo4j Browser 中对两次独立执行的结果进行可视化对比。
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_578c2150a024.jpg)
 
@@ -251,7 +251,7 @@ no_schema =LLMGraphTransformer(llm=llm)`接下来使用异步的`aconvert_to_gra
 
 第一种做法是以<strong>枚举列表</strong>的方式，指定允许的关系类型：
 
-`allowed_nodes =["Person","Organization","Location","Award","ResearchField"]allowed_relationships =["SPOUSE","AWARD","FIELD_OF_RESEARCH","WORKS_AT","IN_LOCATION"]
+allowed_nodes =["Person","Organization","Location","Award","ResearchField"]allowed_relationships =["SPOUSE","AWARD","FIELD_OF_RESEARCH","WORKS_AT","IN_LOCATION"]
 rels_defined =LLMGraphTransformer( llm=llm, allowed_nodes=allowed_nodes, allowed_relationships=allowed_relationships)
 data = await rels_defined.aconvert_to_graph_documents(documents)`随后，可以再次对两次独立抽取进行对比可视化，观察在限定了节点与关系之后，输出在结构与语义上的一致性是否显著提升。
 
@@ -269,7 +269,7 @@ data = await rels_defined.aconvert_to_graph_documents(documents)`随后，可以
 
 新增：关系的三元组约束（限定端点与方向）为了解决<strong>无法指定关系可连接的节点类型</strong>以及<strong>无法强制方向</strong>的问题，我们引入了新的关系定义方式，如下所示：
 
-`allowed_nodes =["Person","Organization","Location","Award","ResearchField"]allowed_relationships =[("Person","SPOUSE","Person"),("Person","AWARD","Award"),("Person","WORKS_AT","Organization"),("Organization","IN_LOCATION","Location"),("Person","FIELD_OF_RESEARCH","ResearchField")]
+allowed_nodes =["Person","Organization","Location","Award","ResearchField"]allowed_relationships =[("Person","SPOUSE","Person"),("Person","AWARD","Award"),("Person","WORKS_AT","Organization"),("Organization","IN_LOCATION","Location"),("Person","FIELD_OF_RESEARCH","ResearchField")]
 rels_defined =LLMGraphTransformer( llm=llm, allowed_nodes=allowed_nodes, allowed_relationships=allowed_relationships)
 data = await rels_defined.aconvert_to_graph_documents(documents)`使用三元组格式定义关系与之前用<strong>字符串列表</strong>定义关系不同，现在我们采用<strong>三元组（tuple）</strong>的格式来描述关系：
 
@@ -305,7 +305,7 @@ data = await rels_defined.aconvert_to_graph_documents(documents)`使用三元组
 
 示例代码：
 
-`allowed_nodes =["Person","Organization","Location","Award","ResearchField"]allowed_relationships =[("Person","SPOUSE","Person"),("Person","AWARD","Award"),("Person","WORKS_AT","Organization"),("Organization","IN_LOCATION","Location"),("Person","FIELD_OF_RESEARCH","ResearchField")]
+allowed_nodes =["Person","Organization","Location","Award","ResearchField"]allowed_relationships =[("Person","SPOUSE","Person"),("Person","AWARD","Award"),("Person","WORKS_AT","Organization"),("Organization","IN_LOCATION","Location"),("Person","FIELD_OF_RESEARCH","ResearchField")]
 node_properties =Truerelationship_properties =True
 props_defined =LLMGraphTransformer( llm=llm, allowed_nodes=allowed_nodes, allowed_relationships=allowed_relationships, node_properties=node_properties, relationship_properties=relationship_properties)
 data = await props_defined.aconvert_to_graph_documents(documents)graph.add_graph_documents(data)`接下来即可查看结果，评估在属性启用后，节点与关系是否携带了更丰富的上下文信息（如时间、职位、地点、获奖年份等）。
@@ -323,7 +323,7 @@ data = await props_defined.aconvert_to_graph_documents(documents)graph.add_graph
 
 第二种做法是<strong>明确列出</strong>我们希望抽取的<strong>节点属性</strong>与<strong>关系属性</strong>，从而让输出<strong>更可控、更一致</strong>。
 
-`allowed_nodes =["Person","Organization","Location","Award","ResearchField"]allowed_relationships =[("Person","SPOUSE","Person"),("Person","AWARD","Award"),("Person","WORKS_AT","Organization"),("Organization","IN_LOCATION","Location"),("Person","FIELD_OF_RESEARCH","ResearchField")]
+allowed_nodes =["Person","Organization","Location","Award","ResearchField"]allowed_relationships =[("Person","SPOUSE","Person"),("Person","AWARD","Award"),("Person","WORKS_AT","Organization"),("Organization","IN_LOCATION","Location"),("Person","FIELD_OF_RESEARCH","ResearchField")]
 node_properties =["birth_date","death_date"]relationship_properties =["start_date"]
 props_defined =LLMGraphTransformer( llm=llm, allowed_nodes=allowed_nodes, allowed_relationships=allowed_relationships, node_properties=node_properties, relationship_properties=relationship_properties)
 data = await props_defined.aconvert_to_graph_documents(documents)graph.add_graph_documents(data)`接下来即可查看 LLM 的抽取结果，验证是否正确填充了：
@@ -348,7 +348,7 @@ data = await props_defined.aconvert_to_graph_documents(documents)graph.add_graph
 
 默认情况下，`strict_mode=True`。你也可以手动关闭：
 
-`LLMGraphTransformer( llm=llm, allowed_nodes=allowed_nodes, allowed_relationships=allowed_relationships, strict_mode=False)`关闭严格模式后，LLM 可能会输出 超出 schema 定义的节点或关系类型， 因为模型有时会“发挥创意”，产生不在约束内的结构。
+LLMGraphTransformer( llm=llm, allowed_nodes=allowed_nodes, allowed_relationships=allowed_relationships, strict_mode=False)`关闭严格模式后，LLM 可能会输出 超出 schema 定义的节点或关系类型， 因为模型有时会“发挥创意”，产生不在约束内的结构。
 
 ### 将图文档导入图数据库
 
@@ -360,7 +360,7 @@ data = await props_defined.aconvert_to_graph_documents(documents)graph.add_graph
 
 最简单的方式是直接将节点与关系导入 Neo4j，示例代码如下：
 
-`graph.add_graph_documents(graph_documents)`此方法会直接导入传入的图文档中的所有节点与关系。 在本文的实验与演示中，我们一直采用这种方式来验证不同 LLM 与 schema 配置下的结果。
+graph.add_graph_documents(graph_documents)`此方法会直接导入传入的图文档中的所有节点与关系。 在本文的实验与演示中，我们一直采用这种方式来验证不同 LLM 与 schema 配置下的结果。
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_9679199fa221.jpg)
 
@@ -375,7 +375,7 @@ data = await props_defined.aconvert_to_graph_documents(documents)graph.add_graph
 
 示例代码：
 
-`graph.add_graph_documents(graph_documents, baseEntityLabel=True)`启用`baseEntityLabel`后，每个节点都会额外拥有一个`__Entity__`标签。 这样我们就能基于`__Entity__`建立索引，从而提升 导入效率 和 查询性能， 而无需为图中每个可能出现的节点标签单独设置索引。
+graph.add_graph_documents(graph_documents, baseEntityLabel=True)`启用`baseEntityLabel`后，每个节点都会额外拥有一个`__Entity__`标签。 这样我们就能基于`__Entity__`建立索引，从而提升 导入效率 和 查询性能， 而无需为图中每个可能出现的节点标签单独设置索引。
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_952faad17876.jpg)
 
@@ -384,7 +384,7 @@ data = await props_defined.aconvert_to_graph_documents(documents)graph.add_graph
 
 启用方法：在导入时设置`include_source=True`。
 
-`graph.add_graph_documents(graph_documents, include_source=True)`在可视化结果中，<strong>源文档（source document）</strong>会以蓝色高亮显示，
+graph.add_graph_documents(graph_documents, include_source=True)`在可视化结果中，<strong>源文档（source document）</strong>会以蓝色高亮显示，
 并通过<strong>MENTIONS</strong>关系与从该文档中抽取出的所有实体相连。
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_0888a3ebd15c.jpg)
@@ -425,17 +425,17 @@ data = await props_defined.aconvert_to_graph_documents(documents)graph.add_graph
 
 #### References
 
-`[1]`复杂的<strong>多跳推理问题</strong>:*[https://medium.com/neo4j/knowledge-graphs-llms-multi-hop-question-answering-322113f53f51](https://link.zhihu.com/?target=https%3A//medium.com/neo4j/knowledge-graphs-llms-multi-hop-question-answering-322113f53f51)*
-`[2]`<strong>结构化操作</strong>（如过滤、排序、聚合）:*[https://medium.com/neo4j/limitations-of-text-embeddings-in-rag-applications-b060020b543b](https://link.zhihu.com/?target=https%3A//medium.com/neo4j/limitations-of-text-embeddings-in-rag-applications-b060020b543b)*
-`[3]`GitHub:*[https://github.com/tomasonjo/blogs/blob/master/llm/llm_graph_transformer_in_depth.ipynb](https://link.zhihu.com/?target=https%3A//github.com/tomasonjo/blogs/blob/master/llm/llm_graph_transformer_in_depth.ipynb)*
-`[4]`Neo4j Aura 免费云实例:*[https://neo4j.com/product/auradb/](https://link.zhihu.com/?target=https%3A//neo4j.com/product/auradb/)*
-`[5]`<strong>Neo4j Desktop 应用</strong>:*[https://neo4j.com/download/](https://link.zhihu.com/?target=https%3A//neo4j.com/download/)*
-`[6]`LLM 内置的`with_structured_output`方法:*[https://python.langchain.com/docs/how_to/structured_output/](https://link.zhihu.com/?target=https%3A//python.langchain.com/docs/how_to/structured_output/)*
-`[7]`详细的<strong>系统提示</strong>:*[https://github.com/langchain-ai/langchain-experimental/blob/main/libs/experimental/langchain_experimental/graph_transformers/llm.py#L72](https://link.zhihu.com/?target=https%3A//github.com/langchain-ai/langchain-experimental/blob/main/libs/experimental/langchain_experimental/graph_transformers/llm.py%23L72)*
-`[8]`Geraldus Wilsen:*[https://www.linkedin.com/authwall?trk=gf&trkInfo=AQH_yFWxJX627gAAAZjLlkooOt6rpoKSatPa7qfZx1cFXPm9tlmKcPRSI41ODMmJq-JUSUgTTFr8waiBG8A09WxOP3MhpmnOB_ohBHGFq_eHZZwHqmXq6KoKac8LvtogjADajZA=&original_referer=https://medium.com/data-science/building-knowledge-graphs-with-llm-graph-transformer-a91045c49b59&sessionRedirect=https://www.linkedin.com/in/geraldus-wilsen/](https://link.zhihu.com/?target=https%3A//www.linkedin.com/authwall%3Ftrk%3Dgf%26trkInfo%3DAQH_yFWxJX627gAAAZjLlkooOt6rpoKSatPa7qfZx1cFXPm9tlmKcPRSI41ODMmJq-JUSUgTTFr8waiBG8A09WxOP3MhpmnOB_ohBHGFq_eHZZwHqmXq6KoKac8LvtogjADajZA%3D%26original_referer%3Dhttps%3A//medium.com/data-science/building-knowledge-graphs-with-llm-graph-transformer-a91045c49b59%26sessionRedirect%3Dhttps%3A//www.linkedin.com/in/geraldus-wilsen/)*
-`[9]`完整的 Prompt:*[https://github.com/langchain-ai/langchain-experimental/blob/main/libs/experimental/langchain_experimental/graph_transformers/llm.py#L206](https://link.zhihu.com/?target=https%3A//github.com/langchain-ai/langchain-experimental/blob/main/libs/experimental/langchain_experimental/graph_transformers/llm.py%23L206)*
-`[10]`玛丽·居里（Marie Curie）:*[https://en.wikipedia.org/wiki/Marie_Curie](https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Marie_Curie)*
-`[11]`<strong>结构化搜索</strong>与<strong>非结构化搜索</strong>的检索器（retrievers）:*[https://medium.com/neo4j/enhancing-the-accuracy-of-rag-applications-with-knowledge-graphs-ad5e2ffab663](https://link.zhihu.com/?target=https%3A//medium.com/neo4j/enhancing-the-accuracy-of-rag-applications-with-knowledge-graphs-ad5e2ffab663)*
-`[12]`GitHub:*[https://github.com/tomasonjo/blogs/blob/master/llm/llm_graph_transformer_in_depth.ipynb](https://link.zhihu.com/?target=https%3A//github.com/tomasonjo/blogs/blob/master/llm/llm_graph_transformer_in_depth.ipynb)*
+[1]`复杂的<strong>多跳推理问题</strong>:*[https://medium.com/neo4j/knowledge-graphs-llms-multi-hop-question-answering-322113f53f51](https://link.zhihu.com/?target=https%3A//medium.com/neo4j/knowledge-graphs-llms-multi-hop-question-answering-322113f53f51)*
+[2]`<strong>结构化操作</strong>（如过滤、排序、聚合）:*[https://medium.com/neo4j/limitations-of-text-embeddings-in-rag-applications-b060020b543b](https://link.zhihu.com/?target=https%3A//medium.com/neo4j/limitations-of-text-embeddings-in-rag-applications-b060020b543b)*
+[3]`GitHub:*[https://github.com/tomasonjo/blogs/blob/master/llm/llm_graph_transformer_in_depth.ipynb](https://link.zhihu.com/?target=https%3A//github.com/tomasonjo/blogs/blob/master/llm/llm_graph_transformer_in_depth.ipynb)*
+[4]`Neo4j Aura 免费云实例:*[https://neo4j.com/product/auradb/](https://link.zhihu.com/?target=https%3A//neo4j.com/product/auradb/)*
+[5]`<strong>Neo4j Desktop 应用</strong>:*[https://neo4j.com/download/](https://link.zhihu.com/?target=https%3A//neo4j.com/download/)*
+[6]`LLM 内置的`with_structured_output`方法:*[https://python.langchain.com/docs/how_to/structured_output/](https://link.zhihu.com/?target=https%3A//python.langchain.com/docs/how_to/structured_output/)*
+[7]`详细的<strong>系统提示</strong>:*[https://github.com/langchain-ai/langchain-experimental/blob/main/libs/experimental/langchain_experimental/graph_transformers/llm.py#L72](https://link.zhihu.com/?target=https%3A//github.com/langchain-ai/langchain-experimental/blob/main/libs/experimental/langchain_experimental/graph_transformers/llm.py%23L72)*
+[8]`Geraldus Wilsen:*[https://www.linkedin.com/authwall?trk=gf&trkInfo=AQH_yFWxJX627gAAAZjLlkooOt6rpoKSatPa7qfZx1cFXPm9tlmKcPRSI41ODMmJq-JUSUgTTFr8waiBG8A09WxOP3MhpmnOB_ohBHGFq_eHZZwHqmXq6KoKac8LvtogjADajZA=&original_referer=https://medium.com/data-science/building-knowledge-graphs-with-llm-graph-transformer-a91045c49b59&sessionRedirect=https://www.linkedin.com/in/geraldus-wilsen/](https://link.zhihu.com/?target=https%3A//www.linkedin.com/authwall%3Ftrk%3Dgf%26trkInfo%3DAQH_yFWxJX627gAAAZjLlkooOt6rpoKSatPa7qfZx1cFXPm9tlmKcPRSI41ODMmJq-JUSUgTTFr8waiBG8A09WxOP3MhpmnOB_ohBHGFq_eHZZwHqmXq6KoKac8LvtogjADajZA%3D%26original_referer%3Dhttps%3A//medium.com/data-science/building-knowledge-graphs-with-llm-graph-transformer-a91045c49b59%26sessionRedirect%3Dhttps%3A//www.linkedin.com/in/geraldus-wilsen/)*
+[9]`完整的 Prompt:*[https://github.com/langchain-ai/langchain-experimental/blob/main/libs/experimental/langchain_experimental/graph_transformers/llm.py#L206](https://link.zhihu.com/?target=https%3A//github.com/langchain-ai/langchain-experimental/blob/main/libs/experimental/langchain_experimental/graph_transformers/llm.py%23L206)*
+[10]`玛丽·居里（Marie Curie）:*[https://en.wikipedia.org/wiki/Marie_Curie](https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Marie_Curie)*
+[11]`<strong>结构化搜索</strong>与<strong>非结构化搜索</strong>的检索器（retrievers）:*[https://medium.com/neo4j/enhancing-the-accuracy-of-rag-applications-with-knowledge-graphs-ad5e2ffab663](https://link.zhihu.com/?target=https%3A//medium.com/neo4j/enhancing-the-accuracy-of-rag-applications-with-knowledge-graphs-ad5e2ffab663)*
+[12]`GitHub:*[https://github.com/tomasonjo/blogs/blob/master/llm/llm_graph_transformer_in_depth.ipynb](https://link.zhihu.com/?target=https%3A//github.com/tomasonjo/blogs/blob/master/llm/llm_graph_transformer_in_depth.ipynb)*
 
 深入解析 LangChain 在图谱构建中的实现

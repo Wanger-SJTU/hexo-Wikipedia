@@ -23,7 +23,7 @@ source_url: https://zhuanlan.zhihu.com/p/9616453650
 
 python有一些自带的ram相关log打印，可以用来分析模型内存详细信息：
 
-`import psutil
+import psutil
 virtual_mem = psutil.virtual_memory()
 
 ```python
@@ -50,7 +50,7 @@ CUDA是如何将一个tensor从CPU复制到GPU的？
 
 - pin_memory()阻塞式
 pin_memory(）虽然是将tensor从CPU的固定内存（RAM）移动到GPU，加快了这个移动速度，但pin_memory本身是阻塞main进程的！这也是为什么，如果直接调用pin_memory反而会拖慢性能！让我们看一组实验数据：
-`# A tensor in pageable memory
+# A tensor in pageable memory
 pageable_tensor = torch.randn(1_000_000)
 
 # A tensor in page-locked (pinned) memory

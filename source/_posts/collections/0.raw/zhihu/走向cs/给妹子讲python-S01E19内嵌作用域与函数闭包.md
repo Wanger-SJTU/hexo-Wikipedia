@@ -21,7 +21,7 @@ source_url: https://zhuanlan.zhihu.com/p/33136325
 
 【要点抢先看】**
 
-`1.python中独特的嵌套函数
+1.python中独特的嵌套函数
 2.嵌套作用域与闭包现象
 3.nonlocal关键字与内嵌作用域变量修改`
 
@@ -35,7 +35,7 @@ source_url: https://zhuanlan.zhihu.com/p/33136325
 
 python有一个很有意思的地方，就是def函数可以嵌套在另一个def函数之中。调用外层函数时，运行到的内层def语句仅仅是完成对内层函数的定义，而不会去调用内层函数，除非在嵌套函数之后又显式的对其进行调用。
 
-`x = 99
+x = 99
 
 ```python
 def f1():
@@ -56,9 +56,8 @@ f1()
 
 <strong>本地作用域在函数结束后就立即失效，而嵌套作用域在嵌套的函数返回后却仍然有效。</strong>
 
-`def f1():
-
 ```python
+def f1():
     x = 88
     def f2():
         print(x)
@@ -77,9 +76,8 @@ action()
 
 这里有一个应用就是<strong>工厂函数</strong>，工厂函数定义了一个外部的函数，这个函数简单的生成并返回一个内嵌的函数，仅仅是返回却不调用，因此通过调用这个工厂函数，可以得到内嵌函数的一个引用，内嵌函数就是通过调用工厂函数时，运行内部的def语句而创建的。
 
-`def maker(n):
-
 ```python
+def maker(n):
     k = 8
     def action(x):
         return x ** n + k
@@ -98,9 +96,8 @@ function maker.locals>.action at 0x00000000021C51E0>`
 
 再看一个例子：
 
-`def maker(n):
-
 ```python
+def maker(n):
     k = 8
     def action(x):
         return x ** n + k
@@ -119,9 +116,8 @@ print(f(4))
 
 本地函数通过global声明对全局变量进行引用修改，那么对应的，内嵌函数内部想对嵌套作用域中的变量进行修改，就要使用nonlocal进行声明。
 
-`def test(num):
-
 ```python
+def test(num):
     in_num = num
     def nested(label):
         nonlocal in_num
@@ -144,9 +140,8 @@ c 3`
 
 <strong>再最后一个例子：</strong>
 
-`def test(num):
-
 ```python
+def test(num):
     in_num = num
     def nested(label):
         nonlocal in_num

@@ -21,7 +21,7 @@ source_url: https://zhuanlan.zhihu.com/p/526558967
 看如下例子：
 hello.proto
 
-`syntax = "proto2";
+syntax = "proto2";
 
 package helloworld;
 
@@ -33,13 +33,11 @@ message HelloRequest {
 }
 ```
 
-`
 
 http://main.cc
 
-`#include "hello.pb.h"
-
 ```cpp
+#include "hello.pb.h"
 #include 
 
 int main() {
@@ -59,7 +57,7 @@ int main() {
 
 编译命令如下：
 
-`$ cat build.sh
+$ cat build.sh
 protoc -I=. --cpp_out=. ./hello.proto
 echo "-O2:"
 g++ -I. main.cc hello.pb.cc  -lprotobuf -g -O2 -o o2
@@ -75,7 +73,6 @@ Failed to parse the request.
 -O0:
 000000: 0a 05 77 6f 72 6c 64 10 01                       ..world..
 [AFTER PARSE] name: "world" test_a: true
-`
 
 可以看到，修改编译优化到 O0，可以解析完成。
 
@@ -86,18 +83,17 @@ Failed to parse the request.
 从汇编角度来看：
 -O2
 
-`   0x0000000000403520 :   mov    %rsp,%rsi
+   0x0000000000403520 :   mov    %rsp,%rsi
    0x0000000000403523 :   lea    0x40(%rsp),%rdi
    0x0000000000403528 :   orl    $0x2,0x50(%rsp)
    0x000000000040352d :   movb   $0xff,0x60(%rsp)  :   mov    %rax,(%rsp)
    0x0000000000403536 :   movq   $0x0,0x8(%rsp)
    0x000000000040353f :   movb   $0x0,0x10(%rsp)
    0x0000000000403544 :   call   0x4030f0 
-`
 
 -O0
 
-`(gdb) disas _ZN10helloworld12HelloRequest20_internal_set_test_aEb
+(gdb) disas _ZN10helloworld12HelloRequest20_internal_set_test_aEb
 Dump of assembler code for function _ZN10helloworld12HelloRequest20_internal_set_test_aEb:
    0x0000000000403a3a :     push   %rbp
    0x0000000000403a3b :     mov    %rsp,%rbp

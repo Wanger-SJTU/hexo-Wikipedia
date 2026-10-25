@@ -17,7 +17,7 @@ https://www.cnblogs.com/wanger-sjtu/p/16818492.html
 
 ### 调用链
 tvm搜索算子在需要多线程运行的算子，是在codegen阶段时插入`TVMBackendParallelLaunch`的调用。
-`TVMBackendParallelLaunch` 是tvm的线程池并行化入口，具体如下
+TVMBackendParallelLaunch` 是tvm的线程池并行化入口，具体如下
 ```cpp
 /*!
  * \brief The callback function to execute a parallel lambda
@@ -40,7 +40,7 @@ typedef int (*FTVMParallelLambda)(int task_id, TVMParallelGroupEnv* penv, void* 
 int TVMBackendParallelLaunch(FTVMParallelLambda flambda, void* cdata, int num_task);
 ```
 
-`flambda`的调用在单线程和多线程下略有区别。
+flambda`的调用在单线程和多线程下略有区别。
 
 单线程运行时
 ```cpp
@@ -72,7 +72,7 @@ while (queue->Pop(&task, spin_count)) {
   }
 ```
 可以看到 待并行函数中 `TVMParallelGroupEnv* penv` 包含了实际的运行时线程，运行时可以根据这个确定每个线程的工作区间和步长。
-`cdata`则是线程运行时需要变量信息，闭包变量。
+cdata`则是线程运行时需要变量信息，闭包变量。
 
 #### 总结
 对要并行的函数，实际上是按照`lambda`表达式的方式生成的。`FTVMParallelLambda` 的输入参数前两个是运行时确定的，第三个是捕获的外部变量。

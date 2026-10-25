@@ -21,7 +21,7 @@ source_url: https://zhuanlan.zhihu.com/p/1942160792649721494
 
 在FFN层，对于hidden_states输入来说，先经过一个up_proj和gate_proj，然后将二者的结果做elementwise乘法，得到的immediate tensor再执行一次down_proj。对应如下的计算：
 
-`hidden =  torch.randn(1, H, device="cuda")
+hidden =  torch.randn(1, H, device="cuda")
 up_proj = torch.randn(H, 4*H, device="cuda")
 gate_proj = torch.randn(H, 4*H, device="cuda")
 down_proj = torch.randn(4*H, H, device="cuda")
@@ -47,10 +47,9 @@ $为了描述方便，下面我们用 H" role="presentation">HH 代表hidden_siz
 
 整体对应如下的代码：
 
-`def ffn_absorb():
+```python
+def ffn_absorb():
     # gate计算保持不变
-
-```text
     gate = torch.matmul(hidden, gate_proj)
     gate = torch.nn.functional.silu(gate)
 

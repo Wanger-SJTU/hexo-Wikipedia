@@ -21,36 +21,32 @@ source_url: https://zhuanlan.zhihu.com/p/646752343
 
 但事实真的如此吗？在不违背 C++ 标准的情况下，下面的代码可能通过编译吗？
 
-`constexpr auto a = value();
+constexpr auto a = value();
 constexpr auto b = value();
 static_assert(a != b);
-`
 
 下面这样的编译期计数器可能实现吗？
 
-`constexpr auto a = next();
+constexpr auto a = next();
 constexpr auto b = next();
 constexpr auto c = next();
 static_assert(a == 0 && b == 1 && c == 2);
-`
 
 每次常量求值得到的结果不同，说明求值改变了全局的状态。这种有状态的元编程，就叫做状态元编程。如果再与模板联系起来，就叫做 <strong>Stateful Template Meta Programming(STMP)</strong>。
 
 其实借助一些编译器内置的宏，我们是可以实现这样的效果的，比如
 
-`constexpr auto a = __COUNTER__;
+constexpr auto a = __COUNTER__;
 constexpr auto b = __COUNTER__;
 constexpr auto c = __COUNTER__;
 static_assert(a == 0 && b == 1 && c == 2);
-`
 
 编译器在预处理的时候，会对 `__COUNTER__` 宏的替换结果进行递增。如果你对源文件执行预处理，会发现源文件变成了这样
 
-`constexpr auto a = 0;
+constexpr auto a = 0;
 constexpr auto b = 1;
 constexpr auto c = 2;
 static_assert(a == 0 && b == 1 && c == 2);
-`
 
 这与我们想要实现的效果还是有很大区别的，毕竟预处理并不涉及到 C++ 程序的语义部分。而且这样的计数器是全局唯一的，我们并不能创建很多个计数器，那还有别的办法吗？
 
@@ -66,15 +62,17 @@ static_assert(a == 0 && b == 1 && c == 2);
 
 而 C++ 标准规定 `sizeof` 只能对完整类型使用（毕竟不完整类型没有定义无法计算 `size`）。如果对不完整类型使用会导致编译错误，并且这个错误不是一个<strong>硬错误 (hard error)</strong>，所以可以利用 `SFINAE` 或 `requires` 来捕获到这个错误。于是我们就能通过如下的方式检测类的完整性
 
-`template typename T>
+template typename T>
 constexpr inline bool is_complete_v = requires { sizeof(T); };
-`
 
 > 可能有读者会问，都 C++20 了为什么不使用 concept 呢？这里用 concept 会有一些奇怪的效果，是标准中有关原子约束 (atomic constraint) 的措辞导致的。就不深究了，感兴趣的读者可以自行尝试。
 
 尝试使用它来观测类型完整性
 
-`struct X;
+```text
+struct X;
+```
+
 
 static_assert(!is_complete_vX>);
 
@@ -84,13 +82,11 @@ struct X {};
 
 
 static_assert(is_complete_vX>);
-`
 
 实际上，上面的代码会编译错误，第二个静态断言失败了。太奇怪了，怎么回事呢？分开试一下
 
-`// first time
-
 ```text
+// first time
 struct X;
 ```
 
@@ -108,13 +104,12 @@ struct X {};
 
 
 static_assert(is_complete_vX>);
-`
 
 分开试发现都行，但是放一起就不行了，究竟为什么会这样呢？这其实是因为编译器会缓存模板第一次实例化的结果，之后再遇到相同的模板就会直接使用第一次实例化的结果。在最开始的那个例子中，第二个 `is_complete_v` 仍然使用了第一次模板实例化的结果，所以仍然求值为 `false` 导致编译失败。
 
 编译器这样做合理吗？是合理的。因为模板最终可能会产生外部链接的符号，如果两次实例化的结果不同，在链接的时候选哪一个呢。但这确实影响到了我们去观测编译期的状态，如何解决呢？答案是加一个模板参数作为种子，每次求值的时候填入不同的参数，从而让编译器实例化新的模板
 
-`template typename T, int seed = 0>
+template typename T, int seed = 0>
 constexpr inline bool is_complete_v = requires { sizeof(T); };
 
 ```text
@@ -130,15 +125,14 @@ struct X {};
 
 
 static_assert(is_complete_vX, 1>);
-`
 
 每次都手动填入一个不同的参数是很麻烦的，有没有什么办法能自动填入呢？
 
 注意到如果用 lambda 表达式作为 <strong>Non Type Template Parameter(NTTP)</strong> 默认模板参数，则该模板每次实例化的时候都是不同的类型
 
-`#include 
-
 ```cpp
+#include 
+
 template auto seed = [] {}>
 void test() {
     std::cout  typeid(seed).name()  std::endl;
@@ -152,17 +146,21 @@ int main() {
 }
 ```
 
-`
 
 这个特性很好的满足了我们的需求，它可以每次自动填入一个不同的种子。于是最终的 `is_complete_v` 实现如下
 
-`template typename T, auto seed = [] {}>
+```text
+template typename T, auto seed = [] {}>
+```
+
 constexpr inline bool is_complete_v = requires { sizeof(T); };
-`
 
 再次尝试使用它来观测类型完整性
 
-`struct X;
+```text
+struct X;
+```
+
 
 static_assert(!is_complete_vX>);
 
@@ -172,7 +170,6 @@ struct X {};
 
 
 static_assert(is_complete_vX>);
-`
 
 编译通过！至此，我们成功观察到了编译期全局状态的变化。
 
@@ -184,7 +181,10 @@ static_assert(is_complete_vX>);
 
 例外就是返回值类型为 `auto` 的函数，如果看不到它的函数定义，则无法推导出返回值类型，进而无法进行函数调用。下面的代码就可以检测 `foo` 函数是否有定义
 
-`template auto seed = [] {}>
+```text
+template auto seed = [] {}>
+```
+
 constexpr inline bool is_complete_v = requires { foo(seed); };
 
 auto foo(auto);
@@ -200,15 +200,13 @@ auto foo(auto value) {
 
 
 static_assert(is_complete_v<>);
-`
 
 接下来让我们谈谈如何通过友元函数来改变全局的状态。
 
 友元函数与普通函数最大的不同就在于不要求函数定义与函数声明在同一 scope 中，考虑如下示例
 
-`struct X {
-
 ```cpp
+struct X {
     friend auto foo(X);
 };
 
@@ -221,11 +219,10 @@ struct Y {
 int x = foo(X{});
 ```
 
-`
 
 上面的代码三大编译器都可以编译通过，并且完全符合 C++ 标准。这就给了我们操作的空间，我们可以在实例化类模板的同时实例化其内部定义的友元函数，从而给其他位置的函数声明添加定义。这种技术也被叫做<strong>友元注入 (friend injection)</strong>。
 
-`auto foo(auto);
+auto foo(auto);
 
 ```text
 template typename T>
@@ -242,7 +239,6 @@ static_assert(!is_complete_v<>);  // #1
 Xvoid> x;  // #2
 
 static_assert(is_complete_v<>);  // #3
-`
 
 注意到 #1 处模板 `X` 没有任何的实例化，故此时 `foo` 函数还未有定义，于是 `is_complete_v` 返回 `false`。而在 #2 处，我们实例化了一个 `X`，进而导致 `X` 内的 `foo` 函数被实例化，给 `foo` 添加了一个定义，于是 #3 处的 `is_complete_v` 返回 `true`。当然了，函数定义最多只能有一个，如果你再尝试实例化一个 `X`，这时候编译器就会报 `foo` 被重定义的错误了。
 
@@ -250,7 +246,7 @@ static_assert(is_complete_v<>);  // #3
 
 结合上面提到的技巧，我们可以轻松实例化一个编译时的开关了
 
-`auto flag(auto);
+auto flag(auto);
 
 ```text
 template auto value>
@@ -278,7 +274,6 @@ int main() {
 }
 ```
 
-`
 
 它的原理很简单。第一次的时候，`setter` 尚未有任何实例化，所以 `flag` 函数也没有定义，于是 `exist` 求值为 `false`，走到了 `if constexpr` 里面那个分支，实例化了一个 `setter`，并且返回 `false`。第二次的时候，`setter` 有了一个实例化，`flag` 函数也有了定义，于是 `exist` 求值为 `true`，直接返回 `true`。
 
@@ -288,9 +283,8 @@ int main() {
 
 更进一步，我们可以直接实现一个编译期的计数器
 
-`template int N>
-
 ```cpp
+template int N>
 struct reader {
     friend auto flag(reader);
 };
@@ -323,7 +317,6 @@ int main() {
 }
 ```
 
-`
 
 它的逻辑是，从 `N` 为 0 开始，检测 `flag(reader)` 是否有定义，如果没有定义就实例化一个 `setter`，也就是给 `flag(reader)` 添加定义，并返回 `N`。否则递归调用 `next()`，检测 `N+1` 的情况。所以这个计数器记录的实际上是 `setter` 的实例化次数。
 
@@ -337,9 +330,9 @@ int main() {
 
 也就是说在模板<strong>显式实例化 (explicit instantiate)</strong> 的时候，我们可以直接访问类的私有成员。
 
-`#include 
-
 ```cpp
+#include 
+
 class Bank {
     double money = 999'999'999'999;
 
@@ -368,6 +361,5 @@ int main() {
 }
 ```
 
-`
 
 其中 #2 处的语法就是模板显式实例化了，我们可以直接访问到 `Bank` 的私有成员 `money`。通过 `&Bank::money` 从而取得该成员对应的成员指针。与此同时，通过模板显式实例化，给 #1 处的 `steal` 函数添加了一个定义，从而可以直接在 #3 处调用该函数并获取到 `money` 的引用。最后成功输出 100。

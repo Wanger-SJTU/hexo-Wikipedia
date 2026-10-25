@@ -104,7 +104,7 @@ set (k, v) σ = (σ[k ↦ v], λσ&#39;. σ&#39; \ k)   -- 前提：k ∉ dom(σ
 
 ![](https://www.zhihu.com/equation?tex=+%5CSigma%5E%7B%5Ctext%7Binter%7D%7D+%3A%3D+%28%28k%3A+K%29+%5Cto+%5Cmathcal%7BM%7D_k%29+%5Ctimes+%28%28k%3A+K%29+%5Cto+%28%5Cmathcal%7BM%7D_k+%5Cto+%5Cmathcal%7BV%7D_k%29%29+)
 
-`intercept(k, metadata)` 将元数据合并到上下文中，后续对 `k` 的访问都会携带这份元数据。这构成了一个<strong>能力式访问控制</strong>系统：一个组件声明它需要什么，系统决定它能拿到什么版本、带什么权限。
+intercept(k, metadata)` 将元数据合并到上下文中，后续对 `k` 的访问都会携带这份元数据。这构成了一个<strong>能力式访问控制</strong>系统：一个组件声明它需要什么，系统决定它能拿到什么版本、带什么权限。
 
 统一上下文：将 Effect 和 Coeffect 放在一起
 可逆效果（Revertible Effects）和反应式余效果（Reactive Coeffects）分别处理了“组件做了什么”和“组件需要什么”这两个维度。我们将它们统一为一个递归类型：

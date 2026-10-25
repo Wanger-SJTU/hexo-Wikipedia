@@ -89,7 +89,7 @@ pip install -r requirements.txt
 
 训练的数据格式上面的图是我生成出来的数据，总计生成了大概60万条对话数据
 
-`# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 ```python
 import json

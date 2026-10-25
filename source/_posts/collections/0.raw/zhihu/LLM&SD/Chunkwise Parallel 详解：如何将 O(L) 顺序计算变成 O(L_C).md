@@ -36,7 +36,7 @@ $- kt,vt&#x2208;Rd" role="presentation">kt,vt∈Rdk_t, v_t \in \mathbb{R}^d 是 
 
 $关键问题在于 &#x0394;t" role="presentation">Δt\Delta_t 的计算：$
 
-`old_v = S_{t-1} @ k_t     # 必须知道 S_{t-1}
+old_v = S_{t-1} @ k_t     # 必须知道 S_{t-1}
 delta = beta * (v - old_v) # 依赖 old_v
 S_t = g * S_{t-1} + outer(delta, k)  # 更新状态`
 
@@ -60,7 +60,7 @@ $&#x0394;t=&#x03B2;t(vt&#x2212;St&#x2212;1kt&#x23DF;&#x4F9D;&#x8D56;&#x72B6;&#x6
 
 既然 token 级别无法并行，我们退而求其次：<strong>chunk 级别并行</strong>。
 
-`原始序列 (L=256 tokens):
+原始序列 (L=256 tokens):
 t₁ t₂ t₃ ... t₆₄ | t₆₅ t₆₆ ... t₁₂₈ | t₁₂₉ ... t₁₉₂ | t₁₉₃ ... t₂₅₆
 └────Chunk 1────┘ └────Chunk 2─────┘ └───Chunk 3───┘ └───Chunk 4───┘
 
@@ -140,7 +140,7 @@ $- A_{tj} = \gamma_{j:t} (k_j^\top q_t) 为”衰减注意力分数”$
 
 上述公式中的 CausalAttn 可以进一步转化为矩阵乘法：
 
-`# 伪代码：Chunk 内计算
+# 伪代码：Chunk 内计算
 
 ```python
 def chunk_forward(Q, K, V, G, B, S_init):
@@ -157,11 +157,10 @@ def chunk_forward(Q, K, V, G, B, S_init):
 
 每个 chunk 独立计算，可以并行处理所有 chunk**：
 
-`def intra_chunk_parallel(chunks, S_init_per_chunk):
+```python
+def intra_chunk_parallel(chunks, S_init_per_chunk):
     """
     输入:
-
-```text
       chunks: List of (Q, K, V, G, B), 每个 shape [C, d]
       S_init_per_chunk: 每个 chunk 的初始状态 [num_chunks, d, d]
 ```
@@ -202,11 +201,14 @@ def chunk_forward(Q, K, V, G, B, S_init):
 
 Chunk 间必须顺序传递状态，但只有 L/C 步：
 
-`def inter_chunk_sequential(S_finals, initial_state):
+```python
+def inter_chunk_sequential(S_finals, initial_state):
     """
     输入:
       S_finals: 每个 chunk 的"局部最终状态" [num_chunks, d, d]
       initial_state: 序列的初始状态 [d, d]
+```
+
     
     输出:
       S_corrected: 修正后的最终状态 [num_chunks, d, d]
@@ -230,7 +232,7 @@ Chunk 间必须顺序传递状态，但只有 L/C 步：
 
 #### 4.3 整体流程图
 
-`输入序列 (L tokens)
+输入序列 (L tokens)
       │
       ▼
 ┌─────────────────────────────────────────────────────────┐
@@ -297,10 +299,9 @@ $最棘手的部分是 \Delta_t 依赖 S_{t-1}。有两种处理方式：$
 
 <strong>方式 A：迭代求解（精确）</strong>
 
-`def compute_deltas_iterative(K, V, G, B, S_init):
+```python
+def compute_deltas_iterative(K, V, G, B, S_init):
     """Chunk 内迭代计算 Δ"""
-
-```text
     C, d = K.shape
     S = S_init.clone()
     deltas = []
@@ -317,7 +318,7 @@ $最棘手的部分是 \Delta_t 依赖 S_{t-1}。有两种处理方式：$
 
 $这仍然是 O© 顺序，但 C \gamma_t = \prod_{i=1}^{t} g_i 可能非常小（当 g  时）。建议：$
 
-`# 使用 log-space 计算
+# 使用 log-space 计算
 log_gamma = cumsum(log(G))
 gamma = exp(log_gamma)
 
@@ -328,9 +329,8 @@ gamma = cumprod(G.float()).to(G.dtype)`
 
 为了避免 O(C²) 的注意力矩阵，可以使用 <strong>Flash Attention 风格</strong>的分块：
 
-`def memory_efficient_chunk(Q, K, V, G, B, S_init, BLOCK=16):
-
-```text
+```python
+def memory_efficient_chunk(Q, K, V, G, B, S_init, BLOCK=16):
     """分块计算，避免 O(C²) 显存"""
     C, d = Q.shape
     O = zeros(C, d)
@@ -413,7 +413,7 @@ Chunk Size优点缺点C=32更少顺序步骤矩阵太小，Tensor Core 利用率
 
 最初的 Triton 实现采用最直接的方式——逐 token 顺序扫描：
 
-`@triton.jit
+@triton.jit
 
 ```python
 def _prefill_kernel_naive(Q, K, V, State, ...):
@@ -465,7 +465,7 @@ def _prefill_kernel_naive(Q, K, V, State, ...):
 
 $我们发现：状态矩阵 S \in \mathbb{R}^{128 \times 128} 的不同<strong>行</strong>之间是独立的！$
 
-`状态矩阵 S [128, 128]:
+状态矩阵 S [128, 128]:
 ┌─────────────────────────┐
 │ Row 0:  s[0,0]...s[0,127]  │ ← 独立
 │ Row 1:  s[1,0]...s[1,127]  │ ← 独立
@@ -483,7 +483,7 @@ S[i,:] = g * S[i,:] + delta[i] * k[:]
 
 于是我们将 128 行分成多个 V-Block，每个 block 独立处理：
 
-`@triton.jit
+@triton.jit
 
 ```python
 def _prefill_kernel(Q, K, V, State, ..., BLOCK_V: tl.constexpr):
@@ -526,7 +526,7 @@ def _prefill_kernel(Q, K, V, State, ..., BLOCK_V: tl.constexpr):
 
 <strong>Grid 配置</strong>:
 
-`# Grid: (N=num_seqs, H=8, V_BLOCKS)
+# Grid: (N=num_seqs, H=8, V_BLOCKS)
 V_BLOCKS = D // BLOCK_V  # 128 // 16 = 8 或 128 // 32 = 4
 
 _prefill_kernel[(N, num_v_heads, V_BLOCKS)](...)`
@@ -542,8 +542,11 @@ _prefill_kernel[(N, num_v_heads, V_BLOCKS)](...)`
 
 Batch SizeBLOCK_V=16BLOCK_V=32最优选择N=1✅ 更多并行❌ SM 占用低16N=4✅ 刚好⚠️ 略低16N=8+⚠️ 过多 programs✅ 平衡32<strong>实现</strong>：
 
-`def kernel(q, k, v, state, ...):
+```python
+def kernel(q, k, v, state, ...):
     N = cu_seqlens.shape[0] - 1
+```
+
     
     # Adaptive BLOCK_V
     if N 
@@ -555,7 +558,7 @@ Qwen3 使用 <strong>Grouped Value Attention (GVA)</strong>：
 - num_q_heads = 4
 - num_v_heads = 8
 - 每 2 个 v_head 共享 1 个 qk_head
-`# GVA: 2 v-heads per qk-head
+# GVA: 2 v-heads per qk-head
 qk_h = h // 2  # h 是 v_head 索引 (0-7)，qk_h 是 qk_head 索引 (0-3)
 
 # 加载 Q 和 K 时使用 qk_h
@@ -594,19 +597,19 @@ BatchTokens吞吐 (M tok/s)加速比N=140961.241.0xN=440964.703.8xN=16409611.389
 
 <strong>1. Chunk 内 Tensor Core（高收益，高难度）</strong>
 
-`目标：将 Chunk 内的多个 token 合并成矩阵乘法
+目标：将 Chunk 内的多个 token 合并成矩阵乘法
 预期收益：2-3x
 难点：正确处理 delta 的状态依赖`
 
 <strong>2. TMA + Double Buffering（中收益，中难度）</strong>
 
-`目标：异步预取下一 chunk 的数据
+目标：异步预取下一 chunk 的数据
 预期收益：1.3-1.5x
 实现：cp.async.bulk.tensor 指令`
 
 <strong>3. State 量化（低-中收益，低难度）</strong>
 
-`目标：FP32 状态 → FP8/BF16
+目标：FP32 状态 → FP8/BF16
 预期收益：2-4x 带宽减少
 风险：精度损失`
 

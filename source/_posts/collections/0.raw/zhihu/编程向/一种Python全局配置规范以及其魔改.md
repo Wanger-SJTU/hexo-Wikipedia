@@ -43,9 +43,8 @@ source_url: https://zhuanlan.zhihu.com/p/31669135
 
 我习惯采用第一种函数装饰器的写法：
 
-`def singleton(class_):
-
 ```python
+def singleton(class_):
     instances = {}
     def getinstance(*args, **kwargs):
         if class_ not in instances:
@@ -81,9 +80,9 @@ class MyClass(BaseClass):
 
 不应该
 
-`class A:
-
 ```python
+class A:
+
     def __init__(self,):
         pass
 
@@ -97,9 +96,9 @@ class MyClass(BaseClass):
 
 应该
 
-`class B:
-
 ```python
+class B:
+
     def __init__(self,):
         self.a = Singleton()['a']
         self.b = Singleton()['b']
@@ -111,15 +110,14 @@ class MyClass(BaseClass):
         b = self.b
 ```
 
-`
 
 2、将各个引用点的名称统一。
 
 不应该
 
-`class A:
-
 ```python
+class A:
+
     def __init__(self,):
         self.sets = Singleton()
 
@@ -134,9 +132,9 @@ class MyClass(BaseClass):
 
 应该
 
-`class B:
-
 ```python
+class B:
+
     def __init__(self,):
         self.sets = Singleton()
 
@@ -152,9 +150,8 @@ class MyClass(BaseClass):
 
 不应该这么用：
 
-`def b():
-
 ```python
+def b():
     return Singleton()['c']+'a'
 
 def a():
@@ -164,9 +161,8 @@ def a():
 
 应该这样用
 
-`def b(c):
-
 ```python
+def b(c):
     return c +'a'
 
 def a()
@@ -199,9 +195,8 @@ def a()
 
 这段代码还是有个坑，一般出现在单元测试中，来看两段代码：
 
-`from configs import CONFIG_A, CONFIG_B
-
 ```python
+from configs import CONFIG_A, CONFIG_B
 print("use config:", CONFIG_A，CONFIG_B)
 import configs
 print("use config:", configs.CONFIG_A,configs.CONFIG_B)`

@@ -85,7 +85,10 @@ Net driver 的初始化流程中包括对 DMA 空间进行初始化，主要的�
 
 当 Frame 到达 NIC 后，DMA Controller 就会将 Frame 的数据 Copy 到 sk_buff 结构体中，以此来完成 Frame => sk_buff 数据格式的封装。在后续的流程中，sk_buff 还会从 ZONE_DMA Copy 到 Kernel Socket Receive Buffer 中，等待 Application 接收。
 
-`struct igb_ring {
+```text
+struct igb_ring {
+```
+
 ...
  union {
 ...
@@ -105,7 +108,6 @@ Net driver 的初始化流程中包括对 DMA 空间进行初始化，主要的�
 }
 ```
 
-`
 
 sk_buff 的结构体定义如下图所示，它包含了一个 Frame 的 Interface（网络接口）、Protocol（协议类型）、Headers（协议头）指针、Data（业务数据）指针等信息。
 
@@ -217,9 +219,10 @@ NAPI 的工作流程如下：
 - 以 NAPI 模式为例，Net driver 执行 napi_schedule() 硬中断处理函数，然后将一个 napi 结构体加入到 poll_queue（NAPI 软中断队列）中。此时 NIC Controller 立即禁用了硬中断，开始切换到 “NAPI 轮训“ 收包工作模式。
 - 再进入 raise_softirq_irqoff() 软中断处理程序，唤醒 NAPI 子系统，新建 ksoftirqd 内核线程。
 - ksoftirqd 线程调用 Net driver 注册的 poll() 函数。
-`// linux/drivers/net/ethernet/intel/igb/igb_main.c
 
 ```text
+// linux/drivers/net/ethernet/intel/igb/igb_main.c
+
 /**
  *  igb_poll - NAPI Rx polling callback
  *  @napi: napi polling structure
@@ -249,12 +252,12 @@ static int igb_poll(struct napi_struct *napi, int budget)
 }
 ```
 
-`
 
 - poll() 调用 netif_receive_skb() 开始从 sk_buff 空间中收包，并将它传递给 TCP/IP 网络协议栈进行处理。
-`// linux/net/core/dev.c
 
 ```cpp
+// linux/net/core/dev.c
+
 int netif_receive_skb(struct sk_buff *skb)
 {
  int ret;
@@ -271,7 +274,6 @@ int netif_receive_skb(struct sk_buff *skb)
 }
 ```
 
-`
 
 - 直到一段时间内没有 Frame 到达为止，关闭 ksoftirqd 内核线程，NIC Controller 重新切换到硬中断收包工作模式。
 ![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_9d03b40c0b62.jpg)

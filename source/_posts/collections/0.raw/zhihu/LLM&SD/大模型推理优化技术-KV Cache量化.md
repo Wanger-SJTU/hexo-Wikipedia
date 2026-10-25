@@ -162,8 +162,11 @@ Transformers 中的 KV Cache 量化很大程度上受启发于 [KIVI: A Tuning-F
 
 以下为使用 HQQ 后端 进行 KV 缓存量化的示例：
 
-`import torch
+```python
+import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, set_seed, BitsAndBytesConfig
+```
+
 
 set_seed(1234)  # For reproducibility
 
@@ -193,9 +196,8 @@ outputs = model.generate(**inputs, max_new_tokens=150, cache_implementation="qua
 result = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
 print(result)
-`
 
-`cache_config`中量化涉及的超参数如下：
+cache_config`中量化涉及的超参数如下：
 
 - <strong>backend</strong> ：执行量化时使用的后端，根据对准确性与推理速度的偏好，选择 HQQ 或 Quanto。
 - <strong>nbits</strong> ：设置量化精度。quanto支持[2,4]，HQQ支持[1,2,3,4,8]。默认为2。尽管 2 位量化是一种选择，但请注意，它可能会显著影响LLM效果，仅少量减少内存使用。
@@ -212,9 +214,8 @@ print(result)
 
 以下是vLLM中将KV Cache量化为 FP8（E5M2）的示例代码。
 
-`from vllm import LLM, SamplingParams
-
 ```python
+from vllm import LLM, SamplingParams
 import time
 import pandas as pd
 ```
@@ -289,7 +290,6 @@ print("avg_infer_time_per_token: ", avg_infer_time_per_token)
 df = pd.DataFrame(prompts)
 df.to_excel('vllm-fp8-e5m2.xlsx', index=False)
 
-`
 
 #### TensorRT-LLM
 
@@ -297,18 +297,17 @@ TensorRT-LLM 中采用静态逐层（per-tensor）KV Cache 8 位（FP8和INT8）
 
 首先将进行模型权重转换，这里通过kv_cache_dtype指定KV Cache的数据类型：
 
-`CUDA_VISIBLE_DEVICES=0,1,2  python examples/quantization/quantize.py --model_dir /workspace/models/Qwen1.5-7B-Chat \
+CUDA_VISIBLE_DEVICES=0,1,2  python examples/quantization/quantize.py --model_dir /workspace/models/Qwen1.5-7B-Chat \
                                    --dtype bfloat16 \
                                    --kv_cache_dtype int8 \
                                    --output_dir /workspace/models/Qwen1.5-7B-Chat-1tp-wbf16-kvint8-trt \
                                    --calib_size 512 \
                                    --calib_dataset 
                                    
-`
 
 进行模型编译：
 
-`rm -rf  /workspace/models/Qwen1.5-7B-Chat-1tp-wbf16-kvint8-trt-engine-4090
+rm -rf  /workspace/models/Qwen1.5-7B-Chat-1tp-wbf16-kvint8-trt-engine-4090
 trtllm-build --checkpoint_dir /workspace/models/Qwen1.5-7B-Chat-1tp-wbf16-kvint8-trt \
 --output_dir /workspace/models/Qwen1.5-7B-Chat-1tp-wbf16-kvint8-trt-engine-4090 \
 --gpt_attention_plugin bfloat16 \
@@ -322,11 +321,10 @@ trtllm-build --checkpoint_dir /workspace/models/Qwen1.5-7B-Chat-1tp-wbf16-kvint8
 --max_output_len 1024 \
 --max_batch_size 128
 
-`
 
 接下来使用Triton部署模型，先修改配置文件。
 
-`#rm -rf /workspace/models/Qwen1.5-7B-Chat-wbf16kvint8-server-4090
+#rm -rf /workspace/models/Qwen1.5-7B-Chat-wbf16kvint8-server-4090
 cp -r /workspace/code/tensorrtllm_backend/all_models/inflight_batcher_llm /workspace/models/Qwen1.5-7B-Chat-wbf16kvint8-server-4090
 
 export HF_LLAMA_MODEL=/workspace/models/Qwen1.5-7B-Chat
@@ -360,11 +358,10 @@ cat ${TEMPLATE_PATH}/tensorrt_llm/config.pbtxt | grep -C 5 "kv_cache_free_gpu_me
 cat ${TEMPLATE_PATH}/tensorrt_llm/config.pbtxt | grep -C 5 "inflight_fused_batching"
 cat ${TEMPLATE_PATH}/tensorrt_llm/config.pbtxt | grep -C 5 "batch_scheduler_policy" 
 cat ${TEMPLATE_PATH}/tensorrt_llm/config.pbtxt | grep -C 5 "enable_chunked_context"    
-`
 
 部署推理服务：
 
-`docker run -it --rm \
+docker run -it --rm \
 --gpus '"device=6"' \
 --shm-size=32g \
 -p 8400:8000 \
@@ -374,7 +371,6 @@ aiharbor.msxf.local/nvidia/tritonserver:24.06-trtllm-python-py3 \
 tritonserver --model-repository /workspace/models/Qwen1.5-7B-Chat-wbf16kvint8-server-4090 \
 --log-info true \
 --log-verbose 4
-`
 
 最后使用接口`/v2/models/ensemble/generate`正常请求就行。
 
@@ -396,9 +392,8 @@ LMDeploy 中 kv 量化具备以下优势：
 
 modelkv typetest settingsRPSv.s. kv fp16llama2-chat-7bfp16tp1 / ratio 0.8 / bs 256 / prompts 1000014.981.0-int8tp1 / ratio 0.8 / bs 256 / prompts 1000019.011.27-int4tp1 / ratio 0.8 / bs 256 / prompts 1000020.811.39llama2-chat-13bfp16tp1 / ratio 0.9 / bs 128 / prompts 100008.551.0-int8tp1 / ratio 0.9 / bs 256 / prompts 1000010.961.28-int4tp1 / ratio 0.9 / bs 256 / prompts 1000011.911.39internlm2-chat-7bfp16tp1 / ratio 0.8 / bs 256 / prompts 1000024.131.0-int8tp1 / ratio 0.8 / bs 256 / prompts 1000025.281.05-int4tp1 / ratio 0.8 / bs 256 / prompts 1000025.801.07以下是将KV Cache量化为INT4示例代码，其中，**`qant_policy=4` 表示 kv int4 量化，`quant_policy=8` 表示 kv int8 量化。**
 
-`from lmdeploy import pipeline, TurbomindEngineConfig
-
 ```python
+from lmdeploy import pipeline, TurbomindEngineConfig
 from lmdeploy.messages import GenerationConfig
 import time
 import pandas as pd
@@ -446,7 +441,6 @@ for prompt in prompts:
 ```
 
     
-`
 
 ### 总结
 

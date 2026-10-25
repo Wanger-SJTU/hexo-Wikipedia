@@ -40,7 +40,7 @@ $$- 背景补充：softmax 在计算 exp 时，为了数值稳定，需要减去
 
 - 减去最大值需要在 cuda core 操作，由于最大值的变化，频繁的更新数据会带来较大的计算开销。而该操作其实是为了数值稳定，直观上如果最大值的变化没有大到会影响数值稳定，那么就可以不用更新，这样可以减少计算。FA4 正是利用了这个思想，通过这种方式，可以将更新的计算减少 10 倍。
 - FA4 中具体的实现：
-`@cute.jit
+@cute.jit
 
 ```python
 def update_row_max(self, acc_S_row: cute.TensorSSA, is_first: int) -> Tuple[Float32, Float32]:
@@ -98,7 +98,7 @@ f(r)和g(r)在[0,1]之内几乎重合
 - 并非所有 exp 都采用了近似实现，有一部分仍然使用 SFU 去计算，对应如下代码 28-32 行。
 - 可以将 g(r)变为 3 个乘加操作（FMA，即(((c3 * r) + c2) * r + c1) * r + c0 ），对应如下代码的 65-67 行。
 
-`@cute.jit
+@cute.jit
 
 ```python
 def apply_exp2_convert(
@@ -192,7 +192,6 @@ def e2e_asm2(x: Float32, y: Float32, *, loc=None, ip=None) -> Tuple[Float32, Flo
     return out0, out1
 ```
 
-`
 
 ### 工程优化
 

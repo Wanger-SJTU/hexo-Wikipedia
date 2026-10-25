@@ -44,7 +44,7 @@ Tam belgeleme için [harness-creator/README.md](harness-creator/README.md) dosya
 
 ## harness-creator Nasıl Oluşturuldu
 
-`harness-creator` skill'i, Anthropic'in ajan skill'leri oluşturmak, test etmek ve üzerinde yineleme yapmak için resmi meta-skill'i olan <strong>skill-creator</strong> metodolojisi kullanılarak geliştirilmiştir. skill-creator, yerleşik eval runner'lar, grader'lar ve bir benchmark görüntüleyicisi ile birlikte yapılandırılmış bir iş akışı (taslak → test → değerlendirme → yineleme) sağlar.
+harness-creator` skill'i, Anthropic'in ajan skill'leri oluşturmak, test etmek ve üzerinde yineleme yapmak için resmi meta-skill'i olan <strong>skill-creator</strong> metodolojisi kullanılarak geliştirilmiştir. skill-creator, yerleşik eval runner'lar, grader'lar ve bir benchmark görüntüleyicisi ile birlikte yapılandırılmış bir iş akışı (taslak → test → değerlendirme → yineleme) sağlar.
 
 - <strong>skill-creator kaynağı</strong>: [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
 - <strong>Anthropic Claude Code skills belgeleri</strong>: [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)

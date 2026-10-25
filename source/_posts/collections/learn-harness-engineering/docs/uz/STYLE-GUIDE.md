@@ -53,7 +53,7 @@ Ushbu hujjat `docs/uz/` ostidagi barcha tarjimalar uchun majburiy. LQA tekshiruv
 
 ### Texnik atamalar — saqlanadi (asl holida)
 
-`Harness`, `agent`, `prompt`, `repository`, `pull request`, `commit`, `endpoint`, `pipeline`, `runtime`, `context window`, `lint`, `test`, `type check`, `benchmark`, `feature list`, `init`, `Markdown`, `JSON`, `API`, `IPC`, `Electron`, `React`, `TypeScript`, `Codex`, `Claude Code`, `OpenAI`, `Anthropic`.
+Harness`, `agent`, `prompt`, `repository`, `pull request`, `commit`, `endpoint`, `pipeline`, `runtime`, `context window`, `lint`, `test`, `type check`, `benchmark`, `feature list`, `init`, `Markdown`, `JSON`, `API`, `IPC`, `Electron`, `React`, `TypeScript`, `Codex`, `Claude Code`, `OpenAI`, `Anthropic`.
 
 Bu soʻzlar tarjima qilinmaydi va <strong>kursivga olinmaydi</strong> (matn ichida tabiiy yozilishi).
 

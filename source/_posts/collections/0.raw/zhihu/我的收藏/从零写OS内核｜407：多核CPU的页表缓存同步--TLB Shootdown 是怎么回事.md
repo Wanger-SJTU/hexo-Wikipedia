@@ -345,7 +345,7 @@ TLB shootdown 是多核操作系统里一个看不见的「交通管制」——
 
 - <strong>下载 wandos</strong>：
 
-`bash
+bash
 
 ```bash
    git clone https://github.com/zhangfuwen/wandos.git

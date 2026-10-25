@@ -170,7 +170,7 @@ RecursiveCharacterTextSplitter默认使用`[“\n\n” ,"\n" ," ",""]` 这四个
 ```
 
 
-`重复字段的意义`：<strong>块之间保持一些重叠，以确保语义上下文不会在块之间丢失</strong>。在<strong>大多数情况下，固定大小的分块将是最佳方式</strong>。与其他形式的分块相比，固定大小的分块在计算上更加经济且易于使用，因为它在分块过程中不需要使用任何NLP库。
+重复字段的意义`：<strong>块之间保持一些重叠，以确保语义上下文不会在块之间丢失</strong>。在<strong>大多数情况下，固定大小的分块将是最佳方式</strong>。与其他形式的分块相比，固定大小的分块在计算上更加经济且易于使用，因为它在分块过程中不需要使用任何NLP库。
 
 下面我们看个例子，在这个例子中我们要对一个字符串“abcdefghijklmnopqrstuvwxyz”进行分割：
 
@@ -637,7 +637,7 @@ for line in nlp.pipeline:
 
 ### 2.7 SentenceTransformersTokenTextSplitter（TokenTextSplitter变形）
 
-`SentenceTransformersTokenTextSplitter`是专为 sentence-transformer 模型设计的文本分割器。默认行为是将文本分割成适合所需使用的 sentence-transformer 模型的 token 窗口大小的块。
+SentenceTransformersTokenTextSplitter`是专为 sentence-transformer 模型设计的文本分割器。默认行为是将文本分割成适合所需使用的 sentence-transformer 模型的 token 窗口大小的块。
 
 需要额外安装：
 

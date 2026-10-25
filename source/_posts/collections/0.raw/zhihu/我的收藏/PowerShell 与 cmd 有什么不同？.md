@@ -33,10 +33,9 @@ source_url: https://www.zhihu.com/question/22611859/answer/75054963209
 
 首先，我们需要找到 PowerShell 的配置文件。如果你还没有创建过，可以用以下命令创建：
 
-`if (!(Test-Path -Path $PROFILE)) {
-    New-Item -ItemType File -Path $PROFILE -Force
-
 ```text
+if (!(Test-Path -Path $PROFILE)) {
+    New-Item -ItemType File -Path $PROFILE -Force
 }
 ```
 
@@ -48,9 +47,8 @@ notepad $PROFILE`
 
 在打开的配置文件中，添加以下函数：
 
-`function proxy {
-
-```js
+```text
+function proxy {
     $env:http_proxy = "http://127.0.0.1:10809"
     $env:https_proxy = "http://127.0.0.1:10809"
     [System.Net.WebRequest]::DefaultWebProxy = New-Object System.Net.WebProxy("http://127.0.0.1:10809")

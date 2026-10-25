@@ -78,7 +78,7 @@ batch sizes+nKV cache(GB)KV cache/weight4409675.50.221640963020.8664409612083.45
 
  MQA (Multi Query Attention，多查询注意力) 是多头注意力的一种变体。其主要区别在于，在 MQA 中不同的注意力头共享一个K和V的集合，每个头只单独保留了一份查询参数。因此K和V的矩阵仅有一份，这大幅度减少了显存占用，使其更高效。由于MQA改变了注意力机制的结构，因此模型通常需要从训练开始就支持 MQA 。也可以通过对已经训练好的模型进行微调来添加多查询注意力支持，仅需要约 5% 的原始训练数据量 就可以达到不错的效果。包括 Falcon、SantaCoder、StarCoder 等在内很多模型都采用了 MQA 机制。 
 
-`# Multi Head Attention
+# Multi Head Attention
 self.Wqkv = nn.Linear(     # Multi-Head Attention 的创建方法
     self.d_model,
     3 * self.d_model,     # Q、K和V 3 个矩阵, 所以是 3 * d_model
@@ -193,9 +193,8 @@ $$\operatorname{SoftMax}(x)_i=\frac{e^{x_i}}{e^{x_1}+\sum_{j=2}^N e^{x_j}}, \qua
 - 如果前边所有轮次长度之和超过最大长度，则截断到最大长度；
 上述过程可以用代码描述如下：
 
-`    history = ["\n[|Human|]{}\n[|AI|]{}".format(x[0], x[1]) for x in history]
-
 ```text
+    history = ["\n[|Human|]{}\n[|AI|]{}".format(x[0], x[1]) for x in history]
     history.append("\n[|Human|]{}\n[|AI|]".format(text))
     history_text = ""
     flag = False

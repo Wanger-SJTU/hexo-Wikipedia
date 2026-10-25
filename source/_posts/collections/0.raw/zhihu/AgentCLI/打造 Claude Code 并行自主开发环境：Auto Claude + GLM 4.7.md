@@ -43,7 +43,7 @@ source_url: https://zhuanlan.zhihu.com/p/1999079916122183598
 
 Git Worktrees 的思路其实很直接：<strong>每个分支对应一个独立目录。</strong>
 
-`project-repo/
+project-repo/
 ├── project--main/   # 主工作树（包含完整的 .git/）
 │   ├── src/, tests/
 │   └── .git/
@@ -61,7 +61,7 @@ Git Worktrees 的思路其实很直接：<strong>每个分支对应一个独立�
 
 #### <strong>技术细节</strong>
 
-`git worktrees` 的核心设计在<strong>目录隔离</strong>+<strong>引用共享</strong>：
+git worktrees` 的核心设计在<strong>目录隔离</strong>+<strong>引用共享</strong>：
 
 - <strong>主工作树</strong>：保存完整的 `.git/` 目录，即整个 Git 对象数据库
 - <strong>链接工作树</strong>：目录中只有一个 `.git` 文件，用于指向主仓库
@@ -69,7 +69,7 @@ Git Worktrees 的思路其实很直接：<strong>每个分支对应一个独立�
 - <strong>完全独立的工作目录</strong>：每个工作树的修改互不影响，直到显式提交
 工作树的创建和管理也非常直接：
 
-`# 在新目录中检出现有分支
+# 在新目录中检出现有分支
 git worktree add ../hotfix hotfix
 
 # 同时创建分支并生成工作树
@@ -276,8 +276,8 @@ Auto Claude 提供了一种不同于传统 AI 编程工具的方式：它不是�
 
 #### <strong>引用链接</strong>
 
-`[1]` Auto Claude 开源项目: *[https://github.com/AndyMik90/Auto-Claude](https://link.zhihu.com/?target=https%3A//github.com/AndyMik90/Auto-Claude)***`[2]` BigModel 官方文档: *https://docs.bigmodel.cn/cn/guide/start/introduction*
-`[3]` Parallel Autonomous Development: *https://ajianaz.dev/auto-claude-glm-4-7-the-future-of-parallel-autonomous-development-with-git-worktrees/*
+[1]` Auto Claude 开源项目: *[https://github.com/AndyMik90/Auto-Claude](https://link.zhihu.com/?target=https%3A//github.com/AndyMik90/Auto-Claude)***`[2]` BigModel 官方文档: *https://docs.bigmodel.cn/cn/guide/start/introduction*
+[3]` Parallel Autonomous Development: *https://ajianaz.dev/auto-claude-glm-4-7-the-future-of-parallel-autonomous-development-with-git-worktrees/*
 
 既然看到这里了，如果觉得有启发，随手点个赞、推荐、转发三连吧，你的支持是我持续分享干货的动力。**
 

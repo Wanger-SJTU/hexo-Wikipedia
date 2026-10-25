@@ -84,7 +84,7 @@ PTQ过程中的一个基本步骤是为每个量化器找到良好的量化范�
 
 上面一段看完是不是有点没懂，那看一下实际代码如何操作的：来自其它大佬的[文章](https://zhuanlan.zhihu.com/p/398464453)，注意这里有两个函数，第二个函数是解决带depth wise的情况。
 
-`def equalize(weight1, bias1, weight2):
+def equalize(weight1, bias1, weight2):
  # 重排列
  weight2 = weight2.permute(1, 0, 2, 3)
  out_channel = weight1.shape[0]

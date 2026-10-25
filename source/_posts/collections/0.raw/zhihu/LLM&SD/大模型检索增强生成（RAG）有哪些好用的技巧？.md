@@ -239,7 +239,10 @@ baseline_chain = (
 
 现在，我们可以使用相应链的 invoke 函数查询这两种方法。
 
+```text
 semi_structured_chain.invoke(&#34;Can you explain what medical necessity is in relation to coverage?&#34;)
+```
+
 
 # output: &#34;Medical necessity in relation to coverage refers to the requirement that a health care service, procedure, treatment, test, device, prescription drug, or supply must be medically necessary for benefits to be provided. This means that they must be clinically appropriate in terms of type, frequency, extent, site, and duration, and considered effective for the patient&#39;s illness, injury, or disease. They must be required for the direct care and treatment or management of that condition, and the patient&#39;s condition would be adversely affected if the services were not provided. These services must be provided in accordance with generally-accepted standards of medical practice and should not be primarily for the convenience of the patient, their family, or their provider. They should also not be more costly than an alternative service or sequence of services that is at least as likely to produce equivalent therapeutic or diagnostic results. The fact that a provider has furnished, prescribed, ordered, recommended, or approved the service does not automatically make it medically necessary or mean that it has to be covered. The decision may be based on a review of the patient&#39;s medical records, medical policies and clinical guidelines, reports in peer-reviewed medical literature, reports and guidelines published by nationally-recognized health care organizations, professional standards of safety and effectiveness, and the opinions of health care professionals and attending providers.&#34;
 
@@ -266,7 +269,7 @@ dataset = client.create_dataset(dataset_name=dataset_name)
 for _, row in df_curated.iterrows():
     # Get Q, A
 
-```js
+```text
     q = row[&#39;question&#39;]
     a = row[&#39;answer&#39;]
     # Use the values in your function

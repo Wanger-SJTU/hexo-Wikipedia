@@ -69,7 +69,7 @@ $$ RQM = round(Q*min(V_x)) $$
 
 python 代码实现如下：
 
-`# 根据参数和原始浮点数量化为定点数
+# 根据参数和原始浮点数量化为定点数
 
 ```python
 def Quant(Vx, Q, RQM):
@@ -87,9 +87,9 @@ def QuantRevert(VxQuant, Q, RQM):
 
 针对数组的量化和还原如下：
 
-`import numpy as np
-
 ```python
+import numpy as np
+
 def ListQuant(data_list, quant_bits):
     # 数组范围估计
     data_min = min(data_list)
@@ -142,7 +142,7 @@ def ListQuantRevert(quant_data_list, Q, RQM):
 
 随机数的量化实际使用中我发现，ARM CMSIS – Arm Developer 使用的是 `int8_t` 的 SIMD 优化，所以我这里在补充下关于 `uint8_t` 转成 `int8_t` 的量化和反量化代码：
 
-`import numpy as np
+import numpy as np
 
 np.random.seed(41)
 
@@ -203,7 +203,6 @@ if __name__ == '__main__':
 ```
 
 
-`
 
 ### 误差分析
 
@@ -211,9 +210,9 @@ if __name__ == '__main__':
 
 假设我们有一个 256 维浮点的特征参数，以及（256，512）浮点的权重参数，在确定量化比特位和权重参数取值范围的情况下，分别计算浮点点积结果，以及量化还原后的点积结果，最终计算两个结果之间的均方误差，python 代码如下：
 
-`import numpy as np
-
 ```python
+import numpy as np
+
 def get_mse(quant_bits=12,
             feature_range=(0.0, 100.0),
             weight_range=(-1.0, 1.0),
@@ -259,8 +258,11 @@ def get_mse(quant_bits=12,
 
 下面代码是针对不同的<strong>权重取值范围</strong>以及<strong>量化位数</strong>进行绘图描述：
 
-`import numpy as np
+```python
+import numpy as np
 import matplotlib.pyplot as plt
+```
+
 
 if __name__ == '__main__':
     # 权重范围列表
@@ -319,9 +321,8 @@ if __name__ == '__main__':
 
 前几个小节主要借鉴的是2016年的文章[On the efficient representation and execution of deep acoustic models](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1607.04683)，然而，在2017年谷歌更近一步扩展到了全定点的计算， 参考 [Quantization and Training of Neural Networks for Efficient Integer-Arithmetic-Only Inference](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1712.05877)，原理和之前分享的内容也基本上一致，将32位的 RQM 换成了 8 位的 zero_point，具体的量化反量化操作如下代码： 
 
-`def ChooseQuantizationParamsV2(xmin, xmax, num_bits=8):
-
 ```cpp
+def ChooseQuantizationParamsV2(xmin, xmax, num_bits=8):
     qmin = -(int)(1  (num_bits-1))
     qmax = (int)((1  (num_bits-1))-1)
 
@@ -349,11 +350,10 @@ def DequantizeV2(x, scale, nudged_zero_point):
     return (x.astype(np.float32) - (float)(nudged_zero_point)) * scale
 ```
 
-`
 
 目前，既要保证识别效果，同时还要使用 8 bit 量化模型，一种比较完备的做法就是将推理阶段的量化操作迁移到训练阶段，如 Tensorflow 说明文档一章介绍 Fixed Point Quantization。采用 fake 的量化后的浮点来作为 input 和 weight 的替换，同时浮点范围采用了平滑最大最小值的方法，具体可以查看 TensorFlow 的官方代码 [MovingAvgQuantize](https://link.zhihu.com/?target=https%3A//github.com/tensorflow/tensorflow/blob/05ab6a2afa2959410d48aab2336cea9dc1e2c13e/tensorflow/contrib/quantize/python/quant_ops.py%23L186)，训练中平滑得到了全局的输入和权重的最大最小值（类似 batchnorm 的统计方式），代码段如下：
 
-`    if symmetric:
+    if symmetric:
       if narrow_range:
 
 ```text

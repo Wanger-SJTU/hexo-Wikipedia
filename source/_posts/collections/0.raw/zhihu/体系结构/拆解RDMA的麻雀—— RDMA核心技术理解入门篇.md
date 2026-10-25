@@ -59,9 +59,8 @@ RDMA让网卡绕过操作系统内核，直接在用户内存间搬运数据，�
 
 common 文件，定义两端约定的请求格式
 
-`#define PORT 8080
-
 ```text
+#define PORT 8080
 #define BUFFER_SIZE 1024
 //----------------- Step0. 准备工作 common -------------------------------------
 //       1. 定义 request_t（两个主机约定的交换信息的数据格式）line7-15
@@ -81,9 +80,8 @@ typedef struct {
 
 server （内存提供）端代码，注释中解释了每个步骤的功能
 
-`//----------------- Step0. 准备工作 Server -------------------------------------
-
 ```cpp
+//----------------- Step0. 准备工作 Server -------------------------------------
 //       分配用户态内存，供远端主机读写 line 10-12
 int main() {
     int server_fd, client_fd;
@@ -129,9 +127,8 @@ int main() {
 
 client（请求发送）端代码
 
-`int main() {
-
 ```cpp
+int main() {
 //------------------ Step1. Socket 创建 ---------------------------------  
     //创建 Socket，建立与对端主机的链接 line 5-20
     //最终返回 sock 句柄，后续 send/recv 使用该句柄交换数据 line32
@@ -166,9 +163,8 @@ client 端根据自身发送的请求，调用 send 给 server 发送数据（�
 
 common文件，定义两端主机交换QP信息的结构体
 
-`#define BUF_SIZE 1024
-
 ```text
+#define BUF_SIZE 1024
 #define MSG 「Hello RDMA Verbs RC!」
 
 struct cm_data {
@@ -178,11 +174,10 @@ struct cm_data {
 };
 ```
 
-`
 
 Server(内存提供端)代码
 
-`MAIN():
+MAIN():
 
 ```text
 //---------------Step1.1 建立 RDMA 需要的各项资源，包括 mr/cq/qp 等----------------
@@ -245,7 +240,7 @@ Server(内存提供端)代码
 
 client （内存访问端）代码
 
-`MAIN():
+MAIN():
 
 ```text
 //---------------Step1.1 建立 RDMA 上下文(context)，包括 mr/cq/qp 等----------------
@@ -411,9 +406,8 @@ RDMA直接内存访问带来的这些优势，背后涉及到一整套地址转�
 
 libibverbs 通过 verbs_context_ops 查找函数指针
 
-`static const struct verbs_context_ops mlx5_ctx_common_ops =
-
 ```text
+static const struct verbs_context_ops mlx5_ctx_common_ops =
  {     
 ```
 

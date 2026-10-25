@@ -50,7 +50,7 @@ source_url: https://zhuanlan.zhihu.com/p/642690763
 
 官网给的第一个案例是特定 json 格式的生成。我们可以来看下这个`RAIL` spec 的具体定义：
 
-` version="0.1">
+ version="0.1">
 
 ```text
      name="patient_info">
@@ -96,15 +96,13 @@ Given the following doctor's notes about a patient, please extract a dictionary 
 
 @complete_json_suffix_v2
 
-`
 
 可以看到虽然比起常见的模板语言要更加“繁琐”，但可以包含的内容也可以更加完善。比如可以提供字段的描述信息，检查规范，一定程度上也能帮助 LLM 更好地理解需求，生成预期的结果。
 
 当生成结果有问题时，例如前面的例子中，“affected area”并没有按照指定选项来生成：
 
-`{
-
 ```text
+{
     'patient_info': {
         'gender': 'Male',
         'age': 49,
@@ -120,7 +118,7 @@ Given the following doctor's notes about a patient, please extract a dictionary 
 
 接下来 validator 会将相关的错误找出来，形成下一次 ReAsk 的请求内容。注意到这里错误的信息的位置是和原来的 json 结构保持一致的，并且正确的部分被省略了：
 
-`I was given the following JSON response, which had problems due to incorrect values.
+I was given the following JSON response, which had problems due to incorrect values.
 
 ```text
 {
@@ -150,7 +148,7 @@ Help me correct the incorrect values based on the given error messages.`
 
 除了 json 格式的检查外，`RAIL` spec 中还提供了通过脚本检查的扩展支持，可以用来检查更加复杂的内容，例如 Python 代码是否合法，结果中是否有敏感信息，甚至通过 LLM 再来检查生成的内容是否有害，做结果过滤等。官网上有很多例子，比如下面这个是用来检查生成的摘要是否与原文相似：
 
-` language='python'>
+ language='python'>
 document = open("data/article1.txt", "r").read()
 
     
@@ -162,7 +160,6 @@ document = open("data/article1.txt", "r").read()
     />
 ```
 
-`
 
 原理方面相对来说也比较直观。项目代码还是蛮工程范的，清晰易读，在这里也不多做深入分析了。
 
@@ -174,7 +171,7 @@ document = open("data/article1.txt", "r").read()
 
 这个项目中的`Colang`定义 flow 是一大特色，我们先来看个例子：
 
-`define user ask capabilities
+define user ask capabilities
   "What can you do?"
   "What can you help me with?"
   "tell me what you can do"
@@ -212,7 +209,7 @@ define bot inform capabilities
 
 项目中给出了很多非常实用的案例，包括事实性检查，限定对话主题，避免有害回复，调用外部工具等。其中一个用例是通过以下流程来检查回复是否有“幻觉”问题：
 
-`define flow check hallucination
+define flow check hallucination
     bot ...
 
 ```text
@@ -238,7 +235,7 @@ define bot inform answer prone to hallucination
 
 在 guidance 中，我们同样是通过“模板语言”来定义 LLM 的输出结构，以确保输出格式的正确性。这个结构比起 xml 来说会更易写易理解些：
 
-`# load a model locally (we use LLaMA here)
+# load a model locally (we use LLaMA here)
 guidance.llm = guidance.llms.Transformers("your_local_path/llama-7b", device=0)
 
 # we can pre-define valid option sets

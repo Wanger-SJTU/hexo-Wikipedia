@@ -78,7 +78,7 @@ image.png
 - 同样是可以在全局的 `.github`仓库或具体仓库中。
 - 你可以直接 Fork 我们的配置，见文末。
 - 详细的配置看该 GitHub App [文档](https://link.zhihu.com/?target=https%3A//github.com/apps/settings)。
-`repository:
+repository:
     homepage: https://artusjs.github.io/
     topics: node.js, framework
 

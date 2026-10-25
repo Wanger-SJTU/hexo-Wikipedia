@@ -144,10 +144,10 @@ try runner.generate("Hello, how are you?", Config {
 Kotlin (Android) — API Docs • Demo App
 
 val llmModule = LlmModule("llama.pte", "tiktoken.bin", 0.8f)
-llmModule.load()
-llmModule.generate("Hello, how are you?", 128, object : LlmCallback {
 
 ```text
+llmModule.load()
+llmModule.generate("Hello, how are you?", 128, object : LlmCallback {
     override fun onResult(result: String) { print(result) }
     override fun onStats(stats: String) { }
 })

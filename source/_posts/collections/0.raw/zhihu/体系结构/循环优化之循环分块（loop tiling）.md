@@ -25,7 +25,7 @@ source_url: https://zhuanlan.zhihu.com/p/292539074
 
 我们从一个简单的两层循环的例子看起，为了更好的可读性，我们使用Fortran语法（column major）：
 
-`DO I = 1, N
+DO I = 1, N
   DO J = 1, M
 
 ```text
@@ -47,7 +47,7 @@ END DO`
 
 我们先考虑tile J层循环，将B的访问模式变成如下，令tile size为T，T一般是b的倍数，也足够小，可以认为N,M >> b,T，T的取值应该使得当B(T)被访问时B(1)也依然还在缓存中：
 
-`I=1: B(1), B(2), B(3) ... B(T)
+I=1: B(1), B(2), B(3) ... B(T)
 I=2: B(1), B(2), B(3) ... B(T)
 I=3: B(1), B(2), B(3) ... B(T)
 ...
@@ -63,7 +63,7 @@ I=N: B(T+1), B(T+2), B(T+3) ... B(2T)`
 
 此时循环变成：
 
-`DO J = 1, M, T
+DO J = 1, M, T
   DO I = 1, N
 
 ```text
@@ -81,7 +81,7 @@ END DO`
 
 那要是我们选择tile I层循环呢？我们看看会发生什么。要tile I层循环首先将I、J循环调换：
 
-`DO J = 1, M
+DO J = 1, M
   DO I = 1, N
 
 ```text
@@ -93,7 +93,7 @@ END DO`
 
 依然假设tile size=T，访问模式将变为：
 
-`J=1: A(1) B(1), A(2) B(1), A(3) B(1) ... A(T) B(1)
+J=1: A(1) B(1), A(2) B(1), A(3) B(1) ... A(T) B(1)
 J=2: A(1) B(2), A(2) B(2), A(3) B(2) ... A(T) B(2)
 ...
 J=M: A(1) B(M), A(2) B(M), A(3) B(M) ... A(T) B(M)
@@ -106,7 +106,7 @@ J=M:A(T+1) B(M), A(T+2) B(M), A(T+3) B(M) ... A(2T) B(M)
 
 此时循环变成：
 
-`DO I = 1, N, T
+DO I = 1, N, T
   DO J = 1, M
 
 ```text
@@ -124,7 +124,7 @@ END DO`
 
 ### 例程二
 
-`DO J = 1, M
+DO J = 1, M
   DO I = 1, N
 
 ```text
@@ -141,7 +141,7 @@ END DO`
 
 还是用之前的strip-mine-and-interchange方法来tile内层循环I：
 
-`DO I = 1, N, T
+DO I = 1, N, T
   DO J = 1, M
 
 ```text
@@ -157,7 +157,7 @@ tiling loop I 之后的cache miss是N/T * T/b + T/b * M * N/T（J层循环每一
 
 再考虑tile J层循环（需要首先调换I、J层循环）：
 
-`DO J = 1, M, T
+DO J = 1, M, T
   DO I = 1, N
 
 ```text
@@ -175,7 +175,7 @@ END DO`
 
 我们再来看一个更有趣的例子：矩阵转置。
 
-`DO J = 1, N
+DO J = 1, N
   DO I = 1, N
 
 ```text
@@ -187,7 +187,7 @@ ENDDO`
 
 这个例子之所以有趣是因为，无论是否做交换I、J循环（交换是合法的），cache miss都是N*N/b + N*N。下面是交换I、J循环后的情况：
 
-`DO I = 1, N
+DO I = 1, N
   DO J = 1, N
 
 ```text
@@ -201,7 +201,7 @@ ENDDO`
 
 那有什么办法让A和B都能achieve locality吗？答案是可以，请看如下的tiling：
 
-`DO I = 1, N, T
+DO I = 1, N, T
   DO J = 1, N, T
 
 ```text

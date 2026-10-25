@@ -27,7 +27,7 @@ My First Language Frontend with LLVM Tutorial
 
 一个非常小巧的编译器，学习用非常好，而且有arm和riscv版本。
 
-`shecc`is built from scratch, targeted at 32-bit Arm and RISC-V architecture, as a self-compiling compiler for a subset of the C language.
+shecc`is built from scratch, targeted at 32-bit Arm and RISC-V architecture, as a self-compiling compiler for a subset of the C language.
 
 [https://github.com/jserv/shecc](https://link.zhihu.com/?target=https%3A//github.com/jserv/shecc)
 

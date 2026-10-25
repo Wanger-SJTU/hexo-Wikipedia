@@ -24,9 +24,8 @@ source_url: https://zhuanlan.zhihu.com/p/627536105
 - [llama](https://link.zhihu.com/?target=https%3A//github.com/facebookresearch/llama/blob/main/llama/model.py)
 llama显然是仔细看了苏神的论文推导，直接按照复数运算的方式进行实现，代码非常简洁。
 
-`def precompute_freqs_cis(dim: int, end: int, theta: float = 10000.0):
-
 ```python
+def precompute_freqs_cis(dim: int, end: int, theta: float = 10000.0):
     freqs = 1.0 / (theta ** (torch.arange(0, dim, 2)[: (dim // 2)].float() / dim))
     t = torch.arange(end, device=freqs.device)  # type: ignore
     freqs = torch.outer(t, freqs).float()  # type: ignore
@@ -54,9 +53,8 @@ def apply_rotary_emb(
 - [palm](https://link.zhihu.com/?target=https%3A//github.com/lucidrains/PaLM-pytorch/blob/main/palm_pytorch/palm_pytorch.py)
 palm是将复数运算展开之后，在实数上用三角函数进行运算的，方便修改一些，也不算复杂。
 
-`class RotaryEmbedding(nn.Module):
-
 ```python
+class RotaryEmbedding(nn.Module):
     def __init__(self, dim):
         super().__init__()
         inv_freq = 1.0 / (10000 ** (torch.arange(0, dim, 2).float() / dim))

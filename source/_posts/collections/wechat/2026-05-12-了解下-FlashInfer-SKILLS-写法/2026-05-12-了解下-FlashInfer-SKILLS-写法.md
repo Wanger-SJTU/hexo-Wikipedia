@@ -62,7 +62,7 @@ CUDA 错误（非法内存访问、越界、NaN/Inf 等）经常会直接让程�
 
 一个典型的调试流程是：
 
-`export&nbsp;FLASHINFER_LOGLEVEL=3
+export&nbsp;FLASHINFER_LOGLEVEL=3
 export&nbsp;FLASHINFER_LOGDEST=debug.log
 python my_script.py
 
@@ -101,7 +101,7 @@ Keyword input arguments:
 
 多 GPU 场景下可以用&nbsp;`%i`&nbsp;模式为每个进程生成独立日志：
 
-`export&nbsp;FLASHINFER_LOGDEST=debug_rank_%i.txt
+export&nbsp;FLASHINFER_LOGDEST=debug_rank_%i.txt
 torchrun --nproc_per_node=4 my_script.py
 
 ```
@@ -163,7 +163,7 @@ FlashInfer 支持两种计时方式：
 
 还支持批量测试，把多组参数写到一个 testlist 文件里一次性跑：
 
-`python benchmarks/flashinfer_benchmark.py \
+python benchmarks/flashinfer_benchmark.py \
 &nbsp; &nbsp; --testlist my_benchmarks.txt \
 &nbsp; &nbsp; --output_path results.csv \
 &nbsp; &nbsp; --generate_repro_command \
@@ -203,7 +203,7 @@ median_time, std_time = bench_gpu_time(
 
 创建&nbsp;`include/flashinfer/scale.cuh`，要求是<strong>框架无关的</strong>（不依赖 Torch 头文件），使用原始指针和模板来支持多种 dtype：
 
-`namespace&nbsp;flashinfer {
+namespace&nbsp;flashinfer {
 
 ```text
 template&nbsp;&lt;typename&nbsp;T&gt;

@@ -46,7 +46,7 @@ npm install
 
 ## 具体任务对应关系
 
-`starter/task-prompt.md` 故意只有一句话："Build an Electron app that can show
+starter/task-prompt.md` 故意只有一句话："Build an Electron app that can show
 documents and answer questions." 请用 solution 中的 harness 文件把这句话具体化。
 
 | 功能 | starter 中检查哪里 | solution 中对照哪里 |

@@ -29,9 +29,8 @@ cpu和gpu的gemm实现肯定是不同的，以调库为例，一个是可以调c
 
 我的最上层接口要调用matmul：
 
-`template typename T, typename Device>
-
 ```cpp
+template typename T, typename Device>
 void MatmulKernel(const Device& dev,
         ...) {
   //初始化名为blas的这个handle，本质就是初始化了一个叫做Blas的类
@@ -41,7 +40,6 @@ void MatmulKernel(const Device& dev,
 }
 ```
 
-`
 
 这就是最上层的调用接口，只需要指定计算类型和Device，那就会自动分发到底层若干device的若干类型的gemm实现
 
@@ -49,7 +47,7 @@ void MatmulKernel(const Device& dev,
 
 第5行：不出所料，其实就是个构造函数的调用
 
-`template typename Device, typename T>
+template typename Device, typename T>
 inline BlasDevice, T> GetBlas(const Device& dev) {
 
 ```text
@@ -57,13 +55,11 @@ inline BlasDevice, T> GetBlas(const Device& dev) {
 }
 ```
 
-`
 
 第7行：Blas这个类包含了如下GEMM和Matmul等等一系列(重载)成员函数，用于handle不同输入参数的矩阵乘法需求。可以看出，Blas这个类其实就是一个wrapper类，负责承上启下的模板推导，推导到不同device的gemm实现
 
-`template typename Device, typename T>
-
 ```cpp
+template typename Device, typename T>
 class Blas {
  public:
   explicit Blas(const Device& dev) : dev_(dev) {}
@@ -93,13 +89,11 @@ class Blas {
 }
 ```
 
-`
 
 那么我们接下来就可以上不同device的gemm具体实现，本质上就是模板偏特化和模板特例化，这是模板世界的IfThenElse，此处只给了CPU和GPU的特化，如果还有其它设备那么接着针对此设备特化实现即可
 
-`template typename T>
-
 ```cpp
+template typename T>
 void BlasCPU, T>::GEMM(CBLAS_TRANSPOSE transA,
                                  CBLAS_TRANSPOSE transB,
                                  int M,
@@ -171,7 +165,6 @@ void BlasGPU, T>::GEMM(bool transA,
                        ldc);
 ```
 
-`
 
 ### <strong>番外篇1</strong>
 
@@ -185,9 +178,8 @@ NV现有的把C++模板推导运用到极致的案例就是cutlass，它支持�
 
 比如下面这个针对volta gpu作的偏特化实现
 
-`/// Partial specialization for Volta architecture
-
 ```cpp
+/// Partial specialization for Volta architecture
 template 
   /// Element type for A matrix operand
   typename ElementA,
@@ -252,6 +244,5 @@ struct DefaultGemm
 ```
 
 >
-`
 
 最后，感谢读者点赞和收藏，欢迎关注我的公众号“AI不止算法**”。

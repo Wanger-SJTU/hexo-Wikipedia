@@ -28,7 +28,7 @@ source_url: https://zhuanlan.zhihu.com/p/2023791484751679788
 
 大模型实际走的：
 
-`🧠 "我先截个图看看"         → 截图
+🧠 "我先截个图看看"         → 截图
 🧠 "好像看到一个按钮，点一下"    → 点击 (x:121,y:580)
 🧠 "好像没反应？再看看"      → 又截图
 🧠 "换个坐标试试"           → 又点击 (x:720,y:360)
@@ -59,7 +59,7 @@ source_url: https://zhuanlan.zhihu.com/p/2023791484751679788
 
 那为什么不让Python管流程，大模型只在需要推理时介入？
 
-`🐍 Python：截图 + OCR                  ← 确定性代码
+🐍 Python：截图 + OCR                  ← 确定性代码
 🧠 LLM："按钮在 (200, 300)"            ← 推理
 
 🐍 Python：点击 (200, 300)              ← 确定性代码
@@ -77,7 +77,7 @@ source_url: https://zhuanlan.zhihu.com/p/2023791484751679788
 
 #### 1. Docstring = Prompt
 
-`@agentic_function
+@agentic_function
 
 ```python
 def observe(task):
@@ -99,7 +99,7 @@ def observe(task):
 
 每个函数调用自动记录，形成树。下游函数调用 LLM 时，框架自动注入上游的执行结果：
 
-`login_flow ✓ 8.8s
+login_flow ✓ 8.8s
 ├── observe ✓ 3.1s → "在 (200,300) 找到登录按钮"
 ├── click ✓ 2.5s → "点击了登录按钮"
 └── verify ✓ 3.2s → "确认进入仪表盘"`
@@ -110,7 +110,7 @@ def observe(task):
 
 运行时创建新函数，出了 bug 还能自动修复：
 
-`from agentic.meta_function import create, fix
+from agentic.meta_function import create, fix
 
 summarize = create("把文本总结成3个要点", runtime=runtime)
 # 如果有 bug

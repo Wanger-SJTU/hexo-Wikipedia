@@ -66,7 +66,7 @@ npx skills add walkinglabs/learn-harness-engineering --skill harness-creator
 
 ### 開發過程
 
-`harness-creator` 基於 <strong>skill-creator</strong> 方法論開發——這是 Anthropic 官方提供的元技能，用於建立、測試和反覆改進 agent 技能。skill-creator 提供了結構化的工作流（起草 → 測試 → 評估 → 迭代），內建評估執行器、評分器和基準檢視器。
+harness-creator` 基於 <strong>skill-creator</strong> 方法論開發——這是 Anthropic 官方提供的元技能，用於建立、測試和反覆改進 agent 技能。skill-creator 提供了結構化的工作流（起草 → 測試 → 評估 → 迭代），內建評估執行器、評分器和基準檢視器。
 
 - <strong>skill-creator 來源</strong>：[anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
 - <strong>Claude Code 技能檔案</strong>：[anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)

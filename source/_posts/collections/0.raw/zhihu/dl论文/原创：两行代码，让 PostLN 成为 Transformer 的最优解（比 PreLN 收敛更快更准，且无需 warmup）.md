@@ -21,14 +21,14 @@ source_url: https://zhuanlan.zhihu.com/p/466943663
 
 具体原因是，如果你 print 嵌入层，会发现，它在每步的移动大致是 lr 的程度，而它的初始值通常是 std=0.02 的正态分布，因此，网络需要很多步才能跳出初始的噪音嵌入，也容易被卡住。
 
-`初始嵌入：
+初始嵌入：
 [[-0.0073  0.0062 -0.0261 ...  0.0086  0.0107 -0.008 ] ... ]
 优化器 lr=4e-4 一步之后的嵌入，方向和初始嵌入仍然类似：
 [[-0.0069  0.0066 -0.0265 ...  0.009   0.0111 -0.0084] ... ]`
 
 解决方法是，应将嵌入层初始化为很小的随机值：
 
-`if isinstance(module, (nn.Linear)):
+if isinstance(module, (nn.Linear)):
 	module.weight.data.normal_(mean=0.0, std=0.01) # I always use 0.01 instead of 0.02
 if isinstance(module, (nn.Embedding)):
 	module.weight.data.normal_(mean=0.0, std=1e-5) # tiny values, instead of 0.01`
@@ -43,12 +43,12 @@ if isinstance(module, (nn.Embedding)):
 
 这里的 PreLN 代码。PreLN 有个缺陷，|x| 会逐层增大，因此我一直认为它并非完美。
 
-`x = x + self.att(self.ln1(x))
+x = x + self.att(self.ln1(x))
 x = x + self.ffn(self.ln2(x))`
 
 这里的 PostLN 代码。注意 ln1 ln2 都放在层前面，最后还会有个额外的输出 ln。这样所有层都拥有 ln。
 
-`x = self.ln1(x) # 根据更多朋友的测试，把整个模型的第一个这个 LayerNorm 改成 FixedNorm 有时效果更好
+x = self.ln1(x) # 根据更多朋友的测试，把整个模型的第一个这个 LayerNorm 改成 FixedNorm 有时效果更好
 x = x + self.att(x)
 x = self.ln2(x)
 x = x + self.ffn(x)

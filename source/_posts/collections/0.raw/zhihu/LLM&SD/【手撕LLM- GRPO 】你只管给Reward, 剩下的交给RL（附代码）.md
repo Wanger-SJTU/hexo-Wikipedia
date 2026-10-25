@@ -111,16 +111,15 @@ $- \textbf{r}=\{r_1,r_2,\ldots,r_G\} , 而\hat{A}_{i,t} 为组相对的优势。
 
 我们给定常规的问答模版, 比如我们问询：“如何写python程序”，通常需要进行格式化处理，并附上模型发言的前缀`#ASSISTANT:`
 
-`#SYSTEM:你需要友善的回答用户的问题
+#SYSTEM:你需要友善的回答用户的问题
 #USER: 如何写python程序
 #ASSISTANT:`
 
 对于数学问题我们可以如下定义模版，在问题后面附上``. 所以我们输入到模型里面的内容，也声明了回答的格式，仍要求模型具备一定的指令跟随能力。
 
-`#SYSTEM:你需要在标签后面思考以结尾，
+#SYSTEM:你需要在标签后面思考以结尾，
 答案前后分别使用和，最终答案以$\boxed{}$来处理。
 #USER:求解f(x)=x^3+e^x+1的最小值
-`
 
 基于上述的提示词，我们可以对模型\pi_\theta进行采样出多条回答o_i。回答的类型可能有
 
@@ -130,7 +129,7 @@ $- \textbf{r}=\{r_1,r_2,\ldots,r_G\} , 而\hat{A}_{i,t} 为组相对的优势。
 - 答案没有`$\boxed{}$` 框住
 上述四种情况都为未遵循指令要求的格式输出。正确的模型输出格式为：
 
-`THINK>{SOLUTION} \THINK> 
+THINK>{SOLUTION} \THINK> 
 ANSWER> the final answer is $\boxed{}$ \answer>`
 
 #### 2.2 说明
@@ -167,17 +166,16 @@ Q2: 采样2的解答过程是否会随着RL训练，采样的解答过程越来�
 
 在模型的回答o_i里我们要提取 ，与最终的结果比较0.5
 
-`{SOLUTION}  
+{SOLUTION}  
  the final answer is $\boxed{}$ `
 
 这里涉及到答案的一致性判别，为了方便实现我们可以严格的要求字符串等同，但效率太差。
 
 我们看open-r1早期实现判别：
 
-`def accuracy_reward(completions, ground_truth, **kwargs):
+```python
+def accuracy_reward(completions, ground_truth, **kwargs):
     """Reward function that checks if the completion is the same as the ground truth."""
-
-```text
     # Regular expression to capture content inside \boxed{}
     contents = [completion[0]["content"] for completion in completions]
     answers = [extract_boxed_content(content) for content in contents]
@@ -188,9 +186,8 @@ Q2: 采样2的解答过程是否会随着RL训练，采样的解答过程越来�
 
 当前实现hf写了个库做一致性判别`huggingface/Math-Verify`, 可以通过调包来判别。但是具体的math_verify未探究
 
-`from math_verify import LatexExtractionConfig, parse, verify
-
 ```python
+from math_verify import LatexExtractionConfig, parse, verify
 def accuracy_reward(completions, solution, **kwargs):
     """Reward function that checks if the completion is the same as the ground truth."""
     contents = [completion[0]["content"] for completion in completions]
@@ -225,7 +222,7 @@ def accuracy_reward(completions, solution, **kwargs):
 
 那么我们也可以用LLM-As-Judge的形式进行判别，参照OpenAI的[SImpleEval](https://link.zhihu.com/?target=https%3A//github.com/openai/simple-evals)的实现， 判别模版如下，即让GPT-4模型in-context learning来判别。
 
-`# simple-evals/common.py
+# simple-evals/common.py
 
 EQUALITY_TEMPLATE = r"""
 Look at the following two expressions (answers to a math problem) and judge whether they are equivalent. Only perform trivial simplifications
@@ -277,7 +274,6 @@ Respond with only "Yes" or "No" (without quotes). Do not include a rationale.
 ```
 
 """.strip()
-`
 
 根据上述的LLM-As-Judge，我们得到YES或者NO，那么对应的奖励分数为1和0.
 
@@ -297,9 +293,8 @@ $$\hat{A}_{i,\color{red}{t}} = \frac{r_i - \text{mean}(\mathbf{r})}{\text{std}(\
 
 对应的代码实现为:
 
-`def grpo_advantage(rewards):
-
-```text
+```python
+def grpo_advantage(rewards):
     epsilon = 0.00001
     rewards = torch.tensor(rewards, dtype = torch.float) 
     A = (rewards - rewards.mean()) / (rewards.std() + epsilon)
@@ -309,7 +304,7 @@ $$\hat{A}_{i,\color{red}{t}} = \frac{r_i - \text{mean}(\mathbf{r})}{\text{std}(\
 
 测试, 我们假设采样6条输出，对应6个奖励，我们看case2里，正确项相对上的优势估计更大。而错误的回答将得到负的值。当全错和全对时，优势是无效的，那么可以skip掉，如果base模型差无法采样到正确反馈，那么优化将会非常缓慢和不稳定。
 
-`A = grpo_advantage([0,0,0,0,0,0])
+A = grpo_advantage([0,0,0,0,0,0])
 # A tensor([-0., -0., -0., -0., -0., -0.])
 
 A = grpo_advantage([1,0,0,0,0,0])
@@ -326,14 +321,14 @@ A = grpo_advantage([1,1,1,1,1,1])
 
 我们再测64个样本只有1个回答正确
 
-`reward_batch = [0] * 64
+reward_batch = [0] * 64
 reward_batch[0] = 1
 A = grpo_advantage(reward_batch)
 print(A)`
 
 输出
 
-`tensor([ 7.8887, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252,
+tensor([ 7.8887, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252,
         -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252,
         -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252,
         -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252,
@@ -346,7 +341,7 @@ print(A)`
 
 通过正则表达式即能判别回答是否遵循格式，若遵循返回1，否则为0。
 
-`# open-r1
+# open-r1
 
 ```python
 def format_reward_func(completions, **kwargs):
@@ -378,8 +373,11 @@ $\mathbb{D}_{KL}\left[\pi_{\theta} || \pi_{ref}\right] = (\gamma - 1) - \log \ga
 
 GRPO KL是token-level的
 
-`def grpo_kl(pi_logprob, pi_ref_logprob):
+```python
+def grpo_kl(pi_logprob, pi_ref_logprob):
     return pi_ref_logprob.exp() / pi_logprob.exp()- (pi_ref_logprob - pi_logprob) - 1
+```
+
 
 pi = torch.randn(3, 5) # batch, sequence
 pi_ref = torch.randn(3, 5) # batch, sequence
@@ -391,7 +389,7 @@ print(grpo_kl(pi_logprob, pi_ref_logprob))`
 
 输出
 
-`tensor([[0.1465, 0.0457, 0.5321, 0.0793, 0.0728],
+tensor([[0.1465, 0.0457, 0.5321, 0.0793, 0.0728],
         [1.1576, 3.0678, 0.5285, 0.3712, 0.0817],
         [0.0031, 0.8179, 2.4575, 0.1597, 0.0221]])`
 
@@ -423,7 +421,7 @@ $$- k2（low variance estimator）：\frac{1}{2}(\log \frac{p(x)}{q(x)})^2 = \fr
 
 #### 4.4 手撕KL
 
-`import torch.distributions as dis
+import torch.distributions as dis
 p = dis.Normal(loc=0, scale=1)
 q = dis.Normal(loc=0.1, scale=1)
 x = q.sample(sample_shape=(10_000_000,))
@@ -485,9 +483,8 @@ $$\mathcal{L}_{\text{GRPO}}(\theta) = - \frac{1}{G} \sum_{i=1}^G \frac{1}{|o_i|}
 
 [](https://link.zhihu.com/?target=https%3A//github.com/dhcode-cpp/grpo-loss)
 
-`def grpo_loss(pi_logprob, pi_old_logprob, pi_ref_logprob, advantage, input_len, len_oi):
-
-```text
+```python
+def grpo_loss(pi_logprob, pi_old_logprob, pi_ref_logprob, advantage, input_len, len_oi):
     epsilon = 0.2
     beta = 0.01
 
@@ -519,7 +516,7 @@ $$\mathcal{L}_{\text{GRPO}}(\theta) = - \frac{1}{G} \sum_{i=1}^G \frac{1}{|o_i|}
 
 调用输出
 
-`# 输出分布
+# 输出分布
 pi_logits = torch.randn(3, 5, 32) # batch, seq_len, vocab_size
 pi_ref_logits = torch.randn(3, 5, 32)
 pi_old_logits = torch.randn(3, 5, 32)
@@ -557,7 +554,7 @@ $$\mathcal{L}_{\text{GRPO}}(\theta) = - \frac{1}{G} \sum_{i=1}^G \frac{1}{|o_i|}
 
 我们先看trl的实现
 
-`advantages = inputs["advantages"]
+advantages = inputs["advantages"]
 # x - x.detach() allows for preserving gradients from x 
 # 这段代码能否计算出梯度？
 per_token_loss = torch.exp(per_token_logps - per_token_logps.detach()) * advantages.unsqueeze(1)
@@ -568,7 +565,7 @@ loss = ((per_token_loss * completion_mask).sum(dim=1) / completion_mask.sum(dim=
 
 $$r=\frac{\pi_\theta}{\pi_{\theta_\text{old}}} = \exp{\log(\frac{\pi_\theta}{\pi_{\theta_\text{old}}})}=\exp(\log(\pi_\theta)-\log(\pi_{\theta_\text{old}}))=\exp(0)=1 $$
 
-`# 以下恒为0
+# 以下恒为0
 per_token_logps - per_token_logps.detach() == 0
 
 # torch.exp(0) == 1 恒为 1
@@ -583,15 +580,19 @@ ratio = per_token_prob / per_token_prob_old`
 
 - 前向时：ratio恒为1， 那么前向如果advantage不为0，那么 `ratio*advantage` 不为0
 - 反向时：由于 `per_token_prob_old` 已经detach，那么如果有梯度的话，我们可以参考[GitHub - dhcode-cpp/grpo-loss](https://link.zhihu.com/?target=https%3A//github.com/dhcode-cpp/grpo-loss) ， 可以计算出`per_token_logps` 是有梯度的。 
-`policy = torch.tensor([0.5])
+policy = torch.tensor([0.5])
 old_policy = torch.tensor([0.5])
 ratio = policy/old_policy
 print(ratio)
 
 ratio = torch.exp( policy.log() - old_policy.log())
+
+```python
 print(ratio)
 
 gradient = -0.2 # 假设反传误差
+```
+
 policy_gradient = - gradient * ( 1 / old_policy)
 print(policy_gradient)`
 

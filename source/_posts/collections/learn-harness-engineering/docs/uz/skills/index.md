@@ -66,7 +66,7 @@ Koʻnikma scaffold, tekshirish, HTML baholash hisoboti va strukturaviy benchmark
 
 ### Ushbu koʻnikma qanday yaratilgan (How This Skill Was Built)
 
-`harness-creator`, agent koʻnikmalarini (skills) yaratish, test qilish va iteratsiya qilish uchun Anthropicʼning rasmiy meta-koʻnikmasi boʻlgan <strong>skill-creator</strong> metodologiyasidan foydalanib ishlab chiqilgan. skill-creator oʻzida oʻrnatilgan eval ishga tushiruvchilar (eval runners), baholovchilar (graders) va benchmark koʻruvchisi (benchmark viewer) bilan tuzilmali jarayonni (qoralama → test → baholash → iteratsiya) taqdim etadi.
+harness-creator`, agent koʻnikmalarini (skills) yaratish, test qilish va iteratsiya qilish uchun Anthropicʼning rasmiy meta-koʻnikmasi boʻlgan <strong>skill-creator</strong> metodologiyasidan foydalanib ishlab chiqilgan. skill-creator oʻzida oʻrnatilgan eval ishga tushiruvchilar (eval runners), baholovchilar (graders) va benchmark koʻruvchisi (benchmark viewer) bilan tuzilmali jarayonni (qoralama → test → baholash → iteratsiya) taqdim etadi.
 
 - <strong>skill-creator manbasi</strong>: [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
 - <strong>Claude Code skills hujjatlari</strong>: [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)

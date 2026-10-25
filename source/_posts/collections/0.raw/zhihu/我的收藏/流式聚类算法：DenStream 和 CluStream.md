@@ -56,7 +56,7 @@ DBSCAN 的核心思想是通过密度来定义簇，它通过以下几个参数�
 - 在高维空间中可能表现不佳，因为“邻域”在高维空间中变得不明显，容易导致聚类效果差。
 总的来说，DBSCAN 是一种非常适合处理不规则形状数据和有噪声的数据集的聚类算法。
 
-`# !pip install scikit-learn
+# !pip install scikit-learn
 
 ```python
 import numpy as np
@@ -72,7 +72,7 @@ from sklearn.metrics import silhouette_score`
 
 #### 2. DBSCAN 的简单示例
 
-`# 生成示例数据
+# 生成示例数据
 X, _ = make_blobs(n_samples=300, centers=4, cluster_std=0.60, random_state=0)
 # X.shape
 # (300, 2)
@@ -102,14 +102,18 @@ handles = [plt.Line2D([0], [0],
 ```
 
 labels_for_legend = [f'Cluster {label}' for label in unique_labels]
+
+```text
 plt.legend(handles, labels_for_legend, title="Clusters", loc='center left', bbox_to_anchor=(1, 0.5))
 
 plt.title('DBSCAN Clustering')
 plt.show()`
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_862832183ad9.jpg)
 
-`# 将样本和聚类结果存到一个 DataFrame
+# 将样本和聚类结果存到一个 DataFrame
 cluster_df = pd.DataFrame({
 
 ```text
@@ -134,7 +138,7 @@ cluster_df = pd.DataFrame({
 - `leaf_size`（树叶的大小）：在使用 ball_tree 或 kd_tree 算法时，决定了树的叶子节点的大小。适当调整此参数可以影响聚类的速度。
 - `p`（用于Minkowski距离的参数）：在计算距离时，p 影响距离度量。p=2 为欧氏距离，p=1 为曼哈顿距离。
 - `n_jobs`（并行作业数）：指定计算过程中使用的 CPU 核心数，-1 表示使用所有可用核心。
-`# dir(DBSCAN)
+# dir(DBSCAN)
 # help(DBSCAN)
 # DBSCAN??
 
@@ -152,7 +156,7 @@ cluster_df = pd.DataFrame({
 - 计算每个点到其 k 个最近邻的距离。
 - 按照距离从小到大排序，并绘制距离图。
 - 寻找图中的“肘部”，即距离增长速度开始加快的点，作为 eps 值。
-`# 使用 NearestNeighbors 计算 k 距离
+# 使用 NearestNeighbors 计算 k 距离
 k = 4  # min_samples 设置为 4，选择其邻域的第四个最近邻
 neighbors = NearestNeighbors(n_neighbors=k)
 neighbors_fit = neighbors.fit(X)
@@ -162,11 +166,15 @@ distances, indices = neighbors_fit.kneighbors(X)
 distances = np.sort(distances[:, k-1], axis=0)
 
 # 绘制 k-distance 图
+
+```text
 plt.plot(distances)
 plt.title("k-distance graph")
 plt.xlabel("Points sorted by distance")
 plt.ylabel("Distance to the k-th nearest neighbor")
 plt.show()`
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_50fba0830159.jpg)
 
@@ -182,7 +190,7 @@ plt.show()`
 
 对于 DBSCAN，虽然没有直接的 score 方法来评估聚类效果，但你可以使用 轮廓系数（Silhouette Score）来评估聚类质量。通过网格搜索来选择不同的 eps 和 min_samples，并通过轮廓系数来评估其效果。
 
-`# 定义参数搜索空间
+# 定义参数搜索空间
 param_grid = {
     'eps': [0.5, 0.6, 0.7, 0.8, 0.9],
     'min_samples': [6, 8, 10, 12, 14]
@@ -234,7 +242,7 @@ print("Best parameters found:", best_params)
 
 使用调参后的参数进行聚类。
 
-`# 选择DBSCAN的参数
+# 选择DBSCAN的参数
 dbscan = DBSCAN(**best_params)
 
 # 进行聚类
@@ -259,10 +267,14 @@ handles = [plt.Line2D([0], [0],
 ```
 
 labels_for_legend = [f'Cluster {label}' for label in unique_labels]
+
+```text
 plt.legend(handles, labels_for_legend, title="Clusters", loc='center left', bbox_to_anchor=(1, 0.5))
 
 plt.title('DBSCAN Clustering')
 plt.show()`
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_cf259b912de4.jpg)
 
@@ -270,12 +282,11 @@ plt.show()`
 
 写一个自动调参并绘图的 DBSCAN 函数。
 
-`def get_best_params(data, param_grid=None, verbose=False):
+```python
+def get_best_params(data, param_grid=None, verbose=False):
     """获取 DBSCAN 的最佳参数"""
     # 如果没有初始化 param_grid
     if param_grid is None:
-
-```text
         param_grid = {
             'eps': [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
             'min_samples': [2, 4, 6, 8, 10, 12, 14]
@@ -432,7 +443,7 @@ DenStream 的核心思想是使用“核心对象”和“边界对象”来定�
 - <strong>动态市场分析</strong>：实时聚类和分类商品或消费者行为数据。
 总之，DenStream 是一个强大的流数据聚类工具，适用于各种需要实时分析和动态调整聚类结果的场景。
 
-`# !pip install river
+# !pip install river
 
 ```python
 import numpy as np
@@ -444,7 +455,7 @@ from river import cluster, stream`
 
 #### 2. DenStream 的简单示例
 
-`np.random.seed(67)
+np.random.seed(67)
 X = np.concatenate([
 
 ```text
@@ -509,7 +520,7 @@ print(f"Predicted cluster for point (-1, -2): {prediction}")
 
 在学习过程中，把预测产生的簇号保存下来。当学习和预测完成以后，再将之前用于学习和预测的数据点预测一遍，对比前后簇号是否发生变化。
 
-`# 划分训练数据和测试数据
+# 划分训练数据和测试数据
 test_rate = 0.2
 train_num = int(len(X) * (1 - test_rate))
 x_train, x_test = X[:train_num], X[train_num:]
@@ -554,7 +565,7 @@ for i, (x, _) in enumerate(stream.iter_array(x_test)):
 
 **
 
-`# 再将所有的训练和预测数据预测一遍，看是否发生变化
+# 再将所有的训练和预测数据预测一遍，看是否发生变化
 
 # 再次预测 训练数据
 new_save_train = dict()
@@ -580,7 +591,7 @@ for i, (x, _) in enumerate(stream.iter_array(x_test)):
 ```
 
 
-`# 训练数据：初次预测与再次预测对比
+# 训练数据：初次预测与再次预测对比
 assert len(save_train) == len(new_save_train)
 cnt = 0
 for i in save_train.keys():
@@ -597,14 +608,14 @@ for i in save_train.keys():
 
 输出：
 
-`Train 0: data_equal=True, cluster_equal=False
+Train 0: data_equal=True, cluster_equal=False
 Train 1: data_equal=True, cluster_equal=False
 Train 2: data_equal=True, cluster_equal=False
 Train 3: data_equal=True, cluster_equal=False
 Train 4: data_equal=True, cluster_equal=False
 Train 5: data_equal=True, cluster_equal=False`
 
-`# 测试数据：初次预测与再次预测对比
+# 测试数据：初次预测与再次预测对比
 assert len(save_test) == len(new_save_test)
 for i in save_test.keys():
 
@@ -624,7 +635,7 @@ for i in save_test.keys():
 
 对比使用 DBSCAN 做全量聚类与使用 DenStream 做流式聚类的效果。
 
-`dbscan_best_params, dbscan_labels = utils.auto_dbscan(data=X)
+dbscan_best_params, dbscan_labels = utils.auto_dbscan(data=X)
 
 ```python
 print(f'best_params: {dbscan_best_params}')`
@@ -633,7 +644,7 @@ print(f'best_params: {dbscan_best_params}')`
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_4bc6571643cf.jpg)
 
-`best_params: {'eps': 0.9, 'min_samples': 6}
+best_params: {'eps': 0.9, 'min_samples': 6}
 # dbscan_labels.shape
 # (500,)
 
@@ -684,9 +695,9 @@ for x, _ in stream.iter_array(X):
 
 
 # 绘图
-utils.simple_scatter(data=X,
 
 ```text
+utils.simple_scatter(data=X,
                      labels=denstream_labels,
                      title='DenStream Clustering')`
 ```
@@ -700,7 +711,7 @@ utils.simple_scatter(data=X,
 
 在 DenStream 算法中，使用在相同数据集上使用 DBSCAN 算法在全量数据上寻优过的 `epsilon` 参数，看能否产生更好的聚类效果。
 
-`# 流式聚类：使用与 DBSCAN 相同的 epsilon 参数
+# 流式聚类：使用与 DBSCAN 相同的 epsilon 参数
 denstream_epsilon = dbscan_best_params['eps']
 
 # 对全量数据做流式聚类
@@ -726,9 +737,9 @@ for x, _ in stream.iter_array(X):
 
 
 # 绘图
-utils.simple_scatter(data=X,
 
 ```text
+utils.simple_scatter(data=X,
                      labels=denstream_labels,
                      title='DenStream Clustering')`
 ```
@@ -771,9 +782,8 @@ CluStream算法的基本思想是通过以下两个主要步骤来对数据流�
 - <strong>在线聚类</strong>：适用于需要实时处理大量数据并更新聚类结果的场景。
 总体而言，CluStream 是一种能够高效处理动态数据流并适应实时聚类需求的算法，尤其适合那些数据量巨大且数据分布不断变化的应用场景。
 
-`import time
-
 ```python
+import time
 import numpy as np
 import utils
 
@@ -784,7 +794,7 @@ from river import cluster, stream`
 
 #### 2. CluStream 的简单示例
 
-`cluster_num = 8
+cluster_num = 8
 X, _ = make_blobs(n_samples=500, centers=cluster_num, cluster_std=0.60, random_state=0)
 
 # 打乱数据
@@ -806,7 +816,11 @@ for i, (x, _) in enumerate(stream.iter_array(X)):
     clustream.learn_one(x)
 
 # 预测新数据点的聚类
+
+```text
 clustream.predict_one({0: -1, 1: -2})
+```
+
 # 0
 
 # 输出聚类中心
@@ -825,7 +839,7 @@ clustream.predict_one({0: -1, 1: -2})
 
 当宏簇数量`n_macro_clusters` 数量与当前聚类数相同时：
 
-`n_macro_clusters = cluster_num
+n_macro_clusters = cluster_num
 
 # 初始化 CluStream 模型
 clustream = cluster.CluStream(n_macro_clusters=n_macro_clusters,
@@ -853,9 +867,9 @@ for x, _ in stream.iter_array(X):
 
 
 # 绘图
-utils.simple_scatter(data=X,
 
 ```text
+utils.simple_scatter(data=X,
                      labels=clustream_labels,
                      title='CluStream Clustering')`
 ```
@@ -867,7 +881,7 @@ utils.simple_scatter(data=X,
 
 当宏簇数量`n_macro_clusters` 数量与当前聚类数不匹配时：
 
-`n_macro_clusters = 5
+n_macro_clusters = 5
 assert n_macro_clusters != cluster_num
 
 # 初始化 CluStream 模型
@@ -896,9 +910,9 @@ for x, _ in stream.iter_array(X):
 
 
 # 绘图
-utils.simple_scatter(data=X,
 
 ```text
+utils.simple_scatter(data=X,
                      labels=clustream_labels,
                      title='CluStream Clustering')`
 ```
@@ -910,7 +924,7 @@ utils.simple_scatter(data=X,
 
 收集在学习过程中产生的聚类标签，对比效果。
 
-`# DenStream 增量训练
+# DenStream 增量训练
 
 # 初始化 DenStream 聚类器
 denstream = cluster.DenStream(decaying_factor=0.01,
@@ -935,9 +949,9 @@ for x, _ in stream.iter_array(X):
 
 
 # 绘图
-utils.simple_scatter(data=X,
 
 ```text
+utils.simple_scatter(data=X,
                      labels=denstream_inc_lables,
                      title='DenStream Clustering')`
 ```
@@ -945,7 +959,7 @@ utils.simple_scatter(data=X,
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_9b5f14d12e41.jpg)
 
-`# CluStream 增量训练
+# CluStream 增量训练
 
 # 初始化 CluStream 模型
 clustream = cluster.CluStream(n_macro_clusters=cluster_num,
@@ -974,9 +988,9 @@ for i, (x, _) in enumerate(stream.iter_array(X)):
 
 
 # 绘图
-utils.simple_scatter(data=X,
 
 ```text
+utils.simple_scatter(data=X,
                      labels=clustream_inc_lables,
                      title='CluStream Clustering')`
 ```

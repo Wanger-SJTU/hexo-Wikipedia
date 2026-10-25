@@ -54,9 +54,8 @@ source_url: https://zhuanlan.zhihu.com/p/1911805939247486365
 
 对于每个文本块，该工具会要求LLM输出一个JSON数组，其中包含三元组以及信息提取自哪个文本块。示例如下：
 
-`[
-
 ```text
+[
   {
     "subject": "eli whitney",
     "predicate": "invented",
@@ -104,9 +103,8 @@ source_url: https://zhuanlan.zhihu.com/p/1911805939247486365
 
 这些推断出的边会用不同方式标记（例如虚线），以便与文本中明确陈述的事实区分开来。这个推理步骤通常会增加大量新关系，大大减少了孤立的子网络。如果您希望获得纯粹基于文本的图谱，可以在配置文件中禁用此功能。与文本块编号不同，推断出的关系包含一个属性，表明该关系是推断而来。此属性非常重要，因为它将在可视化过程中用于以虚线边表示推断关系。示例结构：
 
-`[
-
 ```text
+[
   {
     "subject": "electrification",
     "predicate": "enables",
@@ -129,13 +127,13 @@ source_url: https://zhuanlan.zhihu.com/p/1911805939247486365
 
 <strong>提取系统提示词：</strong>
 
-`您是一个专注于知识提取和知识图谱生成的高级AI系统。
+您是一个专注于知识提取和知识图谱生成的高级AI系统。
 您的专长包括识别文本中一致的实体引用和有意义的关系。
 关键指令：所有关系（谓语）必须最多3个词。理想情况下是1-2个词。这是硬性限制。`
 
 <strong>提取用户提示词：</strong>
 
-`您的任务：阅读以下文本（由三反引号分隔），并识别每个句子中的所有主语-谓语-宾语（S-P-O）关系。然后生成一个包含对象的JSON数组，每个对象代表一个三元组。
+您的任务：阅读以下文本（由三反引号分隔），并识别每个句子中的所有主语-谓语-宾语（S-P-O）关系。然后生成一个包含对象的JSON数组，每个对象代表一个三元组。
 
 请仔细遵循以下规则：
 
@@ -195,7 +193,7 @@ source_url: https://zhuanlan.zhihu.com/p/1911805939247486365
 
 将仓库克隆到您要运行的系统上，并切换到该目录：
 
-`git clone https://github.com/robert-mcdermott/ai-knowledge-graph.git
+git clone https://github.com/robert-mcdermott/ai-knowledge-graph.git
 cd ai-knowledge-graph`
 
 使用`uv`安装依赖项：
@@ -210,7 +208,7 @@ cd ai-knowledge-graph`
 
 编辑`config.toml`文件以适应您的情况。您可以在此处配置LLM模型、端点（URL）、最大上下文窗口长度和LLM的温度。在下面的示例中，我使用Google的开源<strong>Gemma 3</strong>模型，该模型通过Ollama托管在我的本地计算机上。您还可以在此处调整文档分块大小和重叠量，以及是否启用实体标准化和关系推理：
 
-`[llm]
+[llm]
 model = "gemma3"
 api_key = "sk-1234"
 base_url = "http://localhost:11434/v1/chat/completions"
@@ -241,7 +239,7 @@ edge_smooth = false # 边缘线是否平滑（true或false）`
 
 接下来，您需要运行`generate-graph.py`脚本。以下是该脚本的帮助信息：
 
-`usage: generate-graph.py [-h] [--test] [--config CONFIG] [--output OUTPUT] [--input INPUT] [--debug] [--no-standardize] [--no-inference]
+usage: generate-graph.py [-h] [--test] [--config CONFIG] [--output OUTPUT] [--input INPUT] [--debug] [--no-standardize] [--no-inference]
 
 Knowledge Graph Generator and Visualizer
 
@@ -261,7 +259,7 @@ options:
 
 以下是上述命令在控制台中运行完整流程的输出：
 
-`python generate-graph.py --input mydocument.txt --output mydocument.html
+python generate-graph.py --input mydocument.txt --output mydocument.html
 Using input text from file: mydocument.txt
 ==================================================
 PHASE 1: INITIAL TRIPLE EXTRACTION

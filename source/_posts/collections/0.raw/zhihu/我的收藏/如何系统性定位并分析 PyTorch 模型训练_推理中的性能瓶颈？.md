@@ -39,7 +39,7 @@ pytorch通过segment和block两层申请，将显存的申请与使用过程进�
 
 ref：https://docs.pytorch.org/docs/stable/torch_cuda_memory.html对于pytorch的ai workload可以使用torch的cuda memory snapshot对显存生成快照：
 
-`import torch
+import torch
 
 # Keep a max of 100,000 alloc/free events in the recorded history
 # leading up to the snapshot.
@@ -62,9 +62,8 @@ torch.cuda.memory._dump_snapshot("my_snapshot.pickle")`
 
 这里主要说的是基于torch profile的对ai workload进行的整体分析，pytorch本身提供了profiler工具，可以记录在cpu、gpu上的活动堆栈，以timeline可视化的形式进行分析，并允许用户插入自定义的annotation，以方便对局部进行定位分析：
 
-`import os
-
 ```python
+import os
 import socket
 from datetime import datetime
 from functools import partial

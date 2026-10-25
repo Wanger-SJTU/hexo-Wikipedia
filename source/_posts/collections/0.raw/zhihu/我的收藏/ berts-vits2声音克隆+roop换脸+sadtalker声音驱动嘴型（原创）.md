@@ -73,7 +73,7 @@ lab文件的内容（4）然后，我们要开始根据这些训练数据集。�
 
 标注的代码如下：
 
-`import os
+import os
 
 out_file = f"filelists/genshin_out.txt"
 
@@ -100,7 +100,7 @@ if __name__ == "__main__":
 
 查看生成后的标注文件genshin_out.txt，里面的内容如下：
 
-`./resampled/yuanshen/上野/vo_EQYX001_5_ueno_05.wav|上野|ZH|这不是鳐鱼三番队的著名怪人矢部吗？
+./resampled/yuanshen/上野/vo_EQYX001_5_ueno_05.wav|上野|ZH|这不是鳐鱼三番队的著名怪人矢部吗？
 ./resampled/yuanshen/上野/vo_EQYX001_5_ueno_06.wav|上野|ZH|你别把自己搭上了。到时候还得让我们出人力去救你。
 ./resampled/yuanshen/上野/vo_EQYX001_7_ueno_01.wav|上野|ZH|在下名叫上野，是剑鱼一番队的代理队长。这次是下来保护伤员撤离，同时尽力辅助这位调查渊下宫异状的。
 ./resampled/yuanshen/上野/vo_EQYX001_7_ueno_02.wav|上野|ZH|之后剑鱼一番队会稍作休整，然后开始行动。那么我先告退了。
@@ -111,7 +111,7 @@ if __name__ == "__main__":
 
 （5）打开bert-vits2-master下的config.ymal文件，里面的内容如下：
 
-`# 全局配置
+# 全局配置
 # 对于希望在同一时间使用多个配置文件的情况，例如两个GPU同时跑两个训练集：通过环境变量指定配置文件，不指定则默认为./config.yml
 
 # 拟提供通用路径配置，统一存放数据，避免数据放得很乱
@@ -276,7 +276,7 @@ preprocess_text是生成训练需要的train.txt和val.txt，同时对数据进�
 
 然后在根目录下运行 python preprocess_text.py，在bert-vits2-master的filelists目录下会生成genshin_out.txt.cleaned、train.txt和val.txt。train.txt和val.txt的内容如下：
 
-`./resampled/yuanshen/上野/vo_EQYX001_5_ueno_05.wav|上野|ZH|这不是鳐鱼三番队的著名怪人矢部吗?|_ zh e b u sh ir y ao y v s an f an d ui d e zh u m ing g uai r en sh ir b u m a ? _|0 4 4 2 2 4 4 2 2 2 2 1 1 1 1 4 4 5 5 4 4 2 2 4 4 2 2 3 3 4 4 5 5 0 0|1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 1
+./resampled/yuanshen/上野/vo_EQYX001_5_ueno_05.wav|上野|ZH|这不是鳐鱼三番队的著名怪人矢部吗?|_ zh e b u sh ir y ao y v s an f an d ui d e zh u m ing g uai r en sh ir b u m a ? _|0 4 4 2 2 4 4 2 2 2 2 1 1 1 1 4 4 5 5 4 4 2 2 4 4 2 2 3 3 4 4 5 5 0 0|1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 1
 ./resampled/yuanshen/公主/vo_YYWQ005_1_princess_02.wav|公主|ZH|恶龙定下的期限就要过去,而我却没有达成此行的目的.|_ EE e l ong d ing x ia d e q i x ian j iu y ao g uo q v , EE er w o q ve m ei y ou d a ch eng c i0 x ing d e m u d i . _|0 4 4 2 2 4 4 4 4 5 5 1 1 4 4 4 4 4 4 4 4 5 5 0 2 2 3 3 4 4 2 2 3 3 2 2 2 2 3 3 2 2 5 5 4 4 5 5 0 0|1 2 2 2 2 2 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 2 2 2 1 1
 ./resampled/yuanshen/公主/vo_YYWQ001_7_princess_02.wav|公主|ZH|哦!看来是我愚钝,对这样的流行从未听闻.|_ OO o ! k an l ai sh ir w o y v d un , d ui zh e y ang d e l iu x ing c ong w ei t ing w en . _|0 5 5 0 4 4 2 2 4 4 3 3 2 2 4 4 0 4 4 4 4 4 4 5 5 2 2 2 2 2 2 4 4 1 1 2 2 0 0|1 2 1 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 2 1 1
 ./resampled/yuanshen/公主/vo_YYWQ003_6_princess_04.wav|公主|ZH|而本该在岗的守卫也影踪全无,城门大开竟无人守护.|_ EE er b en g ai z ai g ang d e sh ou w ei y E y ing z ong q van w u , ch eng m en d a k ai j ing w u r en sh ou h u . _|0 2 2 3 3 1 1 4 4 3 3 5 5 3 3 4 4 2 2 3 3 1 1 2 2 2 2 0 2 2 2 2 4 4 1 1 4 4 2 2 2 2 3 3 4 4 0 0|1 2 2 2 2 2 2 2 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 1 1
@@ -285,7 +285,7 @@ preprocess_text是生成训练需要的train.txt和val.txt，同时对数据进�
 
 然后是bert_gen的参数配置，将config_path设置为训练的配置文件config.json所在的路径，一般是“config/config.json”。如果有英伟达显卡，device设置为"CUDA"，否则设置为"CPU"。我们打开bert-vits2-master下的config文件夹下的config.json文件。找到"data"字段内容如下：
 
-`  "data": {
+  "data": {
     "training_files": "filelists/train.list",
     "validation_files": "filelists/val.list",
     "max_wav_value": 32768.0,
@@ -330,7 +330,7 @@ preprocess_text是生成训练需要的train.txt和val.txt，同时对数据进�
 
 最后是webui阶段。我们配置如下：
 
-`webui:
+webui:
   # 推理设备
   device: "cuda"
   # 模型路径

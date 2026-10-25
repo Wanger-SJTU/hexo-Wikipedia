@@ -27,7 +27,7 @@ Kimi是国产大模型中最会营销的，他们在面对国外大模型时采�
 
 我准备了哈利波特第一部作为文本源，本分别在文本的开头、1/3处、1/2处插入三句文字。
 
-`Defined variable X1=200232.
+Defined variable X1=200232.
 ....
 Defined variable X2=X1.
 ....

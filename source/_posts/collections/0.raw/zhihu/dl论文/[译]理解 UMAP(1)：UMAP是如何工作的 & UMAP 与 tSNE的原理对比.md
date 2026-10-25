@@ -95,6 +95,8 @@ plt.figure(figsize=(20, 15))
 y = np.linspace(0, 10, 1000)
 
 my_prob = lambda y, a, b: np.power(1 + a*y**(2*b), -1)
+
+```text
 plt.plot(y, my_prob(y, a = 1, b = 1))
 plt.plot(y, my_prob(y, a = 1.93, b = 0.79))
 plt.plot(y, my_prob(y, a = 1.93, b = 5))
@@ -103,6 +105,8 @@ plt.gca().legend(('a = 1, b = 1', 'a = 1.93, b = 0.79', 'a = 1.93, b = 5'), font
 plt.title("Low-Dimensional Probability of Pairwise Euclidean Distances", fontsize = 20)
 plt.xlabel("Y", fontsize = 20); plt.ylabel("Q(Y)", fontsize = 20)
 plt.show()
+```
+
 
 不同参数下的$1 /(1 + a \cdot y ^{(2b)})$曲线
 我们可以看到曲线系列对参数b非常敏感，在b较大时，曲线在纵轴Y较小时变化缓慢。这意味着在UMAP超参数min_dist以下，所有数据点均紧密连接。由于Q(Y)函数的行为几乎类似于Heaviside步进函数，这意味着UMAP为低维空间中彼此靠近的所有点分配几乎相同的低维坐标。 min_dist正是导致经常在UMAP降维图中观察到的超紧密堆积簇的原因。
@@ -134,6 +138,8 @@ plt.show()
   dist_low_dim = lambda x, a, b: 1 / (1 + a*x**(2*b))
  
   p , _ = optimize.curve_fit(dist_low_dim, x, f(x, MIN_DIST))
+
+```python
   print(p)
 
   plt.figure(figsize=(20,15))
@@ -144,6 +150,8 @@ plt.show()
   plt.xlabel("X", fontsize = 20)
   plt.ylabel("Y", fontsize = 20)
   plt.show()
+```
+
 
 函数的拟合效果
 
@@ -157,12 +165,16 @@ L=D^{1 / 2}(D-A) D^{1 / 2} \;\;\;\;(12)
 from sklearn.manifold import SpectralEmbedding
 model = SpectralEmbedding(n_components = 2, n_neighbors = 50)
 se = model.fit_transform(np.log(X_train + 1))
+
+```text
 plt.figure(figsize=(20,15))
 plt.scatter(se[:, 0], se[:, 1], c = y_train.astype(int), cmap = 'tab10', s = 50)
 plt.title('Laplacian Eigenmap', fontsize = 20)
 plt.xlabel("LAP1", fontsize = 20)
 plt.ylabel("LAP2", fontsize = 20)
 plt.show()
+```
+
 
 - 最后，UMAP使用随机梯度下降（SGD）代替tSNE / FItSNE等常规梯度下降（GD），这既加快了计算速度，又消耗了更少的内存。
 4. 为什么tSNE仅保留本地结构？
@@ -177,13 +189,13 @@ for sigma in sigma_list:
 ```text
     my_prob = lambda x: np.exp(-x**2 / (2*sigma**2))
     plt.plot(x, my_prob(x))
-```
-
 plt.gca().legend(('$\sigma$ = 0.1','$\sigma$ = 1', '$\sigma$ = 5', '$\sigma$ = 10'), 
                  fontsize = 20)
 plt.title("High-Dimensional Probability of Pairwise Euclidean Distances", fontsize = 20)
 plt.xlabel("X", fontsize = 20); plt.ylabel("P(X)", fontsize = 20)
 plt.show()
+```
+
 
 TSNE参数变化对概率结果的影响
 
@@ -230,14 +242,22 @@ Z = np.exp(-X**2)*np.log(1 + Y**2)
 
 # Plot the surface.
 surf = ax.plot_surface(X, Y, Z, cmap=cm.coolwarm,linewidth=0, antialiased=False)
+
+```text
 ax.set_xlabel('X', fontsize = 20)
 ax.set_ylabel('Y', fontsize = 20)
 ax.set_zlabel('KL (X, Y)', fontsize = 20)
 ax.set_zlim(0, 2.2)
+```
+
 ax.zaxis.set_major_locator(LinearLocator(10))
 ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+
+```text
 fig.colorbar(surf, shrink=0.5, aspect=5)
 plt.show()
+```
+
 
 tSNE的代价函数的可视化
 
@@ -283,16 +303,24 @@ Z = np.exp(-X**2)*np.log(1 + Y<strong>2) + (1 - np.exp(-X</strong>2))*np.log((1 
 
 # Plot the surface.
 surf = ax.plot_surface(X, Y, Z, cmap=cm.coolwarm,linewidth=0, antialiased=False)
+
+```text
 ax.set_xlabel('X', fontsize = 20)
 ax.set_ylabel('Y', fontsize = 20)
 ax.set_zlabel('CE (X, Y)', fontsize = 20)
 ax.set_zlim(0, 4.3)
+```
+
 ax.zaxis.set_major_locator(LinearLocator(10))
 ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
 
 # Add a color bar which maps values to colors.
+
+```text
 fig.colorbar(surf, shrink=0.5, aspect=5)
 plt.show()
+```
+
 
 UMAP的代价函数的可视化
 

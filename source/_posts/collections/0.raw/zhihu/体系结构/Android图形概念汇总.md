@@ -83,8 +83,11 @@ BufferQueue：
 
 <strong>frameworks/base/core/java/android/view/Choreographer.java</strong>
 
-` /**
+```text
+ /**
  * Coordinates the timing of animations, input and drawing.
+```
+
  * 
 
 ```text

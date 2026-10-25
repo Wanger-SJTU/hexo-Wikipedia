@@ -23,7 +23,7 @@ Claude Code没有内置的导出功能，但有一个专门的第三方工具 cl
 
 <strong>安装方法：</strong>
 
-`# 推荐使用pipx install claude-conversation-extractor --force安装 
+# 推荐使用pipx install claude-conversation-extractor --force安装 
 pipx install claude-conversation-extractor --force 
 
 pipx list 

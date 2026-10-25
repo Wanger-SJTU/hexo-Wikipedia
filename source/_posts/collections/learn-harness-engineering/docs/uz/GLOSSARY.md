@@ -343,7 +343,7 @@ Quyidagi fayl nomlari <strong>doim saqlanadi</strong> — tarjima qilinmaydi:
 
 Quyidagilar <strong>hech qachon tarjima qilinmaydi</strong> (oʻzbekcha matn ichida ham inglizcha yoziladi):
 
-`Harness`, `agent`, `prompt`, `repository`, `repo`, `pull request`, `PR`, `commit`, `endpoint`, `pipeline`, `runtime`, `context window`, `lint`, `test`, `type check`, `benchmark`, `feature list`, `init`, `tech stack`, `framework`, `Markdown`, `JSON`, `YAML`, `JSONL`, `API`, `IPC`, `Electron`, `React`, `TypeScript`, `Codex`, `Claude Code`, `OpenAI`, `Anthropic`, `LLM`, `SDK`, `CLI`, `IDE`, `IDE-extension`, `MCP`, `webhook`, `mock`, `stub`, `branch`, `merge`, `rebase`, `diff`, `staging`, `production`, `deploy`, `build`, `dev`, `prod`.
+Harness`, `agent`, `prompt`, `repository`, `repo`, `pull request`, `PR`, `commit`, `endpoint`, `pipeline`, `runtime`, `context window`, `lint`, `test`, `type check`, `benchmark`, `feature list`, `init`, `tech stack`, `framework`, `Markdown`, `JSON`, `YAML`, `JSONL`, `API`, `IPC`, `Electron`, `React`, `TypeScript`, `Codex`, `Claude Code`, `OpenAI`, `Anthropic`, `LLM`, `SDK`, `CLI`, `IDE`, `IDE-extension`, `MCP`, `webhook`, `mock`, `stub`, `branch`, `merge`, `rebase`, `diff`, `staging`, `production`, `deploy`, `build`, `dev`, `prod`.
 
 <strong>Diqqat — saqlanmaydigan, tarjima qilinadigan atamalar:</strong>
 - `tool` → <strong>vosita</strong> (NOT preserved English)

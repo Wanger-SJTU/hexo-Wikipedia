@@ -116,9 +116,8 @@ $WinoGrad算法起源于1980年，是Shmuel Winograd提出用来减少FIR滤波�
 
 这一步就是对卷积核进行变化，公式为：U_{k,c}=Gg_{k,c}G^T，其中k表示输出通道标号，c表示输入通道标号，一个U(k,c)对应卷积核的一个g(k,c)。由于我们要实现的是F(6\times 6,3\times 3)，因此G是一个(m+r-1)\times r=8\times 3的矩阵，我们不难写出这部分代码（其中，G矩阵可以通过`https://github.com/andravin/wincnn` 这个工具进行计算）：
 
-`// 矩阵G
-
 ```cpp
+// 矩阵G
         const float ktm[8][3] = {
             {1.0f,      0.0f,      0.0f},
             {-2.0f / 9, -2.0f / 9, -2.0f / 9},
@@ -157,16 +156,19 @@ $U_{k,c}的内存排布其中W=64的原因是因为F(6x6,3x3)需要每一个输�
 
 Pack策略之后的矩阵kernel_tm2就长这个样子这部分的代码实现如下：
 
-`int nnOutchannel = outChannel >> 2;
+```cpp
+int nnOutchannel = outChannel >> 2;
         int remainOutChannel = nnOutchannel 
+```
+
 
 ### <strong>4.2 对输入数据进行变换</strong>
 
 对卷积核进行变换之后，接下来就轮到对输入矩阵进行变换了，即对V矩阵进行计算，V_{c,b}=B^Td_{c,b}B。上面我们已经提到过，对于卷积核获得的每一个U_{k,c}，我们都需要一个对应的8\times 8的图像块(tile)和它做卷积运算（eltwise_multiply）。所以这里我们首先需要确定输入数据可以被拆成多少个图像块，并且我们需要为变换矩阵V申请空间，从第三节可知：输入变换矩阵，尺寸为(m+r-1)\times (m+r-1)，即每个小块的变换矩阵都为(6+3-1)\times (6+3-1)=8\times 8，但是输入特征图长宽不一定会被8整除，这个时候就需要对输入特征图进行扩展(padding)，这部分预处理的代码实现如下：
 
-`// Vc,b = B^Td_{c,b}B
-        
 ```cpp
+// Vc,b = B^Td_{c,b}B
+
         // 输出特征图如果长宽不够需要Padding
         int outW = (outWidth + 5) / 6 * 6;
         int outH = (outHeight + 5) / 6 * 6;
@@ -196,15 +198,13 @@ Pack策略之后的矩阵kernel_tm2就长这个样子这部分的代码实现如
         float *src_tm  = new float[src_tm_channel * src_tm_h * src_tm_w];
 ```
 
-`
 
 注意上面`src_tm`的形状，这是考虑到了卷积核变换矩阵已经执行了Pack策略，所以这里为了方便后续的卷积计算和进行指令集加速，同样将`src_tm`进行Pack，这个Pack是直接规定计算完之后4个4个岔开存储的方式来实现的。另外，输入Blob的一个Channel对应了输出Blob的一个Channel。
 
 然后我们再通过WinCNN工具可以获得B矩阵和B的转置矩阵，并确定V矩阵更好的计算策略（指的是可以复用一些中间变量）。
 
-`// BT = 
-
 ```text
+// BT = 
         // ⎡1   0    -    0         0    -1  0⎤
         // ⎢                                          ⎥
         // ⎢0   1      1    -  -    1    1   0⎥
@@ -246,13 +246,11 @@ Pack策略之后的矩阵kernel_tm2就长这个样子这部分的代码实现如
         // 6 = (r06 + (r02 - r04 * 1.25) * 4) - (r01 * 2 - r03 * 2.5 + r05 * 0.5)
 ```
 
-`
 
 接下来我们就可以开始计算V矩阵了，代码如下：
 
-`#if USE_OMP
-
 ```cpp
+#if USE_OMP
     #pragma omp parallel for num_threads(OMP_THREAD)
 #endif
         for(int q = 0; q 
@@ -274,9 +272,8 @@ $M_{k,b}=\sum_{c}U_{k,c}\odot V_{c,b}$
 
 由于上面输入图像块已经执行了Pack策略，这里只需要将对应小块进行乘加操作即完成了M矩阵的计算，这部分的代码实现如下：
 
-`#if USE_OMP
-
 ```cpp
+#if USE_OMP
     #pragma omp parallel for num_threads(OMP_THREAD)
 #endif
         for(int cc = 0; cc 
@@ -296,9 +293,8 @@ Y_{k,b}=A^TM_{k,b}A
 
 其中k表示输出通道数，b表示tile标号，这部分和上面卷积核的计算类似，代码如下：
 
-`// Yk,b=A^TMk,bA
-
 ```cpp
+// Yk,b=A^TMk,bA
 // AT=
 // ⎡1  1  1   1    1    1      1    0⎤
 // ⎢                                 ⎥
@@ -341,9 +337,8 @@ Y_{k,b}=A^TM_{k,b}A
 
 Y矩阵汇聚存放获得输出Blob但是需要注意的是这里获得的Y有可能是多了几行或者几列，也就是拖尾为0的部分，所以需要把这一部分Crop掉，才能获得我们最终outHeight * outWidth * outChannel的结果特征图。Crop部分的代码如下：
 
-`//crop
-
 ```cpp
+//crop
         for(int cc = 0; cc 
 ```
 

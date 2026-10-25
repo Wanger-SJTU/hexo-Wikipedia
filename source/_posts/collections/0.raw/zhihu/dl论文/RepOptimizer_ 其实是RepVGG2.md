@@ -58,8 +58,11 @@ source_url: https://zhuanlan.zhihu.com/p/531477704
 
 一个简单的示例代码为：
 
-`import torch
+```python
+import torch
 import numpy as np
+```
+
 
 np.random.seed(0)
 np_x = np.random.randn(1, 1, 5, 5).astype(np.float32)
@@ -110,7 +113,6 @@ loss.backward()
 
 torch_fused_w_updated = fused_conv.weight.detach().numpy() - (alpha1<strong>2 + alpha2</strong>2) * fused_conv.weight.grad.numpy() * lr
 print(torch_fused_w_updated)
-`
 
 在RepOptVGG中，对应的CSLA块则是将RepVGG块中的3x3卷积，1x1卷积，bn层替换为<strong>带可学习缩放参数的3x3卷积，1x1卷积</strong>
 
@@ -152,7 +154,7 @@ print(torch_fused_w_updated)
 
 在`reinitialize` 方法中，它做的就是repvgg的工作，将1x1卷积权重和identity分支给融到3x3卷积中：
 
-`if len(scales) == 2:
+if len(scales) == 2:
 
 ```text
     conv3x3.weight.data = conv3x3.weight * scales[1].view(-1, 1, 1, 1) \
@@ -169,17 +171,14 @@ else:
         conv3x3.weight.data += F.pad(identity, [1, 1, 1, 1])
 ```
 
-`
 
 然后我们再看下GradientMask生成逻辑，如果只有conv3x3和conv1x1两个分支，根据前面的CSLA等价变换规则，conv3x3的mask对应为：
 
-`mask = torch.ones_like(para) * (scales[1] ** 2).view(-1, 1, 1, 1)
-`
+mask = torch.ones_like(para) * (scales[1] ** 2).view(-1, 1, 1, 1)
 
 而conv1x1的mask，需要乘上对应缩放系数的平方，并加到conv3x3中间：
 
-`mask[:, :, 1:2, 1:2] += torch.ones(para.shape[0], para.shape[1], 1, 1) * (scales[0] ** 2).view(-1, 1, 1, 1)
-`
+mask[:, :, 1:2, 1:2] += torch.ones(para.shape[0], para.shape[1], 1, 1) * (scales[0] ** 2).view(-1, 1, 1, 1)
 
 **
 
@@ -187,8 +186,7 @@ else:
 
  如果还有Identity分支，我们则需要在对角线上加上1.0(Identity分支没有可学习缩放系数)
 
-`mask[ids, ids, 1:2, 1:2] += 1.0
-`
+mask[ids, ids, 1:2, 1:2] += 1.0
 
 >  如果有不明白Identity分支为什么对应的是对角线话，可以参考下笔者的图解RepVGG
  

@@ -130,7 +130,7 @@ $$L_{ang}=\frac{1}{N}\sum_i-log({\frac {e^{||x||\psi(\theta_{y_i,i})}}{e^{||x||\
 
 Pytorch代码实现：
 
-`# SphereFace
+# SphereFace
 
 ```python
 class SphereProduct(nn.Module):
@@ -257,7 +257,7 @@ cos(\theta_j,i)=W^T_jx_i
 
 代码实现：
 
-`# CosFace
+# CosFace
 
 ```python
 class AddMarginProduct(nn.Module):
@@ -303,7 +303,6 @@ class AddMarginProduct(nn.Module):
                + ', m=' + str(self.m) + ')'
 ```
 
-`
 
 四、ArcFace
 
@@ -338,7 +337,7 @@ cos(\theta_j,i)=W^T_jx_i
 - 对所有值乘上固定值 s 
 代码实现：
 
-`# ArcFace
+# ArcFace
 
 ```python
 class ArcMarginProduct(nn.Module):
@@ -408,7 +407,6 @@ class ArcMarginProduct(nn.Module):
 ```
 
 
-`
 
 到此ArcFace、SphereFace、CosFace的损失函数就介绍完啦~
 

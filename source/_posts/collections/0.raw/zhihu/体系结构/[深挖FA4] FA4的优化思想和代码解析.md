@@ -93,7 +93,7 @@ Warp(s)角色功能14LoadTMA 加载 Q, K, V 从 GMEM 到 SMEM12MMAGEMM 操作 (Q
 
 Shared memory layout 使用 `make_smem_layout_a` (用于 Q/P/O) 和 `make_smem_layout_b` (用于 K/V) 计算。Inner shape 表示数据如何为 MMA 操作分区：
 
-`sQ_layout: ((128,16), 1, (4,2), 2)
+sQ_layout: ((128,16), 1, (4,2), 2)
 sK_layout: ((64,16), 1, (4,2), 6)  
 sV_layout: ((64,16), 1, 8, 6)
 sO_layout: ((8,16), (64,2), (1,2))`
@@ -118,7 +118,7 @@ TensorShape含义sQ((128,16), 1, (4,2), 2)(atom_m=128, atom_k=16) × num_tiles_m
 - sK 有 inner stride `(64,1)` → K-major layout (seq_k 是连续的)
 - sV 有 inner stride `(1,64)` → V 被转置 (head_dim 是连续的)
 - 这确认了 V 在 smem 中存储为 `(head_dim, seq_k)` 以提高 P×V MMA 效率
-`GLOBAL MEMORY
+GLOBAL MEMORY
     │
 
 ```text
@@ -169,7 +169,7 @@ REGISTERS
 
 在理解 phase 细节之前，理解 K/V 加载顺序至关重要：
 
-`设 n = n_block_max - n_block_min (需要处理的 K/V block 数量)
+设 n = n_block_max - n_block_min (需要处理的 K/V block 数量)
 
 第一次迭代 (初始加载):
 ─────────────────────────────────
@@ -216,7 +216,7 @@ for k_block in range(n_block_min, n_block_max):
 
 #### 4.3 MMA Warp 操作 (Warp 12)
 
-`S_{0, n-1} S_{1, n-1}
+S_{0, n-1} S_{1, n-1}
 loop(i, 0, n-1):
   O_{0, n-1-i}
   O_{1, n-1-i}
@@ -233,7 +233,7 @@ MMA warp 执行两个主要矩阵乘法：
 
 #### GEMM_QK: Q × K^T → S
 
-`Prologue
+Prologue
 1. 等待 Q[stage] 就绪 (pipeline_q)
 2. 等待 K[n-1] 就绪 (pipeline_kv)
 3. 执行 GEMM: S[stage] = Q[stage] × K[n-1]^T
@@ -271,7 +271,7 @@ sScale:
 sm_stats_barrier:
 
 - 大小: q_stages=2 x warps=4
-`Prologue
+Prologue
 1. 作为 producer 等待 pipeline_sm_stats
 2. 计算 softmax[n-1](is_first)
 
@@ -338,7 +338,7 @@ Epilogue
 
 Correction warp 处理在线归一化和最终缩放：
 
-`Prologue work_tile
+Prologue work_tile
 1. 第一个 O 不需要缩放，为 mma 释放 O (pipeline_s_p_o, o consumer, 实际上是 producer)
 
 Prologue
@@ -375,7 +375,7 @@ Epilogue work_tile
 
 Epilogue warp 将最终输出写入 global memory:
 
-`对于每个 output stage:
+对于每个 output stage:
 1. 等待 sO 中已校正的 O (pipeline_o_epi)
 2. 如果使用 TMA_O:
    - 发起 TMA store 到 global memory
@@ -391,7 +391,7 @@ Epilogue warp 将最终输出写入 global memory:
 
 #### 关键 Pipeline 路径
 
-`┌─────────────────────────────────────────────────────────────────────────┐
+┌─────────────────────────────────────────────────────────────────────────┐
 │                        PIPELINE 架构                                    │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                         │
@@ -438,7 +438,7 @@ Epilogue warp 将最终输出写入 global memory:
 PipelineProducerConsumer用途pipeline_qLoad warpMMA warpQ 数据就绪pipeline_kvLoad warpMMA warpK/V 数据就绪pipeline_s_p_oMMA warpSoftmaxS 就绪pipeline_s_p_oSoftmaxMMA warpP 3⁄4 就绪pipeline_s_p_oCorrection warpMMA warpO rescaled 就绪pipeline_p_lastsplitSoftmax warpMMA warpP 最后 1⁄4 就绪pipeline_o_accMMA warpCorrection warp最终 O 累积完成pipeline_sm_statsSoftmax warpCorrection warprow_max/row_sum 就绪pipeline_o_epiCorrection warpEpilogue warpO 最终完成
 #### 7. Timeline
 
-`图例: ████ = 活跃计算, ░░░░ = 停滞/等待
+图例: ████ = 活跃计算, ░░░░ = 停滞/等待
 
 你以为的时间线：
 
@@ -519,7 +519,7 @@ SOFT  │░░░░░░│█████████████│██�
 为什么split P有用
 #### 8. TMEM Layout
 
-`Tensor Memory 分配 (总共 512 列):
+Tensor Memory 分配 (总共 512 列):
 
 ┌───────────────────────────────────────────────────┐
 │  0-127     │ 128-255    │ 256-383    │ 384-511    │

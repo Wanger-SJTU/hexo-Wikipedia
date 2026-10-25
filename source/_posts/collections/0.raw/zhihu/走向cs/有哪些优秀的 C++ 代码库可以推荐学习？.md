@@ -103,7 +103,7 @@ DEF_main(argc, argv) {
 ```
 
 
-`DEF_main`将 main 函数中的代码放到协程中运行，内部已经调用了`flag::init()`，用户无需手动调用。
+DEF_main`将 main 函数中的代码放到协程中运行，内部已经调用了`flag::init()`，用户无需手动调用。
 
 核心组件
 
@@ -254,7 +254,7 @@ go([](){
 
 上面是用 `go()` 创建协程的例子，go() 是一个函数，它接受 1 到 3 个参数，第一个参数 `f` 是任意可调用的对象，这些参数只要满足 `f()`, `(*f)()`, `f(p)`, `(*f)(p)`, `(o->*f)()` 或者 `(o->*f)(p)` 能被调用就可以了。
 
-`go()` 创建的协程会均匀的分配到不同的调度线程中。如果用户想让某些协程运行在同一个线程下，可以用下面的方式创建协程：
+go()` 创建的协程会均匀的分配到不同的调度线程中。如果用户想让某些协程运行在同一个线程下，可以用下面的方式创建协程：
 
 auto s = co::next_scheduler();
 s->go(f1);
@@ -367,9 +367,8 @@ int main(int argc, char** argv) {
 
 http::Server serv;
 
-serv.on_req(
-
 ```text
+serv.on_req(
     [](const http::Req& req, http::Res& res) {
         if (req.is_method_get()) {
             if (req.url() == &#34;/hello&#34;) {
@@ -383,11 +382,11 @@ serv.on_req(
         }
     }
 );
-```
-
 
 serv.start(&#34;0.0.0.0&#34;, 80);                                    // http
 serv.start(&#34;0.0.0.0&#34;, 443, &#34;privkey.pem&#34;, &#34;certificate.pem&#34;); // https
+```
+
 
 <strong>HTTP client</strong>
 

@@ -27,14 +27,16 @@ Qwen-Image本文主要展示了如何使用cache-dit给Qwen-Image进行cache加�
 
 安装cache-dit和dev版本diffusers:
 
-`pip install git+https://github.com/huggingface/diffusers
+```bash
+pip install git+https://github.com/huggingface/diffusers
 pip install -U cache-dit`
+```
+
 
 废话少说，直接贴示例代码，欢迎尝试。cache-dit为Qwen-Image提供了<strong>DBCache、TaylorSeer</strong>和<strong>cache CFG</strong>的缓存加速支持。提示：<strong>需要安装最新的cache-dit以及最新的diffusers.</strong>
 
-`import os
-
 ```python
+import os
 import time
 import torch
 import argparse
@@ -188,13 +190,13 @@ save_path = f"qwen-image.{cache_type_str}.png"
 ```python
 print(f"Time cost: {time_cost:.2f}s")
 print(f"Saving image to {save_path}")
+image.save(save_path)`
 ```
 
-image.save(save_path)`
 
 运行脚本：
 
-`python3 run_qwen_image.py # baseline
+python3 run_qwen_image.py # baseline
 python3 run_qwen_image.py --cache --Fn 8 --Bn 0 --rdt 0.12 --taylorseer --order 2
 python3 run_qwen_image.py --cache --Fn 8 --Bn 0 --rdt 0.12 --taylorseer --order 4`
 

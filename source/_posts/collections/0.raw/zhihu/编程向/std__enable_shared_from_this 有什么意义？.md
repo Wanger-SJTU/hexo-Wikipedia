@@ -21,7 +21,7 @@ source_url: https://www.zhihu.com/question/30957800/answer/2700292012
 
 #### shared pointer 介绍
 
-`std::shared_ptr`对象在内存中是这样：
+std::shared_ptr`对象在内存中是这样：
 
 ![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_f481fb600bba.jpg)![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_9d875c969a52.webp)
 
@@ -36,18 +36,19 @@ source_url: https://www.zhihu.com/question/30957800/answer/2700292012
 
 #### enabled_shared_from_this 的用处
 
-`this`指针作为`std::shared_ptr`构造函数实参的时候可能导致创建多个控制块。导致非法行为。
+this`指针作为`std::shared_ptr`构造函数实参的时候可能导致创建多个控制块。导致非法行为。
 
 我们用一个例子来说明，假设我们的程序使用`std::shared_ptr`管理`Widget`对象，我们有一个数据结构用于跟踪已经处理过的`Widget`对象：
 
-`std::vectorstd::shared_ptrWidget>> processedWidgets;
-`
+```cpp
+std::vectorstd::shared_ptrWidget>> processedWidgets;
+```
+
 
 假设`Widget`有一个用于处理的成员函数：
 
-`class Widget {
-
 ```cpp
+class Widget {
 public:
     // ...
     void process();
@@ -55,32 +56,31 @@ public:
 };
 ```
 
-`
 
 对于`Widget::process`看起来合理的代码如下：
 
-`void Widget::process()
-
 ```text
+void Widget::process()
 {
     // ...
     processedWidgets.emplace_back(this);
 }
 ```
 
-`
 
 在 `process()` 中执行 `processedWidgets.emplace_back(this);` 的时候，`std::shared_ptr`的会为 `this`这个原始指针创建一个控制块。但是有可能，`this` 指向的 `Widget` 的 `process()` 成员函数之外也被其他的 `std::shared_ptr`管理，所以**可能存在多个 `std::shared_ptr`的控制块，导致非法行为**。 
 
-`std::enabled_shared_from_this`就是解决这个问题的。 
+```cpp
+std::enabled_shared_from_this`就是解决这个问题的。 
 
-`std::enable_shared_from_this`定义了一个成员函数：`shared_from_this()`，它会创建指向当前对象的`std::shared_ptr`，会去关联同一个已经创建的控制块，解决了多个控制块的问题。
+std::enable_shared_from_this`定义了一个成员函数：`shared_from_this()`，它会创建指向当前对象的`std::shared_ptr`，会去关联同一个已经创建的控制块，解决了多个控制块的问题。
+```
 
-`Widget::process`的安全实现：
 
-`class Widget: public std::enable_shared_from_thisWidget> {
+Widget::process`的安全实现：
 
 ```cpp
+class Widget: public std::enable_shared_from_thisWidget> {
 public:
     // ...
     void process();
@@ -92,9 +92,8 @@ void Widget::process()
 }
 ```
 
-`
 
-`shared_from_this()`会查找当前对象控制块，然后创建一个新的`std::shared_ptr`关联这个控制块。用这个函数之前，是假设当前对象已经存在一个关联的控制块。因此，必须已经存在一个指向当前对象的`std::shared_ptr`。如果没有`std::shared_ptr`指向当前对象（即当前对象没有关联控制块），那么`shared_from_this`会抛出一个异常。
+shared_from_this()`会查找当前对象控制块，然后创建一个新的`std::shared_ptr`关联这个控制块。用这个函数之前，是假设当前对象已经存在一个关联的控制块。因此，必须已经存在一个指向当前对象的`std::shared_ptr`。如果没有`std::shared_ptr`指向当前对象（即当前对象没有关联控制块），那么`shared_from_this`会抛出一个异常。
 
 Reference:
 

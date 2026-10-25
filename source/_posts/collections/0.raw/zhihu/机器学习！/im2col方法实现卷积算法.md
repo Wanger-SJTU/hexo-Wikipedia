@@ -175,9 +175,8 @@ $a_{n, i, j, d}=\sum_{h=0}^{k H-1} \sum_{w=0}^{k W-1} \sum_{c} w_{d, h, w, c} x_
 
 接下来，就是用python实现了
 
-`def im2col(img, ksize, stride=1):
-
-```text
+```python
+def im2col(img, ksize, stride=1):
     N, H, W, C = img.shape
     out_h = (H - ksize) // stride + 1
     out_w = (W - ksize) // stride + 1
@@ -215,9 +214,8 @@ $a_{n, i, j, d}=\sum_{h=0}^{k H-1} \sum_{w=0}^{k W-1} \sum_{c} w_{d, h, w, c} x_
 
 最后，在根据im2col包装一个conv函数：
 
-`def conv(X, W, stride=1, padding='same'):
-
-```text
+```python
+def conv(X, W, stride=1, padding='same'):
     FN, ksize, ksize, C = W.shape
     if padding == 'same':
 	p = ksize // 2

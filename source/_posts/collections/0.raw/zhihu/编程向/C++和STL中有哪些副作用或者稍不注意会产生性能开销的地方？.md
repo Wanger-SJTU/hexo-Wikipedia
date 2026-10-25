@@ -44,20 +44,17 @@ This may be optimized to*constant complexity*fortrivially-destructible types(suc
 
 这个其他答主也讲到了，比如在基于范围的循环中使用auto&，如下这个例子其出自<strong>《Effictive Modern C++》</strong>的条款5（那个答主可能也是参考的这个条款）。
 
-`std::unordered_mapstd::string, int> m;
-
 ```cpp
+std::unordered_mapstd::string, int> m;
 for (const std::pairstd::string, int>& p: m) {
   ... 
 }
 ```
 
-`
 
 对于unordered_map而言，其中的元素类型是：
 
-`std::pairconst std::string, int>
-`
+std::pairconst std::string, int>
 
 如上的遍历方法，就会产生一个临时对象，有拷贝的开销。
 
@@ -67,9 +64,8 @@ for (const std::pairstd::string, int>& p: m) {
 
 从map中查找value。我们一般怎么写呢？比如：
 
-`// dict_data是一个unordered_map
-
 ```cpp
+// dict_data是一个unordered_map
 // vec是一个vector
 double sum = 0;
 for (auto& key : vec) {
@@ -79,26 +75,22 @@ for (auto& key : vec) {
 }
 ```
 
-`
 
 或者：
 
-`for (auto& key : vec) {
-
-```text
+```cpp
+for (auto& key : vec) {
     if (dict_data.find(key) != dict_data.end()) {
         sum += dict_data[key]; // 或 sum += dict_data.at(key);
     }
 }
 ```
 
-`
 
 其实map或unordered_map的[] 或者at() 函数内部也会进行查找。不管这次查找的开销大或不大吧。既然我们已经查找过一次key是否存在了，那么就吧结果存储下来就好了。为什么要二次查询呢？
 
-`for (auto& key : vec) {
-
-```text
+```cpp
+for (auto& key : vec) {
     auto it = dict_data.find(key);
     if (it != dict_data.end()) {
         sum += it->second;
@@ -106,39 +98,34 @@ for (auto& key : vec) {
 }
 ```
 
-`
 
 当然你可能觉得这样丑点，所以不这样写……但我的原则一向是不要进行重复操作。
 
 对于vector也有at() 所以也有人这样写：
 
-`if (index  v.size()) {
-
 ```text
+if (index  v.size()) {
     auto& e = v.at(index);
     // do sth for e
     ... 
 }
 ```
 
-`
 
 这个at内部同样会检查是否越界，在越界的时候抛异常。所以对于vec，你直接[] 就好了。vector的[] 几乎没有开销，和那些关联如期不同。
 
-`if (index  v.size()) {
-
 ```text
+if (index  v.size()) {
     auto& e = v[index];
     // do sth for e
     ... 
 }
 ```
 
-`
 
 或者直接不检查，而是加try catch
 
-`try {
+try {
     ...
 
 ```text
@@ -153,7 +140,6 @@ for (auto& key : vec) {
 }
 ```
 
-`
 
 当然代码更丑一点。。而且我不鼓励在生产环境中使用会抛异常的函数。因为C++不同于java。java如果有未捕获或throw的异常，编译都过不了。而C++则不管。所以如果你的代码不小心抛出了异常，而没被catch，那么就可能让程序core dump！
 
@@ -175,7 +161,7 @@ shared_ptr用起来和普通指针类似，还不要手工管理释放内存。
 
 我们应该大量使用shared_ptr替代裸指针（普通指针），以规避各种各样的内存问题。
 
-`shared_ptrT> p1 = make_sharedT>();
+shared_ptrT> p1 = make_sharedT>();
 ...
 shared_ptrT> p2 = make_sharedT>();
 ...
@@ -184,16 +170,14 @@ shared_ptrT> p3 = p1;
 shared_ptrT> p4 = p2;
 ...
 p4 = p1;
-`
 
 上述代码和我们直接用裸指针是类似的：
 
-`T* p1 = new T;
+T* p1 = new T;
 T* p2 = new T;
 T* p3 = p1;
 T* p4 = p2;
 p4 = p1;
-`
 
 裸指针可以随意修改指向，可以随意赋值。其开销可以忽略不计。然而shared_ptr则不然。
 
@@ -201,10 +185,9 @@ p4 = p1;
 
 我这里说的是，当一个已经存在的shared_ptr修改指向的时候：
 
-`shared_ptrT> p4 = p2;
+shared_ptrT> p4 = p2;
 ...
 p4 = p1;
-`
 
 如果p4是最后一个持有旧对象的shared_ptr的话，那么当p4 = p1的时候，不止是触发shared_ptr成员变量复制操作。还会触发旧对象的析构操作！这不难理解，我们都知道shared_ptr在所管理的数据对应的引用计数清零的时候，会触发析构操作。只是很多时候我们都把智能指针当普通指针用的时候，常常会忽略这一操作的潜在开销。
 
@@ -218,13 +201,14 @@ p4 = p1;
 
 尽管clear()会调用vector中元素的析构函数，但是并不会释放掉元素所占用的内存。这并不难理解，因为在vector为空的时候，我们也可以用reserver()函数来预分配内存。所以vector所占的内存并不会随着元素的释放而释放。如果你想在vector生命周期结束之前及时释放掉vector的内存，请：
 
-`vectorint>().swap(v);
-`
+vectorint>().swap(v);
 
 用一个匿名的vector对象来和已有的vector对象v来swap。虽然swap是交换，但由于涉及匿名对象，反过来swap是无法编译通过的：
 
-`v.swap(vectorint>()); // 编译失败
-`
+```text
+v.swap(vectorint>()); // 编译失败
+```
+
 
 **
 
@@ -232,41 +216,35 @@ p4 = p1;
 
 如何遍历一个vector？当然在C++11以后我能手写for-range循环了。
 
-`for (auto& e: v) {
-
-```text
+```cpp
+for (auto& e: v) {
     // do sth for e
     ...
 }
 ```
 
-`
 
 但是有时候我们在循环内需要下标信息，而不仅仅是元素本身。所以就变成传统的下标遍历了。有两种写法，各位看官看看是否有区别？
 
-`for (int i = 0; i  v.size(); ++i) {
-
-```text
+```cpp
+for (int i = 0; i  v.size(); ++i) {
     auto& e = v[i]
     // do sth for e and i
     ...
 }
 ```
 
-`
 
 另外一种：
 
-`for (int i = 0; i  v.size() - 1; ++i) {
-
-```text
+```cpp
+for (int i = 0; i  v.size() - 1; ++i) {
     auto& e = v[i]
     // do sth for e and i
     ...
 }
 ```
 
-`
 
 看起来好像一样？实则不然。因为size() 返回是无符号整型，当 vector是空的时候，size()返回0，无符号的0 减去1，得到的是一个极大的正数。因而在 vector是空的时候，第二种写法会陷入死循环！
 
@@ -276,9 +254,8 @@ p4 = p1;
 
 实现一个二叉搜索树的迭代器，其中有个函数hashNext()返回还有没有下一个元素。next()表示向右移动虚拟的迭代器，并返回其值，所以我定义了一个成员变量i，初始化为-1。
 
-`    int next() {
-
-```text
+```cpp
+    int next() {
         return tree[++i]->val;
     }    
     bool hasNext() {
@@ -292,7 +269,6 @@ p4 = p1;
     int i = -1;
 ```
 
-`
 
 题目保证容器肯定大于0，所以tree.size() - 1的结果最小也就是0（size()为1的时候）。在第一次调用next的时候， i 是 -1，tree().size() - 1即使是0，也是满足小于关系的。所以hasNext()应该返回true，结果意外的是hasNext()返回的是false!
 
@@ -300,8 +276,7 @@ p4 = p1;
 
 这是一个常见的坑。
 
-` i  v.size()
-`
+ i  v.size()
 
 这种表达式，在i会转型成无符号整型，然后你本以为的 i （负数）小于 v.size() (大于等于0），却判断为了大于！从而触发一下程序逻辑上的bug。
 

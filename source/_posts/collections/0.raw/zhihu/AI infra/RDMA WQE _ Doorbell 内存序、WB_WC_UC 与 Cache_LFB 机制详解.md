@@ -136,7 +136,7 @@ desc->flag = cpu_to_le32(DESC_FLAG_OWN | len);
 补上后,xmit 里原来那个 `dma_wmb` 可保留(排 doorbell,无害)也可去掉—— 混合模型下正确性已由这个 “OWN 置位前 addr 已可见” 的屏障保证,doorbell 只是加速通知。 稳妥起见建议<strong>保留</strong> xmit 的 `dma_wmb`。
 
 顺带:doorbell 那侧没问题
-`writel` 在弱序架构内部含前置 barrier,x86 上 doorbell 走 UC 天然有序, `dma_wmb + writel` 是标准惯用,足够。问题只出在 desc 内部 addr↔OWN 缺屏障那一处。
+writel` 在弱序架构内部含前置 barrier,x86 上 doorbell 走 UC 天然有序, `dma_wmb + writel` 是标准惯用,足够。问题只出在 desc 内部 addr↔OWN 缺屏障那一处。
 
 2. 两种”通知设备”模型:各只需一次 barrier
 
@@ -309,7 +309,7 @@ struct mlx5_wqe_ctrl_seg {
 };
 ```
 
-`mmio_write64_be(..., *(__be64*)ctrl)` 写的正是这 8 字节 = `{opcode, wqe_index, qpn, ds}`。 所以 <strong>DB 路径的 doorbell 就带着 size(ds)和 index</strong>。
+mmio_write64_be(..., *(__be64*)ctrl)` 写的正是这 8 字节 = `{opcode, wqe_index, qpn, ds}`。 所以 <strong>DB 路径的 doorbell 就带着 size(ds)和 index</strong>。
 
 BF 路径的正确性锚点是 ring,不是 push
 
@@ -393,7 +393,7 @@ compiler_barrier                   dmb oshst   (真指令)
 write dbrec                        write dbrec
 sfence  // 仅 WC BF                 dsb oshst / dsb sy
 write doorbell                     write doorbell (Device-nGnRnE)
-`owner-last` 在 ARM 需要 `dmb ishst` 或用 `STLR`(store-release)保证 body 先于 owner。
+owner-last` 在 ARM 需要 `dmb ishst` 或用 `STLR`(store-release)保证 body 先于 owner。
 
 非一致 DMA 上的完整发送流程(描述符若为 cacheable)
 build_wqe_body(wqe);

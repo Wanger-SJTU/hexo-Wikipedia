@@ -44,7 +44,7 @@ AI コーディング agent 向けの本番品質 harness engineering skill で�
 
 ## harness-creator の作成方法
 
-`harness-creator` は <strong>skill-creator</strong> 方法論で作られました。これは Anthropic の公式 meta-skill で、agent skills を draft → test → evaluate → iterate の流れで作成、テスト、改善するためのものです。
+harness-creator` は <strong>skill-creator</strong> 方法論で作られました。これは Anthropic の公式 meta-skill で、agent skills を draft → test → evaluate → iterate の流れで作成、テスト、改善するためのものです。
 
 ## Skills の仕組み
 

@@ -108,9 +108,8 @@ IOMMU 可以将非连续的物理内存映射为设备看起来连续的内存�
 
 它的初始化函数是：
 
-`int __init intel_iommu_init(void)
-
 ```cpp
+int __init intel_iommu_init(void)
 {
 	int ret = -ENODEV;
 	struct dmar_drhd_unit *drhd;
@@ -125,7 +124,7 @@ IOMMU 可以将非连续的物理内存映射为设备看起来连续的内存�
 
 事实上，它的调用链是这样的：
 
-`int __init detect_intel_iommu(void)//caq:IOMMU_INIT_POST调用这个，有amd的，ibm大型机的
+int __init detect_intel_iommu(void)//caq:IOMMU_INIT_POST调用这个，有amd的，ibm大型机的
 {//caq:此时还没有memory allocator
 
 ```cpp
@@ -166,9 +165,8 @@ IOMMU 可以将非连续的物理内存映射为设备看起来连续的内存�
 
 x86_init.iommu.iommu_init = intel_iommu_init;//caq:pci_iommu_init 会统一执行iommu_init**然后在 pci_iommu_init 会统一执行 iommu_init 。如下：
 
-`static int __init pci_iommu_init(void)
-
 ```cpp
+static int __init pci_iommu_init(void)
 {
 	struct iommu_table_entry *p;
 
@@ -182,16 +180,14 @@ x86_init.iommu.iommu_init = intel_iommu_init;//caq:pci_iommu_init 会统一执�
 }
 ```
 
-`
 
 如下的调用链：
 
-`kernel_init ->
+kernel_init ->
 	kernel_init_freeable ->
 		do_one_initcall ->
 			pci_iommu_init ->
 				x86_init.iommu.iommu_init
-`
 
 以上就是intel 的iommu 初始化调用链分析。
 
@@ -201,7 +197,7 @@ x86_init.iommu.iommu_init = intel_iommu_init;//caq:pci_iommu_init 会统一执�
 
 使用一个全局的 dmar_drhd_units 链表来管理对应的iommu硬件，dmar_drhd_unit 的list 成员串接在这个全局链表中。
 
-`crash> list -H dmar_drhd_units -s dmar_drhd_unit.segment,devices_cnt
+crash> list -H dmar_drhd_units -s dmar_drhd_unit.segment,devices_cnt
 ffff8b83ff078780
   segment = 0
   devices_cnt = 0
@@ -233,7 +229,7 @@ ffff8b83ff078240
 
 实际单板上，pci设备就远远不止11个设备，那么其他设备怎么办，devices_cnt 为0，不代表它就不管理设备，相反，还得继续看include_all标志，事实上，这个在如下函数有体现：
 
-`struct dmar_drhd_unit *
+struct dmar_drhd_unit *
 dmar_find_matched_drhd_unit(struct pci_dev *dev)//caq:pci设备找归属的drhd_unit 硬件
 
 ```text
@@ -272,7 +268,7 @@ out:
 
 也就是说，通过一个dmar硬件，支持include_all属性，将很多设备收纳了其中，比如看的其他一个服务器的打印：
 
-`crash> dmar_drhd_unit.iommu,include_all,devices_cnt ffff8d1240078360
+crash> dmar_drhd_unit.iommu,include_all,devices_cnt ffff8d1240078360
   iommu = 0xffff8d42ff043500
   include_all = 1 '\001'
   devices_cnt = 0
@@ -287,9 +283,8 @@ crash> intel_iommu.name 0xffff8d42ff043500
 
 除此之外，真正让一个device跟iommu关联的函数，其实可以查看：
 
-`//caq:bus和devfn是出参
-
 ```cpp
+//caq:bus和devfn是出参
 static struct intel_iommu *device_to_iommu(struct device *dev, u8 *bus, u8 *devfn)
 {
 	struct dmar_drhd_unit *drhd = NULL;
@@ -379,9 +374,8 @@ static struct intel_iommu *device_to_iommu(struct device *dev, u8 *bus, u8 *devf
 
 但是需要注意的是，如果intel_iommu=on 没有设置，且 CONFIG_INTEL_IOMMU_DEFAULT_ON 这个config没有开启，则会导致 dmar_disabled 为1。
 
-`#ifdef CONFIG_INTEL_IOMMU_DEFAULT_ON
-
 ```cpp
+#ifdef CONFIG_INTEL_IOMMU_DEFAULT_ON
 int dmar_disabled = 0;//caq:默认是否开启取决于 CONFIG_INTEL_IOMMU_DEFAULT_ON 是否配置
 ```
 
@@ -395,15 +389,14 @@ int dmar_disabled = 1;
 
 这个 dmar_disabled 的值会影响 int __init intel_iommu_init(void) 函数的行为
 
-`int __init intel_iommu_init(void)
-
-```text
+```cpp
+int __init intel_iommu_init(void)
 {
 ```
 
 .....
 
-```js
+```text
 if (no_iommu || dmar_disabled) {//caq: 
 		/*
 		 * We exit the function here to ensure IOMMU's remapping and
@@ -432,7 +425,7 @@ if (no_iommu || dmar_disabled) {//caq:
 
 所以我们经常能看到硬件上是有很多drhd的硬件，但是软件上并没有使能，当然也就没有注册到 iommu框架中的，iommu_device_register不会被调用，全局的 iommu_device_list 只是空的，留下寂寞空虚冷。而如果软件上使能了的话，iommu_device_list 就会保留有当前期active的 iommu device，如下：
 
-`crash> list -H iommu_device_list -s iommu_device.ops-----------//caq:注意，这个链表只有active的成员。
+crash> list -H iommu_device_list -s iommu_device.ops-----------//caq:注意，这个链表只有active的成员。
 ffff9994ff0709c8
   ops = 0xffffffff952ebcc0
 ffff99a53f043dc8
@@ -442,7 +435,7 @@ crash> dis -l 0xffffffff952ebcc0
 
 非active的iommu，不会展示在sysfs中，如下案例：
 
-`具备iommu功能的硬件打印：
+具备iommu功能的硬件打印：
 crash> list -H dmar_drhd_units -s dmar_drhd_unit.segment,devices_cnt,include_all,ignored
 ffff8d1240078e40
   segment = 0

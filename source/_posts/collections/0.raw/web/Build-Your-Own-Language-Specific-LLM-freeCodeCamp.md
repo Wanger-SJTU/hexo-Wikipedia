@@ -430,7 +430,7 @@ With this approach, the model learns common character sequences from data.
 
 `unhappiness` might split as `['un', 'happi', 'ness']`
 
-`مکمل` might split as `['مکم', 'ل']` or stay whole if common enough.
+مکمل` might split as `['مکم', 'ل']` or stay whole if common enough.
 
 This is a smaller vocabulary (we use 32K tokens), and it can handle any word, even new ones. Common words stay as single tokens.
 
@@ -486,15 +486,15 @@ Tells the model when to stop generating. Without it, output may run forever or s
 Separates segments
 In chat format, separates the system prompt, user message, and assistant response so the model knows which role is which.
 
-`<
+<
 user
 >`
 
-`<
+<
 assistant
 >`
 
-`<
+<
 system
 >`
 
@@ -504,7 +504,7 @@ I set vocab size to <strong>32K</strong>. What does that mean? It means the mode
 
 This is a good balance between language coverage and model size. If we increase vocab size, the embedding layer and output layer both grow, which means more parameters to train. For a learning project, 32K keeps things manageable.
 
-`MIN_FREQUENCY` is set to 2, meaning a token must appear at least twice in the corpus to be included. This filters out one-off noise tokens that would waste vocabulary slots.
+MIN_FREQUENCY` is set to 2, meaning a token must appear at least twice in the corpus to be included. This filters out one-off noise tokens that would waste vocabulary slots.
 
 <strong>For reference:</strong> GPT-2 uses a vocabulary of 50K tokens, and LLaMA uses 32K. Our choice of 32K is in line with production models.
 
@@ -1334,7 +1334,7 @@ optimizer = torch.optim.AdamW(model.parameters(), lr=config.learning_rate, weigh
 
 ```
 
-`AdamW` maintains two running statistics per parameter (23M × 2 = 46M extra values in memory):
+AdamW` maintains two running statistics per parameter (23M × 2 = 46M extra values in memory):
 
 <strong>First moment (momentum):</strong> Exponential moving average of gradients. Smooths out noisy updates so the optimizer doesn't zigzag.
 
@@ -1432,13 +1432,13 @@ optimizer.step()               # θ_new = θ_old - lr × adam_adjusted_gradient 
 
 ```
 
-`zero_grad()`<strong>:</strong> PyTorch accumulates gradients by default (useful for gradient accumulation across micro-batches). We must manually clear them before each new backward pass.
+zero_grad()`<strong>:</strong> PyTorch accumulates gradients by default (useful for gradient accumulation across micro-batches). We must manually clear them before each new backward pass.
 
-`loss.backward()`<strong>:</strong> Backpropagation traverses the computation graph in reverse, computing ∂loss/∂θ for every parameter using the chain rule. This is the most compute-intensive step alongside the forward pass.
+loss.backward()`<strong>:</strong> Backpropagation traverses the computation graph in reverse, computing ∂loss/∂θ for every parameter using the chain rule. This is the most compute-intensive step alongside the forward pass.
 
 <strong>Gradient clipping:</strong> Computes the L2 norm across all parameter gradients concatenated into one vector. If the norm exceeds 1.0, every gradient is multiplied by `1.0/norm`, preserving direction but capping magnitude. This prevents rare batches (unusual token distributions) from causing catastrophically large updates that destabilize training.
 
-`optimizer.step()`<strong>:</strong> AdamW applies the update rule using momentum, adaptive per-parameter LR, and decoupled weight decay.
+optimizer.step()`<strong>:</strong> AdamW applies the update rule using momentum, adaptive per-parameter LR, and decoupled weight decay.
 
 <strong>5. Bookkeeping:</strong>
 
@@ -1476,7 +1476,7 @@ Overfitting: memorizing, not learning
 Both high and flat
 Underfitting: model needs more capacity or data
 
-`model.eval()` turns OFF dropout so we evaluate with the full model. `torch.no_grad()` skips gradient computation since we're just measuring, not learning.
+model.eval()` turns OFF dropout so we evaluate with the full model. `torch.no_grad()` skips gradient computation since we're just measuring, not learning.
 
 ## 7. Checkpointing
 
@@ -1487,7 +1487,7 @@ if val_loss < best_val_loss:
 
 ```
 
-`model.state_dict()` returns an `OrderedDict` mapping parameter names onto tensors. `torch.save` serializes this to disk using Python's pickle + zip. We only save when val loss improves.
+model.state_dict()` returns an `OrderedDict` mapping parameter names onto tensors. `torch.save` serializes this to disk using Python's pickle + zip. We only save when val loss improves.
 
 This is <strong>early stopping</strong> in spirit: we keep the checkpoint that generalizes best, regardless of what happens in later epochs.
 
@@ -1565,11 +1565,11 @@ IGNORE_INDEX = -100
 
 ```
 
-`no_padding()`<strong>:</strong> Tells the tokenizer "don't add padding automatically, I'll handle it myself." We need full control over the token sequence.
+no_padding()`<strong>:</strong> Tells the tokenizer "don't add padding automatically, I'll handle it myself." We need full control over the token sequence.
 
 We fetch the integer IDs for each special token so we can manually insert them at the right positions.
 
-`IGNORE_INDEX = -100`<strong>:</strong> PyTorch's `cross_entropy` has a built-in feature: any label set to -100 is skipped in loss computation. This is how we implement loss masking.
+IGNORE_INDEX = -100`**:** PyTorch's `cross_entropy` has a built-in feature: any label set to -100 is skipped in loss computation. This is how we implement loss masking.
 
 ## Part 2: `format_conversation()`: The Core Function
 
@@ -1753,9 +1753,9 @@ sft_loader = DataLoader(sft_dataset, batch_size=4, shuffle=True)
 
 ```
 
-`batch_size=4`<strong>:</strong> Small batch because we only have 79 examples. Larger batches would mean fewer gradient updates per epoch.
+batch_size=4`<strong>:</strong> Small batch because we only have 79 examples. Larger batches would mean fewer gradient updates per epoch.
 
-`shuffle=True`<strong>:</strong> Randomize order each epoch so the model doesn't memorize a fixed sequence of examples.
+shuffle=True`<strong>:</strong> Randomize order each epoch so the model doesn't memorize a fixed sequence of examples.
 
 ## Loading the Pre-trained Model
 
@@ -2005,15 +2005,15 @@ with torch.no_grad():
 
 ```
 
-`torch.no_grad()`<strong>:</strong> No gradients needed for inference, which saves memory and speed
+torch.no_grad()`<strong>:</strong> No gradients needed for inference, which saves memory and speed
 
-`temperature=0.7`<strong>:</strong> Slightly sharpened distribution for coherent but not robotic output
+temperature=0.7`<strong>:</strong> Slightly sharpened distribution for coherent but not robotic output
 
-`top_k=50`<strong>:</strong> Only sample from top 50 tokens to avoid low-probability noise
+top_k=50`<strong>:</strong> Only sample from top 50 tokens to avoid low-probability noise
 
-`top_p=0.9`<strong>:</strong> Nucleus sampling that dynamically selects the smallest set of tokens whose cumulative probability ≥ 0.9
+top_p=0.9`<strong>:</strong> Nucleus sampling that dynamically selects the smallest set of tokens whose cumulative probability ≥ 0.9
 
-`eos_token_id`<strong>:</strong> Stop generating when `<eos>` is produced
+eos_token_id`**:** Stop generating when `<eos>` is produced
 
 <strong>3. Extract and decode:</strong>
 
@@ -2074,13 +2074,13 @@ if __name__ == "__main__":
 
 ```
 
-`respond()` wraps `chat()` with an empty-input guard, matching the signature Gradio's `ChatInterface` expects.
+respond()` wraps `chat()` with an empty-input guard, matching the signature Gradio's `ChatInterface` expects.
 
-`gr.ChatInterface` provides a ready-made chat UI with message history, input box, and send button.
+gr.ChatInterface` provides a ready-made chat UI with message history, input box, and send button.
 
-`examples` are pre-filled messages users can click to try.
+examples` are pre-filled messages users can click to try.
 
-`theme=gr.themes.Soft()` gives a clean, modern visual theme.
+theme=gr.themes.Soft()` gives a clean, modern visual theme.
 
 <strong>Note:</strong> Hugging Face Spaces runs `app.py` as a standalone script, so the full `app.py` in the repository inlines everything into one file: the model config, the complete transformer architecture, model loading with `gc.collect()` for memory optimization, the `chat()` function, and the Gradio interface above.
 
@@ -2322,7 +2322,7 @@ Tokenized chunks → Pre-train GPT (23M params, next-token prediction)
 Conversations → SFT with loss masking → Chat model
 
 <strong>Deploy</strong>
-`app.py` + model weights → Hugging Face Spaces / Local
+app.py` + model weights → Hugging Face Spaces / Local
 
 You can check out the deployed model here: [https://huggingface.co/spaces/Wisamul/urdu_llm](https://huggingface.co/spaces/Wisamul/urdu_llm)
 

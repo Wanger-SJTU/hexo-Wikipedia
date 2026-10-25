@@ -17,9 +17,9 @@ source_url: https://zhuanlan.zhihu.com/p/682033366
 
 ﻿堆问题也是内存问题的一部分。如果我们发现程序内存一直在增加，怀疑是内存泄漏，则可以使用《内存问题分析的利器——valgrind的memcheck》一文中介绍的“内存泄露”方法去分析定位。当然我们还可以使用本文介绍的工具——massif。 以下代码为例
 
-`#include 
-
 ```cpp
+#include 
+
 int main() {
     const int array_size = 32; 
     void* p = malloc(array_size);
@@ -27,7 +27,6 @@ int main() {
 }
 ```
 
-`
 
 我们要使用携带调试信息的方式编译代码，即加上编译参数-g。
 
@@ -43,9 +42,9 @@ int main() {
 
 在这里插入图片描述 上图我们看到，堆空间随着时间增长而增大，而且最终停留在32B处。这和我们代码设计的泄漏堆上32byte是一致的。但是这个它并没有指出是代码的哪行导致了泄漏。 我们把代码修改下，让程序没有内存泄漏
 
-`#include 
-
 ```cpp
+#include 
+
 int main() {
     const int array_size = 32; 
     void* p = malloc(array_size);
@@ -54,7 +53,6 @@ int main() {
 }
 ```
 
-`
 
 使用massif分析的结果是 
 
@@ -62,9 +60,9 @@ int main() {
 
 在这里插入图片描述 图中堆空间增长的空间变成的绿色，而且最右侧有个非常不起眼的区间——标识堆空间降到0。 在右侧Massif Data区块中，快照2可以展开，显示出32B是在test.c文件中第5行分配的。快照3则表示堆上空间全部释放。 通过上面简单的介绍，我们发现massif分析内存泄漏不是非常方便的。那么它的用途在哪儿呢。我们看个例子
 
-`#include 
-
 ```cpp
+#include 
+
 void create_destory(unsigned int size) {
     void *p = malloc(size);
     free(p);
@@ -84,7 +82,6 @@ int main(void) {
 }
 ```
 
-`
 
 这段代码频繁申请和释放大块内存，这对程序的性能是有影响的。但是如果上面的代码隐藏在繁杂的业务代码中时，则难以通过阅读方式定位。 我们继续使用之前的命令产生结果文件，并使用massif-visualizer分析 
 
@@ -106,9 +103,9 @@ int main(void) {
 
 在这里插入图片描述 为了更贴近真实场景，我们看个融合“堆分配”和“堆泄漏”的代码
 
-`#include 
-
 ```cpp
+#include 
+
 void* create(unsigned int size) {
     return malloc(size);
 }
@@ -142,7 +139,6 @@ int main(void) {
 }
 ```
 
-`
 
 这段代码，main函数中：  - 直接使用malloc申请4次10K的空间（22行），然后再4次释放它们（29行）。  - 调用create方法4次，每次申请但不释放10K空间。  - 调用create_destory方法4次，每次申请并释放100K空间。
 

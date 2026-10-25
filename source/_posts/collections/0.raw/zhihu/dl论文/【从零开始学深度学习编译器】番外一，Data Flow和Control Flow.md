@@ -27,7 +27,7 @@ source_url: https://zhuanlan.zhihu.com/p/369780094
 
 假设现在我们要实现一个(a+b)&#x2217;c" role="presentation">(a+b)∗c(a + b) * c的逻辑，其中a" role="presentation">aa，b" role="presentation">bb，c" role="presentation">cc都是一个简单的实数，然后我们如果用Python来实现非常简单，大概长这样：
 
-`#coding=utf-8
+#coding=utf-8
 
 ```python
 import os
@@ -40,13 +40,12 @@ def cal(a, b, c):
 print(cal(1.0, 2.0, 3.0))
 ```
 
-`
 
 输出结果是9.0。然后我们使用tf1.31.1同样来实现这个过程：
 
-`import tensorflow as tf
-
 ```python
+import tensorflow as tf
+
 def cal(a, b, c):
     add_op = a + b
     print(add_op)
@@ -67,12 +66,10 @@ b = tf.constant(2.0)
 c = tf.constant(3.0)
 
 print(cal(a, b, c))
-`
 
 同样代码的输出是9.0。然后这两个示例是为了解释像TensorFlow这种框架，它的计算图是一个计算流图，是由数据来驱动的。在上面的程序中我们可以发现如果打印`add_op`我们获得的结果是一个`Tensor`：
 
-`Tensor("add:0", shape=(), dtype=float32
-`
+Tensor("add:0", shape=(), dtype=float32
 
 这是因为，TensorFlow1.x实现的这个计算函数首先在内存中构造了一个数据流图，长这样：
 
@@ -180,7 +177,7 @@ tf.while_loop可以实现循环控制流解决RNN这种计算图结构的控制�
 
 在Pytorch这种动态图框架中，支持直接在Python端写Control Flow，并且可以将这些控制逻辑放到计算图中。这里以TorchScript为例，当我们尝试将Pytorch模型转为TorchScript时，有两种方式，一种是trace，另外一种是script。对于trace模式，适合Python层没有Control Flow的计算图，举例如下：
 
-`#coding=utf-8
+#coding=utf-8
 
 ```python
 import torch
@@ -202,22 +199,19 @@ print(trace_module.code)  # 查看模型结构
 output = trace_module (torch.ones(1, 1, 224, 224)) # 测试
 print(output)
 # trace_modult('model.pt') 
-`
 
 打印`trace_module`的代码可以看到：
 
-`def forward(self,
-
-```text
+```python
+def forward(self,
     input: Tensor) -> Tensor:
   return (self.conv1).forward(input, )
 ```
 
-`
 
 而script模式则适用于计算图在Python层有Control Flow的情况，比如：
 
-`#coding=utf-8
+#coding=utf-8
 
 ```python
 import torch
@@ -249,13 +243,11 @@ script_module = torch.jit.script(model)
 print(script_module.code)
 output = script_module(torch.rand(1,1,224,224))
 
-`
 
 打印`script_module`的代码可以看到TorchScript模型包含了在上面Python层定义的Control Flow：
 
-`def forward(self,
-
-```text
+```python
+def forward(self,
     x: Tensor) -> Tensor:
   b, c, h, w, = torch.size(x)
   if torch.eq(c, 1):
@@ -265,11 +257,10 @@ output = script_module(torch.rand(1,1,224,224))
   return x0
 ```
 
-`
 
 然后我们来实验一下将上面带有Control Flow的Module导出ONNX，这里以Pytorch官方文档提供的一个带循环的Control Flow的示例为例：
 
-`import torch
+import torch
 
 # Trace-based only
 
@@ -288,7 +279,6 @@ loop_count = torch.tensor(5, dtype=torch.long)
 
 torch.onnx.export(model, (dummy_input, loop_count), 'loop.onnx', verbose=True)
 
-`
 
 这样就可以成功导出名字为`loop`的ONNX模型，使用Netron可视化软件打开看一下：
 
@@ -298,7 +288,7 @@ torch.onnx.export(model, (dummy_input, loop_count), 'loop.onnx', verbose=True)
 
 可以看到直接导出Module，Python层的控制逻辑被丢掉（即for循环被完全展开），这是因为Pytorch在导出ONNX的时候默认使用了tracing机制 而当我们使用script模式时，导出的ONNX就会保留Python层的Control Flow并将其转换成ONNX中的Loop OP。示例代码以及Netron可视化结果如下：
 
-`import torch
+import torch
 # Mixing tracing and scripting
 
 @torch.jit.script
@@ -320,7 +310,6 @@ dummy_input = torch.ones(2, 3, dtype=torch.long)
 loop_count = torch.tensor(5, dtype=torch.long)
 torch.onnx.export(model, (dummy_input, loop_count), 'loop.onnx', verbose=True,
                   input_names=['input_data', 'loop_range'])
-`
 
 ![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_6950845efe05.jpg)
 

@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/686277638
 ---
 
 
-`文章题目： ️ Large Language Model Course
+文章题目： ️ Large Language Model Course
 文章作者：Maxime Labonne
 Git链接：https://github.com/mlabonne/llm-course
 huggingface：https://huggingface.co/mlabonne

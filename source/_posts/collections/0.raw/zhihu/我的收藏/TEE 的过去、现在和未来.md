@@ -48,9 +48,8 @@ SGX 难用的根本原因在于，许多必要的组件并没有被包含在 TCB
 
 当然这个就是一个非常 high level 的示意图，实际上里面还牵扯到 IOMMU pass through、qemu vfio、Enc/Dec等复杂过程。AMD 的做法有所不同，它允许直接使用 SNP 指令将一段内存设置为共享。这样一来，Linux 内核中就可以直接通过调用这些指令来实现内存的共享管理。
 
-`/* /arch/x86/virt/svm/sev.v */
-
 ```cpp
+/* /arch/x86/virt/svm/sev.v */
 /* Transition a page to hypervisor-owned/shared state in the RMP table. */
 int rmp_make_shared(u64 pfn, enum pg_level level)
 {

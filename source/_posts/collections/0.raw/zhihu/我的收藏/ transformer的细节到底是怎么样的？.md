@@ -83,7 +83,7 @@ Decoder也包含Encoder提到的两层网络，但是在这两层中间还有一
 
 #### Self-Attention机制
 
-`Self-Attention` 是 `Transformer`最核心的思想也是必须要理解的难点，这里将会花费大手笔去来详细解释和推导Self- Attention机制的过程。
+Self-Attention` 是 `Transformer`最核心的思想也是必须要理解的难点，这里将会花费大手笔去来详细解释和推导Self- Attention机制的过程。
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_f119727217ff.jpg)
 
@@ -147,7 +147,7 @@ img
 
 Self-Attention的代码实现
 
-`# Muti-head Attention 机制的实现
+# Muti-head Attention 机制的实现
 
 ```python
 from math import sqrt

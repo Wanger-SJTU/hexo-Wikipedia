@@ -89,9 +89,8 @@ typedef basic_string, MemoryPoll > mystring;
 
 代码中使用了std::mutex等C++11才支持的特性，所以需要编译器最低支持C++11：
 
-`#ifndef PPX_BASE_MEMORY_POOL_H_
-
 ```cpp
+#ifndef PPX_BASE_MEMORY_POOL_H_
 #define PPX_BASE_MEMORY_POOL_H_
 
 #include 
@@ -463,6 +462,5 @@ int main()
 ```
 
 
-`
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_b4126017a8e0.jpg)

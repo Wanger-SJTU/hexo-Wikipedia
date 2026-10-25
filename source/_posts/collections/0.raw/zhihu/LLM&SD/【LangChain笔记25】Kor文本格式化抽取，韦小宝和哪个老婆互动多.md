@@ -41,16 +41,15 @@ Kor是个支持LangChain的文本抽取库，可以把文本抽取成json格式�
 
 你可以点击 [这个笔记](https://link.zhihu.com/?target=https%3A//github.com/LC1332/Prophet-Andrew-Ng/blob/main/langchain/%25E6%259D%258E%25E9%25B2%2581%25E9%25B2%2581%25E5%25AD%25A6LangChain_25_Kor%25E4%25BF%25A1%25E6%2581%25AF%25E6%258A%25BD%25E5%258F%2596.ipynb) 查看notebook的版本，如果你有openAI的key应该可以直接运行。
 
-`!pip -q install langchain openai tiktoken
+!pip -q install langchain openai tiktoken
 !pip -q install kor markdownify`
 
 这里我不知道markdownify这个为什么要安装，可能是kor库的依赖
 
 然后我们先给出模型的部分
 
-`from kor.extraction import create_extraction_chain
-
 ```python
+from kor.extraction import create_extraction_chain
 from kor.nodes import Object, Text, Number
 from langchain.chat_models import ChatOpenAI
 
@@ -68,7 +67,7 @@ llm = ChatOpenAI(
 
 然后我们可以定义kor中一个称为抽取schema的数据结构
 
-`schema = Object(
+schema = Object(
 
 ```text
     id="script",
@@ -113,7 +112,7 @@ llm = ChatOpenAI(
 
 我们先看看运行结果吧。我们随便找一段鹿鼎记中间的段落
 
-`response = chain.run(
+response = chain.run(
         """黄龙使殷锦忙道：“夫人高见。取经之事，想来和福份大小，干系极大。黑龙使也不是不努力。不肯替教主立功，可是始终阻难重重，多半是福气不够，因此宝经难以到手。”洪夫人微笑道：“依你之见，谁的福份够呢”殷锦道：“本教福气最大的，自然是教主他老人家，其次是夫人。不过总不能劳动两位大驾亲自出马。更其次福份最大的，首推白龙使。他识得碣文，又立下大功，印堂隐隐透出红光，福份之大，教主属下无人能出其右。”
 
     教主捻须微笑，道：“但他小小孩童，能担当这件大任么”
@@ -123,19 +122,18 @@ llm = ChatOpenAI(
 
 这个抽取完因为`many=True`的原因，所以会抽取成一个list，我们把list中的元素依次打印出来看看
 
-`for chat in (response['script']):
+for chat in (response['script']):
     print(chat)`
 
 输出结果
 
-`{'role': '黄龙使殷锦', 'dialogue': '夫人高见。取经之事，想来和福份大小，干系极大。黑龙使也不是不努力。不肯替教主立功，可是始终阻难重重，多半是福气不够，因此宝经难以到手。', 'action': '对话'}
+{'role': '黄龙使殷锦', 'dialogue': '夫人高见。取经之事，想来和福份大小，干系极大。黑龙使也不是不努力。不肯替教主立功，可是始终阻难重重，多半是福气不够，因此宝经难以到手。', 'action': '对话'}
 {'role': '洪夫人', 'dialogue': '依你之见，谁的福份够呢', 'action': '对话'}
 {'role': '殷锦', 'dialogue': '本教福气最大的，自然是教主他老人家，其次是夫人。不过总不能劳动两位大驾亲自出马。更其次福份最大的，首推白龙使。他识得碣文，又立下大功，印堂隐隐透出红光，福份之大，教主属下无人能出其右。', 'action': '对话'}
 {'role': '教主', 'dialogue': '但他小小孩童，能担当这件大任么', 'action': '对话'}
 {'role': '白龙使', 'dialogue': '教主，夫人，承蒙提拔，属下十分感激，我本事是没有的，但托了两位大福气，混进皇宫中去偷这四部宝经，倒也有成功的指望。', 'action': '对话'}
 {'role': '洪教主', 'dialogue': '点了点头', 'action': '对话'}
 {'role': '洪夫人', 'dialogue': '你肯自告奋勇，足见对教主忠心。我知你聪明伶俐，福份又大，恐怕正是上天派来给教主办成这件大事的。', 'action': '对话'}
-`
 
 看起来非常不错的。这里我区分了对话、独白，以及希望在没有对话的时候，kor能够把角色的行为总结到action。
 
@@ -145,12 +143,12 @@ Kor的原理其实还是挺简单的，其实Kor的整个库都是围绕一个pr
 
 我们可以通过以下方式打印出Kor的prompt
 
-`chain = create_extraction_chain(llm, schema)
+chain = create_extraction_chain(llm, schema)
 print(chain.prompt.format_prompt(text="[user input]").to_string())`
 
 打印出来是这样的哈
 
-`Your goal is to extract structured information from the user's input that matches the form described below. When extracting information please make sure it matches the type information exactly. Do not add any attributes that do not appear in the schema shown below.
+Your goal is to extract structured information from the user's input that matches the form described below. When extracting information please make sure it matches the type information exactly. Do not add any attributes that do not appear in the schema shown below.
 
 ```TypeScript
 

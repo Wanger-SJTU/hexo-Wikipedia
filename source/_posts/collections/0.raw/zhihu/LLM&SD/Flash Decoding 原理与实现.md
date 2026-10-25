@@ -45,7 +45,7 @@ Flash Attention 在训练阶段和推理的预填充（Prefill）阶段表现出
 
 下面是两层循环的伪代码，GPU 可以在外层循环的分块上并行执行：
 
-`for bq in range(0, n, Bm):       # 外层循环：遍历 Q 的分块，可并行
+for bq in range(0, n, Bm):       # 外层循环：遍历 Q 的分块，可并行
 
 ```text
     bQ = Q[bq:bq+Bm, :]
@@ -200,7 +200,7 @@ LSE 实际上只包含了 softmax 的分母中指数和部分的信息。虽然�
 
 这里我给出代码实现的示例，如果前面的公式把你弄的有点晕，那么看下面代码或许能帮助你更好地理解。
 
-`import torch
+import torch
 
 # 计算单个 K/V 分块的 attention，输出当前分块的结果和 LSE
 

@@ -47,9 +47,9 @@ id: d1c75be9-cda1-4482-9e4d-7358e8dbec9c
 
 前面两行自然是绑定了快捷键，后面两行是什么意思呢？
 
-`show-all-if-ambiguous` 是指tab补全时，按一次tab就会把最长匹配的自动补全。具体参考 <https://stackoverflow.com/a/42193784>
+show-all-if-ambiguous` 是指tab补全时，按一次tab就会把最长匹配的自动补全。具体参考 <https://stackoverflow.com/a/42193784>
 
-`completion-ignore-case` 是指tab补全时，忽略大小写，这点也非常方便。
+completion-ignore-case` 是指tab补全时，忽略大小写，这点也非常方便。
 
 > 注意，在修改完`~/.inputrc`文件，要显式执行`bind -f ~/.inputrc`才会生效。
 

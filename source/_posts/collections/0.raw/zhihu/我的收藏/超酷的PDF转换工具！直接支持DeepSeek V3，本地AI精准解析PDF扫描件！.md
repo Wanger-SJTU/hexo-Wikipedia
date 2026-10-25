@@ -59,7 +59,7 @@ PDF Craft 支持本地运行，安装和使用方式也非常简单，支持 Pyt
 
 此操作无需调用远程的 LLM，仅凭本地算力（CPU 或显卡）就可完成。第一次调用时会联网下载所需的模型。遇到文档中的插图、表格、公式，会直接截图插入到 MarkDown 文件中。
 
-`from pdf_craft import PDFPageExtractor, MarkDownWriter
+from pdf_craft import PDFPageExtractor, MarkDownWriter
 
 extractor = PDFPageExtractor(
   device="cpu", # 如果希望使用 CUDA，请改为 device="cuda:0" 这样的格式。
@@ -79,7 +79,7 @@ with MarkDownWriter(markdown_path, "images", "utf-8") as md:
 
 将使用 OCR 从 PDF 中扫描并识别文字。因此，也需要先构建 PDFPageExtractor 对象。（重复性操作代码省略掉了，可以参考上一步的）
 
-`from pdf_craft import PDFPageExtractor
+from pdf_craft import PDFPageExtractor
 
 extractor = PDFPageExtractor(
   device="cpu", # 如果希望使用 CUDA，请改为 device="cuda:0" 这样的格式。
@@ -88,7 +88,7 @@ extractor = PDFPageExtractor(
 
 之后，需要配置 LLM 对象。建议使用使用 DeepSeek，本库的 Prompt 基于最新的 V3 模型调试。
 
-`from pdf_craft import LLM
+from pdf_craft import LLM
 
 llm = LLM(
   key="sk-XXXXX", # LLM 供应商提供的 key
@@ -99,7 +99,7 @@ llm = LLM(
 
 如上两个对象准备好后，就可以开始扫描并分析 PDF 书籍了。
 
-`from pdf_craft import analyse
+from pdf_craft import analyse
 
 analyse(
   llm=llm, # 上一步准备好的 LLM 配置
@@ -111,7 +111,7 @@ analyse(
 
 在分析结束后，将 output_dir_path 文件夹地址传给如下代码作为参数，即可最终生成 EPUB 文件。
 
-`from pdf_craft import generate_epub_file
+from pdf_craft import generate_epub_file
 
 generate_epub_file(
   from_dir_path=output_dir_path, # 来自上一步分析所产生的文件夹

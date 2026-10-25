@@ -45,7 +45,7 @@ MLA KV Cache 采取典型值kv_lora_rank=512, qk_rope_head_dim=64，每层缓存
 
 观察KDA的核心计算路径[1]，我们会发现q、k、v、g、beta五个矩阵乘在prologue阶段完全独立，没有数据依赖。但并不能直接fuse为一次矩阵乘，因为乘法中间结果存在sigmoid、gate、conv等操作。因此更好的方案是<strong>选择性地fuse一些矩阵乘，然后考虑用多个CUDA Stream并行发射算子，通过green ctx调节显卡资源可以让访存利用率低的算子计算延迟隐藏在利用率高的矩阵乘里。</strong>
 
-`可能的方案：计算 qkv_proj 之后创建多个 cuda stream
+可能的方案：计算 qkv_proj 之后创建多个 cuda stream
 Stream 1: q/k/v conv1d
 Stream 2: fg_a_proj
 Stream 3: b_proj → float -> sigmoid

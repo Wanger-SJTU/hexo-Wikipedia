@@ -27,7 +27,7 @@ source_url: https://zhuanlan.zhihu.com/p/2007250216227729670
 
 首先是将Agent独立出一个单独的Server模块，这是一个比较直观的抽象
 
-`原来的数据流为
+原来的数据流为
 
 RLFramework(Verl/Slime) -> RolloutEngine => [AsyncBuffer] -> Trainer
 
@@ -154,7 +154,7 @@ ThunderAgent解决问题的思路非常直观：遇事不决加一层，ThunderA
 
 <strong>例如：</strong>一个编码智能体（SWE-Agent）正在修复 GitHub 上的 Bug，其交互流程大概如下
 
-`传统请求感知系统（SGLang）：
+传统请求感知系统（SGLang）：
 ┌─────────────────────────────────────────────────────┐
 │  Step 1: 推理请求 ──→ vLLM（无状态，独立处理）        │
 │  Step 2: 工具执行（编译器）──→ Kubernetes（无状态）    │
@@ -164,7 +164,7 @@ ThunderAgent解决问题的思路非常直观：遇事不决加一层，ThunderA
 
 而引入独立的ThunerAgent层后，就可以完成对Agent任务抽象的流程管理，例如
 
-`┌─────────────────────────────────────────────────────┐
+┌─────────────────────────────────────────────────────┐
 │  P = ⟨ID="bug_fix_001",                             │
 │        c=15000 tokens,   ← KV缓存占用               │
 │        T={Docker, Bash}, ← 工具资源                  │
@@ -213,7 +213,7 @@ $Cost_{total} \approx Cost_{decode} + Cost_{prefill} + Cost_{recompute} + Cost_{
 - 单实例间的KVCache爆满触发抢占
 
 - 因此论文中提出把请求切为Chunk粒度，每一个Chunk 8K长度，下面是GPT老师画的图，比较直观。同时KV Cache需要缓存到Mooncake中，这样迁移时无需重新Prefill
-`传统方式：
+传统方式：
 Group → [req1, req2, ..., req8] → 绑定到Instance A，跑完为止
                                               ↑
                                         长的拖死短的，无法迁移
@@ -229,7 +229,7 @@ Group → req1 → chunk1(8K) → chunk2(8K) → chunk3(8K) → ...
 
 大致流程为
 
-`阶段1：Length Filtering（长度过滤）
+阶段1：Length Filtering（长度过滤）
   └─ 用SFS（Shortest First）调度所有Speculative Requests
      → 短的很快完成，长的暴露为长尾候选
 
@@ -253,7 +253,7 @@ Group → req1 → chunk1(8K) → chunk2(8K) → chunk3(8K) → ...
 
 大致流程为
 
-`┌──────────────────────────────────────────────────────────────┐
+┌──────────────────────────────────────────────────────────────┐
 │  Step 1: 异步Append（各实例独立）                             │
 │  Instance_A 生成了 req_0 的新token: [tok_a, tok_b, tok_c]   │
 

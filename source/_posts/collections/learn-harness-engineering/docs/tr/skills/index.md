@@ -66,7 +66,7 @@ Yetenek ayrıca scaffold, doğrulama, HTML değerlendirme raporu ve yapısal ben
 
 ### Bu yetenek nasıl geliştirildi
 
-`harness-creator`, <strong>skill-creator</strong> metodolojisi ile geliştirildi — Anthropic'in ajan yetenekleri oluşturmak, test etmek ve iyileştirmek için resmî meta yeteneği. skill-creator; yapılandırılmış bir akış (taslak → test → değerlendir → iyileştir) ile gömülü eval çalıştırıcıları, değerlendiriciler ve bir benchmark görüntüleyici sunar.
+harness-creator`, <strong>skill-creator</strong> metodolojisi ile geliştirildi — Anthropic'in ajan yetenekleri oluşturmak, test etmek ve iyileştirmek için resmî meta yeteneği. skill-creator; yapılandırılmış bir akış (taslak → test → değerlendir → iyileştir) ile gömülü eval çalıştırıcıları, değerlendiriciler ve bir benchmark görüntüleyici sunar.
 
 - <strong>skill-creator kaynağı</strong>: [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
 - <strong>Claude Code skills belgeleri</strong>: [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)

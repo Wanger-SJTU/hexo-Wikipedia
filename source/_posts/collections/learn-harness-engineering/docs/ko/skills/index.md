@@ -66,7 +66,7 @@ Claude Code와 함께 사용하려면 `harness-creator/` 디렉터리를 프로�
 
 ### 이 스킬이 만들어진 방법 (How This Skill Was Built)
 
-`harness-creator`는 <strong>skill-creator</strong> 방법론을 사용하여 개발되었습니다. 이는 에이전트 스킬을 생성·테스트·반복하기 위한 Anthropic의 공식 메타 스킬입니다. skill-creator는 구조화된 워크플로우(draft → test → evaluate → iterate)를 내장된 평가 러너(eval runner), 채점기(grader), 벤치마크 뷰어(benchmark viewer)와 함께 제공합니다.
+harness-creator`는 <strong>skill-creator</strong> 방법론을 사용하여 개발되었습니다. 이는 에이전트 스킬을 생성·테스트·반복하기 위한 Anthropic의 공식 메타 스킬입니다. skill-creator는 구조화된 워크플로우(draft → test → evaluate → iterate)를 내장된 평가 러너(eval runner), 채점기(grader), 벤치마크 뷰어(benchmark viewer)와 함께 제공합니다.
 
 - <strong>skill-creator 소스</strong>: [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
 - <strong>Claude Code 스킬 문서</strong>: [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)

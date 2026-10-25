@@ -44,7 +44,7 @@ categories:
 
 ## harness-creator 的建立方式
 
-`harness-creator` 使用 <strong>skill-creator</strong> 方法論建立。這是 Anthropic 用於建立、測試與迭代 agent skills 的官方 meta-skill，提供 draft → test → evaluate → iterate 的結構化流程。
+harness-creator` 使用 <strong>skill-creator</strong> 方法論建立。這是 Anthropic 用於建立、測試與迭代 agent skills 的官方 meta-skill，提供 draft → test → evaluate → iterate 的結構化流程。
 
 ## 技能如何運作
 

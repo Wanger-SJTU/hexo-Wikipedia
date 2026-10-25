@@ -49,7 +49,7 @@ source_url: https://zhuanlan.zhihu.com/p/442930482
 
 把共享内存和寄存器的事情说明白之后，我们来看看具体的计算逻辑。在执行256次大迭代之前，我们需要提前将第0次大迭代的数据存到write SM中，并且将第0次小迭代的数据存到write REG中。在完成这一个预取过程之后，我们再来仔细地看看第0个大迭代。需要注意的是，<strong>上一轮大迭代的write SM就是这一轮迭代的read SM。上一轮小迭代的write REG就是这一轮迭代的read REG</strong>。所以在进行第0个大迭代时，上面write SM就变成了read SM。然后我们首先需要将下一轮大迭代的数据存到write SM中。由于从global memory中取数的时钟周期非常多。所以在等待数据取回的同时，对read SM中的数据进行计算。也就是我们在等待的同时，需要开启8次小迭代来进行计算。而小迭代中也存在着读写分离，在对read REG进行计算之前，需要先执行write REG的操作，通过这种方式来<strong>掩盖访存的latency</strong>。所以整体的计算逻辑如下：
 
-`for k in 256 big_loop:
+for k in 256 big_loop:
 	prefetch next loop data to write_SM
 
 ```text
@@ -76,9 +76,8 @@ source_url: https://zhuanlan.zhihu.com/p/442930482
 
 接下来是<strong>线程类的参数</strong>。整个计算流程需要开启256个block，这256个block按照二维形态排布。而一个block中开启了256个线程，这256个线程按照二维形态进行排布。<strong>bx</strong>代表横向的block坐标，<strong>by</strong>代表竖向的block坐标。而<strong>tx</strong>代表横向的线程坐标，<strong>ty</strong>代表竖向的线程坐标。这是CUDA的基础内容，看不明白的同学可以找一些博客多理解一下，务必搞清楚。<strong>THREAD_X_PER_BLOCK</strong>代表在一个block中有多少个横向的线程，在这里等于16。<strong>THREAD_Y_PER_BLOCK</strong>代表在一个block中有多少个竖向的线程，在这里等于16。<strong>THREAD_NUM_PER_BLOCK</strong>代表在一个block中有多少个线程，在这里等于256。<strong>tid</strong>则代表当前线程在这256个线程中的id号。
 
-`    // Block index
-
 ```cpp
+    // Block index
     int bx = blockIdx.x;
     int by = blockIdx.y;
 
@@ -98,9 +97,8 @@ source_url: https://zhuanlan.zhihu.com/p/442930482
 
 随后说明开启的<strong>shared memory和register</strong>数量。<strong>As</strong>代表为了存储A矩阵中的数据所需要开启的shared memory。在一轮迭代中需要使用bm×bk的数据，为了加快后续的访存，所以需要进行一次转置。并且为了预取，开了两倍的大小，一半用来读数据，一半用来写数据。所以一共需要2×BLOCK_SIZE_K×BLOCK_SIZE_M的空间。而<strong>Bs</strong>同理，但是载入数据时并不需要转置。<strong>accum</strong>用来临时存储C的计算结果。<strong>frag_a</strong>用来加载<strong>As</strong>中的<strong>rm</strong>个数据，为了预取也开启了双倍的空间。<strong>frag_b</strong>同理。<strong>ldg_num_a</strong>稍微有点费解，需要解释一下。为了将global memory的数据块搬运到shared memory中，需要先经过寄存器。也就是说，这个数据搬运过程其实是global memory->register->shared memory。所以为了临时存储A中的数据，需要开启一定量的寄存器。在一次大迭代中，我们总共需要搬运<strong>BLOCK_SIZE_M × BLOCK_SIZE_K</strong>个float数据，然后一个block中有<strong>THREAD_NUM_PER_BLOCK</strong>个线程，采用float4进行取数，即一个线程一次取4个数。则一共需要BLOCK_SIZE_M × BLOCK_SIZE_K/(THREAD_NUM_PER_BLOCK×4)次搬运就能把所有的数搬运到寄存器上。这个搬运次数用<strong>ldg_num_a</strong>表示。为了存储BLOCK_SIZE_M * BLOCK_SIZE_K的数据块，每个线程需要额外开启<strong>ldg_a_reg</strong>个寄存器进行存储。
 
-`// shared memory
-
 ```cpp
+// shared memory
     __shared__ float As[2][BLOCK_SIZE_K][BLOCK_SIZE_M];
     __shared__ float Bs[2][BLOCK_SIZE_K][BLOCK_SIZE_N];
     // registers for C
@@ -120,9 +118,8 @@ source_url: https://zhuanlan.zhihu.com/p/442930482
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_aa45cf5258ab.jpg)
 
-`// threads number in one row
-
 ```cpp
+// threads number in one row
     const int A_TILE_THREAD_PER_ROW = BLOCK_SIZE_K / 4;
     const int B_TILE_THREAD_PER_ROW = BLOCK_SIZE_N / 4;
 
@@ -143,14 +140,16 @@ source_url: https://zhuanlan.zhihu.com/p/442930482
 
 在介绍完相关参数之后，我们来进入到具体的代码逻辑。为了代码简洁，用float4读取的过程用了两个宏，定义如下：
 
-`#define OFFSET(row, col, ld) ((row) * (ld) + (col))
+```text
+#define OFFSET(row, col, ld) ((row) * (ld) + (col))
 #define FETCH_FLOAT4(pointer) (reinterpret_cast(&(pointer))[0])`
+```
+
 
 迭代前预取数据分为<strong>两个部分</strong>，<strong>第一个部分</strong>是将第一个大迭代的数据从global 预取到shared memroy中。<strong>第二个部分</strong>是将shared memory上的数据预取到寄存器中。先来看看<strong>第一个部分</strong>。这里面分别是将第一个大迭代中需要的A、B数据预取到shared memroy中。对于A矩阵而言，这个for循环代表着block中的线程需要搬运多少次才能将globa中的数据放到shared memory中。由于A需要先进行一次转置，所以先将数据先放置在寄存器中。数据按行取，然后按列存。对于B矩阵而言，数据不用转置，直接按行取，按行存。当然，这个过程中间也要经过寄存器，但是没有写出来的必要了。
 
-`// load A from global memory to shared memory
-
 ```cpp
+// load A from global memory to shared memory
     #pragma unroll
     for ( int i = 0 ; i 
 ```
@@ -158,9 +157,8 @@ source_url: https://zhuanlan.zhihu.com/p/442930482
 
 然后就是<strong>第二个部分</strong>。将shared memory中的数据存到寄存器中。一共需要取THREAD_SIZE_Y个数，每次取4个数。这个倒没有什么好说的。
 
-`// load A from shared memory to register
-
 ```cpp
+// load A from shared memory to register
     #pragma unroll
     for (int thread_y = 0; thread_y 
 ```
@@ -170,9 +168,8 @@ source_url: https://zhuanlan.zhihu.com/p/442930482
 
 在完成上一步后，我们要进入到<strong>大迭代</strong>中，按照前面的参数，我们需要<strong>进行256个大迭代</strong>。先忽略这个迭代里面的具体代码，看看这个框架，如下所示。首先要说的是<strong>write_stage_idx</strong>这个参数。之前定义了__shared__ float As[2][BLOCK_SIZE_K][BLOCK_SIZE_M]。为了读写分离，给As开了两块空间。如果write_stage_idx=1，就对As[1]空间进行写操作，对As[0]空间进行读操作。因为我们之前将数据预取到了As[0]这个空间里，所以在第一个大迭代时，对As[0]进行读操作，对As[1]进行写操作，所以write_stage_idx=1。再来看看<strong>tile_idx</strong>这个参数，这个代表大迭代时，在A矩阵的列号。每一次大迭代要读取BLOCK_SIZE_K列，直到完成大迭代，即tile_idx=K为止。再看看循环里面的load_stage_idx，这个和write_stage_idx对应，两者保持二进制位相反即可。
 
-`int write_stage_idx = 1;
-
 ```cpp
+int write_stage_idx = 1;
 int tile_idx = 0;
 ```
 
@@ -190,7 +187,7 @@ do{
 
 我们在这里开始说明具体的大迭代。下面代码描述的是，如果还有下一个迭代，则将下一个迭代的数据块，搬运到寄存器上，这里面的for循环代表可能需要多次搬运。
 
-`tile_idx += BLOCK_SIZE_K;
+tile_idx += BLOCK_SIZE_K;
 
 ```text
 // load next tile from global mem
@@ -200,9 +197,8 @@ if(tile_idx
 
 随后进入到小迭代的计算逻辑之中，<strong>load_stage_idx</strong>参数代表需要从As的哪个空间进行读数。然后是<strong>BLOCK_SIZE_K-1</strong>次小迭代。按照前面的参数配置，即需要在这里完成<strong>7次小迭代</strong>。由于在小迭代中也采用了双缓冲的方式，需要将下一轮小迭代的数据提前写入到寄存器中，这个过程需要对shared memory访存，会稍微慢点。与此同时，线程需要计算更新<strong>THREAD_SIZE_X x THREAD_SIZE_Y=8×8=64</strong>个C矩阵元素的结果。
 
-`int load_stage_idx = write_stage_idx ^ 1;
-
 ```cpp
+int load_stage_idx = write_stage_idx ^ 1;
 #pragma unroll
 for(int j=0; jBLOCK_SIZE_K-1; ++j){
     // load next tile from shared mem to register 
@@ -227,17 +223,15 @@ for(int j=0; jBLOCK_SIZE_K-1; ++j){
 }
 ```
 
-`
 
 而后需要将存储在<strong>临时寄存器</strong>的数据搬运到shared memory中。由于A矩阵需要经过一次转置，所以和B矩阵有一点不一样。
 
-`if(tile_idx 
+if(tile_idx 
 
 最后完成<strong>寄存器的预取</strong>，并将<strong>最后一个小迭代完成</strong>。
 
-`// load A from shared memory to register
-
 ```cpp
+// load A from shared memory to register
 #pragma unroll
 for (int thread_y = 0; thread_y 
 ```
@@ -247,9 +241,8 @@ for (int thread_y = 0; thread_y
 
 此时，最后的计算结果已经被存储在`accum`寄存器中，需要将其写回到global memory中。这个代码比较简单，就没啥好说的了。
 
-`// store back to C
-
 ```cpp
+// store back to C
     #pragma unroll
     for (int thread_y = 0; thread_y 
 ```

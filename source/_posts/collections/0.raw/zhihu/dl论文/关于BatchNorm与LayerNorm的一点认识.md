@@ -75,7 +75,7 @@ nlp：根据之前的讨论，`[B, S, D]`看作S组的`[B,D]`，BN就可以看�
 
 这张图中举例的BN是错误参照Pytorch的`torch.nn.BatchNorm2d`，cv的BatchNorm的实现如下：（NLP我的理解可能有问题这里就不放实现了）
 
-`# initialize
+# initialize
 cv_batch_norm = nn.BatchNorm2d(C)
 
 # normalize embedding
@@ -89,7 +89,7 @@ nlp: 根据之前的讨论，`[B, S, D]`看作S组的`[B,D]`，自然LN就是“
 
 参照Pytorch的`torch.nn.LayerNorm`,cv和nlp的LayerNorm的实现如下：
 
-`# initialize
+# initialize
 cv_layer_norm = nn.LayerNorm([C, H, W])
 nlp_layer_norm = nn.LayerNorm(D)
 
@@ -99,9 +99,8 @@ nlp_embedding = nlp_layer_norm(nlp_embedding) # nlp_embedding: [B, S, D]`
 
 然后看huggingface开源的BERT代码如下，可以看到就是在BERT中的实现也就是传入toekn嵌入的维度hidden_size，对每个token的嵌入进行标准化：
 
-`class BertEmbeddings(nn.Module):
-
 ```python
+class BertEmbeddings(nn.Module):
     def __init__(self, config):
         ...
         self.LayerNorm = nn.LayerNorm(config.hidden_size, eps=config.layer_norm_eps)

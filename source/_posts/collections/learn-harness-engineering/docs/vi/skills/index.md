@@ -66,7 +66,7 @@ Kỹ năng này cũng bao gồm các script Node.js thuần cho scaffold, xác t
 
 ### Kỹ năng này được Xây dựng như thế nào
 
-`harness-creator` được phát triển bằng phương pháp <strong>skill-creator</strong> — kỹ năng meta (meta-skill) chính thức của Anthropic để tạo, thử nghiệm và cải thiện lặp đi lặp lại các kỹ năng của agent. skill-creator cung cấp một luồng công việc có cấu trúc (bản nháp → thử nghiệm → đánh giá → lặp lại) được tích hợp sẵn các công cụ chạy đánh giá (eval runners), máy chấm điểm (graders) và trình xem điểm chuẩn (benchmark viewer).
+harness-creator` được phát triển bằng phương pháp <strong>skill-creator</strong> — kỹ năng meta (meta-skill) chính thức của Anthropic để tạo, thử nghiệm và cải thiện lặp đi lặp lại các kỹ năng của agent. skill-creator cung cấp một luồng công việc có cấu trúc (bản nháp → thử nghiệm → đánh giá → lặp lại) được tích hợp sẵn các công cụ chạy đánh giá (eval runners), máy chấm điểm (graders) và trình xem điểm chuẩn (benchmark viewer).
 
 - <strong>Mã nguồn skill-creator</strong>: [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
 - <strong>Tài liệu kỹ năng Claude Code</strong>: [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)

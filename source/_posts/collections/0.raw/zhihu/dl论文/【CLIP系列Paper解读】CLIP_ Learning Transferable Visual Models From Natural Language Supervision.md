@@ -78,9 +78,8 @@ CLIP zero-shot prediction步骤可以整理成下面这样：
 - 以N个text embedding为key，以当前image embedding为query，算cosine相似度，相似度最高的即为Top-1的prediction class。
 预测过程的代码如下：
 
-`import os
-
 ```python
+import os
 import clip
 import torch
 from torchvision.datasets import CIFAR100
@@ -133,7 +132,7 @@ for value, index in zip(values, indices):
 
 这里作者一共训练了8个不同的image encoder（5 ResNets & 3 ViTs），分别如下：
 
-`_MODELS = {
+_MODELS = {
     "RN50": "https://openaipublic.azureedge.net/clip/models/afeb0e10f9e5a86da6080e35cf09123aca3b358a0c3e3b6c78a7b63bc04b6762/RN50.pt",
     "RN101": "https://openaipublic.azureedge.net/clip/models/8fa8567bab74a42d41c5915025a8e4538c3bdbe8804a470a72f30b0d94fab599/RN101.pt",
     "RN50x4": "https://openaipublic.azureedge.net/clip/models/7e526bd135e493cef0776de27d5f42653e6b4c8bf9e0f653bb11773263205fdd/RN50x4.pt",

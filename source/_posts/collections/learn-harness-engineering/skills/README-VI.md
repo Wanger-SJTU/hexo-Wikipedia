@@ -44,7 +44,7 @@ Xem tai lieu day du tai [harness-creator/README.md](harness-creator/README.md).
 
 ## Cach harness-creator duoc tao
 
-`harness-creator` duoc phat trien bang phuong phap <strong>skill-creator</strong>, meta-skill chinh thuc cua Anthropic de tao, kiem thu va lap lai viec cai thien agent skills theo luong draft → test → evaluate → iterate.
+harness-creator` duoc phat trien bang phuong phap <strong>skill-creator</strong>, meta-skill chinh thuc cua Anthropic de tao, kiem thu va lap lai viec cai thien agent skills theo luong draft → test → evaluate → iterate.
 
 ## Skills hoat dong nhu the nao
 

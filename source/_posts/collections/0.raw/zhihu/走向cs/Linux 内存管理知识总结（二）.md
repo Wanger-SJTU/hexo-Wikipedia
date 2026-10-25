@@ -47,7 +47,7 @@ Linux 内核通过插入一些兼容层，使两个不同体系结构的差异�
 
 其中，zone 的类型如下：
 
-`include/linux/mmzone.h
+include/linux/mmzone.h
 
 enum zone_type {
 #ifdef CONFIG_ZONE_DMA
@@ -79,13 +79,11 @@ enum zone_type {
 };
 ```
 
-`
 
 回到之前的 setup_arch()函数，接着往下走，来到内存管理框架初始化的地方
 
-`void __init setup_arch(char **cmdline_p)
-
 ```text
+void __init setup_arch(char **cmdline_p)
 {
     ......
 ```
@@ -121,9 +119,9 @@ enum zone_type {
 
 <strong>initmem_init</strong>的实现如下：
 
-`#define PHYS_ADDR_MAX (~(phys_addr_t)0)
-
 ```text
+#define PHYS_ADDR_MAX (~(phys_addr_t)0)
+
 #ifndef CONFIG_NEED_MULTIPLE_NODES
 void __init initmem_init(void)
 {
@@ -161,13 +159,11 @@ void __init initmem_init(void)
 #endif /* !CONFIG_NEED_MULTIPLE_NODES */
 ```
 
-`
 
 这个函数将<strong>high_memory</strong>初始化为低端内存最大页框<strong>max_low_pfn</strong>对应的地址大小，接着调用 memblock_set_node，通过 memblock 内存管理器<strong>设置 node 节点信息</strong>。
 
-`int __init_memblock memblock_set_node(phys_addr_t base, phys_addr_t size,
-
 ```cpp
+int __init_memblock memblock_set_node(phys_addr_t base, phys_addr_t size,
           struct memblock_type *type, int nid)
 {
 #ifdef CONFIG_NEED_MULTIPLE_NODES
@@ -194,13 +190,11 @@ void __init initmem_init(void)
 }
 ```
 
-`
 
 memblock_set_node 主要调用了三个函数：memblock_isolate_range、memblock_set_region_node 和 memblock_merge_regions，首先看<strong>memblock_isolate_range</strong>()函数：
 
-`/* adjust *@size so that (@base + *@size) doesn't overflow, return new size */
-
 ```cpp
+/* adjust *@size so that (@base + *@size) doesn't overflow, return new size */
 static inline phys_addr_t memblock_cap_size(phys_addr_t base, phys_addr_t *size)
 {
  return *size = min(*size, PHYS_ADDR_MAX - base);
@@ -262,7 +256,6 @@ static int __init_memblock memblock_isolate_range(struct memblock_type *type,
 }
 ```
 
-`
 
 在__memblock_remove()中有提到，<strong>memblock_isolate_range()主要作用是将要移除的物理内存区从 reserved 内存区中分离出来</strong>，将 start_rgn 和 end_rgn（该内存区块的起始、结束索引号）返回回去，而这里，由于我们传入的<strong>type 是 memblock.memory</strong>，该函数会根据入参 base 和 size 标记节点内存范围，将<strong>该内存从 memory 中划分开来，同时返回对应的 start_rgn 和 end_rgn。</strong>
 
@@ -270,9 +263,8 @@ static int __init_memblock memblock_isolate_range(struct memblock_type *type,
 
 2）如果 memblock 中的 region 跨越了该节点内存末尾分界，那么将会把当前的 region 边界调整为 node 节点内存范围边界，然后通过 memblock_insert_region()函数将剩下的部分（即越出内存范围的那一块内存）重新插入 memblock 管理 regions 当中，实现拆分；
 
-`static inline void memblock_set_region_node(struct memblock_region *r, int nid)
-
-```text
+```cpp
+static inline void memblock_set_region_node(struct memblock_region *r, int nid)
 {
 ```
 
@@ -307,7 +299,6 @@ static void __init_memblock memblock_insert_region(struct memblock_type *type,
 }
 ```
 
-`
 
 上面的 memmove()将后面的 region 信息往后移，另外调用 memblock_set_region_node()将原 region 的 node 节点号保留在被拆分出来的 region 当中。
 
@@ -315,9 +306,8 @@ static void __init_memblock memblock_insert_region(struct memblock_type *type,
 
 最后回到 initmem_init()函数中，memblock_set_node()返回后，接着调用的函数为 setup_bootmem_allocator()。
 
-`void __init setup_bootmem_allocator(void)
-
 ```text
+void __init setup_bootmem_allocator(void)
 {
 ```
 
@@ -332,9 +322,8 @@ static void __init_memblock memblock_insert_region(struct memblock_type *type,
 
 回到 setup_arch()函数：
 
-`void __init setup_arch(char **cmdline_p)
-
 ```text
+void __init setup_arch(char **cmdline_p)
 {
     ......
 ```
@@ -373,7 +362,10 @@ static void __init_memblock memblock_insert_region(struct memblock_type *type,
 
 x86_init 结构体内<strong>pagetable_init</strong>实际上挂接的是<strong>native_pagetable_init</strong>()函数：
 
-`struct x86_init_ops x86_init __initdata = {
+```text
+struct x86_init_ops x86_init __initdata = {
+```
+
  ......
 
  .paging = {
@@ -390,13 +382,11 @@ x86_init 结构体内<strong>pagetable_init</strong>实际上挂接的是<strong
 }
 ```
 
-`
 
 native_pagetable_init()函数内容如下：
 
-`void __init native_pagetable_init(void)
-
 ```text
+void __init native_pagetable_init(void)
 {
  unsigned long pfn, va;
 ```
@@ -418,7 +408,6 @@ native_pagetable_init()函数内容如下：
 }
 ```
 
-`
 
 <strong>PAGE_OFFSET 代表的是内核空间和用户空间对虚拟地址空间的划分，对不同的体系结构不同。比如在 32 位系统中 3G-4G 属于内核使用的内存空间，所以 PAGE_OFFSET = 0xC0000000</strong>。
 
@@ -426,9 +415,8 @@ native_pagetable_init()函数内容如下：
 
 接着看 native_pagetable_init()调用的最后一个函数：<strong>paging_init</strong>()。
 
-`void __init paging_init(void)
-
 ```text
+void __init paging_init(void)
 {
 ```
 
@@ -452,7 +440,6 @@ native_pagetable_init()函数内容如下：
 }
 ```
 
-`
 
 可以对着这个图看：
 
@@ -460,9 +447,8 @@ native_pagetable_init()函数内容如下：
 
 前面已经分析过低端内存、固定映射区中临时映射区的内核页表的建立，这里 paging_init 将会完成剩下的工作，首先看<strong>pagetable_init</strong>()
 
-`static void __init pagetable_init(void)
-
 ```text
+static void __init pagetable_init(void)
 {
 ```
 
@@ -487,15 +473,13 @@ static void __init permanent_kmaps_init(pgd_t *pgd_base)
 }
 ```
 
-`
 
 <strong>该函数为建立持久映射区（KMAP 区）的页表</strong>，page_table_range_init 函数前面固定映射区页表初始化时已经分析过了（初始化 pgd_base 指向的页全局目录中 start 到 end 这个范围的线性地址，整个函数结束后只是初始化好了页中间目录项对应的页表，但是页表中的页表项并没有初始化），这里建立页表范围为 PKMAP_BASE 到 PKMAP_BASE + PAGE_SIZE*LAST_PKMAP，<strong>建好页表后将页表地址赋值给给持久映射区页表变量 pkmap_page_table</strong>。
 
 __flush_tlb_all()为刷新全部 TLB，这里不做介绍，接着看 paging_init()调用的下一个函数 kmap_init()。
 
-`static void __init kmap_init(void)
-
 ```text
+static void __init kmap_init(void)
 {
  unsigned long kmap_vstart;
 
@@ -511,7 +495,6 @@ __flush_tlb_all()为刷新全部 TLB，这里不做介绍，接着看 paging_ini
 }
 ```
 
-`
 
 可以很容易看到 kmap_init()主要是<strong>获取到临时映射区间的起始页表并往临时映射页表变量 kmap_pte 置值</strong>。
 
@@ -521,15 +504,14 @@ __flush_tlb_all()为刷新全部 TLB，这里不做介绍，接着看 paging_ini
 
 pfn_to_page/page_to_pfn 的作用是 struct page* 和 pfn 页帧号之间的转换，flat memory 内存模型的相关代码如下：
 
-`#if defined(CONFIG_FLATMEM)
-
 ```text
+#if defined(CONFIG_FLATMEM)
+
 #define __pfn_to_page(pfn) (mem_map + ((pfn) - ARCH_PFN_OFFSET))
 #define __page_to_pfn(page) ((unsigned long)((page) - mem_map) + \
      ARCH_PFN_OFFSET)
 ```
 
-`
 
 <strong>PFN 和 struct page 数组（mem_map）的 index 是线性关系，有一个固定的偏移就是 ARCH_PFN_OFFSET（跟架构相关的物理起始地址的 PFN）</strong>。
 
@@ -539,7 +521,7 @@ pfn_to_page/page_to_pfn 的作用是 struct page* 和 pfn 页帧号之间的转�
 
 在这种模型下，从 PFN 转换到具体的 struct page 会稍微复杂一点，首先要从 PFN 得到 node ID，然后根据这个 ID 找到对于的节点 node 数据结构，也就找到了对应的 page 数组，之后的方法就类似 flat memory 了。
 
-`#elif defined(CONFIG_DISCONTIGMEM)
+#elif defined(CONFIG_DISCONTIGMEM)
 
 #define __pfn_to_page(pfn)   \
 ({ unsigned long __pfn = (pfn);  \
@@ -569,7 +551,6 @@ pfn_to_page/page_to_pfn 的作用是 struct page* 和 pfn 页帧号之间的转�
 })
 ```
 
-`
 
 Discontiguous memory 模型需要获取 node id，只要找到 node id，一切都好办了，后面类比 flat memory model 进行就 OK 了。对于__pfn_to_page 的定义，首先通过 arch_pfn_to_nid 将 PFN 转换成 node id，通过 NODE_DATA 宏定义可以找到该 node 对应的 pglist_data 数据结构，该数据结构的 node_start_pfn 记录了该 node 的第一个 pfn，因此，也就可以得到其对应 struct page 在 node_mem_map 的偏移，__page_to_pfn 类似与上述基本类似(pglist_data 数据结构后面再进行介绍)。
 
@@ -583,7 +564,7 @@ linux 内核中静态定义了一个 mem_section 的指针数组，一个 sectio
 
 <strong>对于 page 到 section index 的转换，sparse memory 有 2 种方案</strong>，先看看经典的方案，也就是把 section 号保存在 page->flags 中（page 的结构同样在后面再进行介绍），这种方法的最大的问题是 page->flags 中的 bit 数不一定够用，因为这个 flag 中承载了太多的信息，各种 page flag、node id、zone id，现在又增加一个 section id，在不同的处理器架构中无法实现一致性的算法（上面的图即为采用经典算法的 sparse memory）。
 
-`#elif defined(CONFIG_SPARSEMEM)
+#elif defined(CONFIG_SPARSEMEM)
 
 ```text
 /*
@@ -620,11 +601,10 @@ linux 内核中静态定义了一个 mem_section 的指针数组，一个 sectio
 #endif /* CONFIG_FLATMEM/DISCONTIGMEM/SPARSEMEM */
 ```
 
-`
 
 对于经典的 sparse memory 模型，一个 section 的 struct page 数组所占用的内存来自直接映射区，页表在初始化的时候就建立好了。但是，对于 SPARSEMEM_VMEMMAP 而言，虚拟地址一开始就分配好了，是 vmemmap 开始的一段连续的虚拟地址空间，但是没有物理地址。因此，当一个 section 被发现后，可以立刻找到对应的 struct page 的虚拟地址，而这时候还需要分配一个物理的 page frame，对于这种 sparse memory，开销会稍微大一些，需要建立页表，关联 page 跟物理地址。
 
-`#elif defined(CONFIG_SPARSEMEM_VMEMMAP)
+#elif defined(CONFIG_SPARSEMEM_VMEMMAP)
 
 ```text
 /* memmap is virtually contiguous.  */
@@ -632,15 +612,13 @@ linux 内核中静态定义了一个 mem_section 的指针数组，一个 sectio
 #define __page_to_pfn(page) (unsigned long)((page) - vmemmap)
 ```
 
-`
 
 #### <strong>内存管理区 Zone 初始化</strong>
 
 回到 paging_init()的最后一个函数调用：<strong>zone_sizes_init</strong>()。
 
-`void __init zone_sizes_init(void)
-
 ```text
+void __init zone_sizes_init(void)
 {
  unsigned long max_zone_pfns[MAX_NR_ZONES];
 ```
@@ -669,13 +647,11 @@ linux 内核中静态定义了一个 mem_section 的指针数组，一个 sectio
 }
 ```
 
-`
 
 这个函数<strong>为 zone 的各个内存管理区域最大物理页号进行初始化</strong>，并作为参数调用 free_area_init_nodes()，其中<strong>free_area_init_nodes</strong>()函数实现如下：
 
-`void __init free_area_init(unsigned long *max_zone_pfn)
-
 ```cpp
+void __init free_area_init(unsigned long *max_zone_pfn)
 {
  unsigned long start_pfn, end_pfn;
  int i, nid, zone;
@@ -759,11 +735,10 @@ linux 内核中静态定义了一个 mem_section 的指针数组，一个 sectio
 }
 ```
 
-`
 
 <strong>free_area_init_node()函数会计算每个节点中每个区域的大小及其空洞的大小</strong>，如果两个相邻区域之间的最大 PFN 匹配，则可以假定后面的区域为空。例如 arch_max_dma_pfn == arch_max_dma32_pfn，则假定 arch_max_dma32_pfn 该区域为空。
 
-`pg_data_t node_data[MAX_NUMNODES];
+pg_data_t node_data[MAX_NUMNODES];
 EXPORT_SYMBOL(node_data);
 
 #ifdef CONFIG_NUMA
@@ -800,9 +775,8 @@ static void __init free_area_init_node(int nid)
 
 在进入 calculate_node_totalpages 之前，这里还是先简单介绍一下<strong>node</strong>的数据结构。
 
-`struct zoneref {
-
 ```cpp
+struct zoneref {
  struct zone *zone; /* Pointer to actual zone */
  int zone_idx;  /* zone_idx(zoneref->zone) */
 };
@@ -855,15 +829,13 @@ typedef struct pglist_data {
  ZONE_PADDING(_pad2_)
     ......
 } pg_data_t;
-`
 
 ZONE_PADDING 的作用，通过添加大量的填充把经常被访问的“热门”数据分到了单独的 cache line 上，可以理解为空间换时间。
 
 <strong>calculate_node_totalpages</strong>()实现：
 
-`static void __init calculate_node_totalpages(struct pglist_data *pgdat,
-
 ```text
+static void __init calculate_node_totalpages(struct pglist_data *pgdat,
       unsigned long node_start_pfn,
       unsigned long node_end_pfn)
 {
@@ -923,13 +895,11 @@ ZONE_PADDING 的作用，通过添加大量的填充把经常被访问的“热�
 }
 ```
 
-`
 
 其中<strong>zone_spanned_pages_in_node</strong>()：
 
-`static unsigned long __init zone_spanned_pages_in_node(int nid,
-
-```text
+```cpp
+static unsigned long __init zone_spanned_pages_in_node(int nid,
      unsigned long zone_type,
      unsigned long node_start_pfn,
      unsigned long node_end_pfn,
@@ -970,15 +940,13 @@ ZONE_PADDING 的作用，通过添加大量的填充把经常被访问的“热�
 }
 ```
 
-`
 
 该函数<strong>主要是统计 node 管理节点的内存跨度</strong>，该跨度不包括 movable 管理区的（因为 movable 就是在其它内存管理区里分配出来的），里面调用的 adjust_zone_range_for_zone_movable()则是用于剔除 movable 管理区的部分。
 
 另外的<strong>zone_absent_pages_in_node</strong>()函数：
 
-`unsigned long __init __absent_pages_in_range(int nid,
-
 ```cpp
+unsigned long __init __absent_pages_in_range(int nid,
     unsigned long range_start_pfn,
     unsigned long range_end_pfn)
 {
@@ -1056,7 +1024,6 @@ static unsigned long __init zone_absent_pages_in_node(int nid,
 }
 ```
 
-`
 
 <strong>该函数主要用于计算内存空洞页面数的</strong>，计算方法大致为在 zone 区域范围内，遍历所有 memblock 的内存块，将这些内存块的大小累加，之后两者做差，zone_absent_pages_in_node 后面是对 ZONE_MOVABLE 的特殊处理了，方法是类似的，这里也不做介绍了。
 
@@ -1064,7 +1031,10 @@ calculate_node_totalpages()后面就是各种简单的赋值操作了，这里�
 
 其中 MAX_NR_ZONES 是一个节点中所能包容纳的 Zones 的最大数。
 
-`struct zone {
+```text
+struct zone {
+```
+
  ......
 
 ```cpp
@@ -1119,13 +1089,11 @@ calculate_node_totalpages()后面就是各种简单的赋值操作了，这里�
  ZONE_PADDING(_pad3_)
  ......
 } ____cacheline_internodealigned_in_smp;
-`
 
 回到 free_area_init_node()函数，紧接在 calculate_node_totalpages()后的函数调用的为<strong>alloc_node_mem_map()，这个函数是用于申请 node 节点的 node_mem_map 相应的内存空间</strong>，如果是 sparse memory 内存模型，则该函数实现为空，这里便不做过多介绍了，直接看最后的初始化工作：<strong>free_area_init_core</strong>()。
 
-`static void __init free_area_init_core(struct pglist_data *pgdat)
-
 ```text
+static void __init free_area_init_core(struct pglist_data *pgdat)
 {
 ```
 
@@ -1202,7 +1170,6 @@ calculate_node_totalpages()后面就是各种简单的赋值操作了，这里�
 }
 ```
 
-`
 
 该函数主要用于向节点下的每个 zone 填充相关信息，在 for 循环内，循环遍历统计各个管理区最大跨度间相差的页面数 size 以及除去内存“空洞”后的实际页面数 freesize，然后通过 calc_memmap_size()计算出该管理区所需的页面管理结构占用的页面数 memmap_pages，最后可以计算得出高端内存外的系统内存共有的内存页面数（freesize-memmap_pages）。
 
@@ -1230,9 +1197,8 @@ nr_kernel_pages、nr_all_pages 和页面的关系可以参考下图：
 
 回到 free_area_init_core()函数的最后，memmap_init()->memmap_init_zone()，该函数主要是根据 PFN，然后通过 pfn_to_page 找到对应的 struct page 结构，并将该结构进行初始化处理，并设置 MIGRATE_MOVABLE 标志，表明可移动。
 
-`//遍历memblock，找到节点的内存地址范围，zone的范围不能大于这个，使用memmap_init_zone对该zone进行处理
-
 ```cpp
+//遍历memblock，找到节点的内存地址范围，zone的范围不能大于这个，使用memmap_init_zone对该zone进行处理
 void __meminit __weak memmap_init(unsigned long size, int nid,
       unsigned long zone,
       unsigned long range_start_pfn)
@@ -1284,15 +1250,17 @@ void __meminit memmap_init_zone(unsigned long size, int nid, unsigned long zone,
 }
 ```
 
-`
 
 #### <strong>struct page</strong>
 
 最后这里简单介绍一下 struct page，内核会为每一个物理页帧创建一个 struct page 的结构体，因此要保证 page 结构体足够的小，否则仅 struct page 就要占用大量的内存，该结构有很多 union 结构，主要是用于各种算法不同数据的空间复用。
 
+```text
 struct page 这个结构相当复杂，这里我放上网上找到的一个全局参考，可以比源码更清晰地了解整个结构体，这里我也只简单介绍里面的几个字段。
 
-`    struct page (include/linux/mm_types.h)
+    struct page (include/linux/mm_types.h)
+```
+
 
                          page
                +--------------------------------------------------------------+
@@ -1408,7 +1376,6 @@ struct page 这个结构相当复杂，这里我放上网上找到的一个全�
                +--------------------------------------------------------------+
 ```
 
-`
 
 首先介绍一下<strong>flags，它描述 page 的状态和其它的一些信息</strong>，如下图。
 
@@ -1420,7 +1387,7 @@ struct page 这个结构相当复杂，这里我放上网上找到的一个全�
 - node：NUMA 节点号，标识该 page 属于哪一个节点。
 - zone：内存域标志，标识该 page 属于哪一个 zone。
 - flag：page 的状态标识，常用的有：
-`page-flags.h
+page-flags.h
 enum pageflags {
  PG_locked,  /* 表示页面已上锁，不要访问 */
  PG_error,     /* 表示页面发生IO错误 */
@@ -1446,14 +1413,12 @@ enum pageflags {
 }
 ```
 
-`
 
 内核定义了一些<strong>标准宏，用于检查页面是否设置了某个特定的标志位或者用于操作某些特定的标志位</strong>，比如
 
-`PageXXX()（检查是否设置）
+PageXXX()（检查是否设置）
 SetPageXXX()
 ClearPageXXX()
-`
 
 <strong>伙伴系统</strong>，内存被分成含有很多页面的大块，每一块都是 2 个页面大小的方幂。如果找不到想要的块, 一个大块会被分成两部分，这两部分彼此就成为伙伴。其中一半被用来分配，而另一半则空闲。这些块在以后分配的过程中会继续被二分直至产生一个所需大小的块。当一个块被最终释放时, 其伙伴将被检测出来, 如果伙伴也空闲则合并两者
 
@@ -1475,9 +1440,8 @@ ClearPageXXX()
 
 ok，回到 memmap_init_zone()，直接看关键函数<strong>__init_single_page</strong>()
 
-`static void __meminit __init_single_page(struct page *page, unsigned long pfn,
-
 ```cpp
+static void __meminit __init_single_page(struct page *page, unsigned long pfn,
     unsigned long zone, int nid)
 {
 ```
@@ -1494,7 +1458,6 @@ ok，回到 memmap_init_zone()，直接看关键函数<strong>__init_single_page
 }
 ```
 
-`
 
 至此，free_area_init_node()的初始化操作执行完毕，据前面分析可以知道该函数<strong>主要是将整个 linux 物理内存管理框架进行初始化，包括内存管理节点 node、管理区 zone 以及页面管理 page 等数据的初始化</strong>。
 
@@ -1502,9 +1465,8 @@ ok，回到 memmap_init_zone()，直接看关键函数<strong>__init_single_page
 
 到这里，内存管理框架的构建基本完毕。
 
-`void __init setup_arch(char **cmdline_p)
-
 ```text
+void __init setup_arch(char **cmdline_p)
 {
     ......
 ```
@@ -1542,13 +1504,11 @@ ok，回到 memmap_init_zone()，直接看关键函数<strong>__init_single_page
 }
 ```
 
-`
 
 最后补充一下 pfn 和物理地址以及 pfn 和虚拟地址的转换。
 
-`//物理地址->物理页
-
 ```text
+//物理地址->物理页
 #define PAGE_SHIFT _PAGE_SHIFT
 #define _PAGE_SHIFT 12
 #define phys_to_pfn(phys) ((phys) >> PAGE_SHIFT)
@@ -1562,9 +1522,8 @@ pfn_to_page、page_to_pfn 可以参考上面的内存模型，不同的模型实
 
 在 linux 内核直接映射区里内核逻辑地址与物理页的转换关系如下：
 
-`#define pfn_to_virt(pfn) __va(pfn_to_phys(pfn))
-
 ```text
+#define pfn_to_virt(pfn) __va(pfn_to_phys(pfn))
 #define virt_to_pfn(kaddr) (phys_to_pfn(__pa(kaddr)))
 #define virt_to_page(kaddr) pfn_to_page(virt_to_pfn(kaddr))
 #define page_to_virt(page) pfn_to_virt(page_to_pfn(page))
@@ -1573,7 +1532,6 @@ pfn_to_page、page_to_pfn 可以参考上面的内存模型，不同的模型实
 #define __va(x)         ((void *)((unsigned long) (x) + PAGE_OFFSET))
 ```
 
-`
 
 PAGE_OFFSET 与具体的架构有关，在 x86_32 中，PAGE_OFFSET 是 0xC0000000，即 32 位系统中，内核的逻辑地址只有高位的 1GB
 

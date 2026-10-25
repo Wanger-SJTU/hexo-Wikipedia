@@ -56,5 +56,5 @@ A feature is "done" when:
 
 When resuming work, first check whether `session-handoff.md` exists. The starter
 does not include it by default; if it is missing, reconstruct state from
-`feature_list.json`, `docs/ARCHITECTURE.md`, `docs/PRODUCT.md`, and the current
+feature_list.json`, `docs/ARCHITECTURE.md`, `docs/PRODUCT.md`, and the current
 git diff.

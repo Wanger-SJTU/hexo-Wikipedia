@@ -50,9 +50,8 @@ source_url: https://zhuanlan.zhihu.com/p/12097798333
 
 图片来自：https://static.sched.com/hosted_files/kvmforum2020/9c/KVMForum_2020_io_uring_passthrough_Stefano_Garzarella.pdf用户程序将请求装配成一个SQE后，就可以提交到SQ队列（*通过WRITE_ONCE刷新sqe_tail*），详细过程如下<span class="wikilink wikilink--missing" title="未导入的页面">3</span>(#ref_3)
 
-`    read_barrier();
-
 ```sql
+    read_barrier();
     index = tail & *s->sq_ring.ring_mask;
     struct io_uring_sqe *sqe = &s->sqes[index];
     sqe->fd = file_fd;
@@ -79,7 +78,7 @@ source_url: https://zhuanlan.zhihu.com/p/12097798333
 
 如果不存在sq_thread时，需要程序调用io_uring_enter来提交请求。io_uring优先在本线程（*原因参考下图*）中去提交io，有类似的栈<span class="wikilink wikilink--missing" title="未导入的页面">4</span>(#ref_4)：
 
-`io_issue_sqe(req, IO_URING_F_NONBLOCK | IO_URING_F_COMPLETE_DEFER)
+io_issue_sqe(req, IO_URING_F_NONBLOCK | IO_URING_F_COMPLETE_DEFER)
 io_queue_sqe
 io_submit_sqe
 io_submit_sqes
@@ -95,7 +94,7 @@ io_uring只有True Async才叫IO_URING_F_NONBLOCK，表示真正执行非阻塞i
 
 如果上述True-Async流程失败后，为了不阻塞，就要考虑将请求缓存起来，等待合适时机继续处理，这就是Worker-based async，其原理是将请求转到io-wq去异步处理，有如下调用栈：
 
-`io_wq_enqueue
+io_wq_enqueue
 io_queue_iowq
 io_queue_async
 io_submit_sqe`
@@ -116,7 +115,7 @@ io_uring处理完成请求稍微比较复杂，这是由于在提交请求后，
 
 上述介绍存储栈的时候提到，非polling场景下，硬件完成io请求后需要通过中断方式（*当然，如果直接命中page cache也不需要中断*）来通知block层，block层再通过io_uring注册的回调函数来通知io_uring模块。有如下过程：
 
-`io_complete_rw [io_uring]
+io_complete_rw [io_uring]
 bio_endio
 blk_mq_end_request
 blk_mq_end_request_batch
@@ -125,7 +124,7 @@ nvme_irq`
 
 有人疑惑为什么不直接在io_complete_rw处理完成请求流程？需要注意的是，以上流程是在中断上下文的，不适宜处理比较耗时操作，这里应该是类似中断下半部的实现，通过task work将耗时操作放到进程上下文去处理。task work的基本原理是将一些异步任务绑定到一个任务上（*io_uring中一般是创建io_uring线程或者sq_thread线程*），有点类似给该任务发了一个（伪）信号。io_uring为了进一步优化，还可以指定task work的处理时机，有如下两种设置：
 
-`ctx->notify_method = TWA_SIGNAL_NO_IPI;
+ctx->notify_method = TWA_SIGNAL_NO_IPI;
 和
 ctx->notify_method = TWA_SIGNAL;`
 

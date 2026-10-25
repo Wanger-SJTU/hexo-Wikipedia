@@ -24,9 +24,8 @@ SIMD 作为一种重要的并行化技术，在提升性能的同时也会增加
 
 *演示代码：*
 
-`void add(int *a, int *b, int n, int * restrict sum)
-
 ```cpp
+void add(int *a, int *b, int n, int * restrict sum)
 {
     // it is assumed that the input n is an integer multiple of 4
     for (int i = 0; i  (n & ~3); ++i)
@@ -36,12 +35,11 @@ SIMD 作为一种重要的并行化技术，在提升性能的同时也会增加
 }
 ```
 
-`
 
 - <strong>循环向量化</strong>：将循环进行展开，增加循环中的执行代码来减少循环次数。如以下代码将循环次数精简到之前的。
-`for (int i = 0; i  (n & ~3); i += 4)
 
-```text
+```cpp
+for (int i = 0; i  (n & ~3); i += 4)
 {
     sum[i]     = a[i    ] + b[i];
     sum[i + 1] = a[i + 1] + b[i + 1];
@@ -50,7 +48,6 @@ SIMD 作为一种重要的并行化技术，在提升性能的同时也会增加
 }
 ```
 
-`
 
 - <strong>SLP 向量化</strong>：编译器将多个标量运算绑定到一起，使其成为向量运算。下图将四次标量运算替换为一次向量运算。
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_28d3b678904b.jpg)
@@ -65,11 +62,11 @@ Arm Compiler 6需arm授权基于LLVM-clang，针对裸机端的嵌入式开发Ar
 
 #### <strong>A. Arm Compiler 中使能自动向量化</strong>
 
-`下文中 Arm Compiler 6 与 Arm C/C++ Compiler 使用 armclang 统称`，armclang 使能自动向量化配置信息如下表所示：
+下文中 Arm Compiler 6 与 Arm C/C++ Compiler 使用 armclang 统称`，armclang 使能自动向量化配置信息如下表所示：
 
 配置项说明常用参数--target给定支持 neon 的目标平台arm-none-eabi：32 位 arm 嵌入式平台**aarch64-arm-none-eabi：64 位 arm 嵌入式平台-mcpu给定包含 neon 单元的 cpu（32位）cortex-a53、cortex-a8、cortex-a15 等-fvectorize启用自动向量化（-O2 及以上优化等级默认启用）无-O自动向量化仅在 -O1 及以上优化等级生效-O1、-O2 等--fpmode可选项，针对浮点向量化，定义浮点运算类型ieee_full：完全遵循IEEE标准std：默认配置，非正规数flush到0、舍入到最接近的IEEE标准，不带异常fast：可能会有一点精度损失armclang 实现自动向量化示例：
 
-`# AArch32
+# AArch32
 armclang --target=arm-none-eabi -mcpu=cortex-a53 -O1 -fvectorize main.c
 
 # AArch64
@@ -83,14 +80,13 @@ Android NDK 从 r13 开始以 clang 为默认编译器，本节通过 cmake 调�
 -fvectorize启用自动向量化（-O2 及以上优化等级默认启用）无-O自动向量化仅在 -O1 及以上优化等级生效-O1、-O2 等
 
 - 在 CMake 中配置自动向量化方式如下：
-`# method 1
+# method 1
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O1 -fvectorize")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O1 -fvectorize")
 
 # method 2
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
-`
 
 #### <strong>C. GCC 中使能自动向量化</strong>
 
@@ -104,7 +100,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
 -mfpu=vfpv4-d16-mfpu=neon-vfpv4cortex-a8-mfpu=vfpv3-mfpu=neoncortex-a9-mfpu=vfpv3-fp16
 -mfpu=vfpv3-d16-fp16-mfpu=neon-fp16cortex-a15-mfpu=vfpv4-mfpu=neon-vfpv4gcc 中实现自动向量化的编译配置如下**：
 
-`# AArch32
+# AArch32
 arm-none-linux-gnueabihf-gcc -mcpu=cortex-a53 -mfpu=neon -ftree-vectorize -O2 main.c
 
 # AArch64
@@ -116,7 +112,7 @@ aarch64-none-linux-gnu-gcc -mcpu=cortex-a53 -ftree-vectorize -O2 main.c`
 
 我们以上节的求和示例代码，来对编译器自动向量化的功能进行演示。编译器以 32 位 arm-gcc 为例：
 
-`# automatic vectorization is not enabled
+# automatic vectorization is not enabled
 arm-none-linux-gnueabihf-gcc -O2 main.c -o avtest
 
 # automatic vectorization is enabled
@@ -141,39 +137,35 @@ arm-none-linux-gnueabihf-gcc -mfpu=neon -ftree-vectorize -O2 main.c -o avtest`
 
 下述代码中计算 a[i] 时依赖上一次循环的输出，无法被向量化。
 
-`// the output of a[i] depends on its last result
-
 ```cpp
+// the output of a[i] depends on its last result
 for (int i = 1; i  n; ++i)
 {
     a[i] = a[i - 1] + 1;
 }
 ```
 
-`
 
 - <strong>多级指针</strong>
 编译器无法对间接寻址，多级索引、多级解引用等行为进行向量化，尽量避免使用多级指针。
 
 下述代码通过 `idx` 进行了多级索引，无法被向量化。
 
-`// idx is unpredictable, so this code cannot be vectorized
-
 ```cpp
+// idx is unpredictable, so this code cannot be vectorized
 for (int i = 0; i  n; ++i)
 {
     sum[idx[i]] = a[idx[i]] + b[idx[i]];
 }
 ```
 
-`
 
 - <strong>条件及跳转语句</strong>
 当循环中存在条件语句或跳转语句时，代码很难被向量化。因此应尽量避免在循环中的使用if、break等语句。当循环中需要调用函数时，尽量使用内联函数进行替换。
 
 下述代码通过调用内联函数 add_single2 避免发生函数跳转。
 
-`__attribute__((noinline)) int add_single1(int a, int b);
+__attribute__((noinline)) int add_single1(int a, int b);
 
 __inline__ __attribute__((always_inline)) int add_single2(int a, int b);
 
@@ -189,16 +181,14 @@ void add(const int *a, const int *b, int n, int * restrict sum)
 }
 ```
 
-`
 
 - <strong>长数据类型</strong>
 neon 对 64 位长数据类型的支持有限，且较小的数据位宽有更高的并行度，应尽量选用较小的数据类型。当程序中存在浮点数据时，指明其数据类型。
 
 下述代码指明1.0是浮点数据，否则编译器会优先将其理解为double。
 
-`// assume that array sum and a are floating-point arrays
-
 ```cpp
+// assume that array sum and a are floating-point arrays
 for (int i = 0; i  (n & ~3); ++i)
 {
     // replace 1.0 with 1.f
@@ -207,7 +197,6 @@ for (int i = 0; i  (n & ~3); ++i)
 }
 ```
 
-`
 
 #### <strong>B. 增加自动向量化信息</strong>
 
@@ -218,32 +207,31 @@ for (int i = 0; i  (n & ~3); ++i)
 
 下述代码通过 `restrict` 限定 sum 与 a、b 间没有地址交叠的情况。
 
-`// add restrict before the output parameter sum
+```cpp
+// add restrict before the output parameter sum
 void add(const int *a, const int *b, int n, int * restrict sum)
-`
+```
+
 
 - <strong>数组尺寸</strong>
 明确数组尺寸，使其达到向量化处理长度的整数倍。但应注意处理不足向量化部分的剩余数据。
 
 下述代码通过掩码操作表明处理循环次数是 4 的整数倍。
 
-`// make number of cycles is an integer multiple of 4, 
-
 ```cpp
+// make number of cycles is an integer multiple of 4, 
 for (int i = 0; i  (n & ~3); ++i)
 // don't forget to process the remaining data
 ```
 
-`
 
 - <strong>循环展开</strong>
 在一些编译器中可以通过在 `for` 循环之前增加预处理语句告知编译器循环展开级数。
 
 下述代码告知 `armclang` 编译器希望将循环展开 4 次。
 
-`// #pragma unroll (4) // armcc
-
 ```cpp
+// #pragma unroll (4) // armcc
 #pragma clang loop interleave_count(4) //armclang
 for (int i = 0; i  n; ++i)
 {
@@ -251,16 +239,14 @@ for (int i = 0; i  n; ++i)
 }
 ```
 
-`
 
 - <strong>结构体加载</strong>
 编译器仅会对每一成员都有操作的结构体加载操作进行自动向量化，可以结合实际需求考虑去除用于结构体对齐的填充数据。
 
 下述代码中删除用于填充结构体的变量 padding 以避免无法向量化。
 
-`struct st_align  
-
 ```sql
+struct st_align  
 {    
     char r;    
     char g;
@@ -270,14 +256,12 @@ for (int i = 0; i  n; ++i)
 };
 ```
 
-`
 
 - neon 加载指令要求结构体中的所有项有相同的大小。
 下述代码中结构体由于 `short` 类型与 `char` 类型不一致而不会被执行自动向量化。
 
-`struct st_align  
-
 ```text
+struct st_align  
 {    
     short r; // change short to char to get auto-vectoration
     char g;
@@ -285,7 +269,6 @@ for (int i = 0; i  n; ++i)
 };
 ```
 
-`
 
 - <strong>循环构造</strong>
 尽量通过 `// use '// for(int i = 1; i for (int i = 1; i  n + 1; ++i)
@@ -296,21 +279,18 @@ for (int i = 0; i  n; ++i)
 }
 ```
 
-`
 
 - <strong>数组索引</strong>
 当对数组进行操作时，使用数组索引替代指针索引。
 
 下述代码通过 `sum[i]` 进行索引，而不是`*(sum + i)`。
 
-`// replace arrary with pointer
-
 ```text
+// replace arrary with pointer
 // *(sum + i) = *(a + i) + *(b + i);
 ```
 
 sum[i] = a[i] + b[i];
-`
 
 **
 
@@ -321,9 +301,8 @@ sum[i] = a[i] + b[i];
 
 下述代码将 r、g、b 三个通道的处理合并到一个循环中。
 
-`// combine the rgb operation
-
 ```cpp
+// combine the rgb operation
 /*
 for (...)
 {
@@ -351,7 +330,6 @@ for (...)
 }
 ```
 
-`
 
 ### <strong>四、总结</strong>
 

@@ -122,7 +122,7 @@ Welford 算法也是一种 single pass 方法，且数值稳定性很好，因�
 
 WelfordWarpAllReduce 由 WelfordWarpReduce 和 Broadcast 操作完成，WelfordWarpReduce 借助 Warp 级别同步原语 `__shfl_down_sync` 实现，Broadcast操作借助 `__shfl_sync` 实现，代码如下：
 
-`template
+template
 __inline__ __device__ void WelfordWarpReduce(T thread_mean, T thread_m2, T thread_count, T* mean,
 
 ```cpp
@@ -157,7 +157,7 @@ __inline__ __device__ void WelfordWarpAllReduce(T thread_mean, T thread_m2, T th
 
 将 `pack_size` 个元素 pack 成更大的数据类型读入，但是 `x` 还要参与计算。因此我们定义一个`union` 结构的 Pack 类型，storage 用于从 Global Memory中读写，做计算时用 `elem[i]` 取每个元素参与计算，Pack 类型定义如下:
 
-`template
+template
 union Pack {
   PackType storage;
   T elem[N];
@@ -165,7 +165,7 @@ union Pack {
 
 LayerNormWarpImpl Kernel 代码如下：
 
-`template
+template
 __global__ void LayerNormWarpImpl(LOAD load, STORE store, const int64_t rows, const int64_t cols,
 
 ```cpp
@@ -224,7 +224,7 @@ WelfordBlockAllReduce 是借助 WelfordWarpReduce 操作完成的，具体逻辑
 
 LayerNormBlockSMemImpl Kernel的代码如下：
 
-`template
+template
 __global__ void LayerNormBlockSMemImpl(LOAD load, STORE store, const int64_t rows,
 
 ```cpp
@@ -260,7 +260,7 @@ __global__ void LayerNormBlockSMemImpl(LOAD load, STORE store, const int64_t row
 
 LayerNormBlockUncachedImpl 代码如下：
 
-`template
+template
 __global__ void LayerNormBlockUncachedImpl(LOAD load, STORE store, const int64_t rows,
 
 ```cpp
@@ -294,7 +294,7 @@ __global__ void LayerNormBlockUncachedImpl(LOAD load, STORE store, const int64_t
 
 在你的项目中 `include` 这个头文件后，就可以直接使用。比如，使用以下几行代码就可以实现一个 Softmax GPU Kernel。
 
-`oneflow::cuda::softmax::DirectLoad load(in, cols);
+oneflow::cuda::softmax::DirectLoad load(in, cols);
 
 ```text
     oneflow::cuda::softmax::DirectStore store(out, cols);

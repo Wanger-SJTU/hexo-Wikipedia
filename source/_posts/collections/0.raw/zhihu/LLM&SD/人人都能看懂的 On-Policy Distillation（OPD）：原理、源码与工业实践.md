@@ -247,7 +247,7 @@ KL 散度大家应该都熟，但它是一个<strong>有方向</strong>的距离
 读到这里你肯定有一个疑问：
 
 <strong>Sampled-Token OPD 一个 token 就能估出来？这未免也太省了，会不会损失精度？</strong>
- `Rethinking On-Policy Distillation` 这篇论文（也就是 `thunlp/OPD` 仓库背后的论文）在 §6.3 给了一组实证：
+ Rethinking On-Policy Distillation` 这篇论文（也就是 `thunlp/OPD` 仓库背后的论文）在 §6.3 给了一组实证：
 
  Sampled-Token OPD 的最终性能跟 Top-k OPD（k≥4）几乎一样，只有 Top-1（也就是 argmax 采样、有偏估计）会明显变差。
  也就是说，<strong>只要你不退化到 Top-1，Sampled-Token 在显存最省的同时几乎不损失最终效果</strong>。这是个非常香的结论，也是 Qwen3、MiMo-V2-Flash、Tinker（Thinking Machines Lab 自家训练框架）等大多数工业实现的默认选择。
@@ -425,7 +425,11 @@ def compute_token_reward_direct_advantage(
 teacher_logprobs = teacher_client.compute_logprobs(trajectories)
 reverse_kl = sampled_logprobs - teacher_logprobs
 trajectories[&#34;advantages&#34;] = -reverse_kl
+
+```text
 training_client.forward_backward(trajectories, loss_fn=&#34;importance_sampling&#34;)
+```
+
 
 完全一致。<strong>一句话总结</strong>：OPD 之所以可以省掉 critic 和 GAE，是因为它的 reward 已经稠密到了每个 token，不需要额外做折现。
 
@@ -692,7 +696,7 @@ Recipe 教师侧：outcome-guided margin calibration
 
 ![](https://www.zhihu.com/equation?tex=m%28q%29+%3D+%5Cmin_%7B%5Ctau+%5Cin+S_%2B%28q%29%7D+G_%7B%5Ctext%7BOPD%7D%7D%28q%2C+%5Ctau%29+-+%5Cmax_%7B%5Ctau+%5Cin+S_-%28q%29%7D+G_%7B%5Ctext%7BOPD%7D%7D%28q%2C+%5Ctau%29+%5C%5C)
 
-`S_+` 是所有正确 rollout 的集合，`S_-` 是错误 rollout 的集合。`m(q) ≥ 0` 表示<strong>最差的正确轨迹也比最好的错误轨迹分高</strong>——这是 order consistency 的最严苛条件。
+S_+` 是所有正确 rollout 的集合，`S_-` 是错误 rollout 的集合。`m(q) ≥ 0` 表示<strong>最差的正确轨迹也比最好的错误轨迹分高</strong>——这是 order consistency 的最严苛条件。
 
 当 `m(q) < δ`（一个安全 margin）时，他们提供两个 calibration 策略：
 

@@ -31,7 +31,7 @@ source_url: https://zhuanlan.zhihu.com/p/191393788
 
 Pytorch 代码如下，只增加少量参数：
 
-`self.time_weighting = nn.Parameter(torch.ones(self.n_head, config.window_len, config.window_len))
+self.time_weighting = nn.Parameter(torch.ones(self.n_head, config.window_len, config.window_len))
 ...
 att = F.softmax(att, dim=-1) # 这是原始代码
 att = att * self.time_weighting[:,:T,:T] # 只需增加这句
@@ -71,7 +71,7 @@ att = self.attn_drop(att) # 这是原始代码`
 
 我用一个特别的 trick 解决了这个问题，代码也很简单：
 
-`self.time_shift = nn.ZeroPad2d((0,0,1,0))
+self.time_shift = nn.ZeroPad2d((0,0,1,0))
 ......
 x = torch.cat([self.time_shift(x)[:,:T,:C//2], x[:,:T,C//2:]], dim=2) # 只需增加这句
 q = self.query(x).view(B, T, self.n_head, C // self.n_head).transpose(1, 2) # 这是原始代码

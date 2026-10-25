@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/2009243481537811148
 ---
 
 
-`trailofbits/claude-code-config` 是 Trail of Bits 开源的一套 Claude Code 组织级配置方案，核心在把日常 AI coding 过程标准化：从终端选型、权限边界、沙箱策略，到 hooks、skills、MCP、上下文管理和团队习惯都给出模板。
+trailofbits/claude-code-config` 是 Trail of Bits 开源的一套 Claude Code 组织级配置方案，核心在把日常 AI coding 过程标准化：从终端选型、权限边界、沙箱策略，到 hooks、skills、MCP、上下文管理和团队习惯都给出模板。
 
 这是默认实践集合，不是一个单功能脚本。适合在团队内统一 Claude Code 用法，减少每个人一套野路子的维护成本。
 
@@ -39,7 +39,7 @@ source_url: https://zhuanlan.zhihu.com/p/2009243481537811148
 
 #### <strong>安装步骤（README流程）</strong>
 
-`# 克隆仓库
+# 克隆仓库
 git clone https://github.com/trailofbits/claude-code-config.git
 cd claude-code-config
 ​

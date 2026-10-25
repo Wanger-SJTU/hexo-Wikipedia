@@ -208,7 +208,7 @@ Windows  和 Linux 都允许服务器应用程序建立大页面内存区域。�
 
 下表说明了在 i7 与 Xeon 处理器上<span class="wikilink wikilink--missing" title="未导入的页面">10</span>(#ref_10)，Cache 访问以及内存访问所需的大概时间，可以看到访存所需的时间大概是 L1 Cache 的 30～50 倍，L3 Cache 的 3～5 倍。
 
-`Core i7 / Xeon 5500 Series Data Source Latency (approximate)               [Pg. 22]
+Core i7 / Xeon 5500 Series Data Source Latency (approximate)               [Pg. 22]
 
 local  L1 CACHE hit,                              ~4 cycles (   2.1 -  1.2 ns )
 local  L2 CACHE hit,                             ~10 cycles (   5.3 -  3.0 ns )
@@ -220,7 +220,6 @@ remote L3 CACHE (Ref: Fig.1 [Pg. 5])        ~100-300 cycles ( 160.7 - 30.0 ns )
 
 local  DRAM                                                   ~60 ns
 remote DRAM                                                  ~100 ns
-`
 
 为了加快这一过程，我们可以将 VA 到 PA 的映射关系缓存到高速器件中，而不需要再一层层访存查询，TLB（Translation lookaside buffer）便应运而生。
 
@@ -290,7 +289,7 @@ https://blog.csdn.net/pwl999/article/details/112686914
 
 但这带来了 Meltdown & Spectre 漏洞。
 
-`我们把CPU比做学校食堂，把黑客比作两个男生A，B，用户则是女神。
+我们把CPU比做学校食堂，把黑客比作两个男生A，B，用户则是女神。
 
 这天，男生A，B总要想办法获得女神的一点私密信息——比如，女神今天午饭吃的啥~
 
@@ -309,7 +308,6 @@ https://blog.csdn.net/pwl999/article/details/112686914
 这下男生知道了，女神中午吃了小笼包......
 
 https://blog.csdn.net/pwl999/article/details/112686914
-`
 
 https://docs.kernel.org/x86/pti.html
 
@@ -376,7 +374,7 @@ L3-last level cache (LLC)
 
 通过 `dmidecode -t cache` 命令，同样可以知道本机的 Cache 写策略，我的如下，均为 Write Back 。
 
-`Handle 0x000C, DMI type 7, 27 bytes
+Handle 0x000C, DMI type 7, 27 bytes
 Cache Information
         Socket Designation: L1 - Cache
         Configuration: Enabled, Not Socketed, Level 1
@@ -424,7 +422,6 @@ Cache Information
         System Type: Unified
         Associativity: 16-way Set-associative
 
-`
 
 #### Cache 结构
 
@@ -513,9 +510,8 @@ CPU 操作数据变更之后并不会立即写到 L1d 上, 而是先写到 store
 
 举一个例子, store buffer 会引起”乱序”的问题
 
-`// global int
-
 ```cpp
+// global int
 int a = 0;
 int b = 0;
 
@@ -535,7 +531,6 @@ if (b == 0) {                |           if (a == 0) {
 }                            |           }
 
 // http://gavinchou.github.io/summary/c++/memory-ordering/
-`
 
 上述代码执行完之后, 两个线程都能同时走到 “do something” 的逻辑里, 因为 thread 1 在写 a = 1之后, 数据在 store buffer 里, 对 thread 2其实是不可见的, 这个时候 thread 2看到的还是 a == 0, 同理, thread 2写完 b = 1 会在 store buffer 里停留一段时间, thread 1 也看到 b == 0, 这样两个线程都认为自己可以进入到”do something” 的逻辑里.
 
@@ -568,9 +563,8 @@ https://blog.csdn.net/wll1228/article/details/107775976
 
 这听来代价高昂，但并非如此。処理器会尝试使用写合并（write combining ）来填充整个 cache line 。如果成功，则根本不需要内存读取操作。对于 x86和 x86-64体系结构，gcc 提供了许多内部特性:
 
-`#include 
-
 ```cpp
+#include 
 void _mm_stream_si32(int *p, int a);
 void _mm_stream_si128(int *p, __m128i a);
 void _mm_stream_pd(double *p, __m128d a);
@@ -584,7 +578,6 @@ void _mm_stream_sd(double *p, __m128d a);
 void _mm_stream_ss(float *p, __m128 a);
 ```
 
-`
 
 如果这些指令一次性处理大量数据，则效率最高。数据从内存加载，在一个或多个步骤中处理，然后写回内存。数据“流”通过处理器，因此函数得名“stream”。
 
@@ -592,9 +585,8 @@ void _mm_stream_ss(float *p, __m128 a);
 
 处理器的写合并 buffer 只能将部分写入到 cache line 的请求保存一段时间。通常来说，需要指令连续，这些指令一个接一个地修改单个 cache line ，以便实际进行写合并。这方面的一个例子如下:
 
-`#include 
-
 ```cpp
+#include 
 void setbytes(char *p, int c)
 {
   __m128i i = _mm_set_epi8(c, c, c, c,
@@ -610,7 +602,6 @@ void setbytes(char *p, int c)
 // https://godbolt.org/z/T46z8hnfc
 ```
 
-`
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_969123539adf.png)
 
@@ -647,13 +638,11 @@ https://quick-bench.com/q/_IyZEMUqWjPXMYtWtdFI_FG4PcA
 
 在读取方面，带有 SSE4.1 扩展的 Intel 引入了 NTA（Non-temporal access） load。它们是使用少量的流加载缓冲区实现的；每个缓冲区包含一个 cache line 。 `movntdqa` 会将 cache line 加载到其 stream 缓冲区中，这可能会替换另一个 cache line 。对同一 cache line 的后续访问（要求 16 字节对齐）将从加载缓冲区以很小的成本提供服务。除非有其他原因，否则不会将 cache line 加载到 cache 中，从而可以在不污染 cache 的情况下加载大量内存（这里 cache line 为单位，可能等于 64 B）。编译器为此指令提供了一个内在函数：
 
-`#include 
-
 ```cpp
+#include 
 __m128i _mm_stream_load_si128 (__m128i *p);
 ```
 
-`
 
 该函数应被连续多次调用，将 16 字节块的地址作为参数传递，直到 cache line 都被读完，然后再去读下个 cache line 。由于流式读取缓冲区不止一个，因此可以同时从两个内存位置读取。
 
@@ -677,15 +666,13 @@ __m128i _mm_stream_load_si128 (__m128i *p);
 
 一个简单的 C 实现可以是这样的:
 
-`  for (i = 0; i  N; ++i)
-
 ```cpp
+  for (i = 0; i  N; ++i)
     for (j = 0; j  N; ++j)
       for (k = 0; k  N; ++k)
         res[i][j] += mul1[i][k] * mul2[k][j];
 ```
 
-`
 
 两个输入矩阵是 mul1和 mul2。假设结果矩阵 res 被初始化为所有零。这是一个漂亮而简单的实现。但是，当 mul1被顺序访问时，内部循环增加 mul2的行数。这意味着 mul1的处理方式是行优先访问，mul2 是列优先访问（近似于随机访问），这可不好。
 
@@ -695,9 +682,8 @@ __m128i _mm_stream_load_si128 (__m128i *p);
 
 转置后(传统上用上标‘ T’表示) ，我们现在按顺序迭代两个矩阵。就 C 代码而言，它现在看起来是这样的:
 
-`  double tmp[N][N];
-
 ```cpp
+  double tmp[N][N];
   for (i = 0; i  N; ++i)
     for (j = 0; j  N; ++j)
       tmp[i][j] = mul2[j][i];
@@ -707,7 +693,6 @@ __m128i _mm_stream_load_si128 (__m128i *p);
         res[i][j] += mul1[i][k] * tmp[j][k];
 ```
 
-`
 
 我们创建一个临时变量来包含转置矩阵。这需要更多的内存，但由于每列1000次非顺序访问更昂贵（至少在现代硬件上如此）。
 
@@ -725,9 +710,9 @@ https://quick-bench.com/q/6AjzV23SWKj5125Z9WulIaEST-Q
 
 但是如果我们在执行内部循环时同时处理中间循环的两次迭代呢? 在这种情况下，我们使用来自缓存行的两个 double 值，这些值保证在 L1d 中。我们将 L1d miss 率降低了一半。这当然是一种改进，但是，根据缓存行的大小，它可能仍然还不够好。Core 2处理器的 L1d 高速缓存行大小为64字节，实际值可以通过运行时使用 `sysconf (_SC_LEVEL1_DCACHE_LINESIZE)` 或者命令行工具 `getconf LEVEL1_DCACHE_LINESIZE` 获得，程序可以根据特定的高速缓存行大小进行编译。sizeof(double)是8个字节的情况下，充分利用缓存行，我们应该对中间循环展开8次。继续这个思路，为了有效地使用 res 矩阵，即同时写8个结果，我们也应该展开外循环8次。我们假设缓存行的大小是64B，但是代码在32字节缓存行的系统上也可以很好地工作，因为两条高速缓存行也都被100％使用。代码如下
 
-`// gcc -DCLS=$(getconf LEVEL1_DCACHE_LINESIZE) ...
-
 ```cpp
+// gcc -DCLS=$(getconf LEVEL1_DCACHE_LINESIZE) ...
+
 #define SM (CLS / sizeof (double))
 
 for (i = 0; i  N; i += SM)
@@ -741,7 +726,6 @@ for (i = 0; i  N; i += SM)
             rres[j2] += rmul1[k2] * rmul2[j2];
 ```
 
-`
 
 这看起来很吓人。在某种程度上，它的确如此，但仅仅是因为它包含了一些技巧。最明显的变化是我们现在有6个嵌套循环。外循环以 SM 为间隔进行迭代（缓存行大小除以 sizeof（double））。这将乘法分为几个较小的问题，可以用更多的缓存局部性来处理。内部三个循环遍历外部三个循环间隔部分的索引。这里唯一棘手的部分是 k2和 j2循环的顺序不同。这样做是因为在实际计算中，只有一个表达式取决于 k2，而两个表达式取决于 j2。
 
@@ -787,9 +771,8 @@ https://quick-bench.com/q/mmCA_YqPBiGsE8vY8POpSvYzwCo
 
 对于大型工作集，尽可能使用可用的缓存非常重要。为此，可能需要重新安排数据结构。虽然程序员更容易将概念上属于同一类的所有数据放到同一个数据结构中，但这可能不是实现最佳性能的方法。假设我们的数据结构如下：
 
-`struct order {
-
 ```text
+struct order {
   double price;
   bool paid;
   const char *buyer[5];
@@ -797,7 +780,6 @@ https://quick-bench.com/q/mmCA_YqPBiGsE8vY8POpSvYzwCo
 };
 ```
 
-`
 
 进一步假设这些记录存储在一个很大的数组中，并且有一个频繁运行的任务计算所有未支付的账单的总金额。在这种情况下，`buyer` 和 `buyer_id` 字段的内存应该不必加载到缓存中。
 
@@ -835,17 +817,15 @@ https://quick-bench.com/q/mmCA_YqPBiGsE8vY8POpSvYzwCo
 
 如果始终使用内联代码，则 `always_inline` 属性可以很好地工作。但是，如果不是这种情况怎么办？ 如果仅偶尔调用内联函数会怎么样呢：
 
-`void fct(void) {
+```cpp
+void fct(void) {
   ... code block A ...
-
-```text
   if (condition)
     inlfct()
   ... code block C ...
 }
 ```
 
-`
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_99355df16ed0.png)
 
@@ -859,9 +839,9 @@ https://quick-bench.com/q/mmCA_YqPBiGsE8vY8POpSvYzwCo
 
 一种方法是显示分支预测，gcc 提供了 `__builtin_expect`：
 
-`long __builtin_expect(long EXP, long C);
-
 ```text
+long __builtin_expect(long EXP, long C);
+
 #define unlikely(expr) __builtin_expect(!!(expr), 0)
 #define likely(expr) __builtin_expect(!!(expr), 1)
 
@@ -869,7 +849,6 @@ if (likely(a > 1))
 	...
 ```
 
-`
 
 如果程序员利用这些宏，然后使用 `-freorder-blocks` 优化选项，则 gcc 将对块进行重新排序，如上图所示。该选项在 -O 2中启用，但在-Os 中禁用。还有另一种对块进行重新排序的选项（`-freorder-blocks-and-partition` ），但是它的用处有限，因为它不适用于异常处理。
 
@@ -912,9 +891,8 @@ https://suif.stanford.edu/papers/mowry92/subsection3_5_2.html
 
 软件预取确实需要通过插入特殊指令来修改源代码。一些编译器支持 `pragmas`，或多或少地自动插入预取指令。在 x86和 x86-64上，通常使用英特尔的编译器内含物惯例来插入这些特殊指令。
 
-`#include 
-
 ```cpp
+#include 
 /// Loads one cache line of data from the specified address to a location
 ///    closer to the processor.
 ///
@@ -942,15 +920,14 @@ https://suif.stanford.edu/papers/mowry92/subsection3_5_2.html
 void _mm_prefetch(void *p,int _mm_hint);
 ```
 
-`
 
 程序员可以对程序中的任何指针使用 `_mm_prefetch`。大多数处理器（当然是所有的 x86和 x86-64处理器）都会忽略无效指针导致的错误。但是，如果传递的指针引用了有效的内存，预取单元将被指示将数据加载到高速缓存中，如果有必要，还将驱逐其他数据。不必要的预取肯定是要避免的，因为这可能会降低缓存的有效性，而且会消耗内存带宽。
 
 > 结合上下文，作者定义“低级别缓存”是 L1, “高级别缓存” 为 L3
 
-`_mm_prefetch` 第二个参数是由实现定义的。这意味着每个处理器版本可以以不同的方式实现它们（略）。
+_mm_prefetch` 第二个参数是由实现定义的。这意味着每个处理器版本可以以不同的方式实现它们（略）。
 通常可以说的是，`_MM_HINT_T0` 对于 inclusive 的缓冲区，将数据取到所有级别的缓冲区；对于 exclusive 的缓冲区，将数据取到最低级别的缓冲区，如果数据项在更高层次的高速缓存中，它将被加载到 L1d 中。
-`_MM_HINT_T1` hint 将数据拉到 L2而不是 L1d。如果存在 L3缓存，`_MM_HINT_T2` hint 也做做的是类似的事情。不过这些都是细节问题，规定得很弱，需要对实际使用的处理器进行验证。
+_MM_HINT_T1` hint 将数据拉到 L2而不是 L1d。如果存在 L3缓存，`_MM_HINT_T2` hint 也做做的是类似的事情。不过这些都是细节问题，规定得很弱，需要对实际使用的处理器进行验证。
 一般来说，如果数据要马上被使用，使用 `_MM_HINT_T0` 是正确的做法。当然这需要 L1d 缓存的大小足以容纳所有预取的数据。如果立即使用的工作集的大小太大，将所有数据预取到 L1d 中是个坏主意，应该使用其他两个 hint 。
 
 第四个 hint ，`_MM_HINT_NTA`，很特别，它允许告诉处理器特别对待预取的缓存行。NTA 代表 non-temporal aligned ，我们在第6.1节已经解释过。该程序告诉处理器应该尽可能的避免用这些数据污染缓存，因为这些数据只用了很短的时间。因此，在加载时，对于 inclusive 的缓存实现，处理器应避免将数据读入低级别的缓存（L1）。当数据从 L1d 中被驱逐时，数据不需要被推入 L2或更高的级别，而是可以直接写入内存。
@@ -1020,15 +997,13 @@ NIC 连接到（或属于）南桥。它启动 DMA 访问，但提供有关应�
 
 当链接器构建最终的二进制文件时，它首先从所有输入文件中附加同名的 section ；然后这些部分按照链接描述文件确定的顺序排列。这意味着，通过将所有基本不变但未标记为常量的变量移动到一个特殊的 section ，程序员可以将所有这些变量组合在一起。它们之间不会有经常写入的变量。通过适当对齐该部分中的第一个变量，可以保证不会发生错误共享。假设这个小例子：
 
-`  int foo = 1;
-
 ```cpp
+  int foo = 1;
   int bar __attribute__((section(".data.ro"))) = 2;
   int baz = 3;
   int xyzzy __attribute__((section(".data.ro"))) = 4;
 ```
 
-`
 
 如果编译，这个输入文件定义了四个变量。有趣的部分是变量 foo 和 baz 以及 bar 和 xyzzy 分别组合在一起。如果没有属性定义，编译器将按照它们在源代码中定义的顺序将所有四个变量分配到名为.data 的 section 。{ *ISO C 标准不保证这一点，但它是 gcc 的工作方式。*} 代码按原样将变量 bar 和 xyzzy 放置在名为.data.ro 的 section 中。section 名称.data.ro 或多或少是任意的。.data 的 section 前缀保证 GNU 链接器将该 section 与其他 data sections 放在一起。
 
@@ -1036,15 +1011,13 @@ NIC 连接到（或属于）南桥。它启动 DMA 访问，但提供有关应�
 
 如果一个变量只被一个线程使用，还有另一种方法来指定该变量。在这种情况下，使用 thread local 变量是可能且有用的。gcc 中的 C 和 C++ 语言允许使用 `__thread` 关键字将变量定义为 per-thread。
 
-`  int foo = 1;
-  __thread int bar = 2;
-
 ```cpp
+  int foo = 1;
+  __thread int bar = 2;
   int baz = 3;
   __thread int xyzzy = 4;
 ```
 
-`
 
 变量 bar 和 xyzzy 没有分配在正常的数据段；相反，每个线程都有自己独立的区域来存储这些变量。变量可以有静态初始值设定项。所有线程局部变量都可由所有其他线程寻址，但是，除非线程将指向线程局部变量的指针传递给其他线程，否则其他线程无法找到该变量**。由于变量是线程局部的，False sharing 不是问题——除非程序人为地制造问题。这个解决方案易于设置（编译器和链接器完成所有工作），但它有其成本。创建线程时，它必须花费一些时间来设置线程局部变量，这需要时间和内存。此外，
 
@@ -1057,9 +1030,9 @@ NIC 连接到（或属于）南桥。它启动 DMA 访问，但提供有关应�
 - 至少将只读变量和读写变量分开。Maybe extend this separation to read-mostly variables as a third category.
 - 将一起使用的读写变量放到同一个结构体中。
 - 将经常由不同线程写入的读写变量移动到它们自己的 Cache line。这可能意味着在末尾添加填充以填充缓存行的剩余部分。如果与第 2 步相结合，这通常并不是真正的浪费。扩展上面的例子，我们可能会得到如下代码（假设 bar 和 xyzzy 是一起使用的）：
-`  #define CLSIZE 64
 
 ```cpp
+  #define CLSIZE 64
   int foo = 1;
   int baz = 3;
   struct {
@@ -1072,7 +1045,6 @@ NIC 连接到（或属于）南桥。它启动 DMA 访问，但提供有关应�
     { { .bar = 2, .xyzzy = 4 } };
 ```
 
-`
 
 需要进行一些代码更改（对 `bar` 的引用必须替换为 `rwstruct.bar`，对于 `xyzzy` 也是如此），仅此而已。编译器和链接器完成所有剩下的工作。{此代码必须在命令行上使用 `-fms-extensions` } 进行编译。}
 
@@ -1112,9 +1084,8 @@ NIC 连接到（或属于）南桥。它启动 DMA 访问，但提供有关应�
 
 一种体系结构支持 LL/SC 或 CAS 指令，但不能同时支持两者。这两种方法基本上是等价的；它们同样可以很好地实现原子算术运算，但 CAS 似乎是目前首选的方法。所有其他操作都可以使用它间接实现。例如，一个原子加法：
 
-`  int curval;
-
 ```cpp
+  int curval;
   int newval;
   do {
     curval = var;
@@ -1122,15 +1093,13 @@ NIC 连接到（或属于）南桥。它启动 DMA 访问，但提供有关应�
   } while (CAS(&var, curval, newval));
 ```
 
-`
 
 CAS 调用的结果表明操作是否成功。如果返回失败（非零值），则循环再次运行，执行加法，并再次尝试 CAS 调用。如此重复直到成功。该代码值得注意的是，内存位置的地址必须在两条单独的指令中计算。{ x86 和 x86-64 上的 *CAS* 可以避免在第二次和以后的迭代中加载值，但是，在这个平台上，我们可以用更简单的方式编写原子加法，使用单个加法操作}。
 
 对于 LL/SC，代码看起来差不多。
 
-`  int curval;
-
 ```cpp
+  int curval;
   int newval;
   do {
     curval = LL(var);
@@ -1138,21 +1107,29 @@ CAS 调用的结果表明操作是否成功。如果返回失败（非零值）�
   } while (SC(var, newval));
 ```
 
-`
 
 在这里，我们必须使用特殊的加载指令 ( LL )，并且我们不必将内存位置的当前值传递给 SC，因为处理器知道内存位置是否已同时被修改。
 
 最大的区别是 x86 和 x86-64，我们有原子操作，在这里，选择适当的原子操作以获得最佳结果很重要。图 6.12 显示了实现原子增量操作的三种不同方式。
 
-`for (i = 0; i 
+```cpp
+for (i = 0; i 
+```
+
 
 1. Add and Read Result**
 
-`for (i = 0; i 
+```cpp
+for (i = 0; i 
+```
+
 
 <strong>2. Add and Return Old Value</strong>
 
-`for (i = 0; i 
+```cpp
+for (i = 0; i 
+```
+
 
 <strong>3. Atomic Replace with New Value</strong>
 
@@ -1198,9 +1175,8 @@ X86 使用 `lock` 前缀使汇编操作具有原子性。
 
 有许多接口可以查询和更改线程的亲缘关系：
 
-`#define _GNU_SOURCE
-
 ```cpp
+#define _GNU_SOURCE
 #include 
 
 int sched_setaffinity(pid_t pid, size_t size, const cpu_set_t *cpuset);
@@ -1218,7 +1194,6 @@ int pthread_attr_getaffinity_np(pthread_attr_t *at, size_t 大小,
                                 cpu_set_t *cpuset);
 ```
 
-`
 
 到目前为止，我们已经讨论了两个线程的工作集重叠的情况，因此将两个线程放在同一个 core 上是有意义的。反之亦然。如果两个线程在不同的数据集上工作，将它们安排在同一个核心上可能会出现问题。两个线程争夺同一个缓存，从而减少了彼此对缓存的有效使用。其次，两个数据集必须加载到同一个缓存中；实际上，这增加了必须加载的数据量，因此可用带宽减少了一半。
 

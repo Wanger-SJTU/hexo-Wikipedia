@@ -41,7 +41,7 @@ MediaCrawler 是最近冲上 Github 热搜的开源多社交平台爬虫。虽�
 
 实现代码为 `login_by_qrcode` 方法。代码为:
 
-`async def login_by_qrcode(self):
+async def login_by_qrcode(self):
     """Login to Xiaohongshu website and keep webdriver login state."""
 
 ```text
@@ -108,7 +108,6 @@ MediaCrawler 是最近冲上 Github 热搜的开源多社交平台爬虫。虽�
 ```
 
 
-`
 
 大致逻辑：
 
@@ -119,7 +118,7 @@ MediaCrawler 是最近冲上 Github 热搜的开源多社交平台爬虫。虽�
  
 - 如果获取到了，则等待用户扫码完成登录。
 - 其中可能会出现验证码的情况，此时会提示需要手动验证，没有实现自动验证，需要人工手动操作干预。
-` async def check_login_state(self, no_logged_in_session: str) -> bool:
+ async def check_login_state(self, no_logged_in_session: str) -> bool:
 
 ```text
      if "请通过验证" in await self.context_page.content():
@@ -131,7 +130,7 @@ MediaCrawler 是最近冲上 Github 热搜的开源多社交平台爬虫。虽�
 
 实现代码为 `login_by_mobile` 方法。代码为:
 
-`async def login_by_mobile(self):
+async def login_by_mobile(self):
     """Login xiaohongshu by mobile"""
 
 ```text
@@ -207,7 +206,6 @@ MediaCrawler 是最近冲上 Github 热搜的开源多社交平台爬虫。虽�
 ```
 
 
-`
 
 大致逻辑：
 
@@ -215,7 +213,7 @@ MediaCrawler 是最近冲上 Github 热搜的开源多社交平台爬虫。虽�
  
 - 点击 `login_button_ele`  , 弹出登录对话框
 - 获取phone input_ele，并填入手机号
-`login_container_ele = await self.context_page.wait_for_selector("div.login-container")
+login_container_ele = await self.context_page.wait_for_selector("div.login-container")
 input_ele = await login_container_ele.query_selector("label.phone > input")
 await input_ele.fill(self.login_phone)`
 
@@ -234,7 +232,7 @@ await input_ele.fill(self.login_phone)`
 
 实现代码为 `login_by_cookies` 方法。就是将用户提供的 `cookie(web_session)`信息放到`browser_context` 中
 
-`async def login_by_cookies(self):
+async def login_by_cookies(self):
 
 ```text
     for key, value in utils.convert_str_cookie_to_dict(self.cookie_str).items():
@@ -252,13 +250,12 @@ await input_ele.fill(self.login_phone)`
 ```
 
 
-`
 
 ### Sign签名算法
 
 小红书浏览器端接口有做`sign`验签，MediaCrawler 生成 `sign`相关参数的代码位于 `media_platform/xhs/client.py` 文件中的 `_pre_headers` 方法。代码如下:
 
-`async def _pre_headers(self, url: str, data=None) -> Dict:
+async def _pre_headers(self, url: str, data=None) -> Dict:
 
 ```js
     encrypt_params = await self.playwright_page.evaluate("([url, data]) => window._webmsxyw(url,data)", [url, data])
@@ -280,7 +277,6 @@ await input_ele.fill(self.login_phone)`
     return self.headers
 ```
 
-`
 
 - 没有逆向后用 Python 重新实现`window._webmsxyw`函数，而是通过 `self.playwright_page.evaluate("([url, data]) => window._webmsxyw(url,data)", [url, data])` 直接主动调用浏览器运行时中的 `window._webmsxyw`  生成 `encrypt_params`
 - 通过`self.playwright_page.evaluate("() => window.localStorage")` 获取浏览器`local_storage`对象
@@ -289,10 +285,9 @@ await input_ele.fill(self.login_phone)`
 - 将 `signs` 赋值给`headers`
 所以主要签名逻辑就是 `sign` 函数，深入进去看下。代码位于 `media_platform/xhs/help.py` 文件。代码如下:
 
-`def sign(a1="", b1="", x_s="", x_t=""):
-    """
-
 ```python
+def sign(a1="", b1="", x_s="", x_t=""):
+    """
     takes in a URI (uniform resource identifier), an optional data dictionary, and an optional ctime parameter. It returns a dictionary containing two keys: "x-s" and "x-t".
     """
     common = {
@@ -386,7 +381,6 @@ def mrc(e):
     rturn o ^ -1 ^ 3988292384
 ```
 
-`
 
 - 这个`sign`函数没有像`window._webmsxyw` 方法一样，选择通过`self.playwright_page.evaluate`主动调用浏览器运行时中的`sign`相关方法，而是自己用 Python 实现。实现代码不再解释，就是逆向 JS 逻辑后，翻译成了 Python。
 - 对于为何选择自己用 Python 实现而不主动调用浏览器中的 JS 方法，我也咨询了下作者，作者表示，这里的代码冗余了
@@ -398,11 +392,11 @@ def mrc(e):
 MediaCrawler 小红书爬虫，也做了一些反反爬虫措施，代码位于`media_platform/xhs/core.py` 中的 `start` 函数。
 
 - 通过注入stealthjs脚本，来反headless 浏览器检测
-`# https://github.com/berstend/puppeteer-extra/tree/master/packages/extract-stealth-evasions
+# https://github.com/berstend/puppeteer-extra/tree/master/packages/extract-stealth-evasions
 await self.browser_context.add_init_script(path="libs/stealth.min.js")`
 
 - 通过添加 `webId cookie` 来防止出现 `captcha` 滑块
-`await self.browser_context.add_cookies([
+await self.browser_context.add_cookies([
 
 ```text
     {
@@ -420,7 +414,7 @@ await self.browser_context.add_init_script(path="libs/stealth.min.js")`
 ])`
 
 - 支持设置 ip 代理来更改 ip 地址
-`if config.ENABLE_IP_PROXY:
+if config.ENABLE_IP_PROXY:
 
 ```text
     ip_proxy_pool = await create_ip_pool(config.IP_PROXY_POOL_COUNT, enable_validate_ip=True)

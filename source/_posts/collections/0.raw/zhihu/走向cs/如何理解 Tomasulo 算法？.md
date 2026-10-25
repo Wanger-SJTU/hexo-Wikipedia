@@ -44,7 +44,7 @@ Tomasulo算法1966年提出，设计目标是让编译器在360系列计算机�
 
 Precise exception(精确异常) 的意思是当指令出现异常时（除0、page fault，etc），前面的指令已经完成，后面的指令不能对寄存器、内存等进行修改，<strong>即跟顺序执行的效果一样</strong>，比如：
 
-`fdiv.d f0,f2,f4
+fdiv.d f0,f2,f4
 fadd.d f10,f10,f8
 fsub.d f12,f12,f14`
 

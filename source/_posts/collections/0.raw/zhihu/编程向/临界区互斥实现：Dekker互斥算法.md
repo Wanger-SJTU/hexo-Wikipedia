@@ -19,9 +19,8 @@ source_url: https://zhuanlan.zhihu.com/p/122544351
 
 <strong>Dekker互斥算法代码(简写版只举出一个进程）：</strong>
 
-`bool flag[2]; //初始化为false
-
 ```cpp
+bool flag[2]; //初始化为false
 int turn; //轮转变量
 
 void process(int me){
@@ -47,7 +46,6 @@ void process(int me){
 ```
 
 
-`
 
 可以看到Dekker算法是很简单易懂的，采用了双标志的思路，用了flag和turn变量，我们接下来讨论其各自的用处。
 
@@ -55,9 +53,8 @@ flag：这是一个互斥标志，用于进程间的状态交流。当有一个�
 
 turn：用来避免死锁，也就是
 
-` while(flag[other] == true){ //检查对方是否举手 ，若举手检查是否礼让 
-
 ```text
+ while(flag[other] == true){ //检查对方是否举手 ，若举手检查是否礼让 
         	if(turn == other){ //目前对方的轮次，我方礼让 
 
         	}

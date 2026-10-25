@@ -27,7 +27,7 @@ simpleperf工具处了在性能领域中，在日常中也会有很多调试用�
 
 使用syscall `simpleperf record -a -g -c 1 -e "raw_syscalls:sys_enter" --tp-filter 'id == 94 || id == 93 || id == 424 || id == 129 || id == 130' -o /data/perf.data`
 
-`#include  /* For system call numbers. */
+#include  /* For system call numbers. */
 __NR_exit_group 94
 __NR_exit 93 
 __NR_pidfd_send_signal 424
@@ -48,7 +48,7 @@ Google最近在simpleperf中增加了对uprobe的支持。 [simpleperf: Add --up
 
 第一步：获取函数符号的地址，方法可以通过objdump或者unwind_info工具 我自己使用unwind_info(工具)
 
-`在手机上执行查看符号位置：
+在手机上执行查看符号位置：
 #### unwind_info /system/lib64/libc.so | grep "kill"
   PC 0x69e64-0x69e94 
   PC 0x6fcbc-0x6fd40 

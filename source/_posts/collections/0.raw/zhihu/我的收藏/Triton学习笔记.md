@@ -77,7 +77,7 @@ source_url: https://zhuanlan.zhihu.com/p/672086654
 
                                              不同计算组织和层次结构的Memory范围
 
-`A100`是面向`CTA`编程，`H100`是面向`CGA`编程，下一个章节会介绍。
+A100`是面向`CTA`编程，`H100`是面向`CGA`编程，下一个章节会介绍。
 
 **`SM`间任务切换**
 
@@ -115,7 +115,7 @@ wiki上这样解释, [link ](https://link.zhihu.com/?target=https%3A//zh.wikiped
 
 #### <strong>efficiency and performance</strong>
 
-`CUDA`好比单反相机，里面有各种专业模型和功能，用户可以更细粒度的功能，`Triton`更像是智能手机，它封装了单反相机的功能，操作简单，但存在效果比专业单反差的问题。
+CUDA`好比单反相机，里面有各种专业模型和功能，用户可以更细粒度的功能，`Triton`更像是智能手机，它封装了单反相机的功能，操作简单，但存在效果比专业单反差的问题。
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_0aed17335a30.jpg)
 
@@ -452,7 +452,7 @@ And of course there are all the stability issues :p Triton is a recent project a
 - `Triton`和`TVMScript`的解决问题的场景还是`Kernel`开发，或者对一些原有性能差的`Kernel`二次开发。Triton的开发者不用太关心跟硬件紧密耦合的特性，这些特性都由编译器后端处理。
 - `Triton`相比于`CUDA`开发，开发效率会高一些，但`Triton`开发出的`Kernel`一般专家比手写`CUDA Kernel`性能差一些效果。
 - `Triton`对`Fusion`算子貌似开发挺友好的，比如这篇[ Online normalizer calculation for softmax](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1805.02867.pdf) ，这种前期快速创建一个demo,将整个流程串通起来。
-`1、说到这里，那么对于Pytorch中，它的自定义算子是怎样一个流程
+1、说到这里，那么对于Pytorch中，它的自定义算子是怎样一个流程
 2、对于机器学习框架，新增加一种硬件平台，Pytorch如何做
 3、TVM的BYOC是什么定位`
 

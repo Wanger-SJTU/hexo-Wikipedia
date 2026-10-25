@@ -478,7 +478,7 @@ Option 3: Directory-Based cc-NUMA
 
 怎么实现spinlock : 
 
-`L1: tstst (r0)
+L1: tstst (r0)
         jnz L1`
 
 每个厂商都有做 transcation memory , 就是别的thread不能访问 这个thread的transcation memory. read 都不行.  

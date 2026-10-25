@@ -67,4 +67,4 @@ Avant de terminer une session :
 3. Enregistrer tout risque ou obstacle non résolu.
 4. Valider avec un message descriptif une fois le travail dans un état sûr.
 5. Laisser le dépôt suffisamment propre pour que la prochaine session puisse exécuter
-   `./init.sh` immédiatement.
+   ./init.sh` immédiatement.

@@ -23,9 +23,8 @@ source_url: https://zhuanlan.zhihu.com/p/646716367
 
 就在几天前 TGI 优化了 exllama，基于之前量化 LLaMa 的测试：[Kevin吴嘉文：LLaMa 量化部署](https://zhuanlan.zhihu.com/p/641641929)，exllama 能在控制精度损失的情况下，将模型的推理速度提升，同时减小显存占用要求。以下参考 TGI 的官方手册对采用 AUTOGPTQ 量化后的 LLaMa v2 gptq 权重进行部署:
 
-`docker run --rm --name tgi \
-
-```text
+```bash
+docker run --rm --name tgi \
     --runtime=nvidia \
     --gpus all \
     -p 5001:5001 \
@@ -46,7 +45,7 @@ source_url: https://zhuanlan.zhihu.com/p/646716367
 
 其中，`llama2-7b-chat-gptq-int4` 量化采用 AUTOGPTQ 提供的示例量化代码进行量化，量化数据集选择 wikitext：
 
-`# git clone AUTOGPTQ 仓库后进入 `examples/quantization` 文件夹
+# git clone AUTOGPTQ 仓库后进入 `examples/quantization` 文件夹
 # 修改以下 pretrained_model_dir 和 quantized_model_dir 选择用 Llama-2-7b-chat-hf 量化
 python basic_usage_wikitext2.py`
 
@@ -54,8 +53,11 @@ python basic_usage_wikitext2.py`
 
 目前 TGI 版本（1.0.0）对本地加载 exllama 模型仍有不少问题，如果遇到了 weight gptq_bits not found 的话，在模型文件夹下加入一个 safetensor，其中储存好 gptq_bits 和 group 就行。具体 exllama 权重加载逻辑可以看 `utils.weight.Weight`。
 
-`import torch
+```python
+import torch
 from safetensors.torch import save_file
+```
+
 ​
 tensors = {
 
@@ -73,7 +75,7 @@ save_file(tensors, "/home/kevin/models/llama2-7b-chat-gptq-int4/gptq_config.safe
 
 部署后，发送单一（batch size = 1）的请求进行速度测试：
 
-`###
+###
 POST http://127.0.0.1:5001/generate
 Content-Type: application/json
 ​

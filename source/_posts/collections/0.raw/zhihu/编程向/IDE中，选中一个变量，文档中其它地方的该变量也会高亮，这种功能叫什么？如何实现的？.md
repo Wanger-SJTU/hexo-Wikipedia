@@ -40,9 +40,8 @@ Mark occurrences - Tips and Tricks (JDT)
 
 [第3320行](https://link.zhihu.com/?target=https%3A//github.com/eclipse/eclipse.jdt.ui/blob/master/org.eclipse.jdt.ui/ui/org/eclipse/jdt/internal/ui/javaeditor/JavaEditor.java%23L3320)的一段：
 
-`		if (locations == null && selectedNode instanceof Name) {
-
 ```text
+		if (locations == null && selectedNode instanceof Name) {
 			IBinding binding= ((Name)selectedNode).resolveBinding();
 			if (binding != null && markOccurrencesOfType(binding)) {
 				OccurrencesFinder finder= new OccurrencesFinder();
@@ -69,9 +68,8 @@ Mark occurrences - Tips and Tricks (JDT)
 
 假如有这样的Java代码：
 
-`class Foo {
-
 ```cpp
+class Foo {
   int bar() {             // method name "bar"
     int bar = 1;          // local variable "bar" 1
     {
@@ -93,7 +91,7 @@ Mark occurrences - Tips and Tricks (JDT)
 
 按照前面说的方法做分析的话，这里会得到如下的抽象语法树：（仅为讲解而写的简单例子）
 
-`ClassDeclaration "Foo"
+ClassDeclaration "Foo"
 - MemberList
   - MethodDeclaration "bar"
 
@@ -130,9 +128,8 @@ Mark occurrences - Tips and Tricks (JDT)
 
 换个更简单的例子再体会一下：
 
-`  public void setFoo(int foo) { // parameter "foo"
-
-```text
+```cpp
+  public void setFoo(int foo) { // parameter "foo"
     this.foo = foo;             // field "foo" / paramater "foo"
   }`
 ```

@@ -42,19 +42,18 @@ source_url: https://zhuanlan.zhihu.com/p/591043079
 
 ① 线下通过 adb 命令获取，一般用于线下调试：
 
-`adb shell
+adb shell
 dumpsys meminfo 进程名/pid`
 
 ② 线上通过代码获取，一般用于收集线上的内存数据：
 
-`ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
 ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();`
 
 虽然获取方法不同，但这两种方式获取数据的原理完全一样，它们调用的都是 `android_os_Debug.cpp` 对象中的 `android_os_Debug_getDirtyPagesPid` 接口，它的源码如下：
 
-`static jboolean android_os_Debug_getDirtyPagesPid(JNIEnv *env, jobject clazz,
-
 ```cpp
+static jboolean android_os_Debug_getDirtyPagesPid(JNIEnv *env, jobject clazz,
         jint pid, jobject object)
 {
     bool foundSwapPss;
@@ -118,9 +117,8 @@ maps 文件是分析内存很重要的一个文件，通过 maps 文件我们可
 
 字段addressperms offsetoffsetdevinodepathname数据12c00000-32c00000rw-p0000000000:000main space (region space)]含义本段内存映射的虚拟地址空间范围读写权限本段映射地址在文件中的偏移所映射的文件所属设备的设备号文件的索引节点号对有名映射而言，pathname 是映射的文件名；对匿名映射来说，pathname 是此段内存在进程中的作用如果手机没有 root 也没关系，我们可以在运行时通过 native 层的 c++ 代码读取该文件，可以看一下`android_os_Debug_getMemInfo` 接口中调用的 load_maps 方法，该方法读取 maps 文件后，还做了一个详细的分类操作，分完类之后就是我们看到的数据 ① 中的数据，这个方法比较长，所以我精简了部分代码。
 
-`static bool load_maps(int pid, stats_t* stats, bool* foundSwapPss)
-
 ```cpp
+static bool load_maps(int pid, stats_t* stats, bool* foundSwapPss)
 {
     *foundSwapPss = false;
     uint64_t prev_end = 0;
@@ -289,9 +287,8 @@ maps 文件是分析内存很重要的一个文件，通过 maps 文件我们可
 - <strong>EGL</strong> <strong>mtrack</strong>：应用的 Layer Surface，通过 gralloc 分配，没有映射到应用地址空间。不熟悉 Layer Surface 的话，可以将一个界面理解成一个 Layer Surface，Surface 存储了界面的数据，并交给 GPU 绘制。
 上面 1 的数据是通过 load_maps 函数解析获取的，2 和 3 的数据是通过 read_memtrack_memory 函数获取的。该函数会读取和解析路径为 <strong>/d/kgsl/proc/{</strong> <strong>pid</strong> <strong>}/mem</strong> 的文件，这个文件节点中的数据是gpu driver写入的，该方法的实现可以参考下面高通855源码中的 kgsl_memtrack_get_memory 函数，下面是这个函数的主体逻辑代码。（官方源码：`kgsl.c`）
 
-`int kgsl_memtrack_get_memory(pid_t pid, enum memtrack_type type,
-
-```text
+```cpp
+int kgsl_memtrack_get_memory(pid_t pid, enum memtrack_type type,
                              struct memtrack_record *records,
                              size_t *num_records)
 {
@@ -316,7 +313,7 @@ maps 文件是分析内存很重要的一个文件，通过 maps 文件我们可
 
 我们也可以在 root 手机中，查看 `kgsl_memtrack_get_memory` 函数读取到该应用进程的数据，下面是系统设置这个应用的部分 graphic 数据。
 
-`/d/kgsl/proc/3160 # cat mem
+/d/kgsl/proc/3160 # cat mem
          gpuaddr         useraddr             size    id     flags       type            usage sglen         mapcount eglsrf eglimg
 0000000000000000 0           196608     1 --w---N--     gpumem           any(0)     0                0      0      0
 0000000000000000 0            16384     2 --w--pY--     gpumem          command     0                1      0      0
@@ -360,7 +357,7 @@ maps 文件是分析内存很重要的一个文件，通过 maps 文件我们可
 在<strong>内存描述指标</strong>这一部分，我们已经知道数据 ③ 中的数据是调用 malloc、mmap、calloc 等内存申请函数时积累的数据，想要获取这个数据，可以通过下面的接口实现。
 
 - 获取 Java 层申请的内存：会直接去 Art 虚拟机中获取虚拟机已经申请的内存大小。
-`Runtime runtime = Runtime.getRuntime();
+Runtime runtime = Runtime.getRuntime();
 
 ```text
 //获取已经申请的Java内存 long usedMemory=runtime.totalMemory() ;
@@ -369,9 +366,9 @@ maps 文件是分析内存很重要的一个文件，通过 maps 文件我们可
 
 
 - 获取 Native 申请的内存：会调用 android_os_Debug.cpp 对象中的android_os_Debug_getNativeHeapSize 接口获取数据，该接口又是调用的 mallinfo 函数，mallinfo 函数会返回 native 层已经申请的内存大小。
-`//获取已经申请的Native内存
 
 ```text
+//获取已经申请的Native内存
 long nativeHeapSize = Debug.getNativeHeapSize()
 //获取申请但未使用Native内存
 long nativeHeapFreeSize = Debug.getNativeHeapFreeSize()

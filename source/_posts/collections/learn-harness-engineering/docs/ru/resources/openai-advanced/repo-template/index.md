@@ -22,7 +22,7 @@ agent-first документационная поверхность в стил�
 1. Скопируйте `AGENTS.md` и `ARCHITECTURE.md` в корень репозитория.
 2. Скопируйте всё дерево `docs/`.
 3. Сначала заполните `docs/PRODUCT_SENSE.md`, `docs/QUALITY_SCORE.md` и
-   `docs/RELIABILITY.md`.
+   docs/RELIABILITY.md`.
 4. Добавьте ваш первый активный план в `docs/exec-plans/active/`.
 5. Держите входные файлы короткими и уводите детали в связанные документы.
 

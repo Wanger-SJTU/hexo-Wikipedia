@@ -35,9 +35,8 @@ MemTotal 即 /proc/meminfo 中的第一行的值, 可以认为是系统可供分
 
 memblock中两种类型的内存申请/添加函数如下:
 
-`//memory 类型的memblock申请/添加
-
 ```cpp
+//memory 类型的memblock申请/添加
 int __init_memblock memblock_add(phys_addr_t base, phys_addr_t size)
 int __init_memblock memblock_add_node(phys_addr_t base, phys_addr_t size, int nid)
 
@@ -52,7 +51,7 @@ memblock是如何知道物理内存的分布的呢?
 
 kernel启动的过程中，从lk/uboot知道了DTB的加载地址, 在如下的调用流程中解析DTB下的memroy节点，将节点下的物理内存区间使用`memblock_add()`添加给memblock维护。  由于lk/uboot中可能使用内存，lk/uboot也可以修改DTB，所以这里memory节点下可能有多个物理内存区间。 多个物理区间中不连续的部分就是已经被lk/uboot占用的部分。
 
-`setup_machine_fdt(__fdt_pointer)   //__fdt_pointer是传递的DTB加载地址
+setup_machine_fdt(__fdt_pointer)   //__fdt_pointer是传递的DTB加载地址
   |-->early_init_dt_scan()
 
 ```text
@@ -70,7 +69,7 @@ kernel启动的过程中，从lk/uboot知道了DTB的加载地址, 在如下的�
 
 可以通过 /sys/kernel/debug/memblock/ 下的节点查看两种内存的物理空间分布:
 
-`lsg@eebbk:~$adb shell cat /sys/kernel/debug/memblock/memory
+lsg@eebbk:~$adb shell cat /sys/kernel/debug/memblock/memory
 lsg@eebbk:~$adb shell cat /sys/kernel/debug/memblock/reserved`
 
 memblock构建了内存的物理空间分布, 之后在伙伴系统(buddy system)初始化的过程中,构建了物理内存分布到虚拟内存空间的映射.  memblock管理的`memory`类型的页框都添加到各ZONE中, `totalram_pages`统计了它的页框数目. 详细代码见 `free_all_bootmem()`
@@ -90,9 +89,8 @@ memblock构建了内存的物理空间分布, 之后在伙伴系统(buddy system
 
 Q1:<strong>memblock是怎么知道有些内存已经被占用的?</strong> A1:** lk/uboot/bootloade修改DTB中memory节点下的空间区段(reg), kernel中读取这些空间区段(reg),空间区段之间的内存空间就是被预申请已经占用了的.  
 
-`//kernel log 中的输出, 代码实现在 mem_init_print_info()
-
 ```text
+//kernel log 中的输出, 代码实现在 mem_init_print_info()
 //关系:2097152K(物理2GB) = 2045952K(memblock管理的内存) + 51200K(预申请内存)
 //关系:2045952K(memblock管理的内存) = 1982176K + 63776K + 0K
 //1982176K 是此时 totalram_pages*4K 的大小, 也即memblcok管理的`memory type` 部分
@@ -205,9 +203,8 @@ vmalloc 用于在内核中分配虚拟地址空间连续的内存，`/proc/vmall
 
 单个区间的信息展示代码在: 
 
-`//mm/vmalloc.c
-
 ```cpp
+//mm/vmalloc.c
 static int s_show(struct seq_file *m, void *p)
 {
     struct vmap_area *va;
@@ -231,7 +228,7 @@ static int s_show(struct seq_file *m, void *p)
 
 }`
 
-`/proc/vmallocinfo`中每行输出的最后一个字段表示这段区间的类型，kernel 4.14上显示的类型有：
+/proc/vmallocinfo`中每行输出的最后一个字段表示这段区间的类型，kernel 4.14上显示的类型有：
 
 - `ioremap`(对应`VM_IOREMAP`)
 - `vmalloc`(对应`VM_ALLOC`)
@@ -259,7 +256,7 @@ Binder的内存分配是用户空间调用`mmap()`, 到kernel中`binder_mmap()`�
 
 比如 一个binder client 调用`binder_mmap()`，其VMA区间为1024K，但是可能目前实际只用到了4K。但1024K都被计入到`VmallocUsed`部分。 
 
-`74bb4b1000-74bb5af000 r--p 00000000 00:13 8297                           /dev/binder
+74bb4b1000-74bb5af000 r--p 00000000 00:13 8297                           /dev/binder
 Size:               1016 kB
 KernelPageSize:        4 kB
 MMUPageSize:           4 kB
@@ -280,10 +277,13 @@ Android P上binder的内存信息归为`vmalloc`，这就会统计到 `VmallocUs
 
 综上来看，`unpurged vm_area`标记的区间，Android不应该认为是物理内存占用，不应统计在 `VmallocUsed`中。
 
-`/proc/vmallocinfo`的输出示例：
+/proc/vmallocinfo`的输出示例：
 
-`//区间起始地址-区间结束地址 
+```text
+//区间起始地址-区间结束地址 
 //kernel code的map
+```
+
 0x0000000000000000-0x0000000000000000 8912896 paging_init+0xx6c0 phys=0x0000000080080000 vmap
 //binder
 0x0000000000000000-0x0000000000000000 1044480 binder_alloc_mmap_handler+0xx1cc vmalloc
@@ -296,9 +296,8 @@ Android P上binder的内存信息归为`vmalloc`，这就会统计到 `VmallocUs
 
 free 命令的代码见:
 
-`//external/toybox/toys/other/free.c
-
 ```cpp
+//external/toybox/toys/other/free.c
 void free_main(void)
 {
   struct sysinfo in; 
@@ -322,7 +321,7 @@ void free_main(void)
 
 其展示的内容示例如下：
 
-`H100:/ # free -k
+H100:/ # free -k
         total        used        free      shared     buffers
 Mem:   1983136     1604832      378304        2240       71416
 -/+ buffers/cache: 1533416      449720
@@ -336,8 +335,11 @@ dumpsys meminfo 是从Android的角度统计系统的内存占用情况。
 
 对应的代码在:
 
-`//frameworks/base/services/core/java/com/android/server/am/ActivityManagerService.java
+```cpp
+//frameworks/base/services/core/java/com/android/server/am/ActivityManagerService.java
 private final void dumpApplicationMemoryUsage()`
+```
+
 
 展示的信息分为几个部分： - 进程PSS情况   - Total PSS by process   - Total PSS by OOM adjustment   - Total PSS by category - 整体情况   - Total RAM   - Free RAM   - Used RAM   - Lost RAM   - ZRAM
 
@@ -345,7 +347,7 @@ private final void dumpApplicationMemoryUsage()`
 
 先看整体的内存占用情况，整体的内存占用情况在输出结果的最后，示例如下：
 
-`Total RAM: 1,983,136K (status moderate)
+Total RAM: 1,983,136K (status moderate)
  Free RAM: 1,016,150K (   75,626K cached pss +   562,384K cached kernel +   378,140K free)
  Used RAM: 1,108,343K (  758,523K used pss +   349,820K kernel)
  Lost RAM:  -141,361K
@@ -360,9 +362,8 @@ private final void dumpApplicationMemoryUsage()`
 
 使用了如下的调用关系主要读取 `/proc/meminfo`的信息，将对应字段放到 `MemInfoReader.mInfos[]`数组中，展示的信息就是`MemInfoReader.mInfos[]`中信息的组合。
 
-`MemInfoReader.readMemInfo()
-
 ```text
+MemInfoReader.readMemInfo()
     //frameworks/base/core/java/android/os/Debug.java
   --> Debug.getMemInfo()
     //frameworks/base/core/jni/android_os_Debug.cpp
@@ -408,18 +409,16 @@ Lost RAM也与 `(Total RAM) - (Free RAM) - (Used RAM) - (zramtotal) + (SwapTotal
 
 上面说到kernel的内存占用包含`Shmem + SUnreclaim + VmallocUsed + PageTables + KernelStack`这几个部分，而`VmallocUsed` 是统计`/proc/vmallocinfo`输出中不含有`ioremap`,`map_lowmem`,`vm_map_ram`关键字的内存区间之和，详细见`Debug.get_allocated_vmalloc_memory()`。
 
-`//frameworks/base/core/jni/android_os_Debug.cpp
-
 ```text
+//frameworks/base/core/jni/android_os_Debug.cpp
 static long get_allocated_vmalloc_memory() {
 }
 ```
 
-`
 
-`VmallocUsed`在这里会有一些统计上的误差，这个误差就造成了kernel的统计误差。
+VmallocUsed`在这里会有一些统计上的误差，这个误差就造成了kernel的统计误差。
 
-`VmallocUsed`对/`proc/vmallocinfo`的统计误差主要表现在以下方面，详细看[2.2节](https://zhuanlan.zhihu.com/p/90076117/edit#2.2%20/proc/vmallocinfo)。
+VmallocUsed`对/`proc/vmallocinfo`的统计误差主要表现在以下方面，详细看[2.2节](https://zhuanlan.zhihu.com/p/90076117/edit#2.2%20/proc/vmallocinfo)。
 
 - Kernel code 的重复统计
 此处应该是 Android 的一个统计bug， kernel code的内存占用，既统计在了`memblock reserved`部分，又统计在了`VmallocUsed`部分。
@@ -433,9 +432,8 @@ binder占用的内存，在进程PSS中已经统计，又统计在了kernel中�
 
 详细的单个进程的内存占用统计可以查看 [第四章](https://zhuanlan.zhihu.com/p/90076117/edit#4%E4%BB%8E%E8%BF%9B%E7%A8%8B%E8%A7%92%E5%BA%A6%E7%9C%8B)。
 
-`//frameworks/base/services/core/java/com/android/server/am/ActivityManagerService.java
-
 ```text
+//frameworks/base/services/core/java/com/android/server/am/ActivityManagerService.java
     Debug.MemoryInfo mi = new Debug.MemoryInfo();
     ......
     //调用到JNI中的 android_os_Debug_getDirtyPagesPid() --> read_mapinfo()
@@ -446,9 +444,8 @@ binder占用的内存，在进程PSS中已经统计，又统计在了kernel中�
 
 一个进程的PSS就是这些信息的相加：
 
-`//frameworks/base/core/java/android/os/Debug.java
-
 ```cpp
+//frameworks/base/core/java/android/os/Debug.java
 public int getTotalPss() {
     return dalvikPss + nativePss + otherPss + getTotalSwappedOutPss();
 }
@@ -461,11 +458,11 @@ public int getTotalSwappedOutPss() {
 
 1、Total PSS by process**
 
-`Total PSS by process`下是由大到小显示所有进程的PSS情况。
+Total PSS by process`下是由大到小显示所有进程的PSS情况。
 
 <strong>2、Total PSS by OOM ADJ</strong>
 
-`Total PSS by OOM adjustment`下是以进程的`OOM ADJ`值(/proc/pid/oom_score_adj, 范围在[-1000,1000])的区间分类来统计进程的PSS。ADJ的区间与类别对应如下：
+Total PSS by OOM adjustment`下是以进程的`OOM ADJ`值(/proc/pid/oom_score_adj, 范围在[-1000,1000])的区间分类来统计进程的PSS。ADJ的区间与类别对应如下：
 
 对于`Cached`的进程，其ADJ很小(static final int[] DUMP_MEM_OOM_ADJ = new int[] {
         ProcessList.NATIVE_ADJ,            //ADJ在此区间的为 “Native”
@@ -486,7 +483,7 @@ public int getTotalSwappedOutPss() {
 
 <strong>3、Total PSS by category</strong>
 
-`Total PSS by category`下是以内存占用的类型分类来统计进程的PSS。
+Total PSS by category`下是以内存占用的类型分类来统计进程的PSS。
 
 #### 4、从进程角度看
 
@@ -500,13 +497,13 @@ PSS和USS反应进程的内存占用比较有意义，PSS是按进程数比例�
 
 #### 4.1 dumpsys meminfo pid
 
-`dumpsys meminfo pid` 是显示指定pid进程的PSS内存占用详细信息，这里说明不接任何参数的情况。
+dumpsys meminfo pid` 是显示指定pid进程的PSS内存占用详细信息，这里说明不接任何参数的情况。
 
 获取指定pid进程的内存占用信息是通过`Debug.getMemoryInfo(pid, mi)`读取整理`/proc/pid/smaps`下的数据，而展示这些信息是在 `ActivityThread.dumpMemInfoTable()`中。
 
 #### 4.1.1 /proc/pid/smaps
 
-`/proc/pid/maps` 展示指定pid进程下的虚拟地址空间分布，而`/proc/pid/smaps`则是对每一虚拟地址区间(VMA)更详细的展示。
+/proc/pid/maps` 展示指定pid进程下的虚拟地址空间分布，而`/proc/pid/smaps`则是对每一虚拟地址区间(VMA)更详细的展示。
 
 具体代码在:
 
@@ -518,7 +515,7 @@ PSS和USS反应进程的内存占用比较有意义，PSS是按进程数比例�
 
 以下面例子说明一个VMA展示字段的含义：
 
-`70d98c8000-70d98f0000 r-xp 00000000 fc:00 493                            /system/lib64/vndk-sp-28/libhwbinder.so  //VMA名称，这个关键字决定了这段VMA的类型
+70d98c8000-70d98f0000 r-xp 00000000 fc:00 493                            /system/lib64/vndk-sp-28/libhwbinder.so  //VMA名称，这个关键字决定了这段VMA的类型
 Size:                160 kB    //该VMA占用的虚拟地址空间大小
 Rss:                 132 kB    //实际占用的物理页
 Pss:                   3 kB    //独占页+按比例分配的共享页
@@ -537,7 +534,7 @@ KernelPageSize:        4 kB
 MMUPageSize:           4 kB
 Locked:                0 kB`
 
-`/proc/pid/smaps`展示的所有VMA的详细信息是 `dumpsys meminfo pid` 显示的基础。
+/proc/pid/smaps`展示的所有VMA的详细信息是 `dumpsys meminfo pid` 显示的基础。
 
 #### 4.1.2 dumpMemInfoTable
 
@@ -547,7 +544,7 @@ Locked:                0 kB`
 
 比如`getTotalSwappedOutPss()`就等于`dalvikSwappedOutPss + nativeSwappedOutPss + otherSwappedOutPss`。
 
-`dumpsys meminfo pid` 默认的输出主要有下面两个部分： 1、PSS Summary** - Native Heap   对`nativePss`的展示，还包括堆的情况： Heap Size, Heap Alloc, Heap Free.   调用了 `mallinfo() --> je_mallinfo()`获取navite 堆的信息。 - Dalvik Heap   对`dalvikPss`的展示，还包括堆的情况： Heap Size, Heap Alloc, Heap Free.   调用了`Runtime.totalMemory()` 和 `Runtime.freeMemory()`来获取dalvik 堆 `Heap Size` 和 `Heap Free`的信息。 - Other   对`otherPss`下17个子类型Pss的展示，比如 `Dalvik Other` 对应类型`OTHER_DALVIK_OTHER`， 对于字段全位0的每一展示出来。 - Total   对上面所有部分的相加。
+dumpsys meminfo pid` 默认的输出主要有下面两个部分： 1、PSS Summary** - Native Heap   对`nativePss`的展示，还包括堆的情况： Heap Size, Heap Alloc, Heap Free.   调用了 `mallinfo() --> je_mallinfo()`获取navite 堆的信息。 - Dalvik Heap   对`dalvikPss`的展示，还包括堆的情况： Heap Size, Heap Alloc, Heap Free.   调用了`Runtime.totalMemory()` 和 `Runtime.freeMemory()`来获取dalvik 堆 `Heap Size` 和 `Heap Free`的信息。 - Other   对`otherPss`下17个子类型Pss的展示，比如 `Dalvik Other` 对应类型`OTHER_DALVIK_OTHER`， 对于字段全位0的每一展示出来。 - Total   对上面所有部分的相加。
 
 <strong>2、App Summary</strong> - Java Heap:   dalvikPss 和 `OTHER_ART` 类型的PSS中`PrivateDirty` 部分之和。 - Native Heap:   nativePss 中 `PrivateDirty` 部分。 - Code:   `OTHER_SO`,`OTHER_JAR`,`OTHER_APK`,`OTHER_TTF`,`OTHER_DEX`,`OTHER_OAT`类型的PSS中`PrivateDirty` 部分之和。 - Stack:   `OTHER_STACK` 类型的PSS中的 `PrivateDirty` 部分。 - Graphics:   `OTHER_GL_DEV`,`OTHER_GRAPHICS`,`OTHER_GL`类型的PSS中`PrivateDirty` 部分之和。 - Private Other:   见 `Debug.getSummaryPrivateOther()` - System:   见 `Debug.getSummarySystem()`
 
@@ -560,10 +557,9 @@ Locked:                0 kB`
 
 procrank 主要展示所有用户态进程的VSS/RSS/PSS/USS情况，用到的信息是 `/proc/pid/maps` 下的进程地址区间， 以及 使用`/proc/pid/pagemap`来得到物理页使用情况。
 
-`int main(int argc, char *argv[]) {
-    ....
-
 ```cpp
+int main(int argc, char *argv[]) {
+    ....
     std::vectorproc_info> procs(num_procs);
     for (i = 0; i  num_procs; i++) {
         ....
@@ -586,14 +582,14 @@ procrank 主要展示所有用户态进程的VSS/RSS/PSS/USS情况，用到的�
 
 一行信息包括该VMA的起始地址，结束地址，权限，偏移量，路径等。示例如下：
 
-`70d965c000-70d9662000 r--p 000fa000 fc:00 523                            /system/lib64/libc.so
+70d965c000-70d9662000 r--p 000fa000 fc:00 523                            /system/lib64/libc.so
 7fc89fe000-7fc8a1f000 rw-p 00000000 00:00 0                              [stack]`
 
 #### 4.2.2 /proc/pid/pagemap
 
 从 `/proc/pid/maps`得到所有的VMA之后，还需要知道VMA对应的物理内存情况，因为进程分配一个VMA后，只是得到了一段虚拟地址空间，只有在真正使用内存时才会分配对应的物理内存。
 
-`/proc/pid/pagemap` 就是用来查询一个VMA的物理内存情况。 seek到 `/proc/pid/pagemap`虚拟地址区间的起始位置，就能读到该段线性地址区间的物理页情况，每一个64位int描述了一个物理页的情况。详细见pagemap文档。
+/proc/pid/pagemap` 就是用来查询一个VMA的物理内存情况。 seek到 `/proc/pid/pagemap`虚拟地址区间的起始位置，就能读到该段线性地址区间的物理页情况，每一个64位int描述了一个物理页的情况。详细见pagemap文档。
 
 pagemap具体实现代码在:
 
@@ -602,9 +598,8 @@ pagemap具体实现代码在:
 
 procrank 流程中关键的转换  pagemap  就是在 `pm_map_usage_flags()`中，从其中可以看出VSS/RSS/PSS/USS的具体差异。
 
-`//map:描述一个VMA
-
 ```cpp
+//map:描述一个VMA
 int pm_map_usage_flags(pm_map_t *map, pm_memusage_t *usage_out,
                         uint64_t flags_mask, uint64_t required_flags) {
     //使用 /proc/pid/pagemap 得到该VMA映射的物理页的信息，
@@ -641,7 +636,7 @@ int pm_map_usage_flags(pm_map_t *map, pm_memusage_t *usage_out,
 
 回应一下文本开头所提的问题。
  1、为什么/proc/meminfo中的内存总大小比物理内存小?
- `/proc/meminfo`中的`MemTotal`相比物理内存少了两个部分:
+ /proc/meminfo`中的`MemTotal`相比物理内存少了两个部分:
 
 - kernel进入前预申请的部分，此时memblock还未初始化。这部分的大小可以统计 `/d/memblock/memory`相对物理内存少的部分。
 - kernel reserved的部分。这部分内存的大小可以统计`/d/memblock/reserved`中的各部分之和。

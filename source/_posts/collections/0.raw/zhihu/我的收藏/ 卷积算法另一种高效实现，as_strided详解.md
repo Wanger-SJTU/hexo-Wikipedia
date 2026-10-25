@@ -41,7 +41,7 @@ shape很好理解，用的也比较多
 
 至于strides属性，先看下面的代码：
 
-`a = np.arange(9, dtype=np.int32).reshape(3,3)
+a = np.arange(9, dtype=np.int32).reshape(3,3)
 print(a)
 '''
 [[0 1 2]
@@ -67,7 +67,7 @@ strides是numpy数组对象的一个属性，官方手册给出的解释是跨�
 
 弄清楚原理后，下面的例子就更好理解了：
 
-`b = np.arange(16, dtype=np.float).reshape(4,4)
+b = np.arange(16, dtype=np.float).reshape(4,4)
 print(b.strides)
 #(32, 8)
 
@@ -109,7 +109,7 @@ X = \left[ \begin{array}{lll}{1} & {2} & {3} \\ {4} & {5} & {6} \\ {7} & {8} & {
 
 这里就不用多说了吧，最后可以strides =（12，4，12，4），运行代码：
 
-`X = np.arange(9, dtype=np.int32).reshape(3,3)
+X = np.arange(9, dtype=np.int32).reshape(3,3)
 print(X)
 '''
 [[0 1 2]
@@ -138,7 +138,7 @@ X=\left[ \begin{array}{cccc}{10} & {11} & {12} & {13} \\ {14} & {15} & {16} & {1
 
 X的strides为：（16，4），如果卷积核大小为3x3，那么要得到新矩阵A：
 
-`X = np.arange(16, dtype=np.int32).reshape(4,4)
+X = np.arange(16, dtype=np.int32).reshape(4,4)
 print(X)
 '''
 [[ 0  1  2  3]
@@ -198,7 +198,7 @@ A_1=\left[ \begin{array}{ll}{\left[ \begin{array}{ll}{\left[ \begin{array}{ll}{1
 
 运行一遍代码验证一下：
 
-`X1 = np.arange(1,19, dtype=np.int32).reshape(2,3,3)
+X1 = np.arange(1,19, dtype=np.int32).reshape(2,3,3)
 print(X1)
 '''
 [[[ 1  2  3]
@@ -243,9 +243,8 @@ print(A1)
 
 那么可以确定A的shape为：（N，C，？，？，kh，kw），至于中间的两个数值怎么确定？还是用以前的公式：
 
-`def split_by_strides(X, kh, kw, s):
-
-```text
+```python
+def split_by_strides(X, kh, kw, s):
     N, C, H, W = X.shape
     oh = (H - kh) // s + 1
     ow = (W - kw) // s + 1
@@ -258,9 +257,8 @@ print(A1)
 
 还有个小问题，如果X.shape不是上面那个样子怎么弄？这里举个其他的例子：
 
-`def split_by_strides(X, kh, kw, s):
-
-```text
+```python
+def split_by_strides(X, kh, kw, s):
     N, H, W, C = X.shape
     oh = (H - kh) // s + 1
     ow = (W - kw) // s + 1
@@ -281,7 +279,7 @@ print(A1)
 
 设卷积核的shape为：（kh，kw，C，kn），X.shape：（N，H，W，C），计算feature_map的代码如下：
 
-`kh, kw, C, kn = self.filters.shape
+kh, kw, C, kn = self.filters.shape
 X_split = split_by_strides(X, kh, kw, s)   # X_split.shape: (N, oh, ow, kh, kw, C)
 feature_map = np.tensordot(X_split, self.filters, axes=[(3,4,5), (0,1,2)]) + self.bias`
 
@@ -293,7 +291,7 @@ feature_map = np.tensordot(X_split, self.filters, axes=[(3,4,5), (0,1,2)]) + sel
 
 其中参数a，b都是np数组；axes是给定的轴，axes赋整数的情况不在讨论范围之内，这里讨论的是其为数组的情况，先看最简单的例子：
 
-`>>> A = np.random.randint(0,9,(3,4))
+>>> A = np.random.randint(0,9,(3,4))
 >>> B = np.random.randint(0,9,(4,5))
 >>> C = np.tensordot(A, B, [1, 0])
 >>> C.shape
@@ -335,7 +333,7 @@ $a \cdot b=a_{1} b_{1}+\dots+a_{n} b_{n} $
 
 说了这么多，主要是为了接下来的内容做铺垫，再来看一个复杂点的例子：
 
-`>>> A = np.random.randint(0,9,(3,4,5))
+>>> A = np.random.randint(0,9,(3,4,5))
 >>> B = np.random.randint(0,9,(4,5,2))
 >>> np.tensordot(A, B, [(1,2), (0,1)])
 array([[290, 146],
@@ -344,7 +342,7 @@ array([[290, 146],
 
 经过上面的解释，想必你肯定知道这些数值是怎么来的了，来验证一下：
 
-`>>> np.sum(A[0] * B[:,:,0])
+>>> np.sum(A[0] * B[:,:,0])
 290
 >>> np.sum(A[2] * B[:,:,1])
 205`
@@ -355,7 +353,7 @@ array([[290, 146],
 
 官方手册上有个例子，这里搬过来，应该能更好的理解：
 
-`>>> a = np.arange(60.).reshape(3,4,5)
+>>> a = np.arange(60.).reshape(3,4,5)
 >>> b = np.arange(24.).reshape(4,3,2)
 >>> c = np.tensordot(a,b, axes=([1,0],[0,1]))
 >>> c.shape

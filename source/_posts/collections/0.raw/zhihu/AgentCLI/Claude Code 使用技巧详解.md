@@ -62,7 +62,7 @@ Claude Code 底部的 <strong>状态栏</strong> 可以高度定制化，用于�
 - 逐个解决每个子任务
 - 如果子任务仍然太难，继续拆分为 <strong>更小的子问题</strong>
 - 最后将所有解决方案 <strong>组合</strong> 起来
-`直接方式：   A ────────────────→ B  （容易失败）
+直接方式：   A ────────────────→ B  （容易失败）
 分步方式：   A → A1 → A2 → A3 → B  （成功率高）`
 
 #### 实例
@@ -92,12 +92,11 @@ Claude Code 底部的 <strong>状态栏</strong> 可以高度定制化，用于�
 
 默认情况下 Claude Code 会在 commit 中添加 `Co-Authored-By` 以及在 PR 中添加归属页脚。可通过 `~/.claude/settings.json` 关闭：
 
-`{
+```text
+{
   "attribution": {
     "commit": "",
     "pr": ""
-
-```text
   }
 ```
 
@@ -128,7 +127,7 @@ Claude Code 底部的 <strong>状态栏</strong> 可以高度定制化，用于�
 
 由于 Claude Code 是终端工具，设置短别名可以 <strong>大幅加速</strong> 日常操作：
 
-`alias c='claude'           # 最常用
+alias c='claude'           # 最常用
 alias ch='claude --chrome'  # 带浏览器集成
 alias gb='github'           # GitHub Desktop
 alias co='code'             # VS Code
@@ -182,7 +181,7 @@ alias q='cd ~/Desktop/projects'  # 快速跳转到项目目录`
 
 对于需要交互式终端的任务（如测试 Claude Code 自身），可以使用 <strong>tmux</strong> ：
 
-`tmux kill-session -t test-session 2>/dev/null
+tmux kill-session -t test-session 2>/dev/null
 tmux new-session -d -s test-session
 tmux send-keys -t test-session 'claude' Enter
 sleep 2
@@ -199,7 +198,7 @@ tmux capture-pane -t test-session -p`
 - <strong>默认关闭</strong> Claude 原生浏览器集成
 - 仅在需要时通过 `ch`（`claude --chrome`）别名启用
 - 在 CLAUDE.md 中配置 Chrome 使用 <strong>ref 而非坐标</strong> 来点击元素：
-`# Claude for Chrome
+# Claude for Chrome
 - Use `read_page` to get element refs from the accessibility tree
 - Use `find` to locate elements by description
 - Click/interact using `ref`, not coordinates
@@ -273,7 +272,7 @@ Claude Code 的对话历史 <strong>存储在本地</strong> ，路径为 `~/.cl
 
 #### 常用搜索命令
 
-`# 查找所有提到 "Reddit" 的对话文件
+# 查找所有提到 "Reddit" 的对话文件
 grep -l -i "reddit" ~/.claude/projects/-Users-yk-Desktop-projects-*/*.jsonl
 
 # 查找今天关于某主题的对话
@@ -321,11 +320,10 @@ Claude Code 的 <strong>系统提示词 + 工具定义</strong> 在对话开始�
 
 补丁后需要 <strong>禁用自动更新</strong> ，否则更新会覆盖补丁：
 
-`{
+```text
+{
   "env": {
     "DISABLE_AUTOUPDATER": "1"
-
-```text
   }
 ```
 
@@ -339,11 +337,10 @@ Claude Code 的 <strong>系统提示词 + 工具定义</strong> 在对话开始�
 
 开启 <strong>惰性加载</strong> ：
 
-`{
+```text
+{
   "env": {
     "ENABLE_TOOL_SEARCH": "true"
-
-```text
   }
 ```
 
@@ -357,7 +354,7 @@ Claude Code 的 <strong>系统提示词 + 工具定义</strong> 在对话开始�
 
 <strong>Git Worktree = 分支 + 独立目录</strong> 。普通 Git 工作流中，项目文件夹同一时刻只能切换到一个分支；而 Worktree 允许你在 <strong>不同目录中同时操作不同分支</strong> 。
 
-`传统方式：
+传统方式：
   项目文件夹 → main 或 feature-branch-1（一次只能一个）
 
 Worktree 方式：
@@ -377,7 +374,7 @@ Worktree 方式：
 
 #### 工作方式
 
-`检查 #1 → 等 1 分钟
+检查 #1 → 等 1 分钟
 检查 #2 → 等 2 分钟
 检查 #3 → 等 4 分钟
 检查 #4 → 等 8 分钟
@@ -391,7 +388,7 @@ Worktree 方式：
 
 #### 为什么不用 `gh run watch`
 
-`gh run watch` 会 <strong>持续输出大量行</strong> ，浪费 Token。而手动指数退避配合 `gh run view  | grep ` 更加 <strong>Token 高效</strong> 。
+gh run watch` 会 **持续输出大量行** ，浪费 Token。而手动指数退避配合 `gh run view  | grep ` 更加 <strong>Token 高效</strong> 。
 
 <strong>这不是传统意义上的程序化指数退避——是 AI 在 手动执行</strong> 这个策略，但效果很好。
 ### 九、Claude Code 作为写作助手
@@ -460,7 +457,7 @@ Worktree 方式：
 
 本地 Claude Code 可以 <strong>控制</strong> 容器内的另一个 Claude Code 实例：
 
-`本地 Claude Code
+本地 Claude Code
   └── tmux 会话
         └── 连接到容器
               └── Claude Code (--dangerously-skip-permissions)`
@@ -502,7 +499,7 @@ Worktree 方式：
 
 命令说明/fork在当前会话中 分叉--fork-session配合 --resume 或 --continue 使用，如 claude -c --fork-session由于 `--fork-session` 没有短选项，可以在 `~/.zshrc` 或 `~/.bashrc` 中添加函数将 `--fs` 映射为 `--fork-session`：
 
-`claude() {
+claude() {
   local args=()
   for arg in "$@"; do
 
@@ -538,11 +535,11 @@ Worktree 方式：
 
 - 将 `check-context.sh` 复制到 `~/.claude/scripts/`
 - 在 `~/.claude/settings.json` 中添加 <strong>Stop Hook</strong> ：
-`{
-  "hooks": {
-    "Stop": [
 
 ```text
+{
+  "hooks": {
+    "Stop": [
       {
         "hooks": [
           {
@@ -562,10 +559,9 @@ Worktree 方式：
 
 两个脚本都需要读取 `~/.claude` 目录，建议在全局设置中预先授权：
 
-`{
-  "permissions": {
-
 ```text
+{
+  "permissions": {
     "allow": ["Read(~/.claude)"]
   }
 ```
@@ -719,7 +715,7 @@ Claude Code 本质上是一个 <strong>增强版的搜索/深度研究工具</st
 
 #### 抽象层级光谱
 
-`高空俯瞰（Vibe Coding）    ←———————————→    深海潜水（精细审查）
+高空俯瞰（Vibe Coding）    ←———————————→    深海潜水（精细审查）
   - 不关心每行代码              - 逐行检查代码
   - 一次性项目                  - 核心生产系统
   - 非关键部分                  - 检查依赖项
@@ -753,7 +749,7 @@ Claude Code 本质上是一个 <strong>增强版的搜索/深度研究工具</st
 
 #### 使用方式
 
-`# 全局安装
+# 全局安装
 npm install -g cc-safe
 cc-safe ~/projects
 
@@ -783,7 +779,7 @@ npx cc-safe .`
 - <strong>确认测试失败</strong> ：验证测试本身是有效的
 - <strong>提交测试</strong> ：将测试固化为”合约”
 - <strong>编写代码使测试通过</strong> ：Claude Code 此时有了明确的 <strong>目标靶心</strong>
-`传统流程：  写代码 → 写测试 → 修复 → 循环
+传统流程：  写代码 → 写测试 → 修复 → 循环
 TDD 流程：  写测试 → 确认失败 → 提交 → 写代码通过测试 ✅`
 
 <strong>作者用这种方式构建了 cc-safe</strong> 项目。通过在实现之前提交失败的测试，为代码应该做什么创建了 <strong>清晰的合约</strong> 。
@@ -875,7 +871,7 @@ Claude Code 的输入框模拟了常见的 <strong>终端 / readline 快捷键</
 
 编辑器由 **`EDITOR`** 环境变量决定，两种设置方式：
 
-`# 方式一：在 ~/.zshrc 或 ~/.bashrc 中
+# 方式一：在 ~/.zshrc 或 ~/.bashrc 中
 export EDITOR=vim      # 或 nano, code, nvim 等
 
 ```text
@@ -955,7 +951,7 @@ Claude Code 在生成文字时有类似问题：
 
 #### 作者的自动化进化路径
 
-`ChatGPT 复制粘贴命令 → 构建 Kaguya 插件自动执行
+ChatGPT 复制粘贴命令 → 构建 Kaguya 插件自动执行
 → Claude Code 出现（无需自建工具）
 → 自动化打字过程 → 用 Claude Code 构建语音转录 App
 → 自动化重复指令 → 放入 CLAUDE.md
@@ -998,7 +994,7 @@ Claude Code 在生成文字时有类似问题：
 命令描述对应技巧/dx:gha 分析 GitHub Actions 失败Tip 29/dx:handoff创建交接文档保持上下文连续性Tip 8/dx:clone克隆对话以分支探索Tip 23/dx:half-clone半克隆减少上下文Tip 23/dx:reddit-fetch通过 Gemini CLI 获取 Reddit 内容Tip 11/dx:review-claudemd分析近期对话并改进 CLAUDE.mdTip 30
 #### 安装命令
 
-`claude plugin marketplace add ykdojo/claude-code-tips
+claude plugin marketplace add ykdojo/claude-code-tips
 claude plugin install dx@ykdojo`
 
 <strong>推荐搭配</strong> ： <strong>Playwright MCP</strong> 用于浏览器自动化：
@@ -1009,7 +1005,7 @@ claude plugin install dx@ykdojo`
 
 运行以下命令可一次性配置多项推荐设置：
 
-`bash 
+bash 
 
 #### 配置项一览
 

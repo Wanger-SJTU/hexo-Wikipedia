@@ -41,7 +41,7 @@ LangChain 提出的方案如下图所示，暂且称它为「增量更新」模�
 
 图三： RecordManager 是一个抽象类，把需要的几个功能先定义出来看一下具体的使用方法，大都是来自 Indexing |  ️  Langchain的代码，大略记录一下，详细可以去对应的地方  copy ：
 
-`# index 部分导入没有变化
+# index 部分导入没有变化
 from langchain.indexes import index
 
 # 但要选一个「RecordManager」用来保存文档更新信息：

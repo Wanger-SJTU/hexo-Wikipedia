@@ -39,9 +39,8 @@ Halide是用C++作为宿主语言的一个图像处理相关的DSL(Domain Specif
 
 在神经网络中矩阵乘法是最常见的算子，矩阵乘法的公式为：$  C_{ij} = \sum_{k=1}^{n} A_{ik} \cdot B_{kj}  $ ，其最朴实的实现如下代码：
 
-`void matrixMultiplication(int A[][128], int B[][128], int result[][128], int size) {
-
 ```cpp
+void matrixMultiplication(int A[][128], int B[][128], int result[][128], int size) {
     for (int i = 0; i  size; ++i) {
         for (int j = 0; j  size; ++j) {
             result[i][j] = 0;
@@ -53,13 +52,11 @@ Halide是用C++作为宿主语言的一个图像处理相关的DSL(Domain Specif
 }
 ```
 
-`
 
 使用循环分块对其进行优化：
 
-`void matrixMultiplicationTiled(int A[][128], int B[][128], int result[][128], int size, int tileSize) {
-
 ```cpp
+void matrixMultiplicationTiled(int A[][128], int B[][128], int result[][128], int size, int tileSize) {
     for (int i = 0; i  size; i += tileSize) {
         for (int j = 0; j  size; j += tileSize) {
             for (int k = 0; k  size; k += tileSize) {
@@ -78,13 +75,12 @@ Halide是用C++作为宿主语言的一个图像处理相关的DSL(Domain Specif
 }
 ```
 
-`
 
 抑或是使用向量化对其优化：
 
-`#include 
-
 ```cpp
+#include 
+
 void matrixMultiplicationVectorized(int A[][128], int B[][128], int result[][128], int size) {
     for (int i = 0; i  size; ++i) {
         for (int j = 0; j  size; j += 4) {
@@ -101,7 +97,6 @@ void matrixMultiplicationVectorized(int A[][128], int B[][128], int result[][128
 }
 ```
 
-`
 
 我们还可以使用更多的优化方式来实现矩阵乘法，或是将它们组合起来。上面三种操作的算法功能是一样的，但是速度是有差异的。这种差异是和硬件设计强相关的，计算机为加快运算做了许多特殊设计，如存储层次、向量加速器、多个核心等，当我们充分这些硬件特性，可以极大地提升程序执行的速度，优化后的运行效率是原始程序效率的几十倍甚至几百倍。
 
@@ -120,9 +115,8 @@ void matrixMultiplicationVectorized(int A[][128], int B[][128], int result[][128
 - <strong>并行（Parallelizing）</strong>：将计算任务分解成多个并行执行的子任务，充分利用多核处理器或者并行处理单元，提高整体计算速度。
 对于神经网络中的算子来说，其计算形式一般比较规则，是多层嵌套的循环，也很少有复杂的控制流，并且输入主要是多维张量。分析完计算的特点后，我们来分析下调度的要素。对于一个计算，其首先要进行存储的分配以容纳输入，之后在多层循环下进行计算，得出最终结果后再存储回结果位置。
 
-`// in为输入原始图像 blury为输出模糊后的图像
-
 ```cpp
+// in为输入原始图像 blury为输出模糊后的图像
 void box_filter_3x3(const Mat &in, Mat &blury)
 {
     Mat blurx(in.size(), in.type());  // 存储
@@ -140,7 +134,6 @@ void box_filter_3x3(const Mat &in, Mat &blury)
 }
 ```
 
-`
 
 根据调度的要素，可以将其抽象为一个树结构，称为调度树：
 
@@ -174,34 +167,34 @@ void box_filter_3x3(const Mat &in, Mat &blury)
 
 在调度中可以使用许多优化手段，这些方式可以通过变换调度树来体现。当然在代码中Halide提供了封装好的api，原始代码：
 
-`Var x("x"), y("y"); //定义两个变量
+```cpp
+Var x("x"), y("y"); //定义两个变量
 Func gradient("gradient");  //定义一个待执行的function
 gradient(x, y) = x + y;
 // realize 即为实现这个操作 到了这一步才会对上述的操作进行编译并执行
-Bufferint> output = gradient.realize(4, 4);
-`
+Buffer<int> output = gradient.realize(4, 4);
+```
+
 
 这个代码转换为C++就是：
 
-`for (int y = 0; y  4; y++) {
-
 ```cpp
+for (int y = 0; y  4; y++) {
     for (int x = 0; x  4; x++) {
         printf("Evaluating at x = %d, y = %d: %d\n", x, y, x + y);
     }
 }
 ```
 
-`
 
 接下来使用一些调度提供的变换来进行优化。
 
 例如对于Fuse：
 
-`Var fused;
+```cpp
+Var fused;
 gradient.fuse(x, y, fused);
 
-```cpp
 //对应的C++代码
 for (int fused = 0; fused  4*4; fused++) {
     int y = fused / 4;
@@ -210,7 +203,6 @@ for (int fused = 0; fused  4*4; fused++) {
 }
 ```
 
-`
 
 在调度树中，它就进行这样的变换：将树中同一函数的两个相邻循环节点合并为一个循环节点，新节点与原始外部循环节点保持在树中的相同位置，并且每个节点的子节点都连接起来，原始外部变量的子节点位于原始内部变量的子节点之前。
 
@@ -218,12 +210,12 @@ for (int fused = 0; fused  4*4; fused++) {
 
 在这一步首先对x轴和y轴进行循环分块，分块因子为4，然后将外侧的y和外侧的x轴循环进行融合(2+2=4)，再将这个融合后的操作进行并行操作。
 
-`Var x_outer, y_outer, x_inner, y_inner, tile_index;
+```cpp
+Var x_outer, y_outer, x_inner, y_inner, tile_index;
 gradient.tile(x, y, x_outer, y_outer, x_inner, y_inner, 4, 4);
 gradient.fuse(x_outer, y_outer, tile_index);
 gradient.parallel(tile_index);
 
-```cpp
 //对应的C++代码
 // This outermost loop should be a parallel for loop, but that's hard in C.
 for (int tile_index = 0; tile_index  4; tile_index++) {
@@ -239,7 +231,6 @@ for (int tile_index = 0; tile_index  4; tile_index++) {
 }
 ```
 
-`
 
 在调度树中使用Parallel：改变循环类型为并行化；类似还有顺序执行、向量化、循环展开，只需更改相应循环节点上的属性。
 
@@ -247,11 +238,11 @@ for (int tile_index = 0; tile_index  4; tile_index++) {
 
 如果用Halide实现一个完整的算子，它就是这样的风格：
 
-`Func blur_3x3(Func input) {
+```cpp
+Func blur_3x3(Func input) {
   Func blur_x, blur_y;
   Var x, y, xi, yi;
 
-```text
   // The algorithm - no storage or order
   blur_x(x, y) = (input(x-1, y) + input(x, y) + input(x+1, y))/3;
   blur_y(x, y) = (blur_x(x, y-1) + blur_x(x, y) + blur_x(x, y+1))/3;
@@ -265,7 +256,6 @@ for (int tile_index = 0; tile_index  4; tile_index++) {
 }
 ```
 
-`
 
 除了这些，其他的优化类型也可以对调度树进行相应的变换。
 

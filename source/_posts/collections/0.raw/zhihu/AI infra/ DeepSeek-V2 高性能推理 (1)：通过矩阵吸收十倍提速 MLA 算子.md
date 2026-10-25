@@ -49,7 +49,7 @@ q_b_proj 大小为 [q_lora_rank, num_heads * q_head_dim] = [q_lora_rank, num_att
 
 具体投影代码如下：
 
-`    # 计算Q：对应公式中的 37-39 行，先降维再升维，好处是相比直接使用大小为 [5120, 24576] 的矩阵
+    # 计算Q：对应公式中的 37-39 行，先降维再升维，好处是相比直接使用大小为 [5120, 24576] 的矩阵
     # [5120, 1536] * [1536, 24576] 这样的低秩分解在存储空间和计算量上都大幅度降低
 
 ```text
@@ -74,7 +74,7 @@ kv_b_proj 大小为  [kv_lora_rank， num_heads * (q_head_dim - qk_rope_head_dim
 
 具体的代码实现如下：
 
-`        # 对应公式中的 41 和 43 行只是还没有加 rope
+        # 对应公式中的 41 和 43 行只是还没有加 rope
         # 一个优化的 MLA KVCache 实现只需要缓存这个 compressed_kv 就行，不过后面实际上展开了
 
 ```text
@@ -109,7 +109,7 @@ kv_b_proj 大小为  [kv_lora_rank， num_heads * (q_head_dim - qk_rope_head_dim
 
 这部分也涉及一个标准的参数矩阵 o_proj，大小 [num_heads * v_head_dim, hidden_size] = [128*128， 5120] 
 
-`        # 给需要 rope 的部分加 rope
+        # 给需要 rope 的部分加 rope
         q_pe, k_pe = apply_rotary_pos_emb(q_pe, k_pe, cos, sin, position_ids)
         
         # 更新和拼接历史 KVCache，可以看到这里存储的是展开后的 MHA KVCache
@@ -167,7 +167,7 @@ $$atten\_weights = {q_t}^\top k_t = (W^{UQ} c_t^Q)^{\top} W^{UK} c_t^{KV} = {c_t
 
 对应的实现代码如下
 
-`        # 以下和原本实现相同
+        # 以下和原本实现相同
 
 ```text
         bsz, q_len, _ = hidden_states_q.size()
@@ -212,7 +212,7 @@ $$atten\_weights = {q_t}^\top k_t = (W^{UQ} c_t^Q)^{\top} W^{UK} c_t^{KV} = {c_t
 
 对于V的吸收，情况稍微复杂。为表述的清楚性，我们采用Einstein求和约定描述该过程：
 
-`v_t = einsum('hdc,blc->blhd', W_UV, c_t_KV) # (1)
+v_t = einsum('hdc,blc->blhd', W_UV, c_t_KV) # (1)
 o   = einsum('bqhl,blhd->bqhd', attn_weights, v_t)     # (2)
 u   = einsum('hdD,bhqd->bhD', W_o, o)       # (3)
 

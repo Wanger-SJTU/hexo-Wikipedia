@@ -40,7 +40,7 @@ Hermes 里多个Agent 要如何协作？无论是通过共享文档传递，还�
 - • 一个 SQLite 里的任务记录；
 - • Kanban 封装过的 task / comment / status。
 自动拆任务的 `delegate_task`
-`delegate_task` 这种方式，Hermes 的 Profile 自己会调度，无需你干预。
+delegate_task` 这种方式，Hermes 的 Profile 自己会调度，无需你干预。
 
 而且这个过程你是看得见的。
 
@@ -51,7 +51,7 @@ Hermes 里多个Agent 要如何协作？无论是通过共享文档传递，还�
 简单的上下游接力
 还是 `scribe`，就有一个经常协作的下游 Agent：`video-learner`。
 
-`scribe` 是跑在我海外云主机上的。前文提到过，只要丢一个 YouTube 视频地址，`scribe` 就会返回我一个飞书文档链接，里面有视频英文的完整原文。
+scribe` 是跑在我海外云主机上的。前文提到过，只要丢一个 YouTube 视频地址，`scribe` 就会返回我一个飞书文档链接，里面有视频英文的完整原文。
 
 而 `video-learner` 是跑在我本地 Mac mini 上的。`video-learner` 会读取 `scribe` 生成的飞书文档，再按要求翻译、润色、整理成固定格式 Markdown，保存到我本机 Obsidian 的知识库里。
 

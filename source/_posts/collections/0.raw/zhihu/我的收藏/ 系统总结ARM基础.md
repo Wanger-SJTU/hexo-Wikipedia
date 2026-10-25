@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/694757259
 ---
 
 
-`一
+一
 
 ARM汇编`
 
@@ -23,21 +23,20 @@ ARM汇编`
 
 一般的我们的电脑都是X86架构的机器，这里我们使用clang来对我们的文件进行编译，自己编译文件，放入ida中对照着学习更容易理解一点。  
 
-`二
+二
 关于clang的一些指令：`
 
 #### 使用clang直接编译成可执行文件**
 
 **
 
-`//将我们的文件编译成ARMv5架构的文件（32位）
+//将我们的文件编译成ARMv5架构的文件（32位）
 clang -target armv-linux-android21 demo.c -o demo
 //将我们的文件编译成ARMv7-A架构的文件 (32位)
 clang -target armv7a-linux-android21 demo.c -o demo
 //将我们的文件编译成AArch64 架构的文件（64位）
 clang -target aarch64-linux-android21 1.cpp -o demo
 
-`
 
 ### 分开步骤进行编译**
 
@@ -45,33 +44,28 @@ clang -target aarch64-linux-android21 1.cpp -o demo
 
 #### 预处理**
 
-`clang -target arm-linux-android21 -E demo.c -o demo.i
+clang -target arm-linux-android21 -E demo.c -o demo.i
 
-`
 
 #### <strong>编译（生成汇编文件）</strong>
 
-`clang -target arm-linux-android21eabi -S demo.i -o demo.s
+clang -target arm-linux-android21eabi -S demo.i -o demo.s
 
-`
 
 #### <strong>汇编（生成未资源重定位的二进制文件）</strong>
 
-`clang -target arm-linux-android21eabi -S demo.s -o demo.o
+clang -target arm-linux-android21eabi -S demo.s -o demo.o
 
-`
 
 #### <strong>链接（生成可执行文件）</strong>
 
-`clang -target arm-linux-android21eabi -S demo.o -o demo
+clang -target arm-linux-android21eabi -S demo.o -o demo
 
-`
 
 ### <strong>clang编译thumb架构的文件</strong>
 
-`clang -target arm-linux-android21 -S -mthumb demo.c -o demo.s
+clang -target arm-linux-android21 -S -mthumb demo.c -o demo.s
 
-`
 
 #### <strong>针对于ARM与thumb的区别</strong>
 
@@ -89,7 +83,7 @@ ARM处理器具有从ARM状态到Thumb状态和从Thumb状态到ARM状态的无�
 
 总得来说，thumb就是实现一个更高性能，更高代码密度的ARM指令分支。
 
-`三
+三
 
 ARM寄存器`
 
@@ -215,7 +209,7 @@ Arm-v8架构有31个通用寄存器X0-X30 (64位长），而Arm-v7架构仅有16
 
 **
 
-`四
+四
 
 ARM处理器几种工作模式`
 
@@ -251,7 +245,7 @@ ARM处理器几种工作模式`
 
 **
 
-`五
+五
 
 ARM架构下的函数调用约定`
 
@@ -279,7 +273,7 @@ AAPCS-VFP 是在 AAPCS 的基础上添加了向量浮点扩展（Vector Floating
 
 ◆浮点参数传递：浮点参数通过浮点寄存器传递，通常是 S0、S1、S2、S3 等。如果参数个数超过了浮点寄存器的数量，剩余的参数通过栈传递。◆浮点寄存器的使用：除了用于浮点参数传递的寄存器，还有一些寄存器被用作临时寄存器或保存特定的值，如浮点链接寄存器（LR）和浮点状态寄存器（FPSCR）等。
 
-`六
+六
 
 汇编指令`
 
@@ -291,9 +285,8 @@ AAPCS-VFP 是在 AAPCS 的基础上添加了向量浮点扩展（Vector Floating
 
 将 R2 中的值移动到 R1 中。
 
-`mov r1, r2
+mov r1, r2
 
-`
 
 #### 立即寻址**
 
@@ -301,9 +294,8 @@ AAPCS-VFP 是在 AAPCS 的基础上添加了向量浮点扩展（Vector Floating
 
 将 0xFF00 立即数移动到 R0 中。
 
-`mov r0, #0xFF00
+mov r0, #0xFF00
 
-`
 
 #### 寄存器移位寻址**
 
@@ -311,9 +303,8 @@ AAPCS-VFP 是在 AAPCS 的基础上添加了向量浮点扩展（Vector Floating
 
 将 R1 左移 3 位的结果移动到 R0 中。
 
-`mov r0, r1, lsl #3
+mov r0, r1, lsl #3
 
-`
 
 #### 寄存器间接寻址**
 
@@ -321,9 +312,8 @@ AAPCS-VFP 是在 AAPCS 的基础上添加了向量浮点扩展（Vector Floating
 
 将 R2 指向的地址中的值**加载到 R1 中。
 
-`ldr r1, [r2]     //r1=*r2
+ldr r1, [r2]     //r1=*r2
 
-`
 
 #### <strong>基址变址寻址</strong>
 
@@ -331,9 +321,8 @@ AAPCS-VFP 是在 AAPCS 的基础上添加了向量浮点扩展（Vector Floating
 
 将 R2 加上 4 所得的地址中的**值加载到 R1 中。
 
-`ldr r1, [r2, #4]  ; r1=*(r2+4)
+ldr r1, [r2, #4]  ; r1=*(r2+4)
 
-`
 
 #### <strong>多寄存器寻址</strong>
 
@@ -341,9 +330,8 @@ AAPCS-VFP 是在 AAPCS 的基础上添加了向量浮点扩展（Vector Floating
 
 将 R1 中的值加载到 R2-R7 和 R12 中，然后将 R1 加上 32。
 
-`ldmia r1!, {r2-r7, r12}
+ldmia r1!, {r2-r7, r12}
 
-`
 
 #### 堆栈寻址**
 
@@ -351,9 +339,8 @@ AAPCS-VFP 是在 AAPCS 的基础上添加了向量浮点扩展（Vector Floating
 
 将 R2-R7、LR 的值存储到堆栈中，然后将 SP 减去 24。
 
-`stmfd sp!, {r2-r7, lr}
+stmfd sp!, {r2-r7, lr}
 
-`
 
 #### 相对寻址**
 
@@ -361,10 +348,9 @@ AAPCS-VFP 是在 AAPCS 的基础上添加了向量浮点扩展（Vector Floating
 
 如果条件码为 EQ，则跳转到标签 flag 处。
 
-`beq flag
+beq flag
 flag:
 
-`
 
 ### 汇编常用的指令**
 
@@ -374,27 +360,23 @@ flag:
 
 B 强制跳转
 
-`B label  //无条件跳转到标签 label 处
+B label  //无条件跳转到标签 label 处
 
-`
 
 BL 带返回的跳转，将返回地址放入LR寄存器中
 
-`BL label //跳转到标签 label 处，并将返回地址存储在 LR 中
+BL label //跳转到标签 label 处，并将返回地址存储在 LR 中
 
-`
 
 BLX 带返回和带状态的切换跳转指令 arm → thumb
 
-`BLX label  //跳转到标签 label 处，并将返回地址存储在 LR 中。可以实现 ARM 和 Thumb 之间的切换
+BLX label  //跳转到标签 label 处，并将返回地址存储在 LR 中。可以实现 ARM 和 Thumb 之间的切换
 
-`
 
 Bx 带状态的跳转
 
-`BX R1   // 跳转到地址存储在 R1 中的位置，并切换到相应的指令集模式
+BX R1   // 跳转到地址存储在 R1 中的位置，并切换到相应的指令集模式
 
-`
 
 ### 数据处理指令**
 
@@ -402,53 +384,46 @@ Bx 带状态的跳转
 
 mov 赋值
 
-`MOV R0, R1 //将 R1 中的值赋值到 R0 中。
+MOV R0, R1 //将 R1 中的值赋值到 R0 中。
 
-`
 
 ADD 加
 
-`ADD R0, R1, R2 //将 R1 和 R2 中的值相加，然后将结果存储到 R0 中。
+ADD R0, R1, R2 //将 R1 和 R2 中的值相加，然后将结果存储到 R0 中。
 
-`
 
 SUB 减
 
-`SUB R0, R1, R2  //
+SUB R0, R1, R2  //
 
-`
 
 AND**与
 
-`AND R0, R1, R2 //将 R1 和 R2 中的值进行按位与操作，然后将结果存储到 R0 中。
+AND R0, R1, R2 //将 R1 和 R2 中的值进行按位与操作，然后将结果存储到 R0 中。
 
-`
 
 **
 
 EOR**：异或
 
-`EOR R0, R1, R2 //将 R1 和 R2 中的值进行按位异或操作，然后将结果存储到 R0 中。
+EOR R0, R1, R2 //将 R1 和 R2 中的值进行按位异或操作，然后将结果存储到 R0 中。
 
-`
 
 **
 
 ORR**：或
 
-`ORR R0, R1, R2  //将 R1 和 R2 中的值进行按位或操作，然后将结果存储到 R0 中。
+ORR R0, R1, R2  //将 R1 和 R2 中的值进行按位或操作，然后将结果存储到 R0 中。
 
-`
 
 **
 
 BIC**：与非 , 可以实现的 Bit Clear的功能
 
-`BIC R0, R1, #0xf  //将 R1 和立即数 #0xf 进行按位与非操作，然后将结果存储到 R0 中。
+BIC R0, R1, #0xf  //将 R1 和立即数 #0xf 进行按位与非操作，然后将结果存储到 R0 中。
 
 //将R1   低4位清0
 
-`
 
 ### <strong>乘法指令：</strong>
 
@@ -456,15 +431,13 @@ BIC**：与非 , 可以实现的 Bit Clear的功能
 
 MUL 一般乘法：
 
-`MUL  r0 r1,r2   //r0 = r1 * r2  乘法
+MUL  r0 r1,r2   //r0 = r1 * r2  乘法
 
-`
 
 MLA 带加法的乘法:
 
-`MLA  r0,r1,r2,r3  //r0 = r1 * r2 + r3   带加法的乘法
+MLA  r0,r1,r2,r3  //r0 = r1 * r2 + r3   带加法的乘法
 
-`
 
 由于32位寄存器 没有办法存64位的大数，因此需要两个寄存器来存储，64位的乘法操作就会发送改变**
 
@@ -472,27 +445,23 @@ MLA 带加法的乘法:
 
 SMULL 64位乘法:
 
-`SMULL  r0,r1 ,r2 ,r3  // r0 = (r2 * r3)的低32位   r1 = (r2 * r3)的高32位
+SMULL  r0,r1 ,r2 ,r3  // r0 = (r2 * r3)的低32位   r1 = (r2 * r3)的高32位
 
-`
 
 SMLAL 64位带加法的乘法
 
-`SMLAL  r0,r1 ,r2 ,r3  //r0 = (r2 * r3)的低32位 + r0    r1 = (r2 * r3)的高32位 + r1
+SMLAL  r0,r1 ,r2 ,r3  //r0 = (r2 * r3)的低32位 + r0    r1 = (r2 * r3)的高32位 + r1
 
-`
 
 UMULL 64位无符号乘法
 
-`UMULL r0,r1 ,r2 ,r3  // r0 = (r2 * r3)的低32位   r1 = (r2 * r3)的高32位
+UMULL r0,r1 ,r2 ,r3  // r0 = (r2 * r3)的低32位   r1 = (r2 * r3)的高32位
 
-`
 
 UMLAL 64位无符号带加法的乘法
 
-`UMLAL   r0,r1 ,r2 ,r3  //r0 = (r2 * r3)的低32位 + r0    r1 = (r2 * r3)的高32位 + r1
+UMLAL   r0,r1 ,r2 ,r3  //r0 = (r2 * r3)的低32位 + r0    r1 = (r2 * r3)的高32位 + r1
 
-`
 
 ### 移位操作：**
 
@@ -500,41 +469,36 @@ UMLAL 64位无符号带加法的乘法
 
 LSL**：逻辑左移指令，将寄存器中的值向左移动指定的位数，移动时右侧空出的位补零。
 
-`LSL R0, R1, #2 // 将 R1 中的值左移 2 位，结果存储到 R0 中
+LSL R0, R1, #2 // 将 R1 中的值左移 2 位，结果存储到 R0 中
 
-`
 
 **
 
 LSR**：逻辑右移指令，将寄存器中的值向右移动指定的位数，移动时左侧空出的位补零。
 
-`LSR R0, R1, #3 // 将 R1 中的值右移 3 位，结果存储到 R0 中
+LSR R0, R1, #3 // 将 R1 中的值右移 3 位，结果存储到 R0 中
 
-`
 
 **
 
 ROR**：循环右移指令，将寄存器中的值向右移动指定的位数，移动时左侧空出的位补上右侧的位。
 
-`ROR R0, R1, #4 // 将 R1 中的值循环右移 4 位，结果存储到 R0 中
+ROR R0, R1, #4 // 将 R1 中的值循环右移 4 位，结果存储到 R0 中
 
-`
 
 **
 
 ASR**：算术右移指令，将寄存器中的值向右移动指定的位数，移动时左侧空出的位补上符号位。
 
-`ASR R0, R1, #5 // 将 R1 中的值算术右移 5 位，结果存储到 R0 中
+ASR R0, R1, #5 // 将 R1 中的值算术右移 5 位，结果存储到 R0 中
 
-`
 
 **
 
 RRX**：扩展的循环右移指令，将寄存器中的值向右移动一位，同时将 C 标志位的值作为最低位插入到左侧。
 
-`RRX R0, R1 // 将 R1 中的值扩展的循环右移 1 位，结果存储到 R0 中
+RRX R0, R1 // 将 R1 中的值扩展的循环右移 1 位，结果存储到 R0 中
 
-`
 
 ### <strong>内存访问指令：</strong>
 
@@ -548,7 +512,7 @@ ARM汇编采用RISC架构，CPU本身并不能直接的读取内存，而是需�
 
 ldr 读取**
 
-`ldr r0,=0x12  //将0x12赋值给r0
+ldr r0,=0x12  //将0x12赋值给r0
 ldr r0, .lable1 //获得.lable1的地址，存储在r0之中
 ldr r0,[r3] // r0 = *r3
 ldr r0,[r3,#4]  // r0 = *(r3 + 4)
@@ -558,17 +522,16 @@ ldr r0,[r3,r2,LSL #2] // r0 = *(r3+(r2
 
 str 存储**
 
-`STR R0，[R1]，＃8      // 将R0中的字数据写入以R1为地址的存储器中，并将新地址R1＋8写入R1。
+STR R0，[R1]，＃8      // 将R0中的字数据写入以R1为地址的存储器中，并将新地址R1＋8写入R1。
 STR R0，[R1，＃8]      // 将R0中的字数据写入以R1＋8为地址的存储器中。”
 STR  R1, [r0]         // 将r1寄存器的值，传送到地址值为r0的（存储器）内存中
 
-`
 
 **
 
 ldr与 str 指令的后缀与变种**
 
-`在32位中会读4个字节 在64位中会读8个字节
+在32位中会读4个字节 在64位中会读8个字节
 读取
 ldr  
 ldrb  //读一个字节  一个字节的读取
@@ -582,7 +545,6 @@ strh //两个字节写入
 stm  // 批量处理
  
 
-`
 
 ### <strong>比较寄存器指令</strong>
 
@@ -590,31 +552,27 @@ stm  // 批量处理
 
 CMP  比较两个操作数的值
 
-`CMP r1, #10   ; 比较寄存器 r1 的值和立即数 10
+CMP r1, #10   ; 比较寄存器 r1 的值和立即数 10
 BGT label     ; 如果 r1 的值大于 10，则跳转到 label 处
 
-`
 
 CMN比较两个操作数的值的补码
 
-`CMN r2, #5    ; 比较寄存器 r2 的值的补码和立即数 5
+CMN r2, #5    ; 比较寄存器 r2 的值的补码和立即数 5
 BLE label     ; 如果 r2 的补码值小于或等于 5，则跳转到 label 处
 
-`
 
 TST 将两个操作数进行按位与运算，并根据结果设置条件码。
 
-`TST r3, #0xFF ; 检查寄存器 r3 的低八位是否全部为 1
+TST r3, #0xFF ; 检查寄存器 r3 的低八位是否全部为 1
 BEQ label     ; 如果 r3 的低八位全为 1，则跳转到 label 处
 
-`
 
 TEQ 将两个操作数进行按位异或运算，并根据结果设置条件码。
 
-`TEQ r4, #0x80 ; 检查寄存器 r4 的值和立即数 0x80 的异或结果
+TEQ r4, #0x80 ; 检查寄存器 r4 的值和立即数 0x80 的异或结果
 BNE label     ; 如果 r4 的值与 0x80 异或后不为零，则跳转到 label 处
 
-`
 
 ### 比较值指令**
 
@@ -638,27 +596,23 @@ BNE label     ; 如果 r4 的值与 0x80 异或后不为零，则跳转到 label
 
 从地址 r0 开始读取 4 个字（word），分别存储到 r1-r4 寄存器中，然后将地址 r0 增加 4。
 
-`LDMIA r0!, {r1-r4}
+LDMIA r0!, {r1-r4}
 
-`
 
 将地址 r0 增加 4，然后从新地址开始读取 3 个字，分别存储到 r1-r3 寄存器中。
 
-`LDMIB r0, {r1-r3}
+LDMIB r0, {r1-r3}
 
-`
 
 从地址 r0 开始读取 2 个字，分别存储到 r1-r2 寄存器中，然后将地址 r0 减少 4，并将读取的最后一个字存储到 lr 寄存器中。
 
-`STMFD sp!, {r1-r3, lr}
+STMFD sp!, {r1-r3, lr}
 
-`
 
 将 r1-r3 寄存器中的数据存储到地址 sp 指向的存储器中，然后将 sp 减少 16（4 个字），并将 lr 寄存器中的数据存储到新的地址 sp 指向的存储器中。
 
-`LDMDB r0!, {r1-r2, lr}
+LDMDB r0!, {r1-r2, lr}
 
-`
 
 ### 指令中！的作用**
 
@@ -666,10 +620,9 @@ BNE label     ; 如果 r4 的值与 0x80 异或后不为零，则跳转到 label
 
 一般的，当感叹号 "!" 出现在寄存器名称后面时，就表示在执行指令后会更新该寄存器的值。如果没有！，表示执行指令前不更新该寄存器的值。
 
-`ldmia	r0, {r2 - r3}
+ldmia	r0, {r2 - r3}
 ldmia	r0！, {r2 - r3}
 
-`
 
 这里感叹号的作用就是r0的值在ldm过程中发生的增加或者减少最后写回到r0去，第二句的ldm时会改变r0的值，而第一句，没有!，运行之后不会更新 r0 的值。
 
@@ -679,10 +632,9 @@ ldmia	r0！, {r2 - r3}
 
 ^的作用：在目标寄存器中有pc时，会同时将spsr写入到cpsr，一般用于从异常模式返回。
 
-`ldmfd	sp!, {r0 - r6, pc}
+ldmfd	sp!, {r0 - r6, pc}
 ldmfd	sp!, {r0 - r6, pc}^
 
-`
 
 ### 汇编不同写法，对于寄存器的改变(先算括号）**
 
@@ -690,9 +642,8 @@ ldmfd	sp!, {r0 - r6, pc}^
 
 偏移量方法**
 
-`LDR R0,[R1, #4]
+LDR R0,[R1, #4]
 
-`
 
 **
 
@@ -702,9 +653,8 @@ r0= *(r1 + 4)
 
 事先更新**
 
-`LDR R0,[R1, #4]!
+LDR R0,[R1, #4]!
 
-`
 
 **
 
@@ -716,9 +666,8 @@ r1 = r1 +4
 
 事后更新:**
 
-`LDR R0,[R1], #4
+LDR R0,[R1], #4
 
-`
 
 实现的操作：
 

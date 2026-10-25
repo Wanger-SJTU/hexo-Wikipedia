@@ -126,9 +126,8 @@ $$\begin{array}{ccc|ccc|ccc|c|c} \hline n & m & T & \kappa & x_1 & x_2 & a & b &
 
 参考代码：
 
-`import jax
-
 ```python
+import jax
 import jax.numpy as jnp
 from tqdm import tqdm
 ```

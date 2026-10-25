@@ -84,12 +84,12 @@ dflash训练的注意力mask图既然我们现在有了dflash的推理过程了�
 
 2.然后cd 仓库，安装包
 
-`cd SpecForge
+cd SpecForge
 pip install -e ./`
 
 3.然后生成对应的训练数据
 
-`# 1. Prepare seed dataset
+# 1. Prepare seed dataset
 python scripts/prepare_data.py --dataset perfectblend
 
 # 2. Start SGLang server for Qwen3-8B
@@ -139,11 +139,10 @@ python scripts/regenerate_train_data.py \
 
 部署命令为
 
-`# 先安装特定版本的sglang
+# 先安装特定版本的sglang
 pip install git+https://github.com/sgl-project/sglang.git@refs/pull/16818/head#subdirectory=python
 # 然后启动
 python -m sglang.launch_server     --model-path Qwen/Qwen3-8B     --speculative-algorithm DFLASH     --speculative-draft-model-path Tengyunw/Qwen3-8B-DFlash     --tp-size 1     --dtype bfloat16     --attention-backend fa3     --mem-fraction-static 0.75     --trust-remote-code
-`
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_65c1fc46c783.jpg)00:16
 

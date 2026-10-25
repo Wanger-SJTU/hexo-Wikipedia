@@ -552,7 +552,7 @@ Layout((M, N) -> (M / 16, N, 16),
 
 表示`A[i, j] -> B[i / 16, j, i % 16]`这个映射。如果输出buffer是compact row-major，那么最终地址之后可能变成（我们在Triton中喜闻乐见的）`(i / 16) * stride0 + j * stride1 + (i % 16) * stride2`
 
-`Layout`源码如下
+Layout`源码如下
 
 ```text
 class Layout : public ObjectRef {
@@ -569,7 +569,7 @@ public:
 ```
 
 
-`Fragment`是一个特殊的layout。如我们之前所说，它需要两个映射：`forward_index`和`forward_thread`，分别映射到thread-local索引和对应的thread。此时映射的入参是循环变量`forward_var`和replication参数`thread_replicate`。
+Fragment`是一个特殊的layout。如我们之前所说，它需要两个映射：`forward_index`和`forward_thread`，分别映射到thread-local索引和对应的thread。此时映射的入参是循环变量`forward_var`和replication参数`thread_replicate`。
 
 ```text
 class Fragment : public Layout {
@@ -589,7 +589,7 @@ public:
 
 
 `ComputeLoopLayoutFromBuffer`
-`ComputeLoopLayoutFromBuffer`接受一个`Buffer`，返回一个`Fragment` layout。大致分为以下几步：
+ComputeLoopLayoutFromBuffer`接受一个`Buffer`，返回一个`Fragment` layout。大致分为以下几步：
 
 - `IsCommonAccessIndice`快速通道
 - 表达式替换
@@ -796,7 +796,7 @@ for i in T.Parallel(256):
 假设最开始得到的`vector_size=8`。planner首先检查 `256 % (64 * 8) = 256 % 512 = 256`。也就是说一个完整的SIMT/vector tile会覆盖512个逻辑元素，但loop只有256个。这会需要256个padded logical fragment elements，因此TileLang将vector size减半，得到`256 % (64 * 4) = 256 % 256 = 0`,说明每个组都是完整的，不用pad。注意此时我们假设的是所有`num_threads`都被用上的情况。有些时候，我们可能可以减少`num_threads`来达到更好的向量化，但编译器没有这么实现。我猜测可能是因为如果我们假设所有的参数都是二的幂，非整除的情况较少，没那么大的意义。
 
 `ValidateCandidateAgainstFragments`
-`ValidateCandidateAgainstFragments`会检查选出的loop layout是否和这个loop使用到的所有已知fragment layout兼容。一个loop可能触碰多个fragments。即使候选layout本身看起来合法，它也可能和某个buffer已有的owner-thread mapping不一致。
+ValidateCandidateAgainstFragments`会检查选出的loop layout是否和这个loop使用到的所有已知fragment layout兼容。一个loop可能触碰多个fragments。即使候选layout本身看起来合法，它也可能和某个buffer已有的owner-thread mapping不一致。
 
 函数会遍历loop访问的所有fragment buffers：
 
@@ -841,7 +841,7 @@ bool ProveFragmentContains(Fragment small_frag, Fragment large_frag,
 ```
 
 
-`small_frag`表示目标fragment的layout，`large_frag`表示已经存在的fragment的layout。函数首先有一个特殊情况：如果large fragment是fully replicated，每个thread都有一份合法拷贝，那么containment显然为真。
+small_frag`表示目标fragment的layout，`large_frag`表示已经存在的fragment的layout。函数首先有一个特殊情况：如果large fragment是fully replicated，每个thread都有一份合法拷贝，那么containment显然为真。
 
 当`check_forward_index`为true时，还会检查两个layout是否使用相同的物理local index。
 
@@ -864,10 +864,9 @@ if (check_forward_index) {
 
 接着，函数为small fragment引入一个符号replicate变量：
 
+```cpp
 Var rep_small(&#34;__checking_frag_contains_rep&#34;);
 analyzer.Bind(rep_small,
-
-```text
               Range(IntImm(small_frag->ReplicateExtent()->dtype, 0),
                     small_frag->ReplicateExtent()),
               true);
@@ -880,7 +879,11 @@ auto thread = small_frag->ForwardThread(small_frag_indices, rep_small);
 下一步，函数会问large fragment：“如果我使用large fragment的物理local index，再加上small fragment的thread，那么这个物理坐标对应large fragment中的哪个逻辑元素？”
 
 auto large_frag_physical_and_thread = large_frag->Forward(large_frag_indices);
+
+```text
 large_frag_physical_and_thread.push_back(thread);
+```
+
 auto inv_large_frag = large_frag->Inverse();
 auto inv_large_frag_logical_and_rep =
 
@@ -889,7 +892,7 @@ auto inv_large_frag_logical_and_rep =
 ```
 
 
-`large_frag->Forward(large_frag_indices)`给出local index，结合推理出的thread，形成物理坐标`(large local index, candidate thread)`。Large fragment的inverse会把这个物理坐标映射回`(large logical indices, large replica)`。最后一个元素就是恢复出的replica。
+large_frag->Forward(large_frag_indices)`给出local index，结合推理出的thread，形成物理坐标`(large local index, candidate thread)`。Large fragment的inverse会把这个物理坐标映射回`(large logical indices, large replica)`。最后一个元素就是恢复出的replica。
 
 auto inv_large_frag_rep =
 
@@ -1019,12 +1022,8 @@ TVM_FFI_ICHECK(analyzer_->CanProveEqual(abs(source->scale), 1));
 ```python
 def source_layout(row, col):
     return col, row
-```
-
 
 T.annotate_layout({
-
-```text
     fragment: T.Fragment((4, 16), forward_fn=source_layout)
 })
 ```

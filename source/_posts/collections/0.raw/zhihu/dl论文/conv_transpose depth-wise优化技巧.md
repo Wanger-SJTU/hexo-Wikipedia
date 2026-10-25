@@ -47,7 +47,7 @@ $得到 X&#x2032;=(0000001020000000304000000)" role="presentation">X′=(0000001
 
 把W'与X'左上角的2x2子矩阵 (0001)" role="presentation">(0001)\left (  \begin{matrix} 0 & 0\\ 0 & 1\\ \end{matrix} \right ) 做convolution计算得到5，与横向滑动一个step后的2x2子矩阵 (0010)" role="presentation">(0010)\left (  \begin{matrix} 0 & 0\\ 1 & 0\\ \end{matrix} \right ) 计算得到6，横向再滑动一个step后的2x2子矩阵 (0002)" role="presentation">(0002)\left (  \begin{matrix} 0 & 0\\ 0 & 2\\ \end{matrix} \right ) 计算得到10，横向再滑动一个step后的2x2子矩阵 \left (  \begin{matrix} 0 & 0\\ 2 & 0\\ \end{matrix} \right ) 计算得到12，回到起始子矩阵位置，与纵向下滑一个step的2x2子矩阵 \left (  \begin{matrix} 0 & 1\\ 0 & 0\\ \end{matrix} \right ) 计算得到7 ... ... , 重复这个过程得到输出计算结果 Y = \left (  \begin{matrix} 5 & 6 & 10 & 12\\ 7 & 8 & 14 & 16\\ 15 & 18 & 20 & 24\\ 21 & 24 & 28 & 32\\ \end{matrix} \right ) ， 调用Pytorch验证上述推导过程的正确性：
 
-`>>> import torch
+>>> import torch
 >>> X = torch.Tensor([[[[1, 2], [3, 4]]]])
 >>> F = torch.Tensor([[[[5, 6], [7, 8]]]])
 >>> Y = torch.nn.functional.conv_transpose2d(X, F, stride=2, padding=0)
@@ -67,7 +67,7 @@ tensor([[[[ 5.,  6., 10., 12.],
 
 把W'与X'左上角的3x3子矩阵 \left (  \begin{matrix} 0 & 0 & 0\\ 0 & 1& 2\\ 0 & 4 &5\\\end{matrix} \right ) 做乘累加计算得到14+13***2+11*4**+10*5 = 134，与横向滑动一个step后的2x2子矩阵 \left (  \begin{matrix} 0 & 0 & 0\\ 1 & 2 & 3\\ 4 & 5 & 6\\\end{matrix} \right ) 计算得到15+14*2+13*3+12*4+11*5+10*6=245... ... , 重复上述过程得到输出计算结果 Y = \left (  \begin{matrix} 134 & 245 & 198 \\ 327 & 570 & 441 \\ 350 & 587 & 438 \\  \end{matrix} \right ) ， 调用Pytorch验证上述推导过程的正确性：
 
-`>>> import torch
+>>> import torch
 >>> X=torch.Tensor([[[[1, 2, 3], [4, 5, 6], [7, 8, 9]]]])
 >>> F=torch.Tensor([[[[10, 11, 12], [13, 14, 15], [16, 17, 18]]]])
 >>> Y = torch.nn.functional.conv_transpose2d(X,F,stride=1,padding=1)
@@ -90,7 +90,7 @@ gemm+col2im计算conv_transpose假设输入feature_map的layout是C*H*W(假设ba
 
 下面给出caffe中col2im的cpu代码实现，比较简单，我们先来消化一下：
 
-`inline bool is_a_ge_zero_and_a_lt_b(int a, int b) {
+inline bool is_a_ge_zero_and_a_lt_b(int a, int b) {
 
 ```text
   return static_castunsigned>(a)  static_castunsigned>(b);
@@ -147,15 +147,13 @@ void col2imfloat>(const float* data_col,
 }
 ```
 
-`
 
 ### 直接法计算conv_transpose depth-wise
 
 由于gemm+col2im的实现conv_transpose对depth-wise场景(ic=oc=group)下并不是一个很好的选择，针对depthwise，gemm实现变成了两个行列向量的点积操作（M' = KRR, K' = 1, N' = HW, 两个输入矩阵维度分别是KRR * 1和1*HW),  col2im实现累加操作(每RR个数据累加成1个数据)，由于depth-wise channel间没有依赖， 这两步可以放在一步里面直接执行，从而减少额外中间数据读写操作带来的性能损失(depth-wise不是compute bound操作，属于memory bound操作），笔者下面采用直接计算方法来实现conv_transpose depth-wise，首先从前面的col2im代码出发，我们可以得到一个最基础的代码实现版本(版本1)：
 
-`template <>
-
 ```cpp
+template <>
 void conv_transpose_depthwisefloat>(const float* dst,
                                      const float* weights,
                                      const int channels,
@@ -206,16 +204,15 @@ void conv_transpose_depthwisefloat>(const float* dst,
 }
 ```
 
-`
 
 把gemm+col2im的代码用做conv_transpose比较正确性的reference code或者把上面代码的计算结果放到pytorch/tensorflow等框架里面做结果比对可简单验证正确性，
 
 需要注意两个问题：
 
 -  conv_transpose depth-wise由5个for循环组成，无论怎么写，对channel的遍历一定是放在最外层，不考虑对kernel_h和kernel_w写专门的特化版本，实际上有两种写法，第一种写法把kernel_y和kernel_x这两层for循环放在output_h和output_w两层for循环之间：
-`for (int c = 0； c  channel; ++c) 
 
 ```cpp
+for (int c = 0； c  channel; ++c) 
    for (int ky = 0; ky  kernel_h; ++ky)
       for (int kx = 0; kx  kernel_w; ++kx)
          //下面两个for循环作为micro kernel来优化
@@ -223,13 +220,11 @@ void conv_transpose_depthwisefloat>(const float* dst,
             for (int ow = 0; ow  output_w; ow++)
 ```
 
-`
 
 第二种写法是把output_h和output_w两层for循环放在kernel_y和kernel_x这两层for循环之间：
 
-`for (int c = 0； c  channel; ++c) 
-
 ```cpp
+for (int c = 0； c  channel; ++c) 
    for (int oh = 0; oh  output_h; oh++)
         for (int ow = 0; ow  output_w; ow++)
         //下面两个for循环作为micro kernel来优化 
@@ -237,7 +232,6 @@ void conv_transpose_depthwisefloat>(const float* dst,
             for (int kx = 0; kx  kernel_w; ++kx)
 ```
 
-`
 
 第一种写法的问题是对output_h和output_w做最内层遍历时有边界判断，做micro_kernel优化时不利于做并行化SIMD实现， 第二种写法把边界判断的操作放在了micro_kernel的外面，但问题是做SIMD并行化处理时可并行处理的数据块太小了(比如实际经常使用的3x3和1x1的kernel_size，[MNN](https://link.zhihu.com/?target=https%3A//github.com/alibaba/MNN)和[TNN](https://link.zhihu.com/?target=https%3A//github.com/tencent/TNN)使用C4的layout并采用第二种实现方式每次处理一个C4数据)，实际上第一种实现方式更好，micro kernel内的if-else边界判断是可以消除的，我们后面来讲这个问题。
 
@@ -257,9 +251,8 @@ kx=1,ky=0时反卷积计算示意图![](/images/collections/0.raw/zhihu/dl%E8%AE
 
 kx=1,ky=1时反卷积计算示意图第二版代码：
 
-`template <>
-
 ```cpp
+template <>
 void conv_transpose_depthwisefloat>(const float* dst,
                                     const float* weights,
                                     const int channels,
@@ -309,7 +302,6 @@ void conv_transpose_depthwisefloat>(const float* dst,
 }
 ```
 
-`
 
 第二个版本相比第一个版本唯一的区别在于把if ((iw >= 0) && (iw = 0) && (iw 分支问题，把if ((ih >= 0) && (ih template <>
 
@@ -382,15 +374,13 @@ void conv_transpose_depthwisefloat>(const float* dst,
 }
 ```
 
-`
 
 在第三版伪SIMD代码中，笔者给出了在w方向一次计算4个float数据的形式，在这一版代码中暴露了一个问题：在把4个计算数据store到data_im相应位置时4个数据间隔为stride_w，我们知道neon SIMD中进行load/store操作间隔最多为4(ld1/ld2/ld3/ld4/st1/st2/st3/st4), 这是SIMD与SIMT(cuda)软件编程层面非常大的一个区别，由于cuda使用SIMT架构，可以通过thread_id*offset的方式来处理多thread等间隔读/写操作时的问题(不考虑合并访问带来的效率问题)， 但arm neon采用SIMD结构， *<strong>multiple data在load/store存储时必须要绑定在一起</strong>*。为此，需要按stride=1和stride=2分别进行特化，实现特化版本，下面以stride=1来给出第四个版本的优化：
 
+```cpp
 * 第四版代码：*
 
-`template <>
-
-```cpp
+template <>
 void conv_transpose_depthwise_s1float>(const float* dst,
                                         const float* weights,
                                         const int channels,
@@ -476,29 +466,25 @@ void conv_transpose_depthwise_s1float>(const float* dst,
 }
 ```
 
-`
 
 第四个版本与第三个版本相比，在w方向上改为一次处理16个float数据增加并行性，把伪SIMD的代码改为调用ARM neon intrinsic 的形式来实现，先把要处理的16个w方向上的数据横向坐标放到一个连续空间的数组变量iw_data中，下面这条语句实现的是4个数据的SIMD比较：
 
-`uint32x4_t boundray0 = vandq_u32(vcgeq_s32(vld1q_s32(iw_data), vdupq_n_s32(0)),
+uint32x4_t boundray0 = vandq_u32(vcgeq_s32(vld1q_s32(iw_data), vdupq_n_s32(0)),
 
 ```text
                             vcltq_s32(vld1q_s32(iw_data), vdupq_n_s32(width)));
 ```
 
-`
 
 等价于下面原始的4次比较操作：
 
-`bool boundary0 = (iw >= 0) && (iw  width);
-
 ```text
+bool boundary0 = (iw >= 0) && (iw  width);
 bool boundary1 = ((iw + 1) >= 0) && ((iw + 1)  width);
 bool boundary2 = ((iw + 2) >= 0) && ((iw + 2)  width);
 bool boundary3 = ((iw + 3) >= 0) && ((iw + 3)  width);
 ```
 
-`
 
 测试了一下这个版本的代码性能，比之前使用gemm+col2im的方式计算depth-wise提升了接近1倍左右，注意ARM CPU的L1 cache line size一般是64 byte，所以在w方向上每次最多取16个float数据，但这个版本的micro kernel只包含for(int ow=0; owtemplate <>
 
@@ -616,19 +602,16 @@ void conv_transpose_depthwise_s1float>(const float* dst,
 }
 ```
 
-`
 
 第5版代码与第4版代码相比做的优化处理是在output_h方向上每次计算两行，用在output_w方向上使用的消除if-else技巧来消除output_h方向上的if-else， 但仅仅这样是不够的，笔者申请了一块地址空间zero_ptr作为在output_h方向上处理数据的读写缓冲区，由于pad的影响并且不同channel之间的数据是连续存储的，所以对channel(i)的边界读写操作很容易落到channel(i-1)和channel(i+1)的区域内，为此第5版代码中的<strong>boundary_y0</strong>和<strong>boundary_y1</strong>是处理当前两行标志是否越界的mask， 如果越界则对当前行的读/写操作都挪到<strong>zero_ptr</strong>这个缓存buffer里，这也是做优化处理边界情况经常使用的一种处理越界访问的技巧。
 
-`bool boundary_y0 = ((ih >= 0) && (ih  height)) && (oh  output_h);
-
 ```text
+bool boundary_y0 = ((ih >= 0) && (ih  height)) && (oh  output_h);
 bool boundary_y1 = ((ih + 1) >= 0) && ((ih + 1)  height) && ((oh + 1)  output_h);
 float* data_im_addr_h0 = boundary_y0 ? (data_im + data_im_z + data_im_y) : zero_ptr;
 float* data_im_addr_h1 = boundary_y1 ? (data_im + data_im_z + width + data_im_y) : zero_ptr;
 ```
 
-`
 
 第5版代码处理的tile实际上2行*16列个float数据, 很不幸，这段代码存在bug, 在处理奇数行（output_h=奇数）的case时测试结果是错的，为此笔者debug后发现在边界判断时少加了一个地方，在处理越界时不仅需要检查ih, 还要检查oh, 在处理奇数行的case时，在当前channel做最后一次处理时读取的第二行输入数据本身已经“越界”了...+_+...
 
@@ -781,7 +764,6 @@ void conv_transpose_depthwise_s1float>(const float* dst,
 }
 ```
 
-`
 
 此外， 第6版代码在第5版代码基础上对变量名做了一些改动，并减少了一些不必要的boundary_x和boundary_y的“与操作”，优化了性能(这一块也有不小的提升)，这一优化的出发点在于笔者合理的使用了<strong>zero_ptr</strong>这个处理边界case的读写缓冲区.
 
@@ -805,9 +787,8 @@ ARM v8ARM v8ARM v7ARM v7input tensoroutput tensorweight tensorARM A76ARM A55ARM 
 
 测试了下4*8的tile性能比2*16的tile更好，给出修改的代码和测试数据：
 
-`template <>
-
 ```cpp
+template <>
 void conv_transpose_depthwise_s1float>(const float* dst,
                                         const float* weights,
                                         const int channels,
@@ -978,6 +959,5 @@ void conv_transpose_depthwise_s1float>(const float* dst,
 }
 ```
 
-`
 
 ARM v8ARM v8ARM v7ARM v7input tensoroutput tensorweight tensorARM A76ARM A55ARM A76ARM A55(1,16,64,64)(1,16,64,64)(16,1,3,3)0..331..660..461..33(1,64,16,16)(1,64,16,16)(64,1,3,3)0..120..580..160..78(1,64,56,56)(1,64,56,56)(64,1,3,3)0..014..281..405..48找到合适的tile size后可以接着使用编译工具链的反汇编工具(objdump...)打印出编译器给我们生成的汇编指令代码，在这个基础上做进一步的细节调优。

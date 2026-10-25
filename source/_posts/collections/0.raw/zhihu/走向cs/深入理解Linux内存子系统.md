@@ -455,7 +455,7 @@ a)     如果当前连续内存块足够 realloc 的话，只是将 p 所指向�
 六、 如何查看内存
 
 - 系统中内存使用情况：/proc/meminfo  
-`$cat /proc/meminfo
+$cat /proc/meminfo
 MemTotal:        8052444 kB #所有内存(RAM)大小,减去一些预留空间和内核的大小。
 MemFree:         2754588 kB #完全没有用到的物理内存，lowFree+highFree
 MemAvailable:    3934252 kB #在不使用交换空间的情况下，启动一个新的应用最大可用内存的大小，计算方式：MemFree+Active(file)+Inactive(file)-(watermark+min(watermark,Active(file)+Inactive(file)/2))
@@ -518,7 +518,7 @@ DirectMap1G:     3145728 kB`
 - 查看伙伴系统信息
     当前系统的buddy状态可以通过 `cat /proc/buddyinfo` 命令查看
 
-`cat /proc/buddyinfo 
+cat /proc/buddyinfo 
 Node 0, zone      DMA     23     15      4      5      2      3      3      2      3      1      0 
 Node 0, zone   Normal    149    100     52     33     23      5     32      8     12      2     59 
 Node 0, zone  HighMem     11     21     23     49     29     15      8     16     12      2    142 `
@@ -527,7 +527,7 @@ Node 0, zone  HighMem     11     21     23     49     29     15      8     16   
 
       可以通过 cat /proc/slabinfo  命令查看
 
-`cat /proc/slabinfo 
+cat /proc/slabinfo 
 slabinfo - version: 2.1
 # name                 : tunables 
 -    : slabdata   
@@ -545,7 +545,7 @@ ip6_mrt_cache          0      0    128   30    1 : tunables  120   60    0 : sla
 
         可以通过 /proc/sys/vm/drop_caches来释放
 
-`#To free pagecache, use
+#To free pagecache, use
 echo 1 > /proc/sys/vm/drop_caches
 #To free dentries and inodes, use 
 echo 2 > /proc/sys/vm/drop_caches

@@ -32,9 +32,8 @@ AC自动机的核心算法仍然是寻找模式串内部规律，达到在每次
 
 ![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_fe6a83e27e31.jpg)
 
-`class Trie {
-
-```cpp
+```js
+class Trie {
       constructor() {
           this.root = new Node("root");
       }
@@ -59,7 +58,6 @@ AC自动机的核心算法仍然是寻找模式串内部规律，达到在每次
   }
 ```
 
-`
 
 然后我们尝试用它处理字符串sher。理想情况下是这样：
 
@@ -88,9 +86,8 @@ AC自动机的前缀树的节点都应该存在fail指针。下图中，红色�
 1.对整个字典树进行宽度优先遍历。 
 2.若当前搜索到点x，那么对于x的第i个儿子(也就是代表字符i的儿子)，一直往x的fail跳，直到跳到某个点也有i这个儿子，x的第i个儿子的fail就指向这个点的儿子i。
 
-`function createFail(ac) {
-
-```cpp
+```js
+function createFail(ac) {
     var root = ac.root;
     var queue = [root]; //root所在层为第0层
     while (queue.length) {
@@ -123,7 +120,6 @@ AC自动机的前缀树的节点都应该存在fail指针。下图中，红色�
 }
 ```
 
-`
 
 #### 模式匹配
 
@@ -135,9 +131,8 @@ AC自动机的前缀树的节点都应该存在fail指针。下图中，红色�
 
 代码如下：
 
-`function match(ac, text) {
-
-```cpp
+```js
+function match(ac, text) {
     var root = ac.root, p = root, ret = [], unique = {};
     for (var i = 0; i  text.length; i++) {
         var c = text[i];
@@ -175,6 +170,5 @@ createFail(ac);
 console.log(match(ac, "one day she say her has eaten many shrimps"));
 ```
 
-`
 
 ![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_e9bcca8ec70a.jpg)

@@ -79,7 +79,7 @@ Scope introduction from PTX 9.1
 
 <strong>无同步（功能上可能出错）：</strong>
 
-`// Thread P0
+// Thread P0
 st.global.b32 [data], 42;
 st.global.b32 [flag], 1;  // 可能被重排到data之前！
  
@@ -93,7 +93,7 @@ ld.global.b32 r2, [data]; // 可能在flag之前被推测执行！`
 
 <strong>正确做法（采用Release/Acquire语义）：</strong>
 
-`// Thread P0
+// Thread P0
 st.global.b32 [data], 42;
 // Release保证data的写在flag写之前对.sys范围可见
 st.release.sys.b32 [flag], 1;

@@ -46,7 +46,7 @@ AI 코딩 에이전트를 위한 프로덕션 하네스 엔지니어링 스킬�
 
 ## harness-creator 구축 방법
 
-`harness-creator` 스킬은 <strong>skill-creator</strong> 방법론을 사용하여 개발되었습니다. skill-creator는 에이전트 스킬을 생성하고 테스트하고 반복하기 위한 Anthropic의 공식 메타 스킬입니다. skill-creator는 내장된 평가 실행기, 채점기, 벤치마크 뷰어를 갖춘 구조화된 워크플로우(초안 → 테스트 → 평가 → 반복)를 제공합니다.
+harness-creator` 스킬은 <strong>skill-creator</strong> 방법론을 사용하여 개발되었습니다. skill-creator는 에이전트 스킬을 생성하고 테스트하고 반복하기 위한 Anthropic의 공식 메타 스킬입니다. skill-creator는 내장된 평가 실행기, 채점기, 벤치마크 뷰어를 갖춘 구조화된 워크플로우(초안 → 테스트 → 평가 → 반복)를 제공합니다.
 
 이처럼 스킬 자체를 스킬로 만드는 접근 방식은 하네스 엔지니어링의 재귀적 특성을 보여줍니다. 에이전트를 위한 도구를 에이전트가 검증하는 구조입니다.
 

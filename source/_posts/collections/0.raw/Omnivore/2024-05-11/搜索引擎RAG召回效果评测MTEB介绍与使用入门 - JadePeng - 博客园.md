@@ -393,7 +393,7 @@ class RerankingEvaluator(Evaluator):
 
 给定一个query和一组文档，模型计算文档得分，并按降序排列，最后计算MRR@10和MAP指标来衡量排名的质量。
 
-`__init__`方法接收以下参数：
+__init__`方法接收以下参数：
 
 ```text
 * `samples`：必须是一个列表，每个元素的形式为：  
@@ -561,7 +561,7 @@ if __name__ == '__main__':
 
 ## 总结
 
-`mteb` 最为embedding召回效果测试，是一个权威的榜单，本身提供的工具框架也具备较好的扩展性，方便开发者自定义模型和自定义评测任务。
+mteb` 最为embedding召回效果测试，是一个权威的榜单，本身提供的工具框架也具备较好的扩展性，方便开发者自定义模型和自定义评测任务。
 
 posted @ [JadePeng](https://www.cnblogs.com/xiaoqi)阅读(803) 评论() [编辑](https://i.cnblogs.com/EditPosts.aspx?postid=18034447)收藏 举报
 

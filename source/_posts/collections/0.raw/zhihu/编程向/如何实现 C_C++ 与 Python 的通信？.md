@@ -39,9 +39,8 @@ Python 本身就是一个C库。你所看到的可执行体python只不过是个
 
 你也可以在自己的程序中调用Python，看起来非常容易：
 
-`//my_python.c
-
 ```cpp
+//my_python.c
 #include 
 
 int main(int argc, char *argv[])
@@ -54,24 +53,20 @@ int main(int argc, char *argv[])
 }
 ```
 
-`
 
 在Windows平台下，打开Visual Studio命令提示符，编译命令为
 
-`cl my_python.c -IC:\Python27\include C:\Python27\libs\python27.lib
-`
+cl my_python.c -IC:\Python27\include C:\Python27\libs\python27.lib
 
 在Linux下编译命令为
 
-`gcc my_python.c -o my_python -I/usr/include/python2.7/ -lpython2.7
-`
+gcc my_python.c -o my_python -I/usr/include/python2.7/ -lpython2.7
 
 在Mac OS X 下的编译命令同上
 
 产生可执行文件后，直接运行，结果为输出
 
-`Hello Python!
-`
+Hello Python!
 
 Python库函数PyRun_SimpleString可以执行字符串形式的Python代码。
 
@@ -79,14 +74,16 @@ Python库函数PyRun_SimpleString可以执行字符串形式的Python代码。
 
 下面举个例子，比如说，有一天我们用Python写了一个功能特别强大的函数：
 
-`def great_function(a):
+```python
+def great_function(a):
     return a + 1`
+```
+
 
 **接下来要把它包装成C语言的函数。我们期待的C语言的对应函数应该是这样的：
 
-`int great_function_from_python(int a) {
-
 ```cpp
+int great_function_from_python(int a) {
     int res; 
     // some magic
     return res;
@@ -98,9 +95,9 @@ Python库函数PyRun_SimpleString可以执行字符串形式的Python代码。
 
 接下来就要用C来调用Python了，完整的代码如下：
 
-`#include 
-
 ```cpp
+#include 
+
 int great_function_from_python(int a) {
     int res;
     PyObject *pModule,*pFunc;
@@ -134,9 +131,9 @@ int great_function_from_python(int a) {
 - 不仅Python语言很优雅，Python的库函数API也非常优雅。
 现在我们得到了一个C语言的函数了，可以写一个main测试它
 
-`#include 
-
 ```cpp
+#include 
+
 int great_function_from_python(int a); 
 
 int main(int argc, char *argv[]) {
@@ -165,26 +162,24 @@ csh:
 
 比如说，我们有一个功能强大的C函数：
 
-`int great_function(int a) {
-
-```text
+```cpp
+int great_function(int a) {
     return a + 1;
 }
 ```
 
-`
 
 期望在Python里这样使用：
 
-`>>> from great_module import great_function 
+>>> from great_module import great_function 
 >>> great_function(2)
 3`
 
 考虑最简单的情况。我们把功能强大的函数放入C文件 great_module.c 中。
 
-`#include 
-
 ```cpp
+#include 
+
 int great_function(int a) {
     return a + 1;
 }
@@ -227,8 +222,7 @@ PyMODINIT_FUNC initgreat_module(void) {
 - 导出函数initgreat_module。这个的名字不是任取的，是你的module名称添加前缀init。导出函数中将模块名称与导出表进行连接。
 在Windows下面，在Visual Studio命令提示符下编译这个文件的命令是
 
-`cl /LD great_module.c /o great_module.pyd -IC:\Python27\include C:\Python27\libs\python27.lib
-`
+cl /LD great_module.c /o great_module.pyd -IC:\Python27\include C:\Python27\libs\python27.lib
 
 /LD 即生成动态链接库。编译成功后在当前目录可以得到 great_module.pyd（实际上是dll）。这个pyd可以在Python环境下直接当作module使用。**
 
@@ -254,17 +248,15 @@ PyMODINIT_FUNC initgreat_module(void) {
 
 安装Cython非常简单。Python 2.7.9以上的版本已经自带easy_install：
 
-`easy_install -U cython
-`
+easy_install -U cython
 
 在Windows环境下依然需要Visual Studio，由于安装的过程需要编译Cython的源代码，故上述命令需要在Visual Studio命令提示符下完成。一会儿使用Cython的时候，也需要在Visual Studio命令提示符下进行操作，这一点和第一部分的要求是一样的。
 
 继续以例子说明：
 
-`#great_module.pyx
+#great_module.pyx
 cdef public great_function(a,index):
     return a[index]
-`
 
 这其中有非Python关键字cdef和public。这些关键字属于Cython。由于我们需要在C语言中使用“编译好的Python代码”，所以得让great_function从外面变得可见，方法就是以“public”修饰。而cdef类似于Python的def，只有使用cdef才可以使用Cython的关键字public。
 
@@ -272,8 +264,7 @@ cdef public great_function(a,index):
 
 接下来编译 great_module.pyx
 
-`cython great_module.pyx
-`
+cython great_module.pyx
 
 得到great_module.h和great_module.c。打开great_module.h可以找到这样一句声明：
 
@@ -281,9 +272,8 @@ cdef public great_function(a,index):
 
 写一个main使用great_function。注意great_function并不规定a是何种类型，它的功能只是提取a的第index的成员而已，故使用great_function的时候，a可以传入Python String，也可以传入tuple之类的其他可迭代类型。仍然使用之前提到的类型转换函数PyXXX_FromYYY和PyXXX_AsYYY。
 
-`//main.c
-
 ```cpp
+//main.c
 #include 
 #include "great_module.h"
 
@@ -319,17 +309,15 @@ int main(int argc, char *argv[]) {
 
 在Windows下编译命令为
 
-`cl main.c great_module.c -IC:\Python27\include C:\Python27\libs\python27.lib
-`
+cl main.c great_module.c -IC:\Python27\include C:\Python27\libs\python27.lib
 
 在Linux下编译命令为
 
-`gcc main.c great_module.c -o main -I/usr/include/python2.7/ -lpython2.7
-`
+gcc main.c great_module.c -o main -I/usr/include/python2.7/ -lpython2.7
 
 这个例子中我们使用了Python的动态类型特性。如果你想指定类型，可以利用Cython的静态类型关键字。例子如下：
 
-`#great_module.pyx
+#great_module.pyx
 cdef public char great_function(const char * a,int index):
     return a[index]`
 
@@ -341,9 +329,8 @@ cython编译后得到的.h里，great_function的声明是这样的：
 
 这样的话，我们的main函数已经几乎看不到Python的痕迹了：
 
-`//main.c
-
 ```cpp
+//main.c
 #include 
 #include "great_module.h"
 
@@ -360,9 +347,8 @@ int main(int argc, char *argv[]) {
 
 还是利用刚才的great_module.pyx，准备一个dllmain.c：
 
-`#include 
-
 ```cpp
+#include 
 #include 
 #include "great_module.h"
 ```
@@ -395,8 +381,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL,DWORD fdwReason,LPVOID lpReserved) {
 
 在Visual Studio命令提示符下编译：
 
-`cl /LD dllmain.c great_module.c -IC:\Python27\include C:\Python27\libs\python27.lib
-`
+cl /LD dllmain.c great_module.c -IC:\Python27\include C:\Python27\libs\python27.lib
 
 会得到一个dllmain.dll。我们在Excel里面使用它，没错，传说中的<strong>Excel与Python混合编程</strong>：
 
@@ -418,7 +403,7 @@ SWIG的安装方便，有Windows的预编译包，解压即用，绿色健康。
 
 https://software.intel.com/en-us/node/514245**可以看到有6个函数。分析6个函数的原型，其参数和返回值都是简单的整数。于是书写SWIG的配置文件（为了简化起见，未包含2个64位函数）：
 
-`/* File: mymodule.i */
+/* File: mymodule.i */
 %module mymodule
 
 %{
@@ -432,19 +417,16 @@ unsigned int _mm_crc32_u16(unsigned int crc, unsigned short v);
 unsigned int _mm_crc32_u32(unsigned int crc, unsigned int v);
 ```
 
-`
 
 接下来使用SWIG将这个配置文件编译为所谓Python Module Wrapper
 
-`swig -python mymodule.i
-`
+swig -python mymodule.i
 
 得到一个 mymodule_wrap.c和一个mymodule.py。把它编译为Python扩展：
 
 Windows：
 
-`cl /LD mymodule_wrap.c /o _mymodule.pyd -IC:\Python27\include C:\Python27\libs\python27.lib
-`
+cl /LD mymodule_wrap.c /o _mymodule.pyd -IC:\Python27\include C:\Python27\libs\python27.lib
 
 Linux：
 
@@ -454,7 +436,7 @@ Linux：
 
 现在可以立即在Python下使用这个module了：
 
-`>>> import mymodule
+>>> import mymodule
 >>> mymodule._mm_popcnt_u32(10)
 2`
 
@@ -465,7 +447,7 @@ Linux：
 - 欲导出的函数签名列表。直接从头文件里复制过来即可。
 还记得本文第2节的那个great_function吗？有了SWIG，事情就会变得如此简单：
 
-`/* great_module.i */
+/* great_module.i */
 %module great_module
 %{
 
@@ -481,15 +463,13 @@ int great_function(int a) {
 int great_function(int a);
 ```
 
-`
 
 换句话说，SWIG自动完成了诸如Python类型转换、module初始化、导出代码表生成的诸多工作。
 
 对于C++，SWIG也可以应对。例如以下代码有C++类的定义：
 
-`//great_class.h
-
 ```cpp
+//great_class.h
 #ifndef GREAT_CLASS
 #define GREAT_CLASS
 class Great {
@@ -502,11 +482,10 @@ class Great {
 #endif // GREAT_CLASS
 ```
 
-`
 
 对应的SWIG配置文件
 
-`/* great_class.i */
+/* great_class.i */
 %module great_class
 %{
 #include "great_class.h"
@@ -521,8 +500,7 @@ SWIG编译时要加-c++这个选项，生成的扩展名为cxx
 
 Windows下编译：
 
-`cl /LD great_class_wrap.cxx /o _great_class.pyd -IC:\Python27\include C:\Python27\libs\python27.lib
-`
+cl /LD great_class_wrap.cxx /o _great_class.pyd -IC:\Python27\include C:\Python27\libs\python27.lib
 
 Linux，使用C++的编译器
 
@@ -530,7 +508,7 @@ Linux，使用C++的编译器
 
 在Python交互模式下测试：
 
-`>>> import great_class
+>>> import great_class
 >>> c = great_class.Great()
 >>> c.setWall(5)
 >>> c.getWall()

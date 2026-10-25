@@ -39,9 +39,8 @@ source_url: https://zhuanlan.zhihu.com/p/1941306442683515068
 
 Swizzle 布局在 CuTe 中定义为：
 
-`// A generic Swizzle functor
-
 ```text
+// A generic Swizzle functor
 /* 0bxxxxxxxxxxxxxxxYYYxxxxxxxZZZxxxx
  *                               ^--^ MBase is the number of least-sig bits to keep constant
  *                  ^-^       ^-^     BBits is the number of bits in the mask
@@ -65,7 +64,6 @@ template int BBits, int MBase, int SShift = BBits>
 struct Swizzle{/*...*/};
 ```
 
-`
 
 含义是根据 B M S 三个模板参数，将 YY 移动到 ZZ 的位置，并进行异或。然而，上述的定义仅仅说明了具体的计算方法，并没有说明 swizzle 布局如何解决共享内存的 bank 冲突。因此，本文将就各种应用场景，说明如何计算出合适的 swizzle 布局参数。
 
@@ -99,8 +97,7 @@ Swizzle(3, 0, 5)对应的线性布局是  \begin{bmatrix} 1 & 0 & 0 & 0 & 0 & 1 
 
 Swizzle(3, 0, 2)但是！！<strong>CuTe 中不允许这么做</strong>，程序里有一行：
 
-`static_assert(abs(num_shft) >= num_bits, "abs(SShift) must be more than BBits.");
-`
+static_assert(abs(num_shft) >= num_bits, "abs(SShift) must be more than BBits.");
 
 这个限制可能是由于布局代数计算的原因而作出的限制。实际上，我们仍然想要套用用前面的`row * 8 + (row ^ col)`公式会发现，此时`row`只有两位了，剩下的一位是`row`本身做了变换。这个布局只适合于用`p ^ ((p & (7 > 3)`表示。用线性布局看看：
 

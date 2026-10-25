@@ -87,7 +87,7 @@ A:  CoT过程不一定是正确的，没有严格要求；未经过指令微调�
 
 #### 1.2.2  RL激发“Aha Moment”是必然的
 
-`R1-Zero` 纯Reasoning RL训练过程中会采样出“Aha Moment”(顿悟), 我认为有两点原因：
+R1-Zero` 纯Reasoning RL训练过程中会采样出“Aha Moment”(顿悟), 我认为有两点原因：
 
 - `V3-Base`模型强（即`DeepSeek-V3`本身MATH-500就是高分90.1）
 - `GRPO` on-policy采样时相较`PPO`，会Rejection Sampling 出多个output（即`GRPO`是一种探索，或者理解为MC rollout），哪怕探索出的答案都是错的，那么RL训练能抑制这一批推导错误的生成。如果有多个正反馈，那么也能某种程度保证模型输出多样性。手撕GRPO：
@@ -152,7 +152,7 @@ SFTRLMATH-500(pass@1)AIME 2024(pass@1)DeepSeek-V3✅✅90.239.2DeepSeek-R1-Zero�
 - 加快RL训练
 - 引入人类先验
 - 控制reasoning 回答格式
-`R1`的训练是四个阶段，实际上可以分成两部份，两个部分都要SFT+RL，按照这两个主要阶段说明数据源
+R1`的训练是四个阶段，实际上可以分成两部份，两个部分都要SFT+RL，按照这两个主要阶段说明数据源
 
 A. 特定推理能力的SFT和RL，相较`R1-Zero`，实际上是为了引人人类先验，帮助模型在特定特例场景下控制输出格式提升可读性，SFT有prompt engineering产生的CoT数据、从`R1-Zero`采样并且人工处理、Markdown格式控制数据、摘要数据收集，RL增加一致性奖励等。
 
@@ -249,7 +249,7 @@ PRM-Search类的方法对于数学等级5的难题，聊胜于无PRM无法准确
 
 结论：无效
 
-`AlphaGo`和`AlphaGo-Zero`里的区别：AlphaGo的MCTS价值估计是rollout再回溯估计动作价值， 而`AlphaGo-Zero`是做价值估计。
+AlphaGo`和`AlphaGo-Zero`里的区别：AlphaGo的MCTS价值估计是rollout再回溯估计动作价值， 而`AlphaGo-Zero`是做价值估计。
 
 围棋的难度相较LLM Next-Token generation式的MDP简单的多。另外价值网络也会直接影响生成的选择，LLM Next Token预测较围棋网络下子 inference成本大的多，工程受限下的MCTS试错成本高。
 

@@ -44,7 +44,7 @@ Siehe [harness-creator/README.md](harness-creator/README.md) für die vollständ
 
 ## Wie harness-creator erstellt wurde
 
-`harness-creator` wurde mit der <strong>skill-creator</strong>-Methodik entwickelt, Anthropic's offiziellem meta-skill zum Erstellen, Testen und Iterieren von Agent Skills im Ablauf draft → test → evaluate → iterate.
+harness-creator` wurde mit der <strong>skill-creator</strong>-Methodik entwickelt, Anthropic's offiziellem meta-skill zum Erstellen, Testen und Iterieren von Agent Skills im Ablauf draft → test → evaluate → iterate.
 
 ## Wie Skills funktionieren
 

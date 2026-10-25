@@ -109,7 +109,7 @@ CUDA线程层级
 
 下面是一段简单的内核函数，用于求两个数组的和：
 
-`// Kernel definition
+// Kernel definition
 __global__ void VecAdd(float* A, float* B, float* C)
 
 ```cpp
@@ -127,9 +127,8 @@ int main()
 }
 ```
 
-`
 
-`threadIdx.x`是线程在所处线程块中的X方向的ID。由于本例中是定义的1维排布，因此X方向ID即为线程的ID。
+threadIdx.x`是线程在所处线程块中的X方向的ID。由于本例中是定义的1维排布，因此X方向ID即为线程的ID。
 
 由于GPU中的每个线程都会执行相同的VecAdd函数，因此不同的线程需要使用自己独有的ID来区分彼此，来获取不同的数据。这就是SIMT的概念，即“相同指令，不同线程”。
 
@@ -137,7 +136,7 @@ int main()
 
 下面举一个2维排布的例子，用于做矩阵加法：
 
-`// Kernel definition
+// Kernel definition
 __global__ void MatAdd(float A[N][N], float B[N][N],
 
 ```cpp
@@ -164,7 +163,6 @@ int main()
 }
 ```
 
-`
 
 首先看主函数，当排布不使用1维时，需要使用`dim3`数据类型。该程序每个线程块中线程为16x16排布，而线程块的排布依赖于数据的多少。
 
@@ -241,9 +239,8 @@ CUDA是软件平台，其版本(CUDA7.5 CUDA8.0 CUDA10.0)与计算能力基本�
 
 初学者的话，上面内容能看明白的都是勇士。这里给一个例子，是我自己写的BGR转灰度图的程序，希望能让大家稍微明白一点CUDA程序如何写。
 
-`/* main.cu */
-
 ```cpp
+/* main.cu */
 #include *
 #include 
 #include "opencv2/highgui.hpp"  //实际上在/usr/include下
@@ -337,7 +334,6 @@ int main(void)
 }
 ```
 
-`
 
 这里我对比了CUDA、CPU、OPENCV三种实现方式的执行时间：
 
@@ -347,7 +343,7 @@ CUDA、CPU、OPENCV执行时间对比速度：CUDA>OPENCV>CPU。其中OPENCV快�
 
 附上CMakeLists.txt：
 
-`cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8)
 project(testcuda)
 find_package(CUDA REQUIRED)
 find_package(OpenCV REQUIRED)
@@ -411,7 +407,7 @@ PTX代码的兼容性远强于二进制代码。只要不涉及到不同架构�
 
 除了使用`-arch`和`-code`来分别指定C->PTX和PTX->cubin的计算能力外，还可以用`-gencode`关键字来操作，如下例：
 
-`nvcc x.cu
+nvcc x.cu
 
 ```text
     -gencode arch=compute_35,code=sm_35
@@ -466,7 +462,7 @@ CUDA运行库提供了函数以分配/释放设备端的内存，以及与主机
 
 另外，如果要在设备内存中定义全局变量，则需要使用使用`__constant__`或`__device__`来修饰，并使用`cudaMemcpyToSymbol()`和`cudaMemcpyFromSymbol()`来读写。如下例：
 
-`__constant__ float constData[256];
+__constant__ float constData[256];
 
 ```text
 float data[256];
@@ -491,7 +487,6 @@ float* ptr;
 
 cudaMalloc(&ptr, 256 * sizeof(float));
 cudaMemcpyToSymbol(devPointer, &ptr, sizeof(ptr));
-`
 
 实际上，当使用`__constant__`关键字时，是申请了一块常量内存；而使用`__device__`时，是普通的全局内存。因此`__device__`申请的内存需要申请，而`__constant__`不用。不管是全局内存，还是常量内存，需要用带有`Symbol`的函数拷贝。
 
@@ -501,7 +496,7 @@ cudaMemcpyToSymbol(devPointer, &ptr, sizeof(ptr));
 
 举个例子，对于如下代码，虽然是定义了一个全局的共享内存hist_shared，但实际上，在每一个线程块被调度到SM上时，都会在SM的共享内存区开一块内存。因此，每一个线程块都有一个hist_shared，且之间无法互相访问。
 
-`__shared__ unsigned int hist_shared[256];   //共享内存仅在线程块内共享
+__shared__ unsigned int hist_shared[256];   //共享内存仅在线程块内共享
 
 __global__ void getGrayHistincuda_usesharemem(unsigned char * const grayData, 
 
@@ -535,7 +530,6 @@ __global__ void getGrayHistincuda_usesharemem(unsigned char * const grayData,
 }
 ```
 
-`
 
 当然，共享内存的声明放在内核函数里面也是可以的，效果一致。
 
@@ -653,7 +647,7 @@ CUDA允许以下操作互相并行：
 
 下述代码是一个流的创建和销毁的例子。该程序创建了两个流，分配了两个锁页内存传输数据，依次启动了两个内核，最后销毁了这两个流。
 
-`cudaStream_t stream[2];
+cudaStream_t stream[2];
 
 ```cpp
 for (int i = 0; i  2; ++i)
@@ -677,7 +671,6 @@ for (int i = 0; i  2; ++i)
     cudaStreamDestroy(stream[i]);
 ```
 
-`
 
 从上例中可以看到，流的创建需要定义`cudaStream_t`结构，并调用`cudaStreamCreate()`来初始化。** 流的销毁需要调用`cudaStreamDestroy()`来实现。
 
@@ -719,9 +712,8 @@ for (int i = 0; i  2; ++i)
 
 下例是一个使用回调的例子。该例中，两个stream将数据拷回主机端后，会调用回调函数。
 
-`void CUDART_CB MyCallback(cudaStream_t stream, cudaError_t status, void *data){
-
 ```text
+void CUDART_CB MyCallback(cudaStream_t stream, cudaError_t status, void *data){
     printf("Inside callback %d\n", (size_t)data);
 }
 ```
@@ -737,7 +729,6 @@ for (size_t i = 0; i  2; ++i) {
 }
 ```
 
-`
 
 回调函数中不能直接或间接的执行CUDA函数，否则会因为等待自己完成而造成死锁。 *(原因尚不太明白)*
 
@@ -755,19 +746,18 @@ for (size_t i = 0; i  2; ++i) {
 
 ### 3.2.5.6.1 事件的创建和销毁
 
-`cudaEvent_t start, stop;    //创建
+cudaEvent_t start, stop;    //创建
 cudaEventCreate(&start);
 cudaEventCreate(&stop);
 ...
 cudaEventDestroy(start);    //销毁
 cudaEventDestroy(stop);
-`
 
 ### 3.2.5.6.2 计算时间
 
 下例是一个使用Event计算时间的例子：  
 
-`cudaEventRecord(start, 0);  //记录事件(将事件压入流)，流0则代表所有流完成任务后事件才会被触发
+cudaEventRecord(start, 0);  //记录事件(将事件压入流)，流0则代表所有流完成任务后事件才会被触发
 
 ```cpp
 for (int i = 0; i  2; ++i) {
@@ -785,7 +775,6 @@ float elapsedTime;
 ```
 
 cudaEventElapsedTime(&elapsedTime, start, stop);    //获取两个事件发生的时间差(ms)
-`
 
 ### 3.2.6 多设备系统(Multi-Device System)
 
@@ -793,7 +782,10 @@ cudaEventElapsedTime(&elapsedTime, start, stop);    //获取两个事件发生�
 
 下例是如何枚举设备，并获取设备信息的例子：
 
-`int deviceCount;
+```cpp
+int deviceCount;
+```
+
 cudaGetDeviceCount(&deviceCount);   //获取设备数量
 
 ```cpp
@@ -805,7 +797,6 @@ for (device = 0; device  deviceCount; ++device) {
 }
 ```
 
-`
 
 ### 3.2.6.2 设备选择(Device Selection)
 
@@ -815,7 +806,7 @@ for (device = 0; device  deviceCount; ++device) {
 
 下例是一个设备选择的例子：
 
-`size_t size = 1024 * sizeof(float);
+size_t size = 1024 * sizeof(float);
 cudaSetDevice(0);   // Set device 0 as current
 
 ```text
@@ -832,14 +823,13 @@ float* p1;
 
 cudaMalloc(&p1, size);  // Allocate memory on device 1
 MyKernel1000, 128>>>(p1); // Launch kernel on device 1
-`
 
 ### 3.2.6.3 (多设备下)流和事件的执行情况
 
 下面将讨论，如果对一个不属于当前设备的流或事件进行操作，哪些操作会成功，哪些操作会失败：
 
 - 内核启动**(will fail)：如果将内核压入不属于当前设备的流中，则内核会启动失败。也就是说，如果要向一个流中压入内核，必须先切换到流所在的设备：
-`cudaSetDevice(0);   // Set device 0 as current
+cudaSetDevice(0);   // Set device 0 as current
 cudaStream_t s0;
 cudaStreamCreate(&s0);  // Create stream s0 on device 0
 MyKernel100, 64, 0, s0>>>(); // Launch kernel on device 0 in s0
@@ -850,7 +840,6 @@ MyKernel100, 64, 0, s1>>>(); // Launch kernel on device 1 in s1
 
 // This kernel launch will fail:
 MyKernel100, 64, 0, s0>>>(); // Launch kernel on device 1 in s0
-`
 
 - <strong>内存拷贝</strong>(will success)：如果对一个不属于当前设备的流进行内存拷贝工作，内存拷贝会成功。
 - <strong>cudaEventRecord()</strong>(will fail)：必须现将设备上下文切换过去，再向流压入事件。
@@ -867,7 +856,7 @@ MyKernel100, 64, 0, s0>>>(); // Launch kernel on device 1 in s0
 
 对等设备的的地址是统一编址的，可用同一个指针访问，如下例：
 
-`cudaSetDevice(0);   // Set device 0 as current
+cudaSetDevice(0);   // Set device 0 as current
 
 ```text
 float* p0;
@@ -885,13 +874,12 @@ cudaDeviceEnablePeerAccess(0, 0);   // Enable peer-to-peer access with device 0
 ```
 
 MyKernel1000, 128>>>(p0);
-`
 
 ### 3.2.6.5 (设备间)对等内存拷贝(Peer-to-Peer Memory Copy)
 
 对等设备的地址是统一编址的，可以使用`cudaMemcpyPeer()、cudaMemcpyPeerAsync()、cudaMemcpy3DPeer、cudaMemcpy3DPeerAsync()`来进行直接拷贝。无需先拷贝会主机端内存，再转到另一块卡上。如下例：
 
-`cudaSetDevice(0);   // Set device 0 as current
+cudaSetDevice(0);   // Set device 0 as current
 
 ```text
 float* p0;
@@ -911,7 +899,6 @@ MyKernel1000, 128>>>(p0);    // Launch Kernel on Device 0
 cudaSetDevice(1);               // Set Device 1 as Current
 cudaMemcpyPeer(p1, 1, p0, 0, size); // Copy p0 to p1
 MyKernel1000, 128>>>(p1);        // Launch Kernel on Device 1
-`
 
 关于设备间的对等拷贝，如果使用的是NULL stream，则有如下性质：** * 如果拷贝的双方中的任何一方，在设备拷贝前有任务未完成，则拷贝会被阻塞，直至任务完成。 * 只有拷贝结束后，两者的后续任务才能继续执行。
 
@@ -1069,7 +1056,7 @@ NVIDIA GPU是典型的SIMT架构(Single-Instruction, Multiple-Thread Architectur
 当线程束中的线程，必须要执行不同的条件分支时，满足分支条件的线程会被激活并执行分支内的内容；不满足分支条件的线程会接收同样的指令，但不会被激活，不会实际执行，但也不能跳过去执行其他指令。换言之，当线程束中的线程遇到分支时，不论线程是否需要执行分支，都会消耗执行该分支的时间，因为线程束中的线程执行同样的指令，是高度同步的。
  举个例子，假如程序是按如下方式编写的：
 
-`...
+...
 
 ```text
 if(条件)
@@ -1083,7 +1070,6 @@ else
 ```
 
 ...
-`
 
 如果是CPU，如果不满足条件，则会直接跳转去执行操作2，不会执行操作1。 但是对于GPU同一个线程束内的线程，即使不满足条件，依旧会去跟其他线程一起去执行操作1。等到操作1执行完毕后，该线程又会跟其他线程一起执行操作2。这也就意味着，不管线程实际上需不需要执行某一分支，它都要跟其他线程一起跑完这一分支。
 
@@ -1200,9 +1186,8 @@ CUDA具有Occupancy Calculator，帮助程序员设计。
 
 考虑如下两个内核：
 
-`//假设gpuData是一个二维数组，尺寸为32x32
-
 ```cpp
+//假设gpuData是一个二维数组，尺寸为32x32
 int gpuData[32][32];  //这样是不合法的，因为这么定义实际上是在主机端，还需要拷贝到设备端，这里只是为了方便说明问题
 ```
 
@@ -1232,7 +1217,6 @@ __global__ void Kernel2(int gpu[][32])
 }
 ```
 
-`
 
 上例中，执行Kernel1的线程束中的线程，在一次循环中，32个线程依次访问`gpuData[0][0], gpuData[0][1], gpuData[0][2], ..., gpuData[0][31]`。在内存中，这32个变量是连续存储的，因此可以被合并访问。这种访问被称为行访问。
  而Kernel2在一次循环中，读取的变量为`gpuData[0][0], gpuData[1][0], gpuData[2][0], ..., gpuData[31][0]`。这32个变量是不连续的，需要进行32次内存请求。这种访问被称为列访问。
@@ -1250,9 +1234,8 @@ C/C++内建的变量(int/float等)，以及CUDA支持的向量(float2/float4等)
 
 一些结构体可能会产生不对齐的情况，看下例：
 
-`struct struct1{
-
 ```text
+struct struct1{
     float x;
     float y;
 };
@@ -1270,7 +1253,6 @@ struct struct3 __align__(16){
 };
 ```
 
-`
 
 上例中，struct1是8字节的结构体，自动会对齐； struct2具有12个字节，无法对齐； struct3使用了`__align__(16)`关键字，显式指定对齐到16。
 

@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/457693496
 
 除了使用GraphExecutor以外，VirtualMachine也可以作为runtime的选择，本篇梳理一下使用VirtualMachine的流程。测试代码为: [https://github.com/Archermmt/tvm_walk_through/blob/master/adv_virtualmachine/demo.py](https://link.zhihu.com/?target=https%3A//github.com/Archermmt/tvm_walk_through/blob/master/adv_virtualmachine/demo.py)
 
-`调用流程：
+调用流程：
 1 relay.frontend.from_pytorch(解析过程，略)
 2 relay.vm.compile
   2.1 VMCompiler.lower
@@ -69,10 +69,9 @@ source_url: https://zhuanlan.zhihu.com/p/457693496
 
 @ tvm/python/tvm/relay/backend/vm.py
 
-`def compile(mod, target=None, target_host=None, params=None):
+```python
+def compile(mod, target=None, target_host=None, params=None):
     ...
-
-```text
     compiler = VMCompiler()
     if params:
         compiler.set_params(params)
@@ -88,7 +87,8 @@ source_url: https://zhuanlan.zhihu.com/p/457693496
 
 调用入口函数 @ tvm/src/relay/backend/vm/http://compiler.cc
 
-`void VMCompiler::Lower(IRModule mod, const TargetsMap& targets, const tvm::Target& target_host) {
+```cpp
+void VMCompiler::Lower(IRModule mod, const TargetsMap& targets, const tvm::Target& target_host) {
   exec_ = make_objectExecutable>();
   ...
   context_.module = OptimizeModule(mod, targets_, target_host_);
@@ -96,8 +96,6 @@ source_url: https://zhuanlan.zhihu.com/p/457693496
   exec_->functions.resize(context_.module->functions.size());
   ...
   ExprDeviceMap expr_device_map = AnalyzeContext();
-
-```cpp
   for (auto named_func : context_.module->functions) {
     auto gvar = named_func.first;
     if (auto* n = named_func.second.asFunctionNode>()) {
@@ -113,26 +111,24 @@ source_url: https://zhuanlan.zhihu.com/p/457693496
 }
 ```
 
-`
 
 #### <strong>Step2.1.1 VMCompiler::OptimizeModule</strong>
 
 首先进行的依然是优化过程： @ tvm/src/relay/backend/vm/http://compiler.cc
 
-`IRModule VMCompiler::OptimizeModule(IRModule mod, const TargetsMap& targets_arg, const Target& target_host_arg) {
+IRModule VMCompiler::OptimizeModule(IRModule mod, const TargetsMap& targets_arg, const Target& target_host_arg) {
   …
   ArrayPass> pass_seqs;
   Arrayruntime::String> entry_functions{"main"};
+
+```text
   pass_seqs.push_back(transform::RemoveUnusedFunctions(entry_functions));
   pass_seqs.push_back(transform::ToBasicBlockNormalForm());
   …
-
-```text
   return seq(mod);
 }
 ```
 
-`
 
 流程和relay.optimize一样，同样找几个有代表性的Pass进行梳理
 
@@ -152,7 +148,7 @@ source_url: https://zhuanlan.zhihu.com/p/457693496
 
 #### <strong>Step2.1.1.2 InlinePrimitives</strong>
 
-`调用流程：
+调用流程：
 1 PrimitiveInliner::Inline()
   1.1 VisitExpr_(LetNode)(将var：value关系保存到var_map)
   1.2 VisitExpr_(CallNode)(去除var：value对，直接链接function)`
@@ -169,10 +165,10 @@ source_url: https://zhuanlan.zhihu.com/p/457693496
 
 @ tvm/src/relay/backend/vm/http://inline_primitives.cc
 
-`Pass InlinePrimitives() {
+Pass InlinePrimitives() {
   runtime::TypedPackedFuncIRModule(IRModule, PassContext)> pass_func =
 
-```js
+```cpp
       [=](IRModule m, PassContext pc) { return relay::vm::PrimitiveInliner(m).Inline(); };
   auto inline_pass = CreateModulePass(pass_func, 1, "Inline", {});
   // Eliminate dead code for each function after inlining.
@@ -192,12 +188,8 @@ struct PrimitiveInliner : ExprMutator {
     ExpandANormalForm(let_node, pre_visit, post_visit);
     return memo_[GetRefExpr>(let_node)];
   }
-```
 
-  
   Expr VisitExpr_(const CallNode* call) {
-
-```cpp
     Expr op = call->op;
     ...
     while ((var_node = op.asVarNode>())) {
@@ -223,13 +215,12 @@ struct PrimitiveInliner : ExprMutator {
 };
 ```
 
-`
 
 访问到Let节点时会保存var:value的关系。访问Call节点时如果发现op是一个var节点，并且有保存在var_map中的信息，就直接删除var节点和value节点，链接function节点。
 
 #### <strong>Step2.1.1.3 MemoryOpt</strong>
 
-`调用流程：
+调用流程：
 1 transform::ManifestAlloc
   1.1 ContextAnalysis(分析节点和设备的绑定情况)
 
@@ -257,24 +248,23 @@ struct PrimitiveInliner : ExprMutator {
 
 @ tvm/src/relay/backend/vm/http://compiler.cc
 
-`transform::Sequential MemoryOpt(tvm::Target host_target, TargetsMap targets) {
+transform::Sequential MemoryOpt(tvm::Target host_target, TargetsMap targets) {
   ArrayPass> pass_seqs;
+
+```text
   pass_seqs.push_back(transform::ManifestAlloc(host_target, targets));
   pass_seqs.push_back(transform::FoldConstant());
   ...
-
-```text
   return transform::Sequential(pass_seqs);
 }
 ```
 
-`
 
 反复调用三个Pass，以确保修改完全。其中FoldConstant和FuseOps在[【我与TVM二三事 前篇（3）】relay optimize](https://zhuanlan.zhihu.com/p/457134643)中介绍过，不再说明，主要看ManifestAlloc这个Pass
 
 @ tvm/src/relay/transforms/http://memory_alloc.cc
 
-`Pass ManifestAlloc(Target target_host, Maptvm::Integer, tvm::Target> targets) {
+Pass ManifestAlloc(Target target_host, Maptvm::Integer, tvm::Target> targets) {
 
 ```cpp
   return tvm::transform::CreateModulePass(
@@ -298,7 +288,6 @@ struct PrimitiveInliner : ExprMutator {
 }
 ```
 
-`
 
 分成两部分，ContextAnalysis进行检查，DialectRewriter对func进行修改。
 
@@ -308,13 +297,13 @@ struct PrimitiveInliner : ExprMutator {
 
 @ tvm/src/relay/analysis/http://context_analysis.cc
 
-`AnalysisResultMap ContextAnalysis(const IRModule& mod, const Device& default_device) {
+AnalysisResultMap ContextAnalysis(const IRModule& mod, const Device& default_device) {
   auto entry = mod->GetGlobalVar("main");
   auto ca = analysis::ContextAnalyzer(mod, entry, default_device);
   auto expr = mod->Lookup(entry);
-  ca.VisitExpr(expr);
 
 ```cpp
+  ca.VisitExpr(expr);
   return ca.Results();
 }
 
@@ -358,13 +347,12 @@ class ContextAnalyzer : public MixedModeVisitor {
 };
 ```
 
-`
 
 进行遍历访问，对每个节点的依赖元素都进行一遍DeviceFor。第一次调用DeviceFor都会在expr_to_device_填充Bottom，标明device未知，之后使用Unify比对所有的元素，如果有确定的unified_device，则所有的元素都设定device为unified_device。本demo中没有算子指定设备，所以遍历之后所有节点的device都是Bottom，然后在调用Results函数的时候全都设定为默认的
 
 @ tvm/src/relay/analysis/http://context_analysis.cc
 
-`AnalysisResultMap ContextAnalysis(const IRModule& mod, const Device& default_device) {
+AnalysisResultMap ContextAnalysis(const IRModule& mod, const Device& default_device) {
   AnalysisResultMap Results() {
 
 ```cpp
@@ -380,7 +368,6 @@ class ContextAnalyzer : public MixedModeVisitor {
 }
 ```
 
-`
 
 #### <strong>Step2.1.1.3.2 DialectRewriter::Rewrite</strong>
 
@@ -388,10 +375,9 @@ class ContextAnalyzer : public MixedModeVisitor {
 
 @ tvm/src/relay/transforms/http://memory_alloc.cc
 
-`class DialectRewriter : public ExprMutator {
-  Expr VisitExpr_(const CallNode* cn) final {
-
 ```cpp
+class DialectRewriter : public ExprMutator {
+  Expr VisitExpr_(const CallNode* cn) final {
     if (IsPrimitive(cn)) {
       ...
       if (IsDeviceCopy(cn->op)) {
@@ -412,13 +398,9 @@ class ContextAnalyzer : public MixedModeVisitor {
       }
     } ...
   }
-```
 
-  
   Var MakeStaticAllocation(LetList* scope, const TensorType& type, Device dev, String name_hint) {
     ...
-
-```text
     Var var("storage_" + name_hint, Type(nullptr));
     Expr value = AllocStorage(size, alignment, dev, type->dtype);
     auto sto = scope->Push(var, value);
@@ -429,7 +411,6 @@ class ContextAnalyzer : public MixedModeVisitor {
 ```
 
 }；
-`
 
 MakeStaticAllocation对输出进行Malloc操作，添加AllocStorage和AllocTensor节点，inputs和outputs都被包裹成Tuple之后，连同op一起包裹成InvokeTVMOp。
 
@@ -437,7 +418,7 @@ MakeStaticAllocation对输出进行Malloc操作，添加AllocStorage和AllocTens
 
 @ tvm/src/relay/backend/vm/http://compiler.cc
 
-`ExprDeviceMap VMCompiler::AnalyzeContext() const {
+ExprDeviceMap VMCompiler::AnalyzeContext() const {
   Device default_device;
   ExprDeviceMap expr_device_map;
 
@@ -456,7 +437,6 @@ MakeStaticAllocation对输出进行Malloc操作，添加AllocStorage和AllocTens
 }
 ```
 
-`
 
 核心过程是AnalyzeContext，在Step2.1.1.3.1 ContextAnalysis中梳理过，得到的是每个计算节点和device的绑定关系，本demo使用了kDLCPU作为device，所以expr_device_map为空。
 
@@ -466,10 +446,9 @@ MakeStaticAllocation对输出进行Malloc操作，添加AllocStorage和AllocTens
 
 @ tvm/src/relay/backend/vm/http://compiler.cc
 
-`class VMFunctionCompiler : ExprFunctorvoid(const Expr& expr)> {
-  VMFunction Compile(const GlobalVar& var, const Function& func) {
-
 ```cpp
+class VMFunctionCompiler : ExprFunctorvoid(const Expr& expr)> {
+  VMFunction Compile(const GlobalVar& var, const Function& func) {
     for (auto param : func->params) {
       auto arg_register = NewRegister();
       ICHECK_EQ(i, arg_register);
@@ -489,15 +468,13 @@ MakeStaticAllocation对输出进行Malloc操作，添加AllocStorage和AllocTens
 }
 ```
 
-`
 
 首先使用var_register_map_保存入参，每个入参分配一个新的register数，然后遍历生成指令instructions_。基于上文的分析，用于计算的部分基本都是用Call包裹InvokeTVMOp的节点记录的，所以主要看对Call节点的处理
 
 @ tvm/src/relay/backend/vm/http://compiler.cc
 
-`class VMFunctionCompiler : ExprFunctorvoid(const Expr& expr)> {
-
 ```cpp
+class VMFunctionCompiler : ExprFunctorvoid(const Expr& expr)> {
   void VisitExpr_(const CallNode* call_node) {
     Expr op = call_node->op;
     if (op.asOpNode>()) {
@@ -545,11 +522,10 @@ void EmitInvokeTVMOp(const Function& func, const Expr& inputs, const Expr& outpu
 }
 ```
 
-`
 
 到此，发现核心依然是调用engine_->lower生成Stmt结构，然后记录到context_中，即调用CompileEngineImpl::Lower，此过程梳理见[【我与TVM二三事 前篇（9）】relay codegen](https://zhuanlan.zhihu.com/p/457407600): <strong>Step 2.2.2 tvm::lower</strong>。VisitExpr每个过程需要和内存交互的地方都会使用Emit生成指令，并收集到instructions_中，形式如：
 
-`load_const $1 Const[0]
+load_const $1 Const[0]
 alloc_storage $2 $1 64 float32 1
 load_const $3 Const[1]
 alloc_tensor $4 $2 $3 [1, 1, 224, 224, 3] float32
@@ -563,13 +539,12 @@ Step2.1 VMCompiler.lower过程为每个全局函数生成了VMFunction，接下�
 
 @ tvm/src/relay/backend/vm/http://compiler.cc
 
-`void VMCompiler::Codegen() {
+```cpp
+void VMCompiler::Codegen() {
   ...
   auto compile_engine = CompileEngine::Global();
   auto ext_mods = compile_engine->LowerExternalFunctions();
   runtime::Module lib;
-
-```cpp
   if (funcs.size() > 0) {
     MapString, IRModule> build_funcs;
     for (const auto& i : funcs) {
@@ -582,7 +557,6 @@ Step2.1 VMCompiler.lower过程为每个全局函数生成了VMFunction，接下�
 }
 ```
 
-`
 
 由于没有指定kCompiler处理的函数，所以ext_mods为空，lib为tvm::build得到的llvm结构，codegen::CreateMetadataModule没有任何操作。
 
@@ -594,10 +568,9 @@ Step2.1 VMCompiler.lower过程为每个全局函数生成了VMFunction，接下�
 
 @ tvm/python/tvm/runtime/vm.py
 
-`class VirtualMachine(object):
-    ...
-
 ```python
+class VirtualMachine(object):
+    ...
     def __init__(self, exe, device, memory_cfg=None):
         ...
         self.module = exe.mod["vm_load_executable"]()
@@ -616,7 +589,7 @@ Step2.1 VMCompiler.lower过程为每个全局函数生成了VMFunction，接下�
 
 @ tvm/src/runtime/vm/http://executable.cc
 
-`PackedFunc Executable::GetFunction(const std::string& name, const ObjectPtrObject>& sptr_to_self) {
+PackedFunc Executable::GetFunction(const std::string& name, const ObjectPtrObject>& sptr_to_self) {
   ...} else if (name == "vm_load_executable") {
 
 ```text
@@ -629,14 +602,12 @@ Step2.1 VMCompiler.lower过程为每个全局函数生成了VMFunction，接下�
 }
 ```
 
-`
 
 -> @ tvm/src/runtime/vm/http://vm.cc
 
-`void VirtualMachine::LoadExecutable(const Executable* exec) {
-  ...
-
 ```cpp
+void VirtualMachine::LoadExecutable(const Executable* exec) {
+  ...
   for (const auto& it : exec_->primitive_map) {
     const auto& packed_name = it.first;
     auto packed_index = static_castsize_t>(it.second);
@@ -648,7 +619,6 @@ Step2.1 VMCompiler.lower过程为每个全局函数生成了VMFunction，接下�
 }
 ```
 
-`
 
 逻辑比较简洁，就是填充packed_funcs_。
 
@@ -656,10 +626,9 @@ Step2.1 VMCompiler.lower过程为每个全局函数生成了VMFunction，接下�
 
 @ tvm/python/tvm/runtime/vm.py
 
-`class VirtualMachine(object):
-    ...
-
 ```python
+class VirtualMachine(object):
+    ...
     def _setup_device(self, dev, memory_cfg):        …
         ...
         init_args = []
@@ -676,7 +645,7 @@ Step2.1 VMCompiler.lower过程为每个全局函数生成了VMFunction，接下�
 
 @ tvm/src/runtime/vm/http://vm.cc
 
-`PackedFunc VirtualMachine::GetFunction(const std::string& name, const ObjectPtrObject>& sptr_to_self) {
+PackedFunc VirtualMachine::GetFunction(const std::string& name, const ObjectPtrObject>& sptr_to_self) {
   ... } else if (name == "init") {
 
 ```cpp
@@ -710,7 +679,6 @@ void VirtualMachine::Init(const std::vectorDevice>& devs, const std::vectorAlloc
 }
 ```
 
-`
 
 初始化devices_和allocators_，用于记录每个device对应的设备类型和内存分配器。
 
@@ -718,10 +686,9 @@ void VirtualMachine::Init(const std::vectorDevice>& devs, const std::vectorAlloc
 
 @ tvm/python/tvm/runtime/vm.py
 
-`class VirtualMachine(object):
-    ...
-
 ```python
+class VirtualMachine(object):
+    ...
     def set_input(self, func_name, *args, **kwargs):     …
         ...
         if kwargs:
@@ -742,9 +709,8 @@ void VirtualMachine::Init(const std::vectorDevice>& devs, const std::vectorAlloc
 
 @ tvm/python/tvm/runtime/vm.py
 
-`class Executable(object):
-
 ```python
+class Executable(object):
     def get_function_params(self, func_name):
         if func_name in self._function_params:
             return self._function_params[func_name]
@@ -764,7 +730,7 @@ void VirtualMachine::Init(const std::vectorDevice>& devs, const std::vectorAlloc
 
 @ tvm/src/runtime/vm/http://executable.cc
 
-`PackedFunc Executable::GetFunction(const std::string& name, const ObjectPtrObject>& sptr_to_self) {
+PackedFunc Executable::GetFunction(const std::string& name, const ObjectPtrObject>& sptr_to_self) {
   ... } else if (name == "get_function_arity") {
 
 ```cpp
@@ -796,7 +762,6 @@ std::string Executable::GetFunctionParameterName(std::string func_name, uint32_t
 }
 ```
 
-`
 
 获取入参名字列表。
 
@@ -806,7 +771,7 @@ std::string Executable::GetFunctionParameterName(std::string func_name, uint32_t
 
 @ tvm/src/runtime/vm/http://vm.cc
 
-`PackedFunc VirtualMachine::GetFunction(const std::string& name, const ObjectPtrObject>& sptr_to_self) {
+PackedFunc VirtualMachine::GetFunction(const std::string& name, const ObjectPtrObject>& sptr_to_self) {
   ... } else if (name == "set_input") {
 
 ```cpp
@@ -830,7 +795,6 @@ std::string Executable::GetFunctionParameterName(std::string func_name, uint32_t
 }
 ```
 
-`
 
 拷贝入参数据，填充inputs_
 
@@ -838,9 +802,8 @@ std::string Executable::GetFunctionParameterName(std::string func_name, uint32_t
 
 @ tvm/python/tvm/runtime/vm.py
 
-`class VirtualMachine(object):
-
 ```python
+class VirtualMachine(object):
     def run(self, *args, **kwargs):
         return self.invoke("main", *args, **kwargs)
     def invoke(self, func_name, *args, **kwargs):
@@ -851,7 +814,7 @@ std::string Executable::GetFunctionParameterName(std::string func_name, uint32_t
 
 -> @ tvm/src/runtime/vm/http://vm.cc
 
-`PackedFunc VirtualMachine::GetFunction(const std::string& name, const ObjectPtrObject>& sptr_to_self) {
+PackedFunc VirtualMachine::GetFunction(const std::string& name, const ObjectPtrObject>& sptr_to_self) {
 
 ```cpp
   if (name == "invoke") {
@@ -881,7 +844,6 @@ ObjectRef VirtualMachine::Invoke(const VMFunction& func, const std::vectorObject
 }
 ```
 
-`
 
 分成两步，InvokeGlobal准备环境和RunLoop执行指令
 
@@ -889,11 +851,10 @@ ObjectRef VirtualMachine::Invoke(const VMFunction& func, const std::vectorObject
 
 @ tvm/src/runtime/vm/http://vm.cc
 
-`void VirtualMachine::InvokeGlobal(const VMFunction& func, const std::vectorObjectRef>& args) {
+```cpp
+void VirtualMachine::InvokeGlobal(const VMFunction& func, const std::vectorObjectRef>& args) {
   ...
   PushFrame(func.params.size(), this->pc_ + 1, func);
-
-```cpp
   for (size_t i = 0; i  args.size(); ++i) {
     WriteRegister(i, args[i]);
   }
@@ -910,13 +871,12 @@ void VirtualMachine::PushFrame(Index arg_count, Index ret_pc, const VMFunction& 
 
 
 inline void VirtualMachine::WriteRegister(Index r, const ObjectRef& val) {
-  frames_.back().register_file[r] = val;
 
 ```text
+  frames_.back().register_file[r] = val;
 }
 ```
 
-`
 
 PushFrame用于将当前的code_入栈保存，WriteRegister则将inputs信息写入当前frame的register_file对应位置。注意此处一个frame中code_和register_file对应的不是一个func，code_对应的是上个func的指令信息，frame入栈之后才会更新code_为当前func的指令信息。
 
@@ -924,13 +884,12 @@ PushFrame用于将当前的code_入栈保存，WriteRegister则将inputs信息�
 
 @ tvm/src/runtime/vm/http://vm.cc
 
-`void VirtualMachine::RunLoop() {
+```cpp
+void VirtualMachine::RunLoop() {
   ICHECK(this->exec_);
   ICHECK(this->code_);
   pc_ = 0;
   Index frame_start = frames_.size();
-
-```cpp
   while (true) {
   main_loop:
     auto const& instr = code_[this->pc_];
@@ -990,7 +949,6 @@ void VirtualMachine::InvokePacked(Index packed_index, const PackedFunc& func, In
 }
 ```
 
-`
 
 RunLoop的基本过程就是模拟寄存器处理数据的过程，再把结果写回寄存器的过程，逻辑和代码风格都十分像指令集书写的时候的格式，其中InvokePacked的处理依然是调用被包裹成PackedFunc的llvm结构。
 
