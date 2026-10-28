@@ -59,6 +59,79 @@ function processLine(line, store) {
     .join('');
 }
 
+function convertMathCodeSpans(content) {
+  const lines = String(content == null ? '' : content).split('\n');
+  const out = [];
+  let fence = null;
+  const isLatex = (code) => {
+    if (!code || /\$/.test(code)) return false;
+    if (/\\[a-zA-Z]+/.test(code)) return true;
+    if (/[_^]\{[^}]*\}/.test(code)) return true;
+    if (/^[A-Za-z][A-Za-z0-9]*[_^][A-Za-z0-9{}:.,-]+$/.test(code)) return true;
+    return false;
+  };
+  for (const line of lines) {
+    const f = /^\s{0,3}(`{3,}|~{3,})/.exec(line);
+    if (f) {
+      if (!fence) fence = f[1][0];
+      else if (f[1][0] === fence) fence = null;
+      out.push(line);
+      continue;
+    }
+    if (fence) {
+      out.push(line);
+      continue;
+    }
+    out.push(line.replace(/(`+)([^`\n]+?)\1/g, (whole, ticks, code) => {
+      if (ticks.length !== 1 || !isLatex(code)) return whole;
+      const display = code.length > 60 || /\\rightarrow|\\Rightarrow|\\quad/.test(code);
+      return display ? '\n$$\n' + code + '\n$$\n' : '$' + code + '$';
+    }));
+  }
+  return out.join('\n');
+}
+
+function convertBareInlineMath(content) {
+  const lines = String(content == null ? '' : content).split('\n');
+  const out = [];
+  let fence = null;
+  const hasCjk = (text) => /[\u3400-\u9fff]/.test(text);
+  const mathHint = /\\[a-zA-Z]+|[_^]\{[^}]*\}|[_^][A-Za-z0-9]/;
+  const tokenRe = /(?<![A-Za-z0-9_$])([A-Za-z][A-Za-z0-9]*(?:_\{[^}]*\}|\^\{[^}]*\}|_[A-Za-z0-9]+|\^[A-Za-z0-9]+))(?![A-Za-z0-9_$])/g;
+  for (let line of lines) {
+    const f = /^\s{0,3}(`{3,}|~{3,})/.exec(line);
+    if (f) {
+      if (!fence) fence = f[1][0];
+      else if (f[1][0] === fence) fence = null;
+      out.push(line);
+      continue;
+    }
+    if (fence || !line.trim() || /\$/.test(line) || /https?:\/\//.test(line)) {
+      out.push(line);
+      continue;
+    }
+    const trimmed = line.trim();
+    if (/^[#|>]/.test(trimmed) || /^!\[/.test(trimmed)) {
+      out.push(line);
+      continue;
+    }
+    // 整行公式（无中文）
+    if (!hasCjk(trimmed) && mathHint.test(trimmed) && /[=\\]/.test(trimmed)) {
+      out.push('$$\n' + trimmed + '\n$$');
+      continue;
+    }
+    // “说明：公式” 形式，只包冒号后的公式
+    const colon = line.match(/^([^：:]*[：:])\s*(.+)$/);
+    if (colon && !hasCjk(colon[2]) && mathHint.test(colon[2])) {
+      out.push(colon[1] + ' $' + colon[2].trim() + '$');
+      continue;
+    }
+    // 行内 token：t_i / T_{i:j} / f_{i-1} ...
+    out.push(line.replace(tokenRe, (whole, token) => '$' + token + '$'));
+  }
+  return out.join('\n');
+}
+
 function wrapBareMathLines(content) {
   const lines = String(content == null ? '' : content).split('\n');
   const out = [];
@@ -184,6 +257,8 @@ function restoreMath(html, store) {
 hexo.extend.filter.register('before_post_render', function (data) {
   if (!data || typeof data.content !== 'string' || !data.content) return data;
   if (!/\$|\\\(|\\\[|\\(left|right|begin\{)/.test(data.content)) return data;
+  data.content = convertMathCodeSpans(data.content);
+  data.content = convertBareInlineMath(data.content);
   data.content = wrapBareMathLines(data.content);
   const store = [];
   const content = extractMath(data.content, store);
