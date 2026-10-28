@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) Arm SMMU，AMD IOMMU，Intel VT-d设计"
+title: "Arm SMMU，AMD IOMMU，Intel VT-d设计"
 date: "2025-02-12 00:00:00"
 updated: "2025-02-12 00:00:00"
 layout: "post"

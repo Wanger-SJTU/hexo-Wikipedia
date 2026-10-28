@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) Linux内核应该怎么去学习？"
+title: "Linux内核应该怎么去学习？"
 date: "2026-04-17 00:00:00"
 updated: "2026-04-17 00:00:00"
 layout: "post"

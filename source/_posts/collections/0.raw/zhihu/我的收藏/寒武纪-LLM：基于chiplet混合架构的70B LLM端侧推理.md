@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) 寒武纪-LLM：基于chiplet混合架构的70B LLM端侧推理"
+title: "寒武纪-LLM：基于chiplet混合架构的70B LLM端侧推理"
 date: "2025-08-17 00:00:00"
 updated: "2025-08-17 00:00:00"
 layout: "post"

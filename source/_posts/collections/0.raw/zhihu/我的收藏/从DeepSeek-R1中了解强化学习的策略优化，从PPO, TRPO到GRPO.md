@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) 从DeepSeek-R1中了解强化学习的策略优化，从PPO, TRPO到GRPO"
+title: "从DeepSeek-R1中了解强化学习的策略优化，从PPO, TRPO到GRPO"
 date: "2025-02-10 00:00:00"
 updated: "2025-02-10 00:00:00"
 layout: "post"

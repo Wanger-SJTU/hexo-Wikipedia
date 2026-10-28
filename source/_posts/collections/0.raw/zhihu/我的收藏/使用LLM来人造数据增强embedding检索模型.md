@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) 使用LLM来人造数据增强embedding检索模型"
+title: "使用LLM来人造数据增强embedding检索模型"
 date: "2024-05-23 00:00:00"
 updated: "2024-05-23 00:00:00"
 layout: "post"

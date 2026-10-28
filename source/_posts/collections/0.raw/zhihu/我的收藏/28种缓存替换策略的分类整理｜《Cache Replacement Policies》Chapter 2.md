@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) 28种缓存替换策略的分类整理｜《Cache Replacement Policies》Chapter 2"
+title: "28种缓存替换策略的分类整理｜《Cache Replacement Policies》Chapter 2"
 date: "2021-07-15 00:00:00"
 updated: "2021-07-15 00:00:00"
 layout: "post"

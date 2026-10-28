@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) Awesome Heterogeneous Programming"
+title: "Awesome Heterogeneous Programming"
 date: "2025-11-03 00:00:00"
 updated: "2025-11-03 00:00:00"
 layout: "post"

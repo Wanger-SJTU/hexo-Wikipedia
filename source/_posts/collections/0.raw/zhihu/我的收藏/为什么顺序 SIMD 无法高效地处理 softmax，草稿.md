@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) 为什么顺序 SIMD 无法高效地处理 softmax，草稿"
+title: "为什么顺序 SIMD 无法高效地处理 softmax，草稿"
 date: "2025-03-12 00:00:00"
 updated: "2025-03-12 00:00:00"
 layout: "post"

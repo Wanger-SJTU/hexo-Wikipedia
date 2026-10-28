@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) cognee：当前效果最好的AI Agent记忆层(vs LightRAG/Mem0/Graphiti)"
+title: "cognee：当前效果最好的AI Agent记忆层(vs LightRAG/Mem0/Graphiti)"
 date: "2025-08-25 00:00:00"
 updated: "2025-08-25 00:00:00"
 layout: "post"

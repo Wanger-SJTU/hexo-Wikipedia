@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) 为什么Deepseek-V3类模型部署使用DP+EP比TP+EP更优？"
+title: "为什么Deepseek-V3类模型部署使用DP+EP比TP+EP更优？"
 date: "2025-04-10 00:00:00"
 updated: "2025-04-10 00:00:00"
 layout: "post"

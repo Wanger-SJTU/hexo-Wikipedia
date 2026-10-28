@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) 如何理解 Transformers 中 FFNs 的作用？"
+title: "如何理解 Transformers 中 FFNs 的作用？"
 date: "2026-04-17 00:00:00"
 updated: "2026-04-17 00:00:00"
 layout: "post"

@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) 深入理解io_uring（三）一个完整请求"
+title: "深入理解io_uring（三）一个完整请求"
 date: "2024-12-12 00:00:00"
 updated: "2024-12-12 00:00:00"
 layout: "post"

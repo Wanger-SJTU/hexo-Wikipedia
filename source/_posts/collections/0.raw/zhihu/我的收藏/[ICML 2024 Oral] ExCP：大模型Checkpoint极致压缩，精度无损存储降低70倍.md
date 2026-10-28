@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) [ICML 2024 Oral] ExCP：大模型Checkpoint极致压缩，精度无损存储降低70倍"
+title: "[ICML 2024 Oral] ExCP：大模型Checkpoint极致压缩，精度无损存储降低70倍"
 date: "2024-06-19 00:00:00"
 updated: "2024-06-19 00:00:00"
 layout: "post"

@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) ISSCC2025：IBM Telum II L2 Cache优化"
+title: "ISSCC2025：IBM Telum II L2 Cache优化"
 date: "2025-03-15 00:00:00"
 updated: "2025-03-15 00:00:00"
 layout: "post"

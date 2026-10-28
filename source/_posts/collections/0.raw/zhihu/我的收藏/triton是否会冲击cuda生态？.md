@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) triton是否会冲击cuda生态？"
+title: "triton是否会冲击cuda生态？"
 date: "2026-04-17 00:00:00"
 updated: "2026-04-17 00:00:00"
 layout: "post"

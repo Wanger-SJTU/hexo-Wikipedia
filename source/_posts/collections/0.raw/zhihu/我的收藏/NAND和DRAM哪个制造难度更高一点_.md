@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) NAND和DRAM哪个制造难度更高一点?"
+title: "NAND和DRAM哪个制造难度更高一点?"
 date: "2026-04-17 00:00:00"
 updated: "2026-04-17 00:00:00"
 layout: "post"

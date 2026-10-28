@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) Lightning Attention 是如何克服传统线性注意力机制需要累加求和的缺陷的？"
+title: "Lightning Attention 是如何克服传统线性注意力机制需要累加求和的缺陷的？"
 date: "2026-04-17 00:00:00"
 updated: "2026-04-17 00:00:00"
 layout: "post"

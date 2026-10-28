@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) LLM最大能力密度100天翻一倍！清华刘知远团队提出Densing Law"
+title: "LLM最大能力密度100天翻一倍！清华刘知远团队提出Densing Law"
 date: "2024-12-09 00:00:00"
 updated: "2024-12-09 00:00:00"
 layout: "post"

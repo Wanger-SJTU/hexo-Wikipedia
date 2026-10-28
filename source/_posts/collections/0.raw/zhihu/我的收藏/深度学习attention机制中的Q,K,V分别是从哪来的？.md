@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) 深度学习attention机制中的Q,K,V分别是从哪来的？"
+title: "深度学习attention机制中的Q,K,V分别是从哪来的？"
 date: "2026-04-17 00:00:00"
 updated: "2026-04-17 00:00:00"
 layout: "post"

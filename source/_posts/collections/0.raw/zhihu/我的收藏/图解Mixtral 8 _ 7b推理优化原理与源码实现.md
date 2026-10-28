@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) 图解Mixtral 8 * 7b推理优化原理与源码实现"
+title: "图解Mixtral 8 * 7b推理优化原理与源码实现"
 date: "2024-07-22 00:00:00"
 updated: "2024-07-22 00:00:00"
 layout: "post"

@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) 多模态大模型里面的语义一致性Tokenization"
+title: "多模态大模型里面的语义一致性Tokenization"
 date: "2024-06-16 00:00:00"
 updated: "2024-06-16 00:00:00"
 layout: "post"

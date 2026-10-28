@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) NVIDIA GPU 架构梳理"
+title: "NVIDIA GPU 架构梳理"
 date: "2023-04-28 00:00:00"
 updated: "2023-04-28 00:00:00"
 layout: "post"

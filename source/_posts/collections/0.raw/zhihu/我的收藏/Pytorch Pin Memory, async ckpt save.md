@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) Pytorch Pin Memory, async ckpt save"
+title: "Pytorch Pin Memory, async ckpt save"
 date: "2024-12-13 00:00:00"
 updated: "2024-12-13 00:00:00"
 layout: "post"

@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) SMMU和IOMMU技术 [一]"
+title: "SMMU和IOMMU技术 [一]"
 date: "2023-03-26 00:00:00"
 updated: "2023-03-26 00:00:00"
 layout: "post"

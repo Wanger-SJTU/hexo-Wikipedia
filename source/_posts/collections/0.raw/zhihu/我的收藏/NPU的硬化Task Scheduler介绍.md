@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) NPU的硬化Task Scheduler介绍"
+title: "NPU的硬化Task Scheduler介绍"
 date: "2025-08-20 00:00:00"
 updated: "2025-08-20 00:00:00"
 layout: "post"

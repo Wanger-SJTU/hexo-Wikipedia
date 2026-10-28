@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) 如何看待Log-linear Attention?"
+title: "如何看待Log-linear Attention?"
 date: "2026-04-17 00:00:00"
 updated: "2026-04-17 00:00:00"
 layout: "post"

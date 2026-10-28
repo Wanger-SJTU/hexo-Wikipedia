@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) 从Sunny Cove到Lion Cove看Intel微架构发展之路"
+title: "从Sunny Cove到Lion Cove看Intel微架构发展之路"
 date: "2024-11-27 00:00:00"
 updated: "2024-11-27 00:00:00"
 layout: "post"

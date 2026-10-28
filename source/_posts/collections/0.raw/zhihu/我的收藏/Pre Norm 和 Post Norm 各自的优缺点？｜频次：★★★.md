@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) Pre Norm 和 Post Norm 各自的优缺点？｜频次：★★★"
+title: "Pre Norm 和 Post Norm 各自的优缺点？｜频次：★★★"
 date: "2025-01-16 00:00:00"
 updated: "2025-01-16 00:00:00"
 layout: "post"

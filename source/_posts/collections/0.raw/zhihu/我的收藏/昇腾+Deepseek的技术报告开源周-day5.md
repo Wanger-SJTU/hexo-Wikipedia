@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) 昇腾+Deepseek的技术报告开源周-day5"
+title: "昇腾+Deepseek的技术报告开源周-day5"
 date: "2025-05-25 00:00:00"
 updated: "2025-05-25 00:00:00"
 layout: "post"

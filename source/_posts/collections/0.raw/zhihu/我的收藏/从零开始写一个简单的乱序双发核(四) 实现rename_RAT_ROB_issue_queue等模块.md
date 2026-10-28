@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) 从零开始写一个简单的乱序双发核(四) 实现rename/RAT/ROB/issue_queue等模块"
+title: "从零开始写一个简单的乱序双发核(四) 实现rename/RAT/ROB/issue_queue等模块"
 date: "2025-02-20 00:00:00"
 updated: "2025-02-20 00:00:00"
 layout: "post"

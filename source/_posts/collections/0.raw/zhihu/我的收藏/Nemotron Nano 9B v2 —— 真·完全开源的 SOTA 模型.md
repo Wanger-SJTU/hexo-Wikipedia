@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) Nemotron Nano 9B v2 —— 真·完全开源的 SOTA 模型"
+title: "Nemotron Nano 9B v2 —— 真·完全开源的 SOTA 模型"
 date: "2025-08-28 00:00:00"
 updated: "2025-08-28 00:00:00"
 layout: "post"

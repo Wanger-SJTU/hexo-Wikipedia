@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) 论文笔记：DejaVu、LLM in Flash、PowerInfer"
+title: "论文笔记：DejaVu、LLM in Flash、PowerInfer"
 date: "2024-01-06 00:00:00"
 updated: "2024-01-06 00:00:00"
 layout: "post"

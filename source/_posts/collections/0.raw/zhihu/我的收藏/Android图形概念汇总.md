@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) Android图形概念汇总"
+title: "Android图形概念汇总"
 date: "2025-09-11 00:00:00"
 updated: "2025-09-11 00:00:00"
 layout: "post"

@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) Linux动态链接为什么要用PLT和GOT表？"
+title: "Linux动态链接为什么要用PLT和GOT表？"
 date: "2026-04-17 00:00:00"
 updated: "2026-04-17 00:00:00"
 layout: "post"

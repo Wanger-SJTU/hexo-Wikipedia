@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) [Diffusion推理]📚cache-dit: Qwen-Image 1.5x 无损加速"
+title: "[Diffusion推理]📚cache-dit: Qwen-Image 1.5x 无损加速"
 date: "2025-08-20 00:00:00"
 updated: "2025-08-20 00:00:00"
 layout: "post"

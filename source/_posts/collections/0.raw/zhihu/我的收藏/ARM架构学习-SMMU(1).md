@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) ARM架构学习-SMMU(1)"
+title: "ARM架构学习-SMMU(1)"
 date: "2025-01-03 00:00:00"
 updated: "2025-01-03 00:00:00"
 layout: "post"

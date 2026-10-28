@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) ARM架构学习-SMMU(2) Distributed Translation Interface"
+title: "ARM架构学习-SMMU(2) Distributed Translation Interface"
 date: "2025-05-28 00:00:00"
 updated: "2025-05-28 00:00:00"
 layout: "post"

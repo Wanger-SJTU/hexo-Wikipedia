@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) DeepSeek-V3.2-Exp 和 Qwen3-Next 哪个才是未来？"
+title: "DeepSeek-V3.2-Exp 和 Qwen3-Next 哪个才是未来？"
 date: "2026-04-17 00:00:00"
 updated: "2026-04-17 00:00:00"
 layout: "post"

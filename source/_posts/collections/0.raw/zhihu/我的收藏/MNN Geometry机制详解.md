@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) MNN Geometry机制详解"
+title: "MNN Geometry机制详解"
 date: "2024-10-10 00:00:00"
 updated: "2024-10-10 00:00:00"
 layout: "post"

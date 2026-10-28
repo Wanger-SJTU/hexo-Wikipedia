@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) 超酷的PDF转换工具！直接支持DeepSeek V3，本地AI精准解析PDF扫描件！"
+title: "超酷的PDF转换工具！直接支持DeepSeek V3，本地AI精准解析PDF扫描件！"
 date: "2025-03-27 00:00:00"
 updated: "2025-03-27 00:00:00"
 layout: "post"

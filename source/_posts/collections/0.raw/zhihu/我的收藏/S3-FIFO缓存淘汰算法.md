@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) S3-FIFO缓存淘汰算法"
+title: "S3-FIFO缓存淘汰算法"
 date: "2025-09-29 00:00:00"
 updated: "2025-09-29 00:00:00"
 layout: "post"

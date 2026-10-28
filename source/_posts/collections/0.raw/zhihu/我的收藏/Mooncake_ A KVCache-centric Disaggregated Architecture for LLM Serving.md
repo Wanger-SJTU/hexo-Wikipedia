@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) Mooncake: A KVCache-centric Disaggregated Architecture for LLM Serving"
+title: "Mooncake: A KVCache-centric Disaggregated Architecture for LLM Serving"
 date: "2024-06-29 00:00:00"
 updated: "2024-06-29 00:00:00"
 layout: "post"

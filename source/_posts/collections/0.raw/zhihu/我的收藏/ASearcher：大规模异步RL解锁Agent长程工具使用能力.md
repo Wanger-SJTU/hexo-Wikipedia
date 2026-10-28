@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) ASearcher：大规模异步RL解锁Agent长程工具使用能力"
+title: "ASearcher：大规模异步RL解锁Agent长程工具使用能力"
 date: "2025-08-24 00:00:00"
 updated: "2025-08-24 00:00:00"
 layout: "post"

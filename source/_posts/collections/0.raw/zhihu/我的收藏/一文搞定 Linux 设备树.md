@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) 一文搞定 Linux 设备树"
+title: "一文搞定 Linux 设备树"
 date: "2021-10-25 00:00:00"
 updated: "2021-10-25 00:00:00"
 layout: "post"

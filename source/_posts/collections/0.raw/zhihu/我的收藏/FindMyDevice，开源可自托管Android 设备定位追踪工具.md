@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) FindMyDevice，开源可自托管Android 设备定位追踪工具"
+title: "FindMyDevice，开源可自托管Android 设备定位追踪工具"
 date: "2024-10-20 00:00:00"
 updated: "2024-10-20 00:00:00"
 layout: "post"

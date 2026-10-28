@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) Stream K"
+title: "Stream K"
 date: "2024-10-11 00:00:00"
 updated: "2024-10-11 00:00:00"
 layout: "post"

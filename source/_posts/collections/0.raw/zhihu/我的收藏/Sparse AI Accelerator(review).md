@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) Sparse AI Accelerator(review)"
+title: "Sparse AI Accelerator(review)"
 date: "2026-02-12 00:00:00"
 updated: "2026-02-12 00:00:00"
 layout: "post"

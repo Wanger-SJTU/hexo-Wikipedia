@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) simpleperf的使用技巧"
+title: "simpleperf的使用技巧"
 date: "2025-03-11 00:00:00"
 updated: "2025-03-11 00:00:00"
 layout: "post"

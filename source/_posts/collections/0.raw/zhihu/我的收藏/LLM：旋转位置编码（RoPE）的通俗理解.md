@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) LLM：旋转位置编码（RoPE）的通俗理解"
+title: "LLM：旋转位置编码（RoPE）的通俗理解"
 date: "2024-12-03 00:00:00"
 updated: "2024-12-03 00:00:00"
 layout: "post"

@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) 布局代数实战：Swizzle自动推导"
+title: "布局代数实战：Swizzle自动推导"
 date: "2025-09-05 00:00:00"
 updated: "2025-09-05 00:00:00"
 layout: "post"

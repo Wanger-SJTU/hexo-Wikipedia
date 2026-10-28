@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) [A-03] ARMv8/ARMv9-多级Cache架构"
+title: "[A-03] ARMv8/ARMv9-多级Cache架构"
 date: "2024-11-13 00:00:00"
 updated: "2024-11-13 00:00:00"
 layout: "post"

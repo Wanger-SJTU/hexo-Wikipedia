@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) Arm64 SMMU介绍"
+title: "Arm64 SMMU介绍"
 date: "2025-03-19 00:00:00"
 updated: "2025-03-19 00:00:00"
 layout: "post"

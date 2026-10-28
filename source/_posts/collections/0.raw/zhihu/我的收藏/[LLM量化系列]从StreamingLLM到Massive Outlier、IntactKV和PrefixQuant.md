@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) [LLM量化系列]从StreamingLLM到Massive Outlier、IntactKV和PrefixQuant"
+title: "[LLM量化系列]从StreamingLLM到Massive Outlier、IntactKV和PrefixQuant"
 date: "2024-12-02 00:00:00"
 updated: "2024-12-02 00:00:00"
 layout: "post"

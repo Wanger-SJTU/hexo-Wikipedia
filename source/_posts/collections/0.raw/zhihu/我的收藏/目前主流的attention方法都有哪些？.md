@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) 目前主流的attention方法都有哪些？"
+title: "目前主流的attention方法都有哪些？"
 date: "2026-04-17 00:00:00"
 updated: "2026-04-17 00:00:00"
 layout: "post"

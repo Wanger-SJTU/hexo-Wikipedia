@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) 超长文本加速summary"
+title: "超长文本加速summary"
 date: "2024-11-29 00:00:00"
 updated: "2024-11-29 00:00:00"
 layout: "post"

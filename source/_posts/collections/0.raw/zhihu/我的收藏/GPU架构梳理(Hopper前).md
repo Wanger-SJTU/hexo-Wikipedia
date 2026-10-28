@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) GPU架构梳理(Hopper前)"
+title: "GPU架构梳理(Hopper前)"
 date: "2026-01-02 00:00:00"
 updated: "2026-01-02 00:00:00"
 layout: "post"

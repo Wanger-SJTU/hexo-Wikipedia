@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) 关于vs code无法远程连接至centos7服务器的解决方案"
+title: "关于vs code无法远程连接至centos7服务器的解决方案"
 date: "2025-05-29 00:00:00"
 updated: "2025-05-29 00:00:00"
 layout: "post"

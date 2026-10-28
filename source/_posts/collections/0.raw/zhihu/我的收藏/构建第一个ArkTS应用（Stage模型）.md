@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) 构建第一个ArkTS应用（Stage模型）"
+title: "构建第一个ArkTS应用（Stage模型）"
 date: "2024-06-20 00:00:00"
 updated: "2024-06-20 00:00:00"
 layout: "post"

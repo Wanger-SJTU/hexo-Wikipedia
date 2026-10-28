@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) 一文搞懂cpu cache工作原理"
+title: "一文搞懂cpu cache工作原理"
 date: "2023-01-19 00:00:00"
 updated: "2023-01-19 00:00:00"
 layout: "post"

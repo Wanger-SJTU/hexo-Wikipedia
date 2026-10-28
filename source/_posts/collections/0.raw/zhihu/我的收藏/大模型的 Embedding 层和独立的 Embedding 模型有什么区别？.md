@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) 大模型的 Embedding 层和独立的 Embedding 模型有什么区别？"
+title: "大模型的 Embedding 层和独立的 Embedding 模型有什么区别？"
 date: "2026-04-17 00:00:00"
 updated: "2026-04-17 00:00:00"
 layout: "post"

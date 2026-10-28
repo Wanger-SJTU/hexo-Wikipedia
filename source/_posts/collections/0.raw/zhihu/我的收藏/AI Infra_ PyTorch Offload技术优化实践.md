@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) AI Infra: PyTorch Offload技术优化实践"
+title: "AI Infra: PyTorch Offload技术优化实践"
 date: "2026-01-18 00:00:00"
 updated: "2026-01-18 00:00:00"
 layout: "post"

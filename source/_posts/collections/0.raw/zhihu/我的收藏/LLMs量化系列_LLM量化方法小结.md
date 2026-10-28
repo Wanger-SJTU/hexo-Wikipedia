@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) LLMs量化系列|LLM量化方法小结"
+title: "LLMs量化系列|LLM量化方法小结"
 date: "2025-06-03 00:00:00"
 updated: "2025-06-03 00:00:00"
 layout: "post"

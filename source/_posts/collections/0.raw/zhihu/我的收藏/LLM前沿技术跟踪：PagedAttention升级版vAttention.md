@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) LLM前沿技术跟踪：PagedAttention升级版vAttention"
+title: "LLM前沿技术跟踪：PagedAttention升级版vAttention"
 date: "2024-05-30 00:00:00"
 updated: "2024-05-30 00:00:00"
 layout: "post"

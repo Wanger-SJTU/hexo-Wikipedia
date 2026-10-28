@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) 北大发布ConsisID：无需训练Lora，就可以定制化个人视频写真"
+title: "北大发布ConsisID：无需训练Lora，就可以定制化个人视频写真"
 date: "2024-11-30 00:00:00"
 updated: "2024-11-30 00:00:00"
 layout: "post"

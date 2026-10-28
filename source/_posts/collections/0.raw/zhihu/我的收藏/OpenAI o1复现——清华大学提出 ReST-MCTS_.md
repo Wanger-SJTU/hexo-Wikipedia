@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) OpenAI o1复现——清华大学提出 ReST-MCTS*"
+title: "OpenAI o1复现——清华大学提出 ReST-MCTS*"
 date: "2025-09-27 00:00:00"
 updated: "2025-09-27 00:00:00"
 layout: "post"

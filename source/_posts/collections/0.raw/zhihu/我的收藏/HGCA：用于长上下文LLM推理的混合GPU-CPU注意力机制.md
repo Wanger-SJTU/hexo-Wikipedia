@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) HGCA：用于长上下文LLM推理的混合GPU-CPU注意力机制"
+title: "HGCA：用于长上下文LLM推理的混合GPU-CPU注意力机制"
 date: "2025-09-20 00:00:00"
 updated: "2025-09-20 00:00:00"
 layout: "post"

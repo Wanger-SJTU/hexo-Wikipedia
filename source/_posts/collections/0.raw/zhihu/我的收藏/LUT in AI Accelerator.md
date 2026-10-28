@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) LUT in AI Accelerator"
+title: "LUT in AI Accelerator"
 date: "2025-07-08 00:00:00"
 updated: "2025-07-08 00:00:00"
 layout: "post"

@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) [LLM 稀疏]Quest：动态选择关键 kv 加速 Decode"
+title: "[LLM 稀疏]Quest：动态选择关键 kv 加速 Decode"
 date: "2025-07-29 00:00:00"
 updated: "2025-07-29 00:00:00"
 layout: "post"

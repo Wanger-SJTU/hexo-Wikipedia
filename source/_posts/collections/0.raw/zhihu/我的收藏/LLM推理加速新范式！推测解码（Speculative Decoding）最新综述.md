@@ -1,5 +1,5 @@
 ---
-title: "(2 条消息) LLM推理加速新范式！推测解码（Speculative Decoding）最新综述"
+title: "LLM推理加速新范式！推测解码（Speculative Decoding）最新综述"
 date: "2024-01-22 00:00:00"
 updated: "2024-01-22 00:00:00"
 layout: "post"
