@@ -10,6 +10,7 @@ from datetime import datetime
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DOCS = os.path.join(ROOT, "source/_posts/collections")
 OUT = os.path.join(ROOT, "source/_data/collections.json")
+INDEX = os.path.join(ROOT, "source/collections/index.md")
 URL_PREFIX = "/collections/"
 
 
@@ -178,7 +179,37 @@ def main():
     with open(OUT, "w", encoding="utf-8") as fh:
         json.dump(data, fh, ensure_ascii=False, indent=2)
         fh.write("\n")
-    print(f"docs={len(docs)} dirs={len(dirs)} groups={len(groups)} -> {OUT}")
+    # 同时重建 /collections/ 文档库索引页，避免目录列表/空页面
+    by_top = {}
+    for doc in docs:
+        top = doc["rel"].split("/")[0]
+        by_top.setdefault(top, []).append(doc)
+    lines = [
+        "---",
+        "title: 文档库",
+        f'date: "{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}"',
+        "layout: page",
+        "wiki: false",
+        "nav_hidden: true",
+        "comments: false",
+        "---",
+        "",
+        f"共导入 **{len(docs)}** 篇文档，按原始目录分组。",
+        "",
+    ]
+    for top in sorted(by_top, key=lambda name: name.lower()):
+        items = sorted(by_top[top], key=lambda d: d["title"])
+        group_url = URL_PREFIX + "/".join(slug_segment(x) for x in top.split("/")) + "/"
+        lines.append(f"## [{top}]({group_url})（{len(items)}）")
+        lines.append("")
+        for doc in items:
+            title = re.sub(r"[\[\]()]", " ", doc["title"]).strip()
+            lines.append(f"- [{title}]({doc['url']})")
+        lines.append("")
+    os.makedirs(os.path.dirname(INDEX), exist_ok=True)
+    with open(INDEX, "w", encoding="utf-8") as fh:
+        fh.write("\n".join(lines))
+    print(f"docs={len(docs)} dirs={len(dirs)} groups={len(groups)} -> {OUT} + {INDEX}")
 
 
 if __name__ == "__main__":
