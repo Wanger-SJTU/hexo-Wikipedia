@@ -75,8 +75,10 @@
 %>
 <% if ((!_nav || !_nav.length) && !(_docsData && _docsData.count)) { %>
 <p class="nav-tree__empty"><%= __('sidebar_empty') %></p>
-<% } else if (!_nav || !_nav.length) { %>
+<% } else { %>
 <div class="nav-tree" data-nav-tree>
+  <% if (_nav && _nav.length) { %><%- _treeHtml %><% } %>
+  <% if (_docsData && _docsData.count) { %>
   <ul class="nav-tree__list" data-depth="0">
     <li class="nav-tree__item" data-nav-type="page">
       <a class="nav-tree__link" href="<%- _docsUrl %>">
@@ -86,9 +88,6 @@
     </li>
     <%- _docTreeHtml(_docTree, 0) %>
   </ul>
-</div>
-<% } else { %>
-<div class="nav-tree" data-nav-tree>
-  <%- _treeHtml %>
+  <% } %>
 </div>
 <% } %>
