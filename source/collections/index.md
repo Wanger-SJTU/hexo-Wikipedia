@@ -1,15 +1,15 @@
 ---
 title: 文档库
-date: "2026-11-01 16:57:57"
+date: "2026-11-01 19:28:46"
 layout: page
 wiki: false
 nav_hidden: true
 comments: false
 ---
 
-共导入 **2508** 篇文档，按原始目录分组。
+共导入 **2515** 篇文档，按原始目录分组。
 
-## [0.raw](/collections/0.raw/)（2440）
+## [0.raw](/collections/0.raw/)（2447）
 
 - [0412 · Issue #126 · wanghenshui/wanghenshui.github.io · GitHub](/collections/0.raw/Omnivore/2024-04-09/0412-%C2%B7-Issue-126-%C2%B7-wanghenshui-wanghenshui.github.io-%C2%B7-GitHub/)
 - [1.1 Tiled Many-Core 的硬件架构分析: 核心设计](/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/1.1-Tiled-Many-Core-%E7%9A%84%E7%A1%AC%E4%BB%B6%E6%9E%B6%E6%9E%84%E5%88%86%E6%9E%90_-%E6%A0%B8%E5%BF%83%E8%AE%BE%E8%AE%A1/)
@@ -374,6 +374,7 @@ comments: false
 - [CXLMemUring：面向 CXL 系统的编译器驱动异构内存访问](/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/CXLMemUring-%E9%9D%A2%E5%90%91-CXL-%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BC%96%E8%AF%91%E5%99%A8%E9%A9%B1%E5%8A%A8%E5%BC%82%E6%9E%84%E5%86%85%E5%AD%98%E8%AE%BF%E9%97%AE/)
 - [CXL协议 -- 总体架构介绍](/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/CXL%E5%8D%8F%E8%AE%AE-%E6%80%BB%E4%BD%93%E6%9E%B6%E6%9E%84%E4%BB%8B%E7%BB%8D/)
 - [CXL的延迟为什么比PCIe低？](/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/CXL%E7%9A%84%E5%BB%B6%E8%BF%9F%E4%B8%BA%E4%BB%80%E4%B9%88%E6%AF%94PCIe%E4%BD%8E/)
+- [Cache Engineering for Agents（面向 Agent 的缓存工程）全文翻译](/collections/0.raw/papers/2026-10-30-arxiv-2610.28577-cache-engineering-for-agents/)
 - [Cache OR Load First？Rethink LLM Scheduling](/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/Cache-OR-Load-First-Rethink-LLM-Scheduling/)
 - [Cache 一致性（Coherence）总结与设计方案](/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/Cache-%E4%B8%80%E8%87%B4%E6%80%A7%28Coherence%29%E6%80%BB%E7%BB%93%E4%B8%8E%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%A1%88/)
 - [Cache的50问，您能回答上几个](/collections/0.raw/zhihu/AI-infra/Cache%E7%9A%8450%E9%97%AE%2C%E6%82%A8%E8%83%BD%E5%9B%9E%E7%AD%94%E4%B8%8A%E5%87%A0%E4%B8%AA/)
@@ -439,8 +440,10 @@ comments: false
 - [Double DIP ——一种无监督层图像分割 AI 技术](/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/Double-DIP-%E2%80%94%E2%80%94%E4%B8%80%E7%A7%8D%E6%97%A0%E7%9B%91%E7%9D%A3%E5%B1%82%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2-AI-%E6%8A%80%E6%9C%AF/)
 - [Double DIP ——一种无监督层图像分割 AI 技术](/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Double-DIP-%E2%80%94%E2%80%94%E4%B8%80%E7%A7%8D%E6%97%A0%E7%9B%91%E7%9D%A3%E5%B1%82%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2-AI-%E6%8A%80%E6%9C%AF/)
 - [Early Fusion 与 Late Fusion：多模态大模型的两种核心范式](/collections/0.raw/zhihu/LLM-SD/Early-Fusion-%E4%B8%8E-Late-Fusion-%E5%A4%9A%E6%A8%A1%E6%80%81%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%A0%B8%E5%BF%83%E8%8C%83%E5%BC%8F/)
+- [EdgeXpert：面向 MoE 与投机解码内存高效 LLM 推理的边缘设备（全文翻译）](/collections/0.raw/papers/2026-10-30-arxiv-2608.05303-edgexpert/)
 - [Envoy 的线程模型 与 Thread Local - 知乎](/collections/0.raw/Omnivore/2024-05-15/Envoy-%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B-%E4%B8%8E-Thread-Local-%E7%9F%A5%E4%B9%8E/)
 - [Everyone Should Know SIMD](/collections/0.raw/everyone-should-know-simd/)
+- [ExFold：免训练的 MoE Prefill-Decode 统一专家折叠加速](/collections/0.raw/papers/ExFold-MoE%E5%85%8D%E8%AE%AD%E7%BB%83%E7%BB%9F%E4%B8%80%E4%B8%93%E5%AE%B6%E6%8A%98%E5%8F%A0%E5%8A%A0%E9%80%9F-arXiv2608.24938/)
 - [ExecuTorch 深度解析（一）：Meta 为什么非造一个新框架不可？](/collections/0.raw/zhihu/AI-infra/ExecuTorch-%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90%28%E4%B8%80%29-Meta-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9D%9E%E9%80%A0%E4%B8%80%E4%B8%AA%E6%96%B0%E6%A1%86%E6%9E%B6%E4%B8%8D%E5%8F%AF/)
 - [ExecuTorch 深度解析（二）：AOT 编译——把运行时的活全抢过来干](/collections/0.raw/zhihu/AI-infra/ExecuTorch-%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90%28%E4%BA%8C%29-AOT-%E7%BC%96%E8%AF%91%E2%80%94%E2%80%94%E6%8A%8A%E8%BF%90%E8%A1%8C%E6%97%B6%E7%9A%84%E6%B4%BB%E5%85%A8%E6%8A%A2%E8%BF%87%E6%9D%A5%E5%B9%B2/)
 - [Executorch初探](/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/Executorch%E5%88%9D%E6%8E%A2/)
@@ -486,6 +489,7 @@ comments: false
 - [GPU架构梳理 Hopper前](/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/GPU%E6%9E%B6%E6%9E%84%E6%A2%B3%E7%90%86%28Hopper%E5%89%8D%29/)
 - [GRPO为什么会使得模型的推理变长？](/collections/0.raw/zhihu/AgentCLI/GRPO%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E4%BD%BF%E5%BE%97%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%8E%A8%E7%90%86%E5%8F%98%E9%95%BF/)
 - [GRPO为什么会使得模型的推理变长？](/collections/0.raw/zhihu/LLM-SD/GRPO%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E4%BD%BF%E5%BE%97%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%8E%A8%E7%90%86%E5%8F%98%E9%95%BF/)
+- [Gandalf：闪存不可逝！提升 LLM 服务中 KV Cache 卸载的闪存寿命](/collections/0.raw/papers/2610.30791-Gandalf-Flash-Shall-Not-Die/)
 - [GitHub Spec Kit 尝鲜：规格驱动开发让 AI 帮你写代码](/collections/0.raw/papers/spec-kit-spec-driven-development/)
 - [GitHub Tips：统一管理 Repo 配置](/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/GitHub-Tips-%E7%BB%9F%E4%B8%80%E7%AE%A1%E7%90%86-Repo-%E9%85%8D%E7%BD%AE/)
 - [GitHub狂飙3万star的LLM公开资料 - 大模型入门教程](/collections/0.raw/zhihu/LLM-SD/GitHub%E7%8B%82%E9%A3%993%E4%B8%87star%E7%9A%84LLM%E5%85%AC%E5%BC%80%E8%B5%84%E6%96%99-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/)
@@ -525,6 +529,7 @@ comments: false
 - [Is SIMD all you need?](/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/Is-SIMD-all-you-need_/)
 - [Is SIMD all you need?](/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/Is-SIMD-all-you-need_/)
 - [JamesAslan 的想法: 关于store-load消除 | 在本专栏太古的一篇文章里我曾经简单reverse并说明了苹果的处理器存在栈操作消除（我自己起的名字），<a href="https://zhuanlan.zhihu.com/p/595582920" data-insert-way="force" data-draft-node="inline" data-draft-type="text-link" class="internal" data-icon-type="link" data-original-url="https://zhuanlan.zhihu.com/p/595582920">苹果的黑魔法？Apple M1的栈操作消...</a> 当时文中提过一嘴x86两家做得更激进，以后详细probe了再写一篇文章。说来也巧，这次HPCA2024就有人帮干了哈：《Uncovering and Exploiting AMD Speculative Memory Access Predictors for Fun and Profit》，有兴趣的可以看看，肯定比我闲下来玩玩弄得细致得多得多。<br>AMD的话是在Zen3引入的这一机制，有什么作用的话可以自行体会一番 ⊙v⊙  - 知乎](/collections/0.raw/Omnivore/2024-04-10/JamesAslan-%E7%9A%84%E6%83%B3%E6%B3%95-%E5%85%B3%E4%BA%8Estore-load%E6%B6%88%E9%99%A4-%E5%9C%A8%E6%9C%AC%E4%B8%93%E6%A0%8F%E5%A4%AA%E5%8F%A4%E7%9A%84%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E9%87%8C%E6%88%91%E6%9B%BE%E7%BB%8F%E7%AE%80%E5%8D%95reverse%E5%B9%B6%E8%AF%B4%E6%98%8E%E4%BA%86%E8%8B%B9%E6%9E%9C%E7%9A%84%E5%A4%84%E7%90%86%E5%99%A8%E5%AD%98%E5%9C%A8%E6%A0%88%E6%93%8D%E4%BD%9C%E6%B6%88%E9%99%A4%28%E6%88%91%E8%87%AA%E5%B7%B1%E8%B5%B7%E7%9A%84%E5%90%8D%E5%AD%97%29%2C-a-href-h/)
+- [JevAgentHarness：基准测试、部署与训练与 LLM 共享控制权的决策模型（全文翻译）](/collections/0.raw/papers/2026-10-30-arxiv-2610.21412-jevagentharness-decision-models/)
 - [K2（KDA）结构分析](/collections/0.raw/zhihu/LLM-SD/K2%28KDA%29%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90/)
 - [KV Cache 技术分析](/collections/0.raw/zhihu/LLM-SD/KV-Cache-%E6%8A%80%E6%9C%AF%E5%88%86%E6%9E%90/)
 - [KV Cache压缩新阶段:走向问题指令无关下的压缩探索](/collections/0.raw/zhihu/LLM-SD/KV-Cache%E5%8E%8B%E7%BC%A9%E6%96%B0%E9%98%B6%E6%AE%B5_%E8%B5%B0%E5%90%91%E9%97%AE%E9%A2%98%E6%8C%87%E4%BB%A4%E6%97%A0%E5%85%B3%E4%B8%8B%E7%9A%84%E5%8E%8B%E7%BC%A9%E6%8E%A2%E7%B4%A2/)
@@ -678,6 +683,7 @@ comments: false
 - [PD分离 vs AF分离的底层理论 roofline 基础（二）](/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/PD%E5%88%86%E7%A6%BB-vs-AF%E5%88%86%E7%A6%BB%E7%9A%84%E5%BA%95%E5%B1%82%E7%90%86%E8%AE%BA%28roofline%29%E5%9F%BA%E7%A1%80%28%E4%BA%8C%29/)
 - [PD分离 vs AF分离的底层理论 roofline 基础（二）](/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/PD%E5%88%86%E7%A6%BB-vs-AF%E5%88%86%E7%A6%BB%E7%9A%84%E5%BA%95%E5%B1%82%E7%90%86%E8%AE%BA%28roofline%29%E5%9F%BA%E7%A1%80%28%E4%BA%8C%29-0d152b/)
 - [PRMT指令详解](/collections/0.raw/%E9%9A%8F%E7%AC%94/PRMT%E6%8C%87%E4%BB%A4%E8%AF%A6%E8%A7%A3/)
+- [Pacifo：面向可信机器学习即服务的高效全同态加密轻量级 ResNet](/collections/0.raw/papers/2026-10-29-pacifo-fhe-resnet/)
 - [Polyhedral Compilation及ISL学习资料](/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/Polyhedral-Compilation%E5%8F%8AISL%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/)
 - [Polyhedral Compilation及ISL学习资料](/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/Polyhedral-Compilation%E5%8F%8AISL%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/)
 - [Polyhedral Compilation资料汇总](/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/Polyhedral-Compilation%E8%B5%84%E6%96%99%E6%B1%87%E6%80%BB/)
@@ -745,6 +751,7 @@ comments: false
 - [Rust生命周期集大成者 PhantomData<T>](/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/Rust%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E9%9B%86%E5%A4%A7%E6%88%90%E8%80%85-PhantomData_T_/)
 - [S3-FIFO缓存淘汰算法](/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/S3-FIFO%E7%BC%93%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AE%97%E6%B3%95/)
 - [SAM与GPT背后相同的逻辑（上）](/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/SAM%E4%B8%8EGPT%E8%83%8C%E5%90%8E%E7%9B%B8%E5%90%8C%E7%9A%84%E9%80%BB%E8%BE%91%28%E4%B8%8A%29/)
+- [SARIA：面向 LLM Agents 的持久化感知 KV 缓存与 DRAM–SSD 协同重载](/collections/0.raw/papers/2610.31169-SARIA-Persistence-Aware-KV-Caching/)
 - [SFT、RL、OPD 不是三种训练技巧，而是三种”策略分布塑形”方式](/collections/0.raw/zhihu/AgentCLI/SFT%E3%80%81RL%E3%80%81OPD-%E4%B8%8D%E6%98%AF%E4%B8%89%E7%A7%8D%E8%AE%AD%E7%BB%83%E6%8A%80%E5%B7%A7%2C%E8%80%8C%E6%98%AF%E4%B8%89%E7%A7%8D%E2%80%9D%E7%AD%96%E7%95%A5%E5%88%86%E5%B8%83%E5%A1%91%E5%BD%A2%E2%80%9D%E6%96%B9%E5%BC%8F/)
 - [SFT、RL、OPD 不是三种训练技巧，而是三种”策略分布塑形”方式](/collections/0.raw/zhihu/LLM-SD/SFT%E3%80%81RL%E3%80%81OPD-%E4%B8%8D%E6%98%AF%E4%B8%89%E7%A7%8D%E8%AE%AD%E7%BB%83%E6%8A%80%E5%B7%A7%2C%E8%80%8C%E6%98%AF%E4%B8%89%E7%A7%8D%E2%80%9D%E7%AD%96%E7%95%A5%E5%88%86%E5%B8%83%E5%A1%91%E5%BD%A2%E2%80%9D%E6%96%B9%E5%BC%8F/)
 - [SGD在两层神经网络上是怎么收敛的？](/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/SGD%E5%9C%A8%E4%B8%A4%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8A%E6%98%AF%E6%80%8E%E4%B9%88%E6%94%B6%E6%95%9B%E7%9A%84/)

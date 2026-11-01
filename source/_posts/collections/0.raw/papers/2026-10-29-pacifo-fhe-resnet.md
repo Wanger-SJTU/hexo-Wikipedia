@@ -1,4 +1,5 @@
 ---
+permalink: /collections/0.raw/papers/2026-10-29-pacifo-fhe-resnet/
 title: "Pacifo：面向可信机器学习即服务的高效全同态加密轻量级 ResNet"
 date: "2026-10-29 00:00:00"
 layout: "post"

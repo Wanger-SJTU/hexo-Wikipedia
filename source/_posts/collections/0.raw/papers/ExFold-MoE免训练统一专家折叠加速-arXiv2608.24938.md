@@ -1,4 +1,8 @@
 ---
+wiki: false
+nav_hidden: true
+disableNunjucks: true
+permalink: /collections/0.raw/papers/ExFold-MoE免训练统一专家折叠加速-arXiv2608.24938/
 title: ExFold：免训练的 MoE Prefill-Decode 统一专家折叠加速
 date: 2026-10-31
 tags: [MoE, 推理优化, vLLM, 免训练加速]
