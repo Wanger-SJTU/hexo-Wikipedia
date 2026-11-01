@@ -125,7 +125,7 @@ prefill_forward                     layers/moe.py:246
 | OEA k0=4（union 48/256） | 0.086 GiB | ~0.06 s | ~2.5 s |
 | 全驻留 + overlap | PCIe 0.456 GiB @ ~12 GB/s | ~0.04 s（被 GEMM 掩盖） | ~1.5 s |
 
-实测 TTFT（8 GiB cgroup、`--cpu-mem 2GiB`、15–16 token prompt）：**11.4 s → 7.05 s（k0=8）→ 5.08 s（k0=4）**，与"加载字节数"近似成正比。差额来自首 token 采样、KV 分配、以及 spill 读没有完全打满带宽。
+多轮实测见下一节：短 prompt 的 TTFT 中位数 **14.51 s → 5.37 s（k0=8）→ 3.00 s（k0=4）**，与"加载字节数"近似成正比。差额来自首 token 采样、KV 分配、以及 spill 读没有完全打满带宽。
 
 ---
 
@@ -164,7 +164,26 @@ spill 层的数据读进页缓存后不会自动消失；每次 prefill 重新�
 
 ---
 
-## 7. 代码索引
+## 7. OEA 实测对比（2026-11-01，多轮取中位数）
+
+设置：RTX 3060 12 GB + 14 GiB 主机内存，Qwen3.6-35B-A3B-UD-Q4_K_M，
+`--cpu-mem 2GiB`（4/40 层 pinned、36 层 spill）、`--moe-cache-size 512`、
+`--max-seq-len 512 --num-pages 512`、CUDA graph 关闭；greedy 32 输出 token；
+short prompt 16 token × 3 次，long prompt 152 token × 2 次。
+
+| 配置 | short TTFT中位（范围） | long TTFT中位（范围） | 预热耗时 | 加载 union（short / long） |
+|---|---|---|---|---|
+| 关闭 OEA | 14.51 s（13.49–18.47） | 10.79 s（10.32–11.25） | 30.9 s | 256/256、256/256 |
+| `--prefill-oea-k0 8`（无损） | **5.37 s**（5.32–7.12） | **9.46 s**（6.42–12.49） | 7.1 s | 88/256、202/256 |
+| `--prefill-oea-k0 4` | **3.00 s**（3.00–4.80） | **5.94 s**（3.77–8.12） | 4.9 s | 51/256、136/256 |
+
+- decode 吞吐三种配置基本一致（4.6–4.8 tok/s）——OEA 只改 prefill 的加载量；
+- 同一 prompt 三种配置的输出 **md5 完全相同**（`k0=8` 无损验证成立，`k0=4` 本次样本也未改变输出）；
+- 短 prompt 收益最大（TTFT −63% / −79%）；长 prompt 的并集开始饱和（152 token 已达 202/256），无损版收益缩到约 −12%，激进版仍约 −45%；
+- TTFT 的绝对值和波动强依赖磁盘页缓存（spill 层每次 prefill 都会重新读盘），同配置冷/热可差 30%+，比较时应看同轮相对差异；
+- 每格只有 2–3 个样本，长 prompt 的两样本差异尤其明显。
+
+## 8. 代码索引
 
 | 主题 | 位置 |
 |---|---|
@@ -186,7 +205,7 @@ spill 层的数据读进页缓存后不会自动消失；每次 prefill 重新�
 
 ---
 
-## 8. 小结
+## 9. 小结
 
 - prefill 的计算只碰 top-k 专家，加载却默认搬整层——这是 offload prefill 的核心矛盾；
 - 每层耗时 ≈ 加载字节 / 带宽（overlap 时取 max），本机短 prompt 的 TTFT 基本就是"40 × 0.456 GiB / 磁盘带宽"；
