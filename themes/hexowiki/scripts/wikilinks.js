@@ -171,6 +171,8 @@ function collectPages(hexo, options) {
     if (post.wiki === false || post.wiki === 'false') return;
 
     const source = String(post.source || '');
+    // collections 目录由文档库树单独渲染，不再混入普通 wiki 导航
+    if (source === '_posts/collections' || source.indexOf('_posts/collections/') === 0) return;
     let sourceStem = source.replace(/^_posts\//, '').replace(/\.[^./\\]+$/, '');
     if (!sourceStem) return;
     if (seen.has(sourceStem)) return; // 同名保护：先到先得
