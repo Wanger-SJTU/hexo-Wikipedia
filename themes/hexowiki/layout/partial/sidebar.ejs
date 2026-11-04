@@ -16,9 +16,6 @@
     <div class="wiki-sidebar__top">
       <span class="wiki-sidebar__heading"><%= _docsMode ? '文档目录' : '导航' %><% if (_docsMode) { %><span class="wiki-sidebar__count"><%= _docsData.count %></span><% } %></span>
       <div class="wiki-sidebar__actions">
-        <% if (_docsMode) { %>
-        <button class="sidebar-expand-all" type="button" data-nav-expand-all>全部</button>
-        <% } %>
         <button class="sidebar-collapse" type="button" data-sidebar-collapse aria-label="<%= __('sidebar_hide') %>" title="<%= __('sidebar_hide') %>">
           <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
             <path d="M10.5 3.5 6 8l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>

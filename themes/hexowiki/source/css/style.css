@@ -3455,15 +3455,6 @@ html[data-theme="dark"] .katex {
   align-items: center;
   gap: 2px;
 }
-.sidebar-expand-all {
-  padding: 4px 6px;
-  border: 0;
-  background: none;
-  color: var(--link);
-  font-size: 11.5px;
-  cursor: pointer;
-}
-.sidebar-expand-all:hover { background: var(--bg-subtle); }
 .sidebar-search {
   display: flex;
   align-items: center;

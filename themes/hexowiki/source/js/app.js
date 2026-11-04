@@ -406,15 +406,6 @@
       });
     });
 
-    var expandAll = $('[data-nav-expand-all]');
-    if (expandAll) {
-      expandAll.addEventListener('click', function () {
-        var buttons = $all('[data-nav-key]', navTree);
-        var anyClosed = buttons.some(function (button) { return button.getAttribute('aria-expanded') !== 'true'; });
-        buttons.forEach(function (button) { setGroupOpen(button, anyClosed, false); });
-        expandAll.textContent = anyClosed ? '收起' : '全部';
-      });
-    }
   }
 
   /* ----------------------------------------------------------------------
