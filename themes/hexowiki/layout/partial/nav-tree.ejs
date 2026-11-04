@@ -27,6 +27,7 @@
           + '<button class="nav-tree__toggle" type="button" aria-expanded="' + (open ? 'true' : 'false') + '" aria-controls="' + id + '" data-nav-key="' + _esc(key) + '">'
           + '<svg class="nav-tree__chevron" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="M2 3.25 5 6.25 8 3.25" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
           + '<span class="nav-tree__label">' + _esc(node.label || node.title || '') + '</span>'
+          + (_showBadges && node.count ? '<span class="nav-tree__badge">' + _esc(node.count) + '</span>' : '')
           + '</button>'
           + '<div class="nav-tree__children" id="' + id + '"' + (open ? '' : ' hidden') + '>' + _children(node.children || [], depth + 1) + '</div>'
           + '</li>';
@@ -77,9 +78,9 @@
 <p class="nav-tree__empty"><%= __('sidebar_empty') %></p>
 <% } else { %>
 <div class="nav-tree" data-nav-tree>
-  <% if (_nav && _nav.length) { %><%- _treeHtml %><% } %>
+  <% if (_nav && _nav.length) { %><div data-nav-part="wiki"><%- _treeHtml %></div><% } %>
   <% if (_docsData && _docsData.count) { %>
-  <ul class="nav-tree__list" data-depth="0">
+  <ul class="nav-tree__list" data-depth="0" data-nav-part="docs">
     <li class="nav-tree__item" data-nav-type="page">
       <a class="nav-tree__link" href="<%- _docsUrl %>">
         <span class="nav-tree__link-text">文档库</span>

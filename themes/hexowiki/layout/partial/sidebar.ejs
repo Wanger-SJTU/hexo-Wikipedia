@@ -14,24 +14,43 @@
 <aside class="wiki-sidebar" id="wiki-sidebar" aria-label="<%= __('site_sub', (typeof siteTitle !== 'undefined' ? siteTitle : '')) %>">
   <div class="wiki-sidebar__inner">
     <div class="wiki-sidebar__top">
-      <span class="wiki-sidebar__heading"><%= __('sidebar_tools') === 'sidebar_tools' ? '导航' : '导航' %></span>
-      <button class="sidebar-collapse" type="button" data-sidebar-collapse aria-label="<%= __('sidebar_hide') %>" title="<%= __('sidebar_hide') %>">
-        <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-          <path d="M10.5 3.5 6 8l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
+      <span class="wiki-sidebar__heading"><%= _docsMode ? '文档目录' : '导航' %><% if (_docsMode) { %><span class="wiki-sidebar__count"><%= _docsData.count %></span><% } %></span>
+      <div class="wiki-sidebar__actions">
+        <% if (_docsMode) { %>
+        <button class="sidebar-expand-all" type="button" data-nav-expand-all>全部</button>
+        <% } %>
+        <button class="sidebar-collapse" type="button" data-sidebar-collapse aria-label="<%= __('sidebar_hide') %>" title="<%= __('sidebar_hide') %>">
+          <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+            <path d="M10.5 3.5 6 8l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
     </div>
 
     <% if (_features.sidebar_filter !== false) { %>
-    <div class="nav-tree__filter-wrap">
+    <div class="sidebar-search">
+      <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m16.5 16.5 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
       <label class="visually-hidden" for="nav-tree-filter"><%= __('sidebar_filter_label') %></label>
-      <input class="nav-tree__filter" id="nav-tree-filter" type="search" placeholder="<%= __('sidebar_filter') %>" aria-label="<%= __('sidebar_filter_label') %>" autocomplete="off" data-nav-filter>
+      <input class="nav-tree__filter" id="nav-tree-filter" type="search" placeholder="搜索文档、目录…" aria-label="<%= __('sidebar_filter_label') %>" autocomplete="off" data-nav-filter>
+      <kbd>/</kbd>
+    </div>
+    <div class="sidebar-filter-tabs" role="group" aria-label="筛选导航">
+      <button type="button" class="is-active" data-nav-scope="all">全部</button>
+      <button type="button" data-nav-scope="docs">文档</button>
+      <button type="button" data-nav-scope="wiki">笔记</button>
     </div>
     <% } %>
 
     <nav class="wiki-sidebar__nav" aria-label="<%= __('sidebar_tools') %>">
       <%- include('nav-tree', { themeCfg: _theme, navCfg: _navCfg }) %>
     </nav>
+
+    <% if (_docsMode) { %>
+    <div class="sidebar-status">
+      <span class="live-dot"></span>
+      <span><%= _docsData.count %> 篇文档 · <%= Object.keys(_docsData.dirs || {}).length %> 个目录</span>
+    </div>
+    <% } %>
 
     <% if (_features.stats !== false) { %>
     <section class="sidebar-stats" aria-label="<%= __('sidebar_stats') %>">

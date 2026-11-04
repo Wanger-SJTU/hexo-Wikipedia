@@ -370,13 +370,49 @@
           clearNavFilter();
           return;
         }
-        filterList(directChild(navTree, 'ul'), query);
+        $all('[data-nav-part]', navTree).forEach(function (part) {
+          var list = part.tagName === 'UL' ? part : directChild(part, 'ul');
+          filterList(list, query);
+        });
       }, 70));
       navFilter.addEventListener('keydown', function (event) {
         if (event.key === 'Escape') {
           navFilter.value = '';
           clearNavFilter();
         }
+      });
+      doc.addEventListener('keydown', function (event) {
+        if (event.key !== '/' || event.metaKey || event.ctrlKey || event.altKey) return;
+        var active = doc.activeElement;
+        var tag = active && active.tagName ? active.tagName.toLowerCase() : '';
+        if (tag === 'input' || tag === 'textarea' || tag === 'select' || (active && active.isContentEditable)) return;
+        event.preventDefault();
+        navFilter.focus();
+      });
+    }
+
+    var scopeButtons = $all('[data-nav-scope]');
+    function applyScope(scope) {
+      scopeButtons.forEach(function (button) {
+        button.classList.toggle('is-active', button.getAttribute('data-nav-scope') === scope);
+      });
+      $all('[data-nav-part]', navTree).forEach(function (part) {
+        part.hidden = scope !== 'all' && part.getAttribute('data-nav-part') !== scope;
+      });
+    }
+    scopeButtons.forEach(function (button) {
+      button.addEventListener('click', function () {
+        applyScope(button.getAttribute('data-nav-scope') || 'all');
+      });
+    });
+
+    var expandAll = $('[data-nav-expand-all]');
+    if (expandAll) {
+      expandAll.addEventListener('click', function () {
+        var buttons = $all('[data-nav-key]', navTree);
+        var anyClosed = buttons.some(function (button) { return button.getAttribute('aria-expanded') !== 'true'; });
+        buttons.forEach(function (button) { setGroupOpen(button, anyClosed, false); });
+        expandAll.textContent = anyClosed ? '收起' : '全部';
       });
     }
   }
