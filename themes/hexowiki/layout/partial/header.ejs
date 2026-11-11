@@ -11,6 +11,7 @@
   const _statsUrl = _urls.stats || url_for('/stats/');
   const _allUrl = _urls.all || url_for('/wiki/all/');
   const _searchJson = _urls.search_json || url_for('/wiki-search.json');
+  const _assetVersion = (_theme.assets && _theme.assets.version) ? ('?v=' + encodeURIComponent(_theme.assets.version)) : '';
   const _docsData = (typeof site !== 'undefined' && site && site.data && site.data.collections) ? site.data.collections : null;
   const _docsMode = !!(_theme.docs && _theme.docs.enable && _docsData && _docsData.count);
   const _docsUrl = url_for((_theme.docs && _theme.docs.url) || '/collections/');
@@ -40,7 +41,7 @@
   </a>
 
   <% if (_searchEnabled) { %>
-  <form class="wiki-search" role="search" action="<%- _docsMode ? _docsUrl : _allUrl %>" method="get" data-search-form data-src="<%- _searchJson %>" data-limit="<%- (_theme.search && _theme.search.limit) || 8 %>">
+  <form class="wiki-search" role="search" action="<%- _docsMode ? _docsUrl : _allUrl %>" method="get" data-search-form data-src="<%- _searchJson + _assetVersion %>" data-limit="<%- (_theme.search && _theme.search.limit) || 8 %>">
     <label class="visually-hidden" for="wiki-search-input"><%= __('search_label') %></label>
     <svg class="wiki-search__icon" width="16" height="16" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
       <circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="1.7"/>
