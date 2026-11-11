@@ -3586,3 +3586,66 @@ html[data-theme="dark"] .katex {
 .sidebar-status,
 .sidebar-tools,
 .wiki-sidebar__license { flex: 0 0 auto; }
+
+/* 目录展开/收起状态 */
+.nav-tree__group > .nav-tree__toggle,
+.nav-tree__group > .nav-tree__docs-head > .nav-tree__toggle {
+  position: relative;
+}
+.nav-tree__group > .nav-tree__toggle::after,
+.nav-tree__group > .nav-tree__docs-head > .nav-tree__toggle::after {
+  content: "+";
+  flex: 0 0 auto;
+  margin-left: auto;
+  color: var(--text-muted);
+  font: 14px/1 var(--font-mono);
+  font-weight: 400;
+}
+.nav-tree__group.is-open > .nav-tree__toggle::after,
+.nav-tree__group.is-open > .nav-tree__docs-head > .nav-tree__toggle::after {
+  content: "\2212";
+  color: var(--accent);
+}
+.nav-tree__group.is-open > .nav-tree__toggle,
+.nav-tree__group.is-open > .nav-tree__docs-head > .nav-tree__toggle {
+  background: var(--bg-subtle);
+  color: var(--accent);
+}
+.nav-tree__group > .nav-tree__toggle .nav-tree__chevron,
+.nav-tree__group > .nav-tree__docs-head > .nav-tree__toggle .nav-tree__chevron {
+  width: 12px;
+  height: 12px;
+  color: var(--text-muted);
+}
+.nav-tree__group.is-open > .nav-tree__toggle .nav-tree__chevron,
+.nav-tree__group.is-open > .nav-tree__docs-head > .nav-tree__toggle .nav-tree__chevron {
+  color: var(--accent);
+}
+
+/* 修正文档树：展开状态放到行尾，箭头随状态旋转 */
+.nav-tree__group > .nav-tree__docs-head > .nav-tree__toggle::after,
+.nav-tree__group.is-open > .nav-tree__docs-head > .nav-tree__toggle::after {
+  content: none;
+  display: none;
+}
+.nav-tree__group > .nav-tree__docs-head::after {
+  content: "+";
+  flex: 0 0 auto;
+  color: var(--text-muted);
+  font: 14px/1 var(--font-mono);
+}
+.nav-tree__group.is-open > .nav-tree__docs-head::after {
+  content: "\2212";
+  color: var(--accent);
+}
+.nav-tree__group.is-open > .nav-tree__docs-head {
+  background: var(--bg-subtle);
+}
+.nav-tree__group.is-open > .nav-tree__docs-head > .nav-tree__toggle .nav-tree__chevron {
+  transform: rotate(0deg);
+  color: var(--accent);
+}
+.nav-tree__group > .nav-tree__docs-head > .nav-tree__toggle .nav-tree__chevron {
+  width: 12px;
+  height: 12px;
+}
