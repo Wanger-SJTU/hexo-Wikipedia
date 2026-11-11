@@ -340,6 +340,12 @@ hexo.extend.filter.register('before_generate', function buildWiki() {
   );
 }, 1);
 
+hexo.extend.filter.register('after_post_render', function lazyPostImages(data) {
+  if (!data || typeof data.content !== 'string') return data;
+  data.content = data.content.replace(/<img\b(?![^>]*\bloading=)/gi, '<img loading="lazy" decoding="async"');
+  return data;
+}, 6);
+
 hexo.extend.filter.register('after_post_render', function transformWikiLinks(data) {
   const state = getState(hexo);
   if (!state || !data || !data.content) return;
@@ -499,12 +505,8 @@ hexo.extend.generator.register('hexowiki-routes', function generateWikiRoutes(lo
       return {
         title: String(post.title || ''),
         url: toUrl(post.path || '', root),
-        summary: truncate(text, 180),
-        tags,
-        headings: [],
-        text: '',
-        updated: formatDate(post.updated || post.date),
-        section: '文档'
+        summary: truncate(text, 120),
+        tags: tags.slice(0, 3)
       };
     });
   const fullSearch = searchIndex.concat(docSearch);
