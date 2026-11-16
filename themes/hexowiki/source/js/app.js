@@ -961,3 +961,108 @@
     setSidebarCollapsed: setSidebarCollapsed
   };
 })();
+(function () {
+  if (window.__pdfViewerReady) return;
+  window.__pdfViewerReady = true;
+
+  var modal;
+  var frame;
+  var title;
+  var lastFocus;
+
+  function build() {
+    if (modal) return;
+    modal = document.createElement('div');
+    modal.className = 'pdf-modal';
+    modal.hidden = true;
+    modal.innerHTML = '<div class="pdf-modal__panel" role="dialog" aria-modal="true" aria-label="PDF 预览">' +
+      '<div class="pdf-modal__head"><strong class="pdf-modal__title">PDF 预览</strong>' +
+      '<div class="pdf-modal__actions"><a class="pdf-modal__open" target="_blank" rel="noopener">新窗口打开</a>' +
+      '<button class="pdf-modal__close" type="button" aria-label="关闭">×</button></div></div>' +
+      '<iframe class="pdf-modal__frame" title="PDF 预览"></iframe></div>';
+    document.body.appendChild(modal);
+    frame = modal.querySelector('.pdf-modal__frame');
+    title = modal.querySelector('.pdf-modal__title');
+    modal.querySelector('.pdf-modal__close').addEventListener('click', close);
+    modal.addEventListener('click', function (event) {
+      if (event.target === modal) close();
+    });
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && !modal.hidden) close();
+    });
+  }
+
+  function isPdf(href) {
+    return /\.pdf(?:[?#].*)?$/i.test(href || '');
+  }
+
+  function isLocal(href) {
+    try {
+      var url = new URL(href, window.location.href);
+      return url.origin === window.location.origin;
+    } catch (err) {
+      return href.charAt(0) === '/' || href.indexOf('http') !== 0;
+    }
+  }
+
+  function open(href, label) {
+    build();
+    lastFocus = document.activeElement;
+    title.textContent = label || 'PDF 预览';
+    modal.querySelector('.pdf-modal__open').href = href;
+    frame.src = href + (href.indexOf('#') >= 0 ? '' : '#view=FitH');
+    modal.hidden = false;
+    document.body.classList.add('pdf-modal-open');
+    modal.querySelector('.pdf-modal__close').focus();
+  }
+
+  function close() {
+    if (!modal) return;
+    modal.hidden = true;
+    frame.src = 'about:blank';
+    document.body.classList.remove('pdf-modal-open');
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  document.addEventListener('click', function (event) {
+    var target = event.target;
+    while (target && target !== document) {
+      if (target.tagName === 'A') break;
+      target = target.parentNode;
+    }
+    if (!target || target.tagName !== 'A') return;
+    var href = target.getAttribute('href') || '';
+    if (!isPdf(href) || !isLocal(href)) return;
+    if (target.hasAttribute('download')) return;
+    event.preventDefault();
+    open(href, (target.textContent || '').trim() || 'PDF 预览');
+  });
+
+  function embedPdfImages() {
+    var images = document.querySelectorAll('article img[src$=".pdf" i], .article__body img[src$=".pdf" i]');
+    Array.prototype.forEach.call(images, function (img) {
+      var src = img.getAttribute('src');
+      if (!src) return;
+      var figure = document.createElement('figure');
+      figure.className = 'pdf-inline';
+      var iframe = document.createElement('iframe');
+      iframe.src = src + (src.indexOf('#') >= 0 ? '' : '#view=FitH');
+      iframe.title = img.getAttribute('alt') || 'PDF';
+      iframe.loading = 'lazy';
+      var link = document.createElement('a');
+      link.href = src;
+      link.target = '_blank';
+      link.rel = 'noopener';
+      link.textContent = '新窗口打开 PDF';
+      figure.appendChild(iframe);
+      figure.appendChild(link);
+      img.parentNode.replaceChild(figure, img);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', embedPdfImages);
+  } else {
+    embedPdfImages();
+  }
+})();

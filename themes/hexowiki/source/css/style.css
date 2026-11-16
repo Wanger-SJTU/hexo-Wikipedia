@@ -3649,3 +3649,69 @@ html[data-theme="dark"] .katex {
   width: 12px;
   height: 12px;
 }
+
+/* PDF 预览 */
+.pdf-modal[hidden] { display: none; }
+.pdf-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(8, 18, 32, 0.72);
+  backdrop-filter: blur(3px);
+}
+.pdf-modal__panel {
+  display: flex;
+  flex-direction: column;
+  width: min(1180px, 96vw);
+  height: min(90vh, 900px);
+  background: var(--bg);
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.32);
+}
+.pdf-modal__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 48px;
+  padding: 0 12px 0 16px;
+  border-bottom: 1px solid var(--border-faint);
+}
+.pdf-modal__title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+}
+.pdf-modal__actions { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; }
+.pdf-modal__open { font-size: 12px; color: var(--link); }
+.pdf-modal__close {
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--border-faint);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 21px;
+  line-height: 1;
+  cursor: pointer;
+}
+.pdf-modal__close:hover { background: var(--bg-subtle); color: var(--text); }
+.pdf-modal__frame { flex: 1; width: 100%; border: 0; background: #fff; }
+body.pdf-modal-open { overflow: hidden; }
+.pdf-inline {
+  margin: 16px 0;
+  padding: 0;
+  border: 1px solid var(--border-faint);
+  background: var(--bg-subtle);
+}
+.pdf-inline iframe { display: block; width: 100%; height: min(72vh, 760px); border: 0; background: #fff; }
+.pdf-inline a { display: inline-block; padding: 7px 10px; font-size: 12px; }
+@media (max-width: 700px) {
+  .pdf-modal { padding: 8px; }
+  .pdf-modal__panel { width: 100%; height: 94vh; }
+  .pdf-inline iframe { height: 60vh; }
+}
