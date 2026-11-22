@@ -556,6 +556,26 @@ hexo.extend.generator.register('hexowiki-routes', function generateWikiRoutes(lo
     }
   }
 
+  // 单文档目录已经被折叠掉：把这些旧目录 URL 直接跳到唯一那篇文档。
+  const dirRedirectRoutes = (docsData && docsData.dir_redirects
+    ? Object.entries(docsData.dir_redirects)
+    : []
+  )
+    .filter(([from, to]) => from && to)
+    .map(([from, to]) => {
+      // dir_redirects 里的 to 已经是编码后的站内 URL，不能再 encodeURI 一次。
+      const target = String(to);
+      const html = '<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">' +
+        '<meta http-equiv="refresh" content="0; url=' + target.replace(/"/g, '%22') + '">' +
+        '<link rel="canonical" href="' + target.replace(/"/g, '%22') + '">' +
+        '<title>重定向</title></head><body><p>正在跳转到 <a href="' + target.replace(/"/g, '%22') + '">' +
+        target.replace(/&/g, '&amp;') + '</a>…</p></body></html>';
+      return {
+        path: String(from).replace(/^\/+/, '').replace(/\/?$/, '/') + 'index.html',
+        data: html
+      };
+    });
+
   const tagList = (locals && locals.tags ? locals.tags.toArray() : [])
     .map((tag) => ({
       name: String(tag.name),
@@ -589,6 +609,7 @@ hexo.extend.generator.register('hexowiki-routes', function generateWikiRoutes(lo
     }),
     ...redirectRoutes,
     ...dirRoutes,
+    ...dirRedirectRoutes,
     pageRoute(routes.tags, 'wiki_tags', {
       title: '标签',
       layout: 'wiki_tags',

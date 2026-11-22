@@ -3,6 +3,8 @@
 import json
 import os
 import re
+import subprocess
+import sys
 import unicodedata
 import urllib.parse
 from datetime import datetime
@@ -179,6 +181,11 @@ def main():
     with open(OUT, "w", encoding="utf-8") as fh:
         json.dump(data, fh, ensure_ascii=False, indent=2)
         fh.write("\n")
+    # 单文档目录不生成独立目录页；把文档折叠到最近的父目录。
+    subprocess.run(
+        [sys.executable, os.path.join(ROOT, "tools", "collapse-single-doc-dirs.py"), OUT],
+        check=True,
+    )
     # 同时重建 /collections/ 文档库索引页，避免目录列表/空页面
     by_top = {}
     for doc in docs:
