@@ -576,6 +576,9 @@ hexo.extend.generator.register('hexowiki-routes', function generateWikiRoutes(lo
       };
     });
 
+  // 目录页的思维导图数据。只保留树和文档链接，避免页面里重复塞整棵树。
+  const docsTree = (docsData && Array.isArray(docsData.tree)) ? docsData.tree : [];
+
   const tagList = (locals && locals.tags ? locals.tags.toArray() : [])
     .map((tag) => ({
       name: String(tag.name),
@@ -589,6 +592,7 @@ hexo.extend.generator.register('hexowiki-routes', function generateWikiRoutes(lo
     { path: routes.graphJson, data: safeJson(state.graphJson) },
     { path: routes.searchJson, data: safeJson(fullSearch) },
     { path: routes.statsJson, data: safeJson(state.stats) },
+    { path: 'collections-docs-tree.json', data: safeJson(docsTree) },
     pageRoute(routes.graph, 'wiki_graph', {
       title: '关系图谱',
       layout: 'wiki_graph',

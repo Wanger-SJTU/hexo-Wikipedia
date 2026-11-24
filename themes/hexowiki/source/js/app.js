@@ -992,6 +992,176 @@
     });
   }
 
+  /* ==========================================================================
+     目录页思维导图
+     只在目录页启用；树数据按需加载，默认只展开当前目录下一级。
+     ========================================================================== */
+  function findDirectoryNode(nodes, path) {
+    var wanted = String(path || '').replace(/^\/+|\/+$/g, '');
+    function walk(list) {
+      for (var i = 0; i < list.length; i += 1) {
+        var node = list[i];
+        if (!node) continue;
+        if (String(node.path || '').replace(/^\/+|\/+$/g, '') === wanted) return node;
+        var found = walk(node.children || []);
+        if (found) return found;
+      }
+      return null;
+    }
+    return walk(nodes || []);
+  }
+
+  function hasDirectoryChildren(node) {
+    return Boolean((node.children && node.children.length) || (node.docs && node.docs.length));
+  }
+
+  function makeDirectoryDoc(doc) {
+    var li = document.createElement('li');
+    li.className = 'mindmap__item mindmap__item--doc';
+    var link = document.createElement('a');
+    link.className = 'mindmap__doc';
+    link.href = doc.url || '#';
+    link.textContent = doc.title || '未命名文档';
+    if (doc.date) link.title = doc.date;
+    li.appendChild(link);
+    return li;
+  }
+
+  function makeDirectoryBranch(node) {
+    var li = document.createElement('li');
+    li.className = 'mindmap__item mindmap__item--dir';
+
+    var row = document.createElement('div');
+    row.className = 'mindmap__row';
+
+    var toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'mindmap__toggle';
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', '展开 ' + (node.name || '目录'));
+    toggle.textContent = '+';
+
+    var link = document.createElement('a');
+    link.className = 'mindmap__link';
+    link.href = node.url || '#';
+    var name = document.createElement('span');
+    name.className = 'mindmap__name';
+    name.textContent = node.name || '未命名目录';
+    link.appendChild(name);
+    if (node.count != null) {
+      var count = document.createElement('span');
+      count.className = 'mindmap__count';
+      count.textContent = node.count;
+      link.appendChild(count);
+    }
+
+    row.appendChild(toggle);
+    row.appendChild(link);
+    li.appendChild(row);
+
+    var children = null;
+    function fillChildren() {
+      if (children) return;
+      children = document.createElement('ul');
+      children.className = 'mindmap__children';
+      (node.children || []).forEach(function (child) {
+        if (hasDirectoryChildren(child)) children.appendChild(makeDirectoryBranch(child));
+      });
+      (node.docs || []).forEach(function (doc) {
+        children.appendChild(makeDirectoryDoc(doc));
+      });
+      if (!children.children.length) {
+        var empty = document.createElement('li');
+        empty.className = 'mindmap__empty';
+        empty.textContent = '暂无文档';
+        children.appendChild(empty);
+      }
+      li.appendChild(children);
+    }
+
+    toggle.addEventListener('click', function () {
+      fillChildren();
+      var expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+      toggle.textContent = expanded ? '+' : '−';
+      children.hidden = expanded;
+    });
+
+    return li;
+  }
+
+  function makeDirectoryTree(root) {
+    var map = document.createElement('div');
+    map.className = 'mindmap';
+
+    var rootBox = document.createElement('div');
+    rootBox.className = 'mindmap__root';
+    rootBox.textContent = root.name || root.path || '目录';
+    if (root.count != null) {
+      var rootCount = document.createElement('span');
+      rootCount.className = 'mindmap__root-count';
+      rootCount.textContent = root.count + ' 篇文档';
+      rootBox.appendChild(rootCount);
+    }
+    map.appendChild(rootBox);
+
+    var branches = document.createElement('ul');
+    branches.className = 'mindmap__children';
+    (root.children || []).forEach(function (child) {
+      if (hasDirectoryChildren(child)) branches.appendChild(makeDirectoryBranch(child));
+    });
+    (root.docs || []).forEach(function (doc) {
+      branches.appendChild(makeDirectoryDoc(doc));
+    });
+    if (!branches.children.length) {
+      var empty = document.createElement('li');
+      empty.className = 'mindmap__empty';
+      empty.textContent = '该目录下暂无文档';
+      branches.appendChild(empty);
+    }
+    map.appendChild(branches);
+    return map;
+  }
+
+  function initDirectoryMap() {
+    var holder = document.querySelector('[data-directory-map]');
+    if (!holder) return;
+
+    var url = holder.getAttribute('data-tree-url');
+    var path = holder.getAttribute('data-tree-path');
+    var version = holder.getAttribute('data-tree-version');
+    if (!url) return;
+
+    var fallback = document.querySelector('[data-directory-fallback]');
+    var viewButton = document.querySelector('[data-directory-view]');
+    var requestUrl = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'v=' + encodeURIComponent(version || '1');
+
+    fetch(requestUrl, { credentials: 'same-origin' })
+      .then(function (response) {
+        if (!response.ok) throw new Error('tree http ' + response.status);
+        return response.json();
+      })
+      .then(function (tree) {
+        var root = findDirectoryNode(tree, path);
+        if (!root) throw new Error('tree node not found');
+        holder.appendChild(makeDirectoryTree(root));
+        if (fallback) fallback.hidden = true;
+        if (viewButton) {
+          viewButton.hidden = false;
+          viewButton.addEventListener('click', function () {
+            var showingMap = !holder.hidden;
+            holder.hidden = showingMap;
+            if (fallback) fallback.hidden = !showingMap;
+            viewButton.textContent = showingMap ? '导图视图' : '列表视图';
+          });
+        }
+      })
+      .catch(function (err) {
+        // 数据加载失败时保留服务端渲染的列表，不影响阅读。
+        if (window.console && console.warn) console.warn('[hexowiki] directory map:', err.message);
+      });
+  }
+
   function isPdf(href) {
     return /\.pdf(?:[?#].*)?$/i.test(href || '');
   }
@@ -1061,8 +1231,10 @@
   }
 
   if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initDirectoryMap);
     document.addEventListener('DOMContentLoaded', embedPdfImages);
   } else {
+    initDirectoryMap();
     embedPdfImages();
   }
 })();

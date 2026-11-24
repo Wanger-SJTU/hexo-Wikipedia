@@ -3715,3 +3715,302 @@ body.pdf-modal-open { overflow: hidden; }
   .pdf-modal__panel { width: 100%; height: 94vh; }
   .pdf-inline iframe { height: 60vh; }
 }
+
+/* 目录页：思维导图式树 */
+.directory-map-section {
+  margin-top: 18px;
+}
+
+.directory-map__toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.directory-map__toolbar .directory-section__title {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.directory-map__hint {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.directory-map__view {
+  margin-left: auto;
+  padding: 3px 9px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 3px;
+  background: var(--bg);
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.directory-map__view:hover {
+  border-color: var(--accent);
+  color: var(--link);
+  background: var(--bg-hover);
+}
+
+.directory-map {
+  overflow-x: auto;
+  padding: 18px 20px;
+  border: 1px solid var(--border-faint);
+  border-radius: 4px;
+  background:
+    linear-gradient(90deg, rgba(234, 236, 240, 0.38) 1px, transparent 1px) 0 0 / 28px 28px,
+    var(--bg);
+}
+
+.mindmap {
+  display: flex;
+  align-items: flex-start;
+  gap: 26px;
+  min-width: max-content;
+  padding: 2px 0;
+  animation: mindmap-in 0.24s ease-out both;
+}
+
+.mindmap__root {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  flex: 0 0 auto;
+  max-width: 260px;
+  margin-top: 2px;
+  padding: 10px 14px;
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  background: var(--accent-bg);
+  box-shadow: 3px 3px 0 rgba(51, 102, 204, 0.1);
+  color: var(--text);
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  line-height: 1.35;
+}
+
+.mindmap__root-count {
+  display: block;
+  margin-top: 3px;
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 11px;
+}
+
+.mindmap__children {
+  position: relative;
+  flex: 0 0 auto;
+  min-width: 210px;
+  margin: 0;
+  padding: 0 0 0 26px;
+  list-style: none;
+}
+
+.mindmap__children::before {
+  position: absolute;
+  top: 7px;
+  bottom: 7px;
+  left: 10px;
+  border-left: 1px solid var(--border-subtle);
+  content: "";
+}
+
+.mindmap > .mindmap__children::before {
+  top: 0;
+  bottom: 0;
+}
+
+.mindmap__item {
+  position: relative;
+  padding: 2px 0;
+}
+
+.mindmap__item::before {
+  position: absolute;
+  top: 19px;
+  left: -16px;
+  width: 15px;
+  border-top: 1px solid var(--border-subtle);
+  content: "";
+}
+
+.mindmap__row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mindmap__toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 1px solid var(--border-subtle);
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.mindmap__toggle:hover,
+.mindmap__toggle[aria-expanded="true"] {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+  color: var(--link);
+}
+
+.mindmap__toggle-spacer {
+  flex: 0 0 18px;
+  width: 18px;
+}
+
+.mindmap__link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  max-width: 420px;
+  padding: 4px 9px;
+  border: 1px solid var(--border-faint);
+  border-radius: 3px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+.mindmap__link:hover {
+  border-color: var(--accent);
+  background: var(--bg-hover);
+  color: var(--link);
+}
+
+.mindmap__name {
+  overflow-wrap: anywhere;
+}
+
+.mindmap__count {
+  flex: 0 0 auto;
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.mindmap__doc {
+  display: inline-block;
+  max-width: 520px;
+  padding: 3px 8px 3px 10px;
+  border-left: 2px solid var(--border-faint);
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.5;
+  text-decoration: none;
+}
+
+.mindmap__doc:hover {
+  border-left-color: var(--accent);
+  background: var(--bg-subtle);
+  color: var(--link);
+  text-decoration: underline;
+}
+
+.mindmap__empty {
+  padding: 4px 8px;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.directory-fallback[hidden] {
+  display: none;
+}
+
+@keyframes mindmap-in {
+  from { opacity: 0; transform: translateY(3px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (max-width: 720px) {
+  .directory-map {
+    padding: 12px;
+  }
+
+  .directory-map__toolbar {
+    flex-wrap: wrap;
+  }
+
+  .directory-map__hint {
+    order: 3;
+    width: 100%;
+  }
+
+  .directory-map__view {
+    margin-left: 0;
+  }
+
+  .mindmap {
+    gap: 16px;
+  }
+
+  .mindmap__root {
+    max-width: 210px;
+    padding: 8px 10px;
+    font-size: 1rem;
+  }
+
+  .mindmap__link {
+    max-width: 280px;
+  }
+
+  .mindmap__doc {
+    max-width: 300px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mindmap {
+    animation: none;
+  }
+}
+
+/* 导图根节点与分支的连接线 */
+.mindmap__root {
+  align-self: center;
+  position: sticky;
+}
+
+.mindmap__root::after {
+  position: absolute;
+  top: 50%;
+  right: -36px;
+  width: 36px;
+  border-top: 1px solid var(--border-subtle);
+  content: "";
+}
+
+.mindmap__item--doc {
+  margin-left: 24px;
+}
+
+.mindmap__item--doc::before {
+  left: -16px;
+  width: 15px;
+}
+
+@media (max-width: 720px) {
+  .mindmap__root::after {
+    right: -26px;
+    width: 26px;
+  }
+}
