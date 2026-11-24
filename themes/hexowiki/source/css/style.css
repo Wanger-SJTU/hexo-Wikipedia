@@ -4014,3 +4014,10 @@ body.pdf-modal-open { overflow: hidden; }
     width: 26px;
   }
 }
+
+.directory-map__loading {
+  display: inline-block;
+  padding: 2px 0;
+  color: var(--text-muted);
+  font-size: 12px;
+}

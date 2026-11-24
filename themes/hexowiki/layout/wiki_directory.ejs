@@ -33,9 +33,10 @@
          data-tree-url="<%- url_for('/collections-docs-tree.json') %>"
          data-tree-path="<%- _dir.path %>"
          data-tree-version="<%- (theme.assets && theme.assets.version) || '' %>"
-         aria-label="<%- _dir.name %> 目录导图"></div>
+         aria-label="<%- _dir.name %> 目录导图"><span class="directory-map__loading">正在加载目录导图…</span></div>
   </section>
   <% } %>
+  <noscript><style>.directory-map-section { display: none; }</style></noscript>
 
   <div class="directory-fallback" data-directory-fallback>
     <% if (_children.length) { %>

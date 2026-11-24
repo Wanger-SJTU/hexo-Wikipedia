@@ -1144,6 +1144,7 @@
       .then(function (tree) {
         var root = findDirectoryNode(tree, path);
         if (!root) throw new Error('tree node not found');
+        holder.textContent = '';
         holder.appendChild(makeDirectoryTree(root));
         if (fallback) fallback.hidden = true;
         if (viewButton) {
@@ -1158,6 +1159,8 @@
       })
       .catch(function (err) {
         // 数据加载失败时保留服务端渲染的列表，不影响阅读。
+        var section = holder.closest ? holder.closest('.directory-map-section') : null;
+        if (section) section.hidden = true;
         if (window.console && console.warn) console.warn('[hexowiki] directory map:', err.message);
       });
   }
