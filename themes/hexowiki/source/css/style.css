@@ -4021,3 +4021,37 @@ body.pdf-modal-open { overflow: hidden; }
   color: var(--text-muted);
   font-size: 12px;
 }
+
+/* 最近新增文件 */
+.home-columns--three {
+  grid-template-columns: 1fr 1fr 0.85fr;
+  gap: 28px;
+}
+
+.recent-list--added .recent-list__link {
+  font-weight: 600;
+}
+
+.recent-list--added .recent-list__date {
+  color: var(--accent);
+}
+
+@media (max-width: 1150px) {
+  .home-columns--three {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .home-columns--three > .home-section:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 1000px) {
+  .home-columns--three {
+    grid-template-columns: 1fr;
+  }
+
+  .home-columns--three > .home-section:last-child {
+    grid-column: auto;
+  }
+}

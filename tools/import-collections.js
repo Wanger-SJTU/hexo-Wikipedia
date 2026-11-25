@@ -148,16 +148,18 @@ function parseDoc(abs) {
   title = title.replace(/^\(\s*1\s*封私信\s*\)\s*/, '').trim() || title;
 
   let date = data && data.date ? data.date : null;
+  let stat = null;
+  try {
+    stat = fs.statSync(abs);
+  } catch (err) {
+    stat = null;
+  }
   if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
-    try {
-      const stat = fs.statSync(abs);
-      date = stat.mtime;
-    } catch (err) {
-      date = new Date();
-    }
+    date = stat ? stat.mtime : new Date();
   }
   let updated = data && data.updated ? data.updated : date;
   if (!(updated instanceof Date) || Number.isNaN(updated.getTime())) updated = date;
+  const added = stat ? stat.mtime : date;
 
   let tags = data && data.tags ? data.tags : [];
   if (typeof tags === 'string') tags = tags.split(/[,，;；]/);
@@ -175,6 +177,7 @@ function parseDoc(abs) {
     title,
     date,
     updated,
+    added,
     tags,
     aliases: aliases.map(String).filter(Boolean),
     sourceUrl: data && data.source && /^https?:/.test(String(data.source)) ? String(data.source) : '',
@@ -892,7 +895,8 @@ function main() {
       node.docs.push({
         title: doc.title,
         url: encodeUrl(doc.url),
-        date: formatDate(doc.date).slice(0, 10)
+        date: formatDate(doc.date).slice(0, 10),
+        added: formatDate(doc.added)
       });
     }
 
@@ -960,6 +964,11 @@ function main() {
       url: encodeUrl(item.url),
       updated: formatDate(item.updated || item.date).slice(0, 10)
     }));
+    const recentAdded = docs.slice().sort((a, b) => b.added - a.added).slice(0, 10).map((item) => ({
+      title: item.title,
+      url: encodeUrl(item.url),
+      added: formatDate(item.added)
+    }));
     const latest = docs.slice().sort((a, b) => b.date - a.date)[0];
     const data = {
       count: docs.length,
@@ -967,8 +976,10 @@ function main() {
       tree,
       dirs,
       recent,
+      recent_added: recentAdded,
       tags: tagSet.size,
       updated: latest ? formatDate(latest.updated || latest.date).slice(0, 10) : '',
+      added: recentAdded.length ? recentAdded[0].added.slice(0, 10) : '',
       url: URL_PREFIX
     };
     ensureDir(path.dirname(DATA_FILE));

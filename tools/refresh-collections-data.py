@@ -29,6 +29,15 @@ def encode(url):
     return urllib.parse.quote(url, safe="/%")
 
 
+def file_added(path):
+    """文件进入知识库的时间：优先使用文件修改时间，保留同步前的原始时间。"""
+    try:
+        stamp = os.stat(path).st_mtime
+        return datetime.fromtimestamp(stamp).strftime("%Y-%m-%d %H:%M:%S")
+    except OSError:
+        return ""
+
+
 def parse_doc(path):
     raw = open(path, encoding="utf-8", errors="replace").read()
     if not raw.startswith("---"):
@@ -58,6 +67,7 @@ def parse_doc(path):
         "permalink": permalink,
         "url": encode(permalink),
         "date": date,
+        "added": file_added(path),
         "tags": [str(t) for t in tags],
     }
 
@@ -95,7 +105,12 @@ def main():
                 }
                 node["children"][part] = child
             node = child
-        node["docs"].append({"title": doc["title"], "url": doc["url"], "date": doc["date"]})
+        node["docs"].append({
+            "title": doc["title"],
+            "url": doc["url"],
+            "date": doc["date"],
+            "added": doc["added"],
+        })
 
     def finish(node):
         total = len(node["docs"])
@@ -166,15 +181,26 @@ def main():
         {"title": d["title"], "url": d["url"], "updated": d["date"]}
         for d in sorted(docs, key=lambda d: d["date"], reverse=True)[:10]
     ]
+    recent_added = [
+        {"title": d["title"], "url": d["url"], "added": d["added"]}
+        for d in sorted(
+            docs,
+            key=lambda d: (d.get("added") or "", d["title"]),
+            reverse=True,
+        )[:10]
+    ]
     latest = max((d["date"] for d in docs), default="")
+    added_latest = max((d.get("added") or "" for d in docs), default="")
     data = {
         "count": len(docs),
         "groups": groups,
         "tree": to_tree(root),
         "dirs": dirs,
         "recent": recent,
+        "recent_added": recent_added,
         "tags": len(tags),
         "updated": latest,
+        "added": added_latest[:10] if added_latest else "",
         "url": URL_PREFIX,
     }
     os.makedirs(os.path.dirname(OUT), exist_ok=True)

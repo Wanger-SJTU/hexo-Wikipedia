@@ -7,6 +7,7 @@
     const _archivesUrl = url_for('/archives/');
     const _headline = _cfg.headline || '知识库';
     const _intro = _cfg.intro || '按目录整理的文档与笔记，支持代码、数学公式与全文检索。';
+    const _recentAdded = (_docs.recent_added || []).slice(0, 8);
 %>
 <div class="home home--docs">
   <section class="home-hero" aria-labelledby="home-title">
@@ -48,7 +49,7 @@
     </div>
   </section>
 
-  <div class="home-columns">
+  <div class="home-columns<%- _recentAdded.length ? ' home-columns--three' : '' %>">
     <section class="home-section home-section--recent" aria-labelledby="home-recent-title">
       <div class="home-section__head">
         <h2 class="home-section__title" id="home-recent-title">最近更新</h2>
@@ -63,6 +64,23 @@
         <% }); %>
       </ul>
     </section>
+
+    <% if (_recentAdded.length) { %>
+    <section class="home-section home-section--added" aria-labelledby="home-added-title">
+      <div class="home-section__head">
+        <h2 class="home-section__title" id="home-added-title">最近新增文件</h2>
+        <a class="home-section__more" href="<%- _docsUrl %>">全部文档 →</a>
+      </div>
+      <ul class="recent-list recent-list--added">
+        <% _recentAdded.forEach(function (item) { %>
+        <li class="recent-list__item">
+          <a class="recent-list__link" href="<%- item.url %>"><%- item.title %></a>
+          <% if (item.added) { %><time class="recent-list__date" datetime="<%- item.added %>"><%- String(item.added).slice(0, 10) %></time><% } %>
+        </li>
+        <% }); %>
+      </ul>
+    </section>
+    <% } %>
 
     <section class="home-section" aria-labelledby="home-about-title">
       <div class="home-section__head">
