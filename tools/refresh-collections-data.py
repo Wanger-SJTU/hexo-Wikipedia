@@ -177,18 +177,24 @@ def main():
     tags = set()
     for doc in docs:
         tags.update(doc["tags"])
-    recent = [
-        {"title": d["title"], "url": d["url"], "updated": d["date"]}
-        for d in sorted(docs, key=lambda d: d["date"], reverse=True)[:10]
-    ]
-    recent_added = [
-        {"title": d["title"], "url": d["url"], "added": d["added"]}
-        for d in sorted(
-            docs,
-            key=lambda d: (d.get("added") or "", d["title"]),
-            reverse=True,
-        )[:10]
-    ]
+    recent = []
+    recent_added = []
+    seen_recent = set()
+    seen_added = set()
+    for d in sorted(docs, key=lambda d: d["date"], reverse=True):
+        if d["url"] in seen_recent:
+            continue
+        seen_recent.add(d["url"])
+        recent.append({"title": d["title"], "url": d["url"], "updated": d["date"]})
+        if len(recent) >= 10:
+            break
+    for d in sorted(docs, key=lambda d: (d.get("added") or "", d["title"]), reverse=True):
+        if d["url"] in seen_added:
+            continue
+        seen_added.add(d["url"])
+        recent_added.append({"title": d["title"], "url": d["url"], "added": d["added"]})
+        if len(recent_added) >= 10:
+            break
     latest = max((d["date"] for d in docs), default="")
     added_latest = max((d.get("added") or "" for d in docs), default="")
     data = {
