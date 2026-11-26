@@ -317,6 +317,20 @@
     welcome = null;
   }
 
+  function escapeHtml(value) {
+    return String(value || '').replace(/[&<>"']/g, function (ch) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch];
+    });
+  }
+
+  function formatAnswer(value) {
+    var html = escapeHtml(value);
+    html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+    html = html.replace(/(^|\n)(\d+)\.\s/g, '$1<strong>$2.</strong> ');
+    return html;
+  }
+
   function addBubble(role, text) {
     ensureWelcomeRemoved();
     var row = document.createElement('div');
@@ -449,7 +463,7 @@
           var answer = '';
           return readStream(response, function (delta) {
             answer += delta;
-            assistant.body.textContent = answer;
+            assistant.body.innerHTML = formatAnswer(answer);
             scrollToBottom();
           }).then(function (full) {
             return full || answer;
