@@ -1,0 +1,60 @@
+<%
+  const _theme = (typeof themeCfg !== 'undefined' && themeCfg) ? themeCfg : ((typeof theme !== 'undefined' && theme) ? theme : {});
+  const _rag = _theme.rag || {};
+  const _ragEnabled = _rag.enable !== false;
+  const _ragApi = _rag.api || '/api/rag/chat';
+  const _ragTitle = _rag.title || '知识库问答';
+  const _ragSearch = (typeof wiki_urls === 'function') ? ((wiki_urls() || {}).search_json || url_for('/wiki-search.json')) : url_for('/wiki-search.json');
+  const _assetVersion = (_theme.assets && _theme.assets.version) ? ('?v=' + encodeURIComponent(_theme.assets.version)) : '';
+%>
+<% if (_ragEnabled) { %>
+<div class="rag-chat" data-rag data-api="<%- _ragApi %>" data-search="<%- _ragSearch + _assetVersion %>" data-title="<%- _ragTitle %>">
+  <button class="rag-chat__launcher" type="button" data-rag-open aria-controls="rag-chat-panel" aria-expanded="false" title="<%= _ragTitle %>">
+    <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M4 5.5h16v11H9l-4 3v-3H4z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+      <path d="M8 10h8M8 13.2h5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+    </svg>
+    <span>问答</span>
+  </button>
+
+  <section class="rag-chat__panel" id="rag-chat-panel" data-rag-panel role="dialog" aria-modal="false" aria-label="<%= _ragTitle %>" hidden>
+    <header class="rag-chat__header">
+      <div class="rag-chat__heading">
+        <span class="rag-chat__dot" aria-hidden="true"></span>
+        <div>
+          <strong><%= _ragTitle %></strong>
+          <span>基于本站文档检索并生成回答</span>
+        </div>
+      </div>
+      <button class="rag-chat__close" type="button" data-rag-close aria-label="关闭问答" title="关闭">
+        <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+          <path d="m4 4 12 12M16 4 4 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </header>
+
+    <div class="rag-chat__messages" data-rag-messages role="log" aria-live="polite" aria-relevant="additions text">
+      <div class="rag-chat__welcome" data-rag-welcome>
+        <p>问一个关于知识库的问题。我会先在站内检索相关段落，再让本地模型据此回答。</p>
+        <div class="rag-chat__suggestions">
+          <button type="button" data-rag-suggest>最近新增了哪些文档？</button>
+          <button type="button" data-rag-suggest>总结一下 RAG 的核心流程</button>
+          <button type="button" data-rag-suggest>Stable Diffusion 的采样过程是什么？</button>
+        </div>
+      </div>
+    </div>
+
+    <form class="rag-chat__form" data-rag-form>
+      <label class="visually-hidden" for="rag-chat-input">输入问题</label>
+      <textarea class="rag-chat__input" id="rag-chat-input" data-rag-input rows="1" maxlength="2000" placeholder="问知识库里的任何内容…（Enter 发送，Shift+Enter 换行）" autocomplete="off"></textarea>
+      <button class="rag-chat__send" type="submit" data-rag-send>
+        <span data-rag-send-label>发送</span>
+        <svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+          <path d="m3 10 13-6-3.2 12-3.1-4.4L3 10Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </form>
+    <p class="rag-chat__status" data-rag-status>回答由本地模型生成，可能有误；请以原文为准。</p>
+  </section>
+</div>
+<% } %>

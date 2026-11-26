@@ -3,6 +3,9 @@
   const _layout = (typeof page !== 'undefined' && page && page.layout) ? page.layout : 'page';
 %>
 <script src="<%- url_for('/js/app.js') %><%- (theme.assets && theme.assets.version) ? ('?v=' + theme.assets.version) : '' %>" defer></script>
+<% if (theme.rag && theme.rag.enable !== false) { %>
+<script src="<%- url_for('/js/rag.js') %><%- (theme.assets && theme.assets.version) ? ('?v=' + theme.assets.version) : '' %>" defer></script>
+<% } %>
 <% if (_layout === 'wiki_graph' || _layout === 'post') { %>
 <script src="<%- url_for('/js/graph.js') %><%- (theme.assets && theme.assets.version) ? ('?v=' + theme.assets.version) : '' %>" defer></script>
 <% } %>
